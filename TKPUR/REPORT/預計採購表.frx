@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/22/2018 14:11:05" ReportInfo.Modified="08/22/2018 14:21:51" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNa3HSodxC0gQvtKxpMAAXlN5eQJ42Ef2bAL2nnzdZTuPn9XcAGTSdUUzaJomhLNfpIXcV4T7RRlJD3gBW66jXpvPrdieVxW0VJreQIDzIQcRQ57VNWlO+UmVVCCRZ43Vz"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="41.65" Width="718.2" Height="28.35"/>
+    <DataBand Name="Data1" Top="73.84" Width="718.2" Height="75.6"/>
+    <PageFooterBand Name="PageFooter1" Top="153.29" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>
