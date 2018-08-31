@@ -94,7 +94,7 @@ namespace TKPUR
             FASTSQL.AppendFormat(@"  ,TD015 AS '已交數量',(TD008-TD015) AS '未交數量' ");
             FASTSQL.AppendFormat(@"  ,TD009 AS '單位',TD012 AS '預交日'");
             FASTSQL.AppendFormat(@"  FROM [TK].dbo.PURTA,[TK].dbo.PURTB ");
-            FASTSQL.AppendFormat(@"  LEFT JOIN [TK].dbo.PURTD ON TD013=TB001 AND TD021=TB002 AND TD023=TB003");
+            FASTSQL.AppendFormat(@"  LEFT JOIN [TK].dbo.PURTD ON TD004=TB004 AND TD023=TB003");
             FASTSQL.AppendFormat(@"  LEFT JOIN [TK].dbo.PURMA ON TB010=MA001");
             FASTSQL.AppendFormat(@"  WHERE TA001=TB001 AND TA002=TB002");
             FASTSQL.AppendFormat(@"  AND TB011>='{0}'",dateTimePicker1.Value.ToString("yyyyMMdd"));
