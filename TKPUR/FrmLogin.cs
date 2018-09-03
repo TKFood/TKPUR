@@ -75,6 +75,14 @@ namespace TKPUR
         #endregion
 
         #region FUNCTION
+
+        private void txt_UserName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                txt_Password.Focus();
+            }
+        }
         private void txt_Password_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -84,5 +92,7 @@ namespace TKPUR
         }
 
         #endregion
+
+       
     }
 }
