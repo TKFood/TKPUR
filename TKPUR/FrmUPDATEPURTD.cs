@@ -143,7 +143,54 @@ namespace TKPUR
                 }
             }
         }
+        public void UPDATE()
+        {
+            try
+            {
 
+                //add ZWAREWHOUSEPURTH
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+               
+                sbSql.AppendFormat(" UPDATE [TK].dbo.PURTD");
+                sbSql.AppendFormat(" SET TD013='{0}',TD021='{1}',TD023='{2}'",textBox4.Text, textBox5.Text, textBox6.Text);
+                sbSql.AppendFormat(" WHERE TD001='{0}' AND TD002='{1}' AND TD003='{2}'", textBox1.Text, textBox2.Text, textBox3.Text);
+                sbSql.AppendFormat(" ");
+                sbSql.AppendFormat(" ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -151,8 +198,16 @@ namespace TKPUR
         {
             Search();
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            UPDATE();
+
+            MessageBox.Show("完成");
+            Search();
+        }
+
         #endregion
 
-      
+
     }
 }
