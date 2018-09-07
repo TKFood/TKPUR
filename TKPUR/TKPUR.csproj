@@ -99,6 +99,12 @@
     <Compile Include="FrmRPOETPURTBD.Designer.cs">
       <DependentUpon>FrmRPOETPURTBD.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmUPDATEPURTD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmUPDATEPURTD.Designer.cs">
+      <DependentUpon>FrmUPDATEPURTD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmLogin.resx">
@@ -112,6 +118,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRPOETPURTBD.resx">
       <DependentUpon>FrmRPOETPURTBD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmUPDATEPURTD.resx">
+      <DependentUpon>FrmUPDATEPURTD.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
