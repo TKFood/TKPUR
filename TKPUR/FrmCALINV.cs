@@ -50,7 +50,14 @@ namespace TKPUR
 
             if (!string.IsNullOrEmpty(comboBox1.Text))
             {
-                label2.Text = searchMB002();
+                label2.Text = searchMB002(comboBox1.Text);
+
+                if (comboBox1.Text.Equals("40100113000016"))
+                {
+                    textBox2.Text = "203021091";
+
+                    label6.Text = searchMB002(textBox2.Text);
+                }
             }
         }
 
@@ -59,11 +66,20 @@ namespace TKPUR
         {
             if(!string.IsNullOrEmpty(comboBox1.Text))
             {
-                label2.Text=searchMB002();
+                label2.Text=searchMB002(comboBox1.Text);
+
+                if(comboBox1.Text.Equals("40100113000016"))
+                {
+                    textBox2.Text = "203021091";
+
+                    label6.Text = searchMB002(textBox2.Text);
+                }
             }
+
+           
         }
 
-        public string searchMB002()
+        public string searchMB002(string MB001)
         {
             connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
             sqlConn = new SqlConnection(connectionString);
@@ -72,7 +88,7 @@ namespace TKPUR
             sbSqlQuery.Clear();
 
            
-            sbSql.AppendFormat(@" SELECT MB001,MB002 FROM [TK].dbo.INVMB WHERE MB001='{0}' ", comboBox1.Text);
+            sbSql.AppendFormat(@" SELECT MB001,MB002 FROM [TK].dbo.INVMB WHERE MB001='{0}' ", MB001);
 
             adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
