@@ -117,12 +117,59 @@ namespace TKPUR
 
         }
         
+        public void CALINV()
+        {
+            if(!string.IsNullOrEmpty(textBox1.Text)&&!string.IsNullOrEmpty(textBox2.Text))
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  WITH TEMPTABLE (MD001,MD003,MD004,MD006,MD007,MD008,MC004,NUM,LV) AS");
+                sbSql.AppendFormat(@"  (");
+                sbSql.AppendFormat(@"  SELECT  MD001,MD003,MD004,MD006,MD007,MD008,MC004,CONVERT(decimal(18,5),(MD006*(1+MD008)/MD007)/MC004) AS NUM,1 AS LV FROM [TK].dbo.VBOMMD WHERE  MD001='{0}'", comboBox1.Text);
+                sbSql.AppendFormat(@"  UNION ALL");
+                sbSql.AppendFormat(@"  SELECT A.MD001,A.MD003,A.MD004,A.MD006,A.MD007,A.MD008,A.MC004,CONVERT(decimal(18,5),(A.MD006*(1+A.MD008)/A.MD007/A.MC004)*(B.NUM)) AS NUM,LV+1");
+                sbSql.AppendFormat(@"  FROM [TK].dbo.VBOMMD A");
+                sbSql.AppendFormat(@"  INNER JOIN TEMPTABLE B on A.MD001=B.MD003");
+                sbSql.AppendFormat(@"  )");
+                sbSql.AppendFormat(@"  SELECT MD001,MD003,MD004,MD006,MD007,MD008,MC004,NUM,LV,MB002");
+                sbSql.AppendFormat(@"  FROM TEMPTABLE ");
+                sbSql.AppendFormat(@"  LEFT JOIN [TK].dbo.INVMB ON MB001=MD003");
+
+                sbSql.AppendFormat(@"  WHERE  (MD003 LIKE '{0}%') ", textBox2.Text);
+                sbSql.AppendFormat(@"  ORDER BY LV,MD001,MD003");
+
+
+
+                adapter2 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder2 = new SqlCommandBuilder(adapter2);
+                sqlConn.Open();
+                ds2.Clear();
+                adapter2.Fill(ds2, "TEMPds2");
+                sqlConn.Close();
+
+                if (ds2.Tables["TEMPds2"].Rows.Count >= 1)
+                {
+
+                    foreach (DataRow od2 in ds2.Tables["TEMPds2"].Rows)
+                    {
+                        textBox3.Text = Convert.ToString(Convert.ToDecimal(textBox1.Text) * Convert.ToDecimal(od2["NUM"].ToString()));
+                    }
+
+                }
+            }
+           
+        }
         #endregion
 
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-
+            CALINV();
         }
         #endregion
 
