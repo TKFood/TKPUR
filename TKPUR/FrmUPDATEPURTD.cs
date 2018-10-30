@@ -67,12 +67,21 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
+                if(!string.IsNullOrEmpty(textBox7.Text))
+                {
+                    sbSqlQuery.AppendFormat(@" AND TD014 LIKE '%{0}%' ",textBox7.Text);
+                }
+                else
+                {
+                    sbSqlQuery.Clear();
+                }
+
                 sbSql.AppendFormat(@"  SELECT TD001 AS '採購單單別',TD002 AS '採購單單號',TD003 AS '採購單序號',TD014 AS '備註', TD004 AS '品號',TD005 AS '品名',TD006 AS '規格',TD008 AS '採購量'");
                 sbSql.AppendFormat(@"  ,TD013 AS '參考單單別',TD021 AS '參考單單號',TD023 AS '參考單序號'");
                 sbSql.AppendFormat(@"  FROM [TK].dbo.PURTC,[TK].dbo.PURTD");
                 sbSql.AppendFormat(@"  WHERE TC001=TD001 AND TC002=TD002");
                 sbSql.AppendFormat(@"  AND TC003>='{0}' AND TC003<='{1}'",dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-                sbSql.AppendFormat(@"  ");
+                sbSql.AppendFormat(@"  {0}" , sbSqlQuery.ToString());
                 sbSql.AppendFormat(@"  ");
                 sbSql.AppendFormat(@"  ");
 
