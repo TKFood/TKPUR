@@ -110,7 +110,89 @@ namespace TKPUR
             }
         }
 
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
 
+                    textBox1.Text = row.Cells["請購單別"].Value.ToString();
+                    textBox2.Text = row.Cells["請購單號"].Value.ToString();
+                    textBox3.Text = row.Cells["請購序號"].Value.ToString();
+                    textBox4.Text = row.Cells["廠商"].Value.ToString();
+                   
+
+
+
+                }
+                else
+                {
+                    textBox1.Text = null;
+                    textBox2.Text = null;
+                    textBox3.Text = null;
+                    textBox4.Text = null;
+                  
+
+
+                }
+            }
+        }
+        public void UPDATE()
+        {
+            try
+            {
+
+                //add ZWAREWHOUSEPURTH
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+               
+                sbSql.AppendFormat(" UPDATE [TK].dbo.PURTB");
+                sbSql.AppendFormat(" SET TB010='{0}'",textBox5.Text);
+                sbSql.AppendFormat(" WHERE TB001='{0}' AND TB002='{1}' AND TB003='{2}'", textBox1.Text, textBox2.Text, textBox3.Text);
+                sbSql.AppendFormat(" ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public void SETNULL()
+        {
+            textBox5.Text = null;
+        }
         #endregion
 
         #region BUTTON
@@ -119,7 +201,17 @@ namespace TKPUR
         {
             Search();
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            UPDATE();
+            SETNULL();
+
+            MessageBox.Show("完成");
+            Search();
+        }
 
         #endregion
+
+
     }
 }
