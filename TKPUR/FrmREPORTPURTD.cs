@@ -87,7 +87,7 @@ namespace TKPUR
             }
           
      
-            FASTSQL.AppendFormat(@"  SELECT MA002 AS '廠商',TD004 AS '品號', TD005 AS '品名',TD006 AS '規格',TD008 AS '採購量',TD015 AS '已交量',TD009 AS '單位',TD012 AS '預交日',TD014 ");
+            FASTSQL.AppendFormat(@"  SELECT MA002 AS '廠商',TD004 AS '品號', TD005 AS '品名',TD006 AS '規格',TD008 AS '採購量',TD015 AS '已交量',TD009 AS '單位',TD010  AS '單價',TD011  AS '金額',TD012 AS '預交日',TD014 ");
             FASTSQL.AppendFormat(@"  ,(SELECT TOP 1 TD014 FROM [TK].dbo.PURTD A WHERE A.TD001=PURTD.TD001 AND A.TD002=PURTD.TD002 AND A.TD003='0001') AS COMMENT1");
             FASTSQL.AppendFormat(@"  ,CASE WHEN ISNULL(TD014,'')<>'' THEN TD014 ELSE (SELECT TOP 1 TD014 FROM [TK].dbo.PURTD A WHERE A.TD001=PURTD.TD001 AND A.TD002=PURTD.TD002 AND A.TD003='0001') END AS '備註'");
             FASTSQL.AppendFormat(@"  ,TD001,TD002,TD003");
