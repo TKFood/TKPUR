@@ -83,7 +83,7 @@ namespace TKPUR
             }
             else
             {
-                STRQUERY.AppendFormat(@" ");
+                STRQUERY.AppendFormat(@"  ");
             }
           
      
