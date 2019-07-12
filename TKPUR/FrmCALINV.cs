@@ -48,37 +48,19 @@ namespace TKPUR
         {
             InitializeComponent();
 
-            if (!string.IsNullOrEmpty(comboBox1.Text))
-            {
-                label2.Text = searchMB002(comboBox1.Text);
-
-                if (comboBox1.Text.Equals("40100113000016"))
-                {
-                    textBox2.Text = "203021091";
-
-                    label6.Text = searchMB002(textBox2.Text);
-                }
-            }
+            
         }
 
         #region FUNCTION
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(comboBox1.Text))
-            {
-                label2.Text=searchMB002(comboBox1.Text);
-
-                if(comboBox1.Text.Equals("40100113000016"))
-                {
-                    textBox2.Text = "203021091";
-
-                    label6.Text = searchMB002(textBox2.Text);
-                }
-            }
-
+            
            
         }
-
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            label2.Text=searchMB002(textBox2.Text);
+        }
         public string searchMB002(string MB001)
         {
             connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
@@ -119,7 +101,9 @@ namespace TKPUR
         
         public void CALINV()
         {
-            if(!string.IsNullOrEmpty(textBox1.Text)&&!string.IsNullOrEmpty(textBox2.Text))
+            int NUM = Convert.ToInt32(textBox1.Text);
+
+            try
             {
                 connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
                 sqlConn = new SqlConnection(connectionString);
@@ -129,17 +113,17 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  WITH TEMPTABLE (MD001,MD003,MD004,MD006,MD007,MD008,MC004,NUM,LV) AS");
                 sbSql.AppendFormat(@"  (");
-                sbSql.AppendFormat(@"  SELECT  MD001,MD003,MD004,MD006,MD007,MD008,MC004,CONVERT(decimal(18,5),(MD006*(1+MD008)/MD007)/MC004) AS NUM,1 AS LV FROM [TK].dbo.VBOMMD WHERE  MD001='{0}'", comboBox1.Text);
+                sbSql.AppendFormat(@"  SELECT  MD001,MD003,MD004,MD006,MD007,MD008,MC004,CONVERT(decimal(18,5),(MD006*(1+MD008)/MD007)/MC004)*{1} AS NUM,1 AS LV FROM [TK].dbo.VBOMMD WHERE  MD001='{0}'", textBox2.Text, NUM);
                 sbSql.AppendFormat(@"  UNION ALL");
-                sbSql.AppendFormat(@"  SELECT A.MD001,A.MD003,A.MD004,A.MD006,A.MD007,A.MD008,A.MC004,CONVERT(decimal(18,5),(A.MD006*(1+A.MD008)/A.MD007/A.MC004)*(B.NUM)) AS NUM,LV+1");
+                sbSql.AppendFormat(@"  SELECT A.MD001,A.MD003,A.MD004,A.MD006,A.MD007,A.MD008,A.MC004,CONVERT(decimal(18,5),(A.MD006*(1+A.MD008)/A.MD007/A.MC004)*(B.NUM))*{0} AS NUM,LV+1", NUM);
                 sbSql.AppendFormat(@"  FROM [TK].dbo.VBOMMD A");
                 sbSql.AppendFormat(@"  INNER JOIN TEMPTABLE B on A.MD001=B.MD003");
                 sbSql.AppendFormat(@"  )");
-                sbSql.AppendFormat(@"  SELECT MD001,MD003,MD004,MD006,MD007,MD008,MC004,NUM,LV,MB002");
+                sbSql.AppendFormat(@"    SELECT MD003 AS '物料',MB002 AS '品名',MD004 AS '單位',NUM AS '需求量', MD001, MD006,MD007,MD008,MC004,LV ");
                 sbSql.AppendFormat(@"  FROM TEMPTABLE ");
                 sbSql.AppendFormat(@"  LEFT JOIN [TK].dbo.INVMB ON MB001=MD003");
-
-                sbSql.AppendFormat(@"  WHERE  (MD003 LIKE '{0}%') ", textBox2.Text);
+                sbSql.AppendFormat(@"  WHERE  (MD003 LIKE '2%') ");
+                //sbSql.AppendFormat(@"  WHERE  (MD003 LIKE '{0}%') ", textBox2.Text);
                 sbSql.AppendFormat(@"  ORDER BY LV,MD001,MD003");
 
 
@@ -152,15 +136,30 @@ namespace TKPUR
                 adapter2.Fill(ds2, "TEMPds2");
                 sqlConn.Close();
 
-                if (ds2.Tables["TEMPds2"].Rows.Count >= 1)
+              
+                if (ds2.Tables["TEMPds2"].Rows.Count == 0)
                 {
-
-                    foreach (DataRow od2 in ds2.Tables["TEMPds2"].Rows)
-                    {
-                        textBox3.Text = Convert.ToString(Convert.ToDecimal(textBox1.Text) * Convert.ToDecimal(od2["NUM"].ToString()));
-                    }
-
+                    dataGridView1.DataSource = null;
                 }
+                else
+                {
+                    if (ds2.Tables["TEMPds2"].Rows.Count >= 1)
+                    {
+                        //dataGridView1.Rows.Clear();
+                        dataGridView1.DataSource = ds2.Tables["TEMPds2"];
+                        dataGridView1.AutoResizeColumns();
+                        //dataGridView1.CurrentCell = dataGridView1[0, rownum];
+
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
             }
            
         }
@@ -171,8 +170,9 @@ namespace TKPUR
         {
             CALINV();
         }
+
         #endregion
 
-        
+       
     }
 }
