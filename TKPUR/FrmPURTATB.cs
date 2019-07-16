@@ -33,11 +33,14 @@ namespace TKPUR
         SqlCommandBuilder sqlCmdBuilder2 = new SqlCommandBuilder();
         SqlDataAdapter adapter3 = new SqlDataAdapter();
         SqlCommandBuilder sqlCmdBuilder3 = new SqlCommandBuilder();
+        SqlDataAdapter adapter4 = new SqlDataAdapter();
+        SqlCommandBuilder sqlCmdBuilder4 = new SqlCommandBuilder();
         SqlTransaction tran;
         SqlCommand cmd = new SqlCommand();
         DataSet ds = new DataSet();
         DataSet ds2 = new DataSet();
         DataSet ds3 = new DataSet();
+        DataSet ds4 = new DataSet();
         DataTable dt = new DataTable();
         DataTable dtADD = new DataTable();
 
@@ -80,11 +83,11 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
-                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSION] AS '修改次數'");
+                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數'");
                 sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
                 sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}'",textBox1.Text,textBox2.Text);
-                sbSql.AppendFormat(@"  GROUP BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSION]");
-                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSION]");
+                sbSql.AppendFormat(@"  GROUP BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS]");
+                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS]");
                 sbSql.AppendFormat(@"  ");
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
@@ -162,10 +165,10 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
-                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSION] AS '修改次數',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',[ID]");
+                sbSql.AppendFormat(@"  SELECT [TA001] AS '請購單別',[TA002] AS '請購單號',[TB003] AS '序號',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',CONVERT(NVARCHAR,[DATES],112) AS '日期',[VERSIONS] AS '修改次數',[ID]");
                 sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
-                sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}' AND  [VERSION]='{2}' ", textBox3.Text, textBox4.Text, textBox5.Text);
-                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSION]");
+                sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}' AND  [VERSIONS]='{2}' ", textBox3.Text, textBox4.Text, textBox5.Text);
+                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS]");
                 sbSql.AppendFormat(@"  ");
 
 
@@ -209,7 +212,8 @@ namespace TKPUR
         {
             string TA001 = null;
             string TA002 = null;
-            string VERSION = null;
+            string VERSIONS = null;
+            string TB003 = null;
             string MB001 = null;
             decimal NUM = 0;
 
@@ -231,13 +235,14 @@ namespace TKPUR
                 {
                     TA001 = row.Cells["請購單別"].Value.ToString();
                     TA002 = row.Cells["請購單號"].Value.ToString();
-                    VERSION = row.Cells["修改次數"].Value.ToString();
+                    VERSIONS = row.Cells["修改次數"].Value.ToString();
+                    TB003 = row.Cells["序號"].Value.ToString();
                     MB001 = row.Cells["品號"].Value.ToString();
                     NUM = Convert.ToDecimal(row.Cells["請購數量"].Value.ToString());
 
                     sbSql.AppendFormat(" UPDATE [TKPUR].[dbo].[PURTATB]");
                     sbSql.AppendFormat(" SET [NUM]='{0}'",NUM);
-                    sbSql.AppendFormat(" WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSION]='{2}' AND [MB001]='{3}'", TA001, TA002,VERSION,MB001);
+                    sbSql.AppendFormat(" WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}' AND [TB003]='{3}' AND [MB001]='{4}'", TA001, TA002, VERSIONS,TB003, MB001);
                     sbSql.AppendFormat(" ");
 
                 }
@@ -273,6 +278,19 @@ namespace TKPUR
 
         public void ADD()
         {
+            string DATES = null;
+            string TA001 = null;
+            string TA002 = null;
+            string VERSIONS = null;
+            string TB003 = null;
+            string MB001 = null;
+            string MB002 = null;
+            string MB003 = null;
+            string MB004 = null;
+            decimal NUM = 0;
+
+            VERSIONS = GETMAXNO();
+
             try
             {
 
@@ -286,7 +304,27 @@ namespace TKPUR
 
                 sbSql.Clear();
 
-               
+                foreach (DataGridViewRow row in dataGridView2.Rows)
+                {
+                    DATES = DateTime.Now.ToString("yyyy/MM/dd");
+                    TA001 = row.Cells["請購單別"].Value.ToString();
+                    TA002 = row.Cells["請購單號"].Value.ToString();
+                    //VERSIONS = row.Cells["修改次數"].Value.ToString();
+                    TB003 = row.Cells["序號"].Value.ToString();
+                    MB001 = row.Cells["品號"].Value.ToString();
+                    MB002 = row.Cells["品名"].Value.ToString();
+                    MB003 = row.Cells["規格"].Value.ToString();
+                    MB004 = row.Cells["單位"].Value.ToString();
+                    NUM = Convert.ToDecimal(row.Cells["請購數量"].Value.ToString());
+
+                  
+                    sbSql.AppendFormat(" INSERT INTO [TKPUR].[dbo].[PURTATB]");
+                    sbSql.AppendFormat(" ([DATES],[TA001],[TA002],[VERSIONS],[TB003],[MB001],[MB002],[MB003],[MB004],[NUM])");
+                    sbSql.AppendFormat(" VALUES");
+                    sbSql.AppendFormat(" ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')", DATES,TA001,TA002,VERSIONS, TB003,MB001, MB002,MB003,MB004,NUM);
+                    sbSql.AppendFormat(" ");
+                }
+
                 sbSql.AppendFormat(" ");
 
                 cmd.Connection = sqlConn;
@@ -317,6 +355,77 @@ namespace TKPUR
             }
         }
 
+        public string GETMAXNO()
+        {
+            string VERSIONS;
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                StringBuilder sbSql = new StringBuilder();
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+                ds4.Clear();
+
+                sbSql.AppendFormat(@"  SELECT ISNULL(MAX([VERSIONS]),'1') AS VERSIONS");
+                sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB] ");
+                //sbSql.AppendFormat(@"  WHERE  TC001='{0}' AND TC003='{1}'", "A542","20170119");
+                sbSql.AppendFormat(@"  WHERE  TA001='{0}' AND TA002='{1}'", textBox1.Text,textBox2.Text);
+                sbSql.AppendFormat(@"  ");
+                sbSql.AppendFormat(@"  ");
+
+                adapter4 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder4 = new SqlCommandBuilder(adapter4);
+                sqlConn.Open();
+                ds4.Clear();
+                adapter4.Fill(ds4, "TEMPds4");
+                sqlConn.Close();
+
+
+                if (ds4.Tables["TEMPds4"].Rows.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    if (ds4.Tables["TEMPds4"].Rows.Count >= 1)
+                    {
+                        VERSIONS = SETVERSION(ds4.Tables["TEMPds4"].Rows[0]["VERSIONS"].ToString());
+                        return VERSIONS;
+
+                    }
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public string SETVERSION(string VERSIONS)
+        {
+
+            if (VERSIONS.Equals("1"))
+            {
+                return "1";
+            }
+
+            else
+            {
+                int serno = Convert.ToInt16(VERSIONS);
+                serno = serno + 1;
+              
+                return serno.ToString();
+            }
+        }
         public void SETSTATUSEDIT()
         {
             STATUS = "EDIT";
@@ -347,7 +456,7 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
-                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,TA003,112) AS '日期',TB001 AS '請購單別',TB002 AS '請購單號','' AS '修改次數',TB004 AS '品號',TB005 AS '品名',TB006 AS '規格',TB007 AS '單位',TB009 AS '請購數量'  ");
+                sbSql.AppendFormat(@"  SELECT TB001 AS '請購單別',TB002 AS '請購單號',TB003 AS '序號',TB004 AS '品號',TB005 AS '品名',TB006 AS '規格',TB007 AS '單位',TB009 AS '請購數量' , CONVERT(NVARCHAR,TA003,112) AS '日期' ,'' AS '修改次數'");
                 sbSql.AppendFormat(@"  FROM [TK].dbo.PURTB, [TK].dbo.PURTA");
                 sbSql.AppendFormat(@"  WHERE TA001=TB001 AND TA002=TB002");
                 sbSql.AppendFormat(@"  AND TB001='{0}' AND TB002='{1}' ",textBox1.Text,textBox2.Text);
