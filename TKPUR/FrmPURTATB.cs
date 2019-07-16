@@ -39,6 +39,8 @@ namespace TKPUR
         DataSet ds2 = new DataSet();
         DataSet ds3 = new DataSet();
         DataTable dt = new DataTable();
+        DataTable dtADD = new DataTable();
+
         string tablename = null;
         string EDITID;
         int result;
@@ -49,9 +51,23 @@ namespace TKPUR
         public FrmPURTATB()
         {
             InitializeComponent();
+            SETdtADD();
         }
 
         #region FUNCTION
+        public void SETdtADD()
+        {
+            dtADD.Columns.Add("日期", typeof(String));
+            dtADD.Columns.Add("請購單別", typeof(String));
+            dtADD.Columns.Add("請購單號", typeof(String));
+            dtADD.Columns.Add("修改次數", typeof(String));
+            dtADD.Columns.Add("品號", typeof(String));
+            dtADD.Columns.Add("品名", typeof(String));
+            dtADD.Columns.Add("規格", typeof(String));
+            dtADD.Columns.Add("單位", typeof(String));
+            dtADD.Columns.Add("請購數量", typeof(String));
+
+        }
         public void Search()
         {
             ds.Clear();
@@ -189,6 +205,118 @@ namespace TKPUR
             }
         }
 
+        public void UPDATE()
+        {
+            string TA001 = null;
+            string TA002 = null;
+            string VERSION = null;
+            string MB001 = null;
+            decimal NUM = 0;
+
+            try
+            {
+
+                //add ZWAREWHOUSEPURTH
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                foreach (DataGridViewRow row in dataGridView2.Rows)
+                {
+                    TA001 = row.Cells["請購單別"].Value.ToString();
+                    TA002 = row.Cells["請購單號"].Value.ToString();
+                    VERSION = row.Cells["修改次數"].Value.ToString();
+                    MB001 = row.Cells["品號"].Value.ToString();
+                    NUM = Convert.ToDecimal(row.Cells["請購數量"].Value.ToString());
+
+                    sbSql.AppendFormat(" UPDATE [TKPUR].[dbo].[PURTATB]");
+                    sbSql.AppendFormat(" SET [NUM]='{0}'",NUM);
+                    sbSql.AppendFormat(" WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSION]='{2}' AND [MB001]='{3}'", TA001, TA002,VERSION,MB001);
+                    sbSql.AppendFormat(" ");
+
+                }
+
+                sbSql.AppendFormat(" ");
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public void ADD()
+        {
+            try
+            {
+
+                //add ZWAREWHOUSEPURTH
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+               
+                sbSql.AppendFormat(" ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         public void SETSTATUSEDIT()
         {
             STATUS = "EDIT";
@@ -204,7 +332,64 @@ namespace TKPUR
         {
             STATUS = null;
             textBoxstatus.Text = null;
+
+            STATUS = "EDIT";
+            textBoxstatus.Text = "修改中";
         }
+
+        public void SearchPURTATB()
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,TA003,112) AS '日期',TB001 AS '請購單別',TB002 AS '請購單號','' AS '修改次數',TB004 AS '品號',TB005 AS '品名',TB006 AS '規格',TB007 AS '單位',TB009 AS '請購數量'  ");
+                sbSql.AppendFormat(@"  FROM [TK].dbo.PURTB, [TK].dbo.PURTA");
+                sbSql.AppendFormat(@"  WHERE TA001=TB001 AND TA002=TB002");
+                sbSql.AppendFormat(@"  AND TB001='{0}' AND TB002='{1}' ",textBox1.Text,textBox2.Text);
+                sbSql.AppendFormat(@"  ORDER BY  CONVERT(NVARCHAR,TA003,112) ,TB001,TB002");
+                sbSql.AppendFormat(@"  ");
+
+                adapter3 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder3 = new SqlCommandBuilder(adapter3);
+                sqlConn.Open();
+                ds3.Clear();
+                adapter3.Fill(ds3, "ds3");
+                sqlConn.Close();
+
+
+                if (ds3.Tables["ds3"].Rows.Count == 0)
+                {
+                    dataGridView2.DataSource = null;
+                }
+                else
+                {
+                    if (ds3.Tables["ds3"].Rows.Count >= 1)
+                    {
+                        dataGridView2.DataSource = ds3.Tables["ds3"];
+                        dataGridView2.AutoResizeColumns();
+
+
+                    }
+
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -216,14 +401,31 @@ namespace TKPUR
         }
         private void button2_Click(object sender, EventArgs e)
         {
+            SearchPURTATB();
 
             SETSTATUSADD();
         }
         private void button3_Click(object sender, EventArgs e)
         {
-
+            if (!string.IsNullOrEmpty(STATUS))
+            {
+                if (STATUS.Equals("EDIT"))
+                {
+                    UPDATE();
+                }
+                else if (STATUS.Equals("ADD"))
+                {
+                    ADD();
+                }
+            }
+            else
+            {
+                MessageBox.Show("請重新查詢");
+            }
 
             SETSTATUSFINALLY();
+
+            MessageBox.Show("已完成");
         }
 
         #endregion
