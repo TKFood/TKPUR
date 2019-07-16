@@ -48,6 +48,7 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBoxstatus = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -221,6 +222,7 @@
             this.button2.TabIndex = 6;
             this.button2.Text = "帶入";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // dataGridView1
             // 
@@ -256,7 +258,8 @@
             this.tableLayoutPanel2.Controls.Add(this.textBox3, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.textBox4, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.textBox5, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.button3, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.button3, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.textBoxstatus, 0, 3);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -277,12 +280,13 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(3, 123);
+            this.button3.Location = new System.Drawing.Point(3, 203);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(114, 34);
             this.button3.TabIndex = 7;
             this.button3.Text = "存檔";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // textBox1
             // 
@@ -326,6 +330,15 @@
             this.textBox5.ReadOnly = true;
             this.textBox5.Size = new System.Drawing.Size(114, 27);
             this.textBox5.TabIndex = 11;
+            // 
+            // textBoxstatus
+            // 
+            this.textBoxstatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxstatus.Location = new System.Drawing.Point(3, 126);
+            this.textBoxstatus.Name = "textBoxstatus";
+            this.textBoxstatus.ReadOnly = true;
+            this.textBoxstatus.Size = new System.Drawing.Size(114, 27);
+            this.textBoxstatus.TabIndex = 12;
             // 
             // FrmPURTATB
             // 
@@ -383,5 +396,6 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBoxstatus;
     }
 }

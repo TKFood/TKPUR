@@ -44,7 +44,7 @@ namespace TKPUR
         int result;
         Thread TD;
 
-
+        string STATUS = null;
 
         public FrmPURTATB()
         {
@@ -188,16 +188,46 @@ namespace TKPUR
 
             }
         }
+
+        public void SETSTATUSEDIT()
+        {
+            STATUS = "EDIT";
+            textBoxstatus.Text = "修改中";
+        }
+        public void SETSTATUSADD()
+        {
+            STATUS = "ADD";
+            textBoxstatus.Text = "新增中";
+            textBox5.Text = null;
+        }
+        public void SETSTATUSFINALLY()
+        {
+            STATUS = null;
+            textBoxstatus.Text = null;
+        }
         #endregion
 
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
             Search();
+
+            SETSTATUSEDIT();
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            SETSTATUSADD();
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+
+            SETSTATUSFINALLY();
         }
 
         #endregion
 
-       
+
     }
 }
