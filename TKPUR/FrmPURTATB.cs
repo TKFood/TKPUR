@@ -35,12 +35,15 @@ namespace TKPUR
         SqlCommandBuilder sqlCmdBuilder3 = new SqlCommandBuilder();
         SqlDataAdapter adapter4 = new SqlDataAdapter();
         SqlCommandBuilder sqlCmdBuilder4 = new SqlCommandBuilder();
+        SqlDataAdapter adapter5 = new SqlDataAdapter();
+        SqlCommandBuilder sqlCmdBuilder5= new SqlCommandBuilder();
         SqlTransaction tran;
         SqlCommand cmd = new SqlCommand();
         DataSet ds = new DataSet();
         DataSet ds2 = new DataSet();
         DataSet ds3 = new DataSet();
         DataSet ds4 = new DataSet();
+        DataSet ds5= new DataSet();
         DataTable dt = new DataTable();
         DataTable dtADD = new DataTable();
 
@@ -50,6 +53,10 @@ namespace TKPUR
         Thread TD;
 
         string STATUS = null;
+        public Report report1 { get; private set; }
+        string RETA001;
+        string RETA002;
+        string REVERSIONS;
 
         public FrmPURTATB()
         {
@@ -499,6 +506,115 @@ namespace TKPUR
             }
         }
 
+        public void SETFASTREPORT()
+        {
+
+            string SQL;
+            report1 = new Report();
+            report1.Load(@"REPORT\請購變更單.frx");
+
+            report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+            SQL = SETFASETSQL();
+            Table.SelectCommand = SQL;
+            report1.Preview = previewControl1;
+            report1.Show();
+
+        }
+
+        public string SETFASETSQL()
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+            StringBuilder STRQUERY = new StringBuilder();
+
+            FASTSQL.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[TB003] AS '序號',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',[ID]");
+            FASTSQL.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
+            FASTSQL.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}' ", RETA001, RETA002, REVERSIONS);
+            FASTSQL.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[TB003] ");
+            FASTSQL.AppendFormat(@"   ");
+
+            return FASTSQL.ToString();
+        }
+
+        public void Search3()
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數'");
+                sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
+                sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}'", textBox6.Text, textBox7.Text);
+                sbSql.AppendFormat(@"  GROUP BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS]");
+                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS]");
+                sbSql.AppendFormat(@"  ");
+
+                adapter4 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder4 = new SqlCommandBuilder(adapter4);
+                sqlConn.Open();
+                ds4.Clear();
+                adapter4.Fill(ds4, "ds4");
+                sqlConn.Close();
+
+
+                if (ds4.Tables["ds4"].Rows.Count == 0)
+                {
+                    dataGridView3.DataSource = null;
+                }
+                else
+                {
+                    if (ds4.Tables["ds4"].Rows.Count >= 1)
+                    {
+                        dataGridView3.DataSource = ds4.Tables["ds4"];
+                        dataGridView3.AutoResizeColumns();
+
+
+                    }
+
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+        private void dataGridView3_SelectionChanged(object sender, EventArgs e)
+        {
+           
+            if (dataGridView3.CurrentRow != null)
+            {
+                int rowindex = dataGridView3.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView3.Rows[rowindex];
+
+                    RETA001 = row.Cells["請購單別"].Value.ToString();
+                    RETA002 = row.Cells["請購單號"].Value.ToString();
+                    REVERSIONS = row.Cells["修改次數"].Value.ToString();
+
+                   
+                }
+                else
+                {
+                    RETA001 = null;
+                    RETA002 = null;
+                    REVERSIONS = null;
+
+                }
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -536,9 +652,18 @@ namespace TKPUR
 
             MessageBox.Show("已完成");
         }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Search3();
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT();
+        }
+
 
         #endregion
 
-
+     
     }
 }
