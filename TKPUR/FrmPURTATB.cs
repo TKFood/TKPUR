@@ -68,7 +68,7 @@ namespace TKPUR
                 sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
                 sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}'",textBox1.Text,textBox2.Text);
                 sbSql.AppendFormat(@"  GROUP BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSION]");
-                sbSql.AppendFormat(@"  ");
+                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSION]");
                 sbSql.AppendFormat(@"  ");
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
@@ -107,6 +107,87 @@ namespace TKPUR
             }
         }
 
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
+
+                    textBox3.Text = row.Cells["請購單別"].Value.ToString();
+                    textBox4.Text = row.Cells["請購單號"].Value.ToString();
+                    textBox5.Text = row.Cells["修改次數"].Value.ToString();
+                    
+                    if(!string.IsNullOrEmpty(textBox3.Text)&& !string.IsNullOrEmpty(textBox4.Text) && !string.IsNullOrEmpty(textBox5.Text) )
+                    {
+                        Search2();
+                    }
+                }
+                else
+                {
+                    textBox3.Text = null;
+                    textBox4.Text = null;
+                    textBox5.Text = null;
+                  
+
+                }
+            }
+        }
+
+        public void Search2()
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSION] AS '修改次數',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',[ID]");
+                sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
+                sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}' AND  [VERSION]='{2}' ", textBox3.Text, textBox4.Text, textBox5.Text);
+                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSION]");
+                sbSql.AppendFormat(@"  ");
+
+
+                adapter2 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder2 = new SqlCommandBuilder(adapter2);
+                sqlConn.Open();
+                ds2.Clear();
+                adapter2.Fill(ds2, "ds2");
+                sqlConn.Close();
+
+
+                if (ds2.Tables["ds2"].Rows.Count == 0)
+                {
+                    dataGridView2.DataSource = null;
+                }
+                else
+                {
+                    if (ds2.Tables["ds2"].Rows.Count >= 1)
+                    {
+                        dataGridView2.DataSource = ds2.Tables["ds2"];
+                        dataGridView2.AutoResizeColumns();
+
+
+                    }
+
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -116,5 +197,7 @@ namespace TKPUR
         }
 
         #endregion
+
+       
     }
 }
