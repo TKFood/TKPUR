@@ -90,11 +90,11 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
-                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數'");
+                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[COMMENT] AS '備註' ");
                 sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
                 sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}'",textBox1.Text,textBox2.Text);
-                sbSql.AppendFormat(@"  GROUP BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS]");
-                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS]");
+                sbSql.AppendFormat(@"  GROUP BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[COMMENT]");
+                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[COMMENT]");
                 sbSql.AppendFormat(@"  ");
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
@@ -223,6 +223,7 @@ namespace TKPUR
             string TB003 = null;
             string MB001 = null;
             decimal NUM = 0;
+            string COMMNET = textBox8.Text;
 
             try
             {
@@ -248,7 +249,7 @@ namespace TKPUR
                     NUM = Convert.ToDecimal(row.Cells["請購數量"].Value.ToString());
 
                     sbSql.AppendFormat(" UPDATE [TKPUR].[dbo].[PURTATB]");
-                    sbSql.AppendFormat(" SET [NUM]='{0}'",NUM);
+                    sbSql.AppendFormat(" SET [NUM]='{0}' ,[COMMENT]='{1}' ", NUM, COMMNET);
                     sbSql.AppendFormat(" WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}' AND [TB003]='{3}' AND [MB001]='{4}'", TA001, TA002, VERSIONS,TB003, MB001);
                     sbSql.AppendFormat(" ");
 
@@ -295,6 +296,7 @@ namespace TKPUR
             string MB003 = null;
             string MB004 = null;
             decimal NUM = 0;
+            string COMMNET = textBox8.Text;
 
             VERSIONS = GETMAXNO();
 
@@ -326,9 +328,9 @@ namespace TKPUR
 
                   
                     sbSql.AppendFormat(" INSERT INTO [TKPUR].[dbo].[PURTATB]");
-                    sbSql.AppendFormat(" ([DATES],[TA001],[TA002],[VERSIONS],[TB003],[MB001],[MB002],[MB003],[MB004],[NUM])");
+                    sbSql.AppendFormat(" ([DATES],[TA001],[TA002],[VERSIONS],[TB003],[MB001],[MB002],[MB003],[MB004],[NUM],[COMMENT])");
                     sbSql.AppendFormat(" VALUES");
-                    sbSql.AppendFormat(" ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')", DATES,TA001,TA002,VERSIONS, TB003,MB001, MB002,MB003,MB004,NUM);
+                    sbSql.AppendFormat(" ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}')", DATES,TA001,TA002,VERSIONS, TB003,MB001, MB002,MB003,MB004,NUM, COMMNET);
                     sbSql.AppendFormat(" ");
                 }
 
