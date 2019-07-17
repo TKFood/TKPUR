@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="07/16/2019 14:47:07" ReportInfo.Modified="07/16/2019 16:09:51" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/16/2019 14:47:07" ReportInfo.Modified="07/17/2019 09:54:08" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9LyAjnMMLftG7oPWlCkqZ4X">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[TB003] AS '序號',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',[ID]  FROM [TKPUR].[dbo].[PURTATB]  WHERE [TA001]='A311' AND [TA002]='20190716001' AND [VERSIONS]='1'   ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[TB003]   ">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9JLyQyKRPSwXlbZTk5aELLf">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[TB003] AS '序號',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',[ID]  ,[COMMENT] AS '備註'&#13;&#10;FROM [TKPUR].[dbo].[PURTATB]  WHERE [TA001]='A311' AND [TA002]='20190716001' AND [VERSIONS]='1'   ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[TB003]   ">
         <Column Name="日期" DataType="System.String"/>
         <Column Name="請購單號" DataType="System.String"/>
         <Column Name="修改次數" DataType="System.Int32"/>
@@ -14,6 +14,7 @@
         <Column Name="ID" DataType="System.Guid"/>
         <Column Name="序號" DataType="System.String"/>
         <Column Name="請購單別" DataType="System.String"/>
+        <Column Name="備註" DataType="System.String"/>
       </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
@@ -24,25 +25,30 @@
     </ReportTitleBand>
     <ColumnHeaderBand Name="ColumnHeader1" Top="41.65" Width="718.2" Height="18.9">
       <TextObject Name="Text3" Width="66.15" Height="18.9" Border.Lines="All" Text="請購單別" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text5" Left="66.15" Width="94.5" Height="18.9" Border.Lines="All" Text="請購單號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text7" Left="160.65" Width="66.15" Height="18.9" Border.Lines="All" Text="修改次數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text9" Left="226.8" Width="56.7" Height="18.9" Border.Lines="All" Text="序號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text11" Left="283.5" Width="113.4" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text13" Left="396.9" Width="179.55" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text15" Left="576.45" Width="85.05" Height="18.9" Border.Lines="All" Text="請購數量" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text17" Left="661.5" Width="56.7" Height="18.9" Border.Lines="All" Text="單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="66.15" Width="132.3" Height="18.9" Border.Lines="All" Text="請購單號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="198.45" Width="66.15" Height="18.9" Border.Lines="All" Text="修改次數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="264.6" Width="444.15" Height="18.9" Border.Lines="All" Text="備註" HorzAlign="Center" VertAlign="Center"/>
     </ColumnHeaderBand>
-    <DataBand Name="Data1" Top="64.39" Width="718.2" Height="18.9" CanGrow="true" DataSource="Table">
-      <TextObject Name="Text2" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.請購單別]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text4" Left="66.15" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.請購單號]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text6" Left="160.65" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.修改次數]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text8" Left="226.8" Width="56.7" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.序號]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text10" Left="283.5" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text12" Left="396.9" Width="179.55" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text14" Left="576.45" Width="85.05" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.請購數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="4" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text16" Left="661.5" Width="56.7" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.單位]" HorzAlign="Center" VertAlign="Center"/>
-    </DataBand>
-    <ColumnFooterBand Name="ColumnFooter1" Top="87.14" Width="718.2" Height="37.8">
+    <GroupHeaderBand Name="GroupHeader1" Top="64.39" Width="718.2" Height="37.8" Condition="[Table.請購單別]+[Table.請購單號]">
+      <TextObject Name="Text2" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.請購單別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="66.15" Width="132.3" Height="18.9" Border.Lines="All" Text="[Table.請購單號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="264.6" Width="444.15" Height="18.9" Border.Lines="All" Text="[Table.備註]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="652.05" Top="18.9" Width="56.7" Height="18.9" Border.Lines="All" Text="單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Top="18.9" Width="56.7" Height="18.9" Border.Lines="All" Text="序號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="56.7" Top="18.9" Width="207.9" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="264.6" Top="18.9" Width="264.6" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="529.2" Top="18.9" Width="122.85" Height="18.9" Border.Lines="All" Text="請購數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="198.45" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.修改次數]" HorzAlign="Center" VertAlign="Center"/>
+      <DataBand Name="Data1" Top="106.04" Width="718.2" Height="18.9" CanGrow="true" DataSource="Table">
+        <TextObject Name="Text8" Width="56.7" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.序號]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text10" Left="56.7" Width="207.9" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text12" Left="264.6" Width="264.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text14" Left="529.2" Width="122.85" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.請購數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="4" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text16" Left="652.05" Width="56.7" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.單位]" HorzAlign="Center" VertAlign="Center"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="128.78" Width="718.2"/>
+    </GroupHeaderBand>
+    <ColumnFooterBand Name="ColumnFooter1" Top="132.63" Width="718.2" Height="37.8">
       <TextObject Name="Text20" Top="9.45" Width="94.5" Height="18.9" Text="核淮:" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text21" Left="245.7" Top="9.45" Width="94.5" Height="18.9" Text="審核:" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text23" Left="491.4" Top="9.45" Width="94.5" Height="18.9" Text="製表:" HorzAlign="Center" VertAlign="Center"/>

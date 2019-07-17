@@ -255,7 +255,7 @@ namespace TKPUR
 
                 }
 
-                sbSql.AppendFormat(" ");
+                sbSql.AppendFormat("  ");
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
                 cmd.CommandText = sbSql.ToString();
@@ -531,7 +531,7 @@ namespace TKPUR
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
 
-            FASTSQL.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[TB003] AS '序號',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',[ID]");
+            FASTSQL.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[TB003] AS '序號',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',[ID],[COMMENT]  AS '備註' ");
             FASTSQL.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
             FASTSQL.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}' ", RETA001, RETA002, REVERSIONS);
             FASTSQL.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[TB003] ");
