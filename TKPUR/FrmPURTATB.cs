@@ -57,6 +57,9 @@ namespace TKPUR
         string RETA001;
         string RETA002;
         string REVERSIONS;
+        string DELTA001;
+        string DELTA002;
+        string DELVERSIONS;
 
         public FrmPURTATB()
         {
@@ -117,7 +120,6 @@ namespace TKPUR
                         dataGridView1.DataSource = ds.Tables["TEMPds1"];
                         dataGridView1.AutoResizeColumns();
 
-
                     }
 
                 }
@@ -135,6 +137,8 @@ namespace TKPUR
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
+            dataGridView2.DataSource = null;
+
             if (dataGridView1.CurrentRow != null)
             {
                 int rowindex = dataGridView1.CurrentRow.Index;
@@ -145,19 +149,26 @@ namespace TKPUR
                     textBox3.Text = row.Cells["請購單別"].Value.ToString();
                     textBox4.Text = row.Cells["請購單號"].Value.ToString();
                     textBox5.Text = row.Cells["修改次數"].Value.ToString();
-                    
-                    if(!string.IsNullOrEmpty(textBox3.Text)&& !string.IsNullOrEmpty(textBox4.Text) && !string.IsNullOrEmpty(textBox5.Text) )
+                    DELTA001 = row.Cells["請購單別"].Value.ToString();
+                    DELTA002 = row.Cells["請購單號"].Value.ToString();
+                    DELVERSIONS = row.Cells["修改次數"].Value.ToString();
+
+                    if (!string.IsNullOrEmpty(textBox3.Text)&& !string.IsNullOrEmpty(textBox4.Text) && !string.IsNullOrEmpty(textBox5.Text) )
                     {
                         Search2();
                     }
                 }
                 else
                 {
+                    dataGridView2.DataSource = null;
+
                     textBox3.Text = null;
                     textBox4.Text = null;
                     textBox5.Text = null;
-                  
 
+                    DELTA001 = null;
+                    DELTA002 = null;
+                    DELVERSIONS = null;
                 }
             }
         }
@@ -377,7 +388,7 @@ namespace TKPUR
                 sbSqlQuery.Clear();
                 ds4.Clear();
 
-                sbSql.AppendFormat(@"  SELECT ISNULL(MAX([VERSIONS]),'1') AS VERSIONS");
+                sbSql.AppendFormat(@"  SELECT ISNULL(MAX([VERSIONS]),'0') AS VERSIONS");
                 sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB] ");
                 //sbSql.AppendFormat(@"  WHERE  TC001='{0}' AND TC003='{1}'", "A542","20170119");
                 sbSql.AppendFormat(@"  WHERE  TA001='{0}' AND TA002='{1}'", textBox1.Text,textBox2.Text);
@@ -422,7 +433,7 @@ namespace TKPUR
         public string SETVERSION(string VERSIONS)
         {
 
-            if (VERSIONS.Equals("1"))
+            if (VERSIONS.Equals("0"))
             {
                 return "1";
             }
@@ -617,6 +628,55 @@ namespace TKPUR
                 }
             }
         }
+
+        public void DEL()
+        {
+            try
+            {
+
+                //add ZWAREWHOUSEPURTH
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat("   DELETE [TKPUR].[dbo].[PURTATB]");
+                sbSql.AppendFormat("    WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}'",DELTA001,DELTA002,DELVERSIONS);
+                sbSql.AppendFormat("  ");
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -652,6 +712,8 @@ namespace TKPUR
 
             SETSTATUSFINALLY();
 
+            Search();
+
             MessageBox.Show("已完成");
         }
         private void button5_Click(object sender, EventArgs e)
@@ -663,9 +725,26 @@ namespace TKPUR
             SETFASTREPORT();
         }
 
+        private void button6_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("要刪除了?", "要刪除了?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                DEL();
+
+                Search();
+
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //do something else
+            }
+
+           
+        }
 
         #endregion
 
-     
+
     }
 }
