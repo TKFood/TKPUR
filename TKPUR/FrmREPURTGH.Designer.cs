@@ -167,7 +167,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(142, 16);
             this.label1.TabIndex = 27;
-            this.label1.Text = "部門";
+            this.label1.Text = "廠商代號";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label7
