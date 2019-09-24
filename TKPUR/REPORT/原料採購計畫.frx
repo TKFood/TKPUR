@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/24/2019 15:05:31" ReportInfo.Modified="09/24/2019 15:10:01" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9KEjEtgd8PhoM54IZqTMrCS">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT 品號,品名,單位,單價,期初存貨,期末存貨,本期秏用數量,(期末存貨+本期秏用數量-期初存貨) AS '本期採購數',(期末存貨+本期秏用數量-期初存貨)*單價 AS '金額'&#13;&#10;FROM (&#13;&#10;SELECT MB001 AS '品號',MB002 AS '品名',MB004 AS '單位',MB050 AS '單價'&#13;&#10;,ISNULL((SELECT SUM(LA011*LA005)  FROM [TK].dbo.INVLA WITH(NOLOCK)  WHERE LA001=MB001 and LA004&lt;'20190101' ),0) AS '期初存貨'&#13;&#10;,ISNULL((SELECT SUM(LA011*LA005)  FROM [TK].dbo.INVLA  WITH(NOLOCK) WHERE LA001=MB001 and LA004&lt;'20190901' ),0) AS '期末存貨'&#13;&#10;,ISNULL((SELECT SUM(LA011*LA005)*-1  FROM [TK].dbo.INVLA WITH(NOLOCK)  WHERE LA001=MB001 AND LA005=-1 AND LA004&gt;='20190101' AND LA004&lt;'20190901'),0) AS '本期秏用數量'&#13;&#10;&#13;&#10;FROM [TK].dbo.INVMB  WITH(NOLOCK)&#13;&#10;WHERE  MB001 LIKE '1%'&#13;&#10;AND MB002 NOT LIKE '%暫停%'&#13;&#10;) AS TEMP&#13;&#10;ORDER BY 品號">
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="單位" DataType="System.String"/>
+        <Column Name="單價" DataType="System.Decimal"/>
+        <Column Name="期初存貨" DataType="System.Decimal"/>
+        <Column Name="期末存貨" DataType="System.Decimal"/>
+        <Column Name="本期秏用數量" DataType="System.Decimal"/>
+        <Column Name="本期採購數" DataType="System.Decimal"/>
+        <Column Name="金額" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text1" Width="1020.6" Height="18.9" Text="原料採購計劃" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="22.75" Width="1047.06" Height="18.9">
+      <TextObject Name="Text5" Left="359.1" Width="94.5" Height="18.9" Border.Lines="All" Text="單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="453.6" Width="94.5" Height="18.9" Border.Lines="All" Text="期末存貨" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="本期秏用數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="期初存貨" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="737.1" Width="94.5" Height="18.9" Border.Lines="All" Text="本期採購數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="831.6" Width="94.5" Height="18.9" Border.Lines="All" Text="單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="926.1" Width="94.5" Height="18.9" Border.Lines="All" Text="金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Width="359.1" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="45.49" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text4" Left="359.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.單位]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="453.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.期末存貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text8" Left="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.本期秏用數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text10" Left="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.期初存貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="737.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.本期採購數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text14" Left="831.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.單價]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text16" Left="926.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text2" Width="359.1" Height="18.9" Border.Lines="All" Text="[Table.品名]" VertAlign="Center"/>
+    </DataBand>
+    <ColumnFooterBand Name="ColumnFooter1" Top="68.24" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>
