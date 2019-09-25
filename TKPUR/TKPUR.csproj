@@ -111,6 +111,12 @@
     <Compile Include="FrmREPURPLAN.Designer.cs">
       <DependentUpon>FrmREPURPLAN.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmREPURPRICE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmREPURPRICE.Designer.cs">
+      <DependentUpon>FrmREPURPRICE.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmREPURTGH.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmREPURPLAN.resx">
       <DependentUpon>FrmREPURPLAN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmREPURPRICE.resx">
+      <DependentUpon>FrmREPURPRICE.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmREPURTGH.resx">
       <DependentUpon>FrmREPURTGH.cs</DependentUpon>
