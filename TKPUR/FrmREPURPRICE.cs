@@ -70,6 +70,7 @@ namespace TKPUR
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(" SELECT TH004,TH005,TH018,TH008");
+            SB.AppendFormat(" ,(SELECT SUM(TH007) FROM [TK].dbo.PURTG TG ,[TK].dbo.PURTH TH WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND  TG.TG003>='{0}' AND TG.TG003<='{1}' AND TH.TH004=TEMP.TH004 AND TH.TH008=TEMP.TH008 ) AS 'NUM'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" ,(SELECT TOP 1 SUBSTRING(TG003,1,6) FROM [TK].dbo.PURTG TG ,[TK].dbo.PURTH TH WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND  TG003>='{0}' AND TG003<='{1}' AND TH.TH004=TEMP.TH004 AND TH.TH018=TEMP.TH018) AS 'YM'",dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" FROM (");
             SB.AppendFormat(" SELECT  TH004,TH005,TH018,TH008");
