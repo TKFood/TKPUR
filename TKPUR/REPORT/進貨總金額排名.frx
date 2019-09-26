@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="09/10/2019 09:28:56" ReportInfo.Modified="09/10/2019 09:37:25" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/10/2019 09:28:56" ReportInfo.Modified="09/26/2019 09:29:50" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9LhRDlA1GDH3Vu7ot33U4UO">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TG005 AS '廠商',TG021 AS '廠商名',TG003 AS '進貨日期',TG017 AS '進貨總金額',TG001 AS '進貨單別',TG002 AS '進貨單號',TH003 AS '序號',TH004 AS '品號',TH005 AS '品名',TH007 AS '數量',TH010 AS '批號',TH011 AS '採購單別',TH012 AS '採購單號',TH013 AS '採購序號',TH047 AS '進貨未稅金額',TH048 AS '進貨稅額'&#13;&#10;FROM [TK].dbo.PURTG,[TK].dbo.PURTH&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND TG005='1000002'&#13;&#10;AND TH014 LIKE '201905%'&#13;&#10;ORDER BY PURTG.TG017 DESC">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9JYnGXm/uxeDGSZpUdMpwwT">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TG005 AS '廠商',TG021 AS '廠商名',TG003 AS '進貨日期',TG017 AS '進貨總金額',TG001 AS '進貨單別',TG002 AS '進貨單號',TH003 AS '序號',TH004 AS '品號',TH005 AS '品名',TH007 AS '數量',TH010 AS '批號',TH011 AS '採購單別',TH012 AS '採購單號',TH013 AS '採購序號',TH047 AS '進貨未稅金額',TH048 AS '進貨稅額'&#13;&#10;FROM [TK].dbo.PURTG,[TK].dbo.PURTH&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND TG005='1000002'&#13;&#10;AND TH014 LIKE '201905%'&#13;&#10;ORDER BY PURTG.TG003">
         <Column Name="廠商" DataType="System.String"/>
         <Column Name="廠商名" DataType="System.String"/>
         <Column Name="進貨日期" DataType="System.String"/>
@@ -21,47 +21,54 @@
         <Column Name="進貨稅額" DataType="System.Decimal"/>
       </TableDataSource>
     </MsSqlDataConnection>
+    <Total Name="Totalnum" Expression="[Table.數量]" Evaluator="Data1"/>
+    <Total Name="TotalMM" Expression="[Table.進貨未稅金額]" Evaluator="Data1"/>
+    <Total Name="Totalmmm" Expression="[Table.進貨稅額]" Evaluator="Data1"/>
   </Dictionary>
   <ReportPage Name="Page1" Landscape="true" PaperWidth="460" PaperHeight="210">
     <ReportTitleBand Name="ReportTitle1" Width="1663.2" Height="18.9">
-      <TextObject Name="Text1" Width="1653.75" Height="18.9" Text="廠商進貨金額排名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text1" Width="1559.25" Height="18.9" Text="廠商進貨金額排名" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
     <ColumnHeaderBand Name="ColumnHeader1" Top="22.75" Width="1663.2" Height="18.9">
       <TextObject Name="Text3" Width="75.6" Height="18.9" Border.Lines="All" Text="廠商" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text5" Left="75.6" Width="113.4" Height="18.9" Border.Lines="All" Text="廠商名" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text7" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨日期" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text9" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨總金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text11" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨單別" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text13" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨單號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text15" Left="567" Width="75.6" Height="18.9" Border.Lines="All" Text="序號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text17" Left="642.6" Width="113.4" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text19" Left="756" Width="236.25" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text21" Left="992.25" Width="94.5" Height="18.9" Border.Lines="All" Text="數量" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text23" Left="1086.75" Width="94.5" Height="18.9" Border.Lines="All" Text="批號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text31" Left="1464.75" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text33" Left="1559.25" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨稅額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text25" Left="1181.25" Width="94.5" Height="18.9" Border.Lines="All" Text="採購單別" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text27" Left="1275.75" Width="94.5" Height="18.9" Border.Lines="All" Text="採購單號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text29" Left="1370.25" Width="94.5" Height="18.9" Border.Lines="All" Text="採購序號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨單別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨單號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="472.5" Width="75.6" Height="18.9" Border.Lines="All" Text="序號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="548.1" Width="113.4" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="661.5" Width="236.25" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="897.75" Width="94.5" Height="18.9" Border.Lines="All" Text="數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="992.25" Width="94.5" Height="18.9" Border.Lines="All" Text="批號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text31" Left="1370.25" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text33" Left="1464.75" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨稅額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="1086.75" Width="94.5" Height="18.9" Border.Lines="All" Text="採購單別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="1181.25" Width="94.5" Height="18.9" Border.Lines="All" Text="採購單號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="1275.75" Width="94.5" Height="18.9" Border.Lines="All" Text="採購序號" HorzAlign="Center" VertAlign="Center"/>
     </ColumnHeaderBand>
     <DataBand Name="Data1" Top="45.49" Width="1663.2" Height="18.9" CanGrow="true" DataSource="Table">
-      <TextObject Name="Text14" Left="567" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.序號]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text16" Left="642.6" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text18" Left="756" Width="236.25" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
-      <TextObject Name="Text22" Left="1086.75" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.批號]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text30" Left="1464.75" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text32" Left="1559.25" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨稅額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text14" Left="472.5" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.序號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="548.1" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="661.5" Width="236.25" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="992.25" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.批號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text30" Left="1370.25" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text32" Left="1464.75" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨稅額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text2" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text4" Left="75.6" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商名]" VertAlign="Center"/>
       <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨日期]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨總金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text10" Left="378" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨單別]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text12" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨單號]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text24" Left="1181.25" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購單別]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text28" Left="1370.25" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購序號]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text26" Left="1275.75" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購單號]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text20" Left="992.25" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text10" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨單別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="378" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨單號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="1086.75" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購單別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="1275.75" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購序號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="1181.25" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購單號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="897.75" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <ColumnFooterBand Name="ColumnFooter1" Top="68.24" Width="1663.2" Height="37.8"/>
+    <ReportSummaryBand Name="ReportSummary1" Top="68.24" Width="1663.2" Height="18.9">
+      <TextObject Name="Text34" Width="897.75" Height="18.9" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text35" Left="897.75" Width="94.5" Height="18.9" Border.Lines="All" Text="[Totalnum]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text36" Left="992.25" Width="378" Height="18.9" Border.Lines="All" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="1370.25" Width="94.5" Height="18.9" Border.Lines="All" Text="[TotalMM]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="1464.75" Width="94.5" Height="18.9" Border.Lines="All" Text="[Totalmmm]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+    </ReportSummaryBand>
   </ReportPage>
 </Report>

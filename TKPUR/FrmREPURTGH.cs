@@ -72,10 +72,10 @@ namespace TKPUR
             SB.AppendFormat(" SELECT TG005 AS '廠商',TG021 AS '廠商名',TG003 AS '進貨日期',TG017 AS '進貨總金額',TG001 AS '進貨單別',TG002 AS '進貨單號',TH003 AS '序號',TH004 AS '品號',TH005 AS '品名',TH007 AS '數量',TH010 AS '批號',TH011 AS '採購單別',TH012 AS '採購單號',TH013 AS '採購序號',TH047 AS '進貨未稅金額',TH048 AS '進貨稅額'");
             SB.AppendFormat(" FROM [TK].dbo.PURTG,[TK].dbo.PURTH");
             SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
-            SB.AppendFormat(" AND TG005='{0}'",textBox1.Text);
-            SB.AppendFormat(" AND TH014 LIKE '{0}%'",dateTimePicker1.Value.ToString("yyyyMM"));
-            SB.AppendFormat(" ORDER BY PURTG.TG017 DESC");
-            SB.AppendFormat(" ");
+            SB.AppendFormat(" AND TG021 LIKE '%{0}%'", textBox1.Text);
+            SB.AppendFormat(" AND TH014>='{0}' AND TH014<='{1}' ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" ORDER BY PURTG.TG003 ");
+            SB.AppendFormat("   ");
             SB.AppendFormat(" ");
 
             return SB;
