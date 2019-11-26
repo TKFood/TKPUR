@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/26/2019 08:39:44" ReportInfo.Modified="11/26/2019 09:09:09" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9JeD1Jv9Y7uL7qMvKQy+a11">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20191125 查採購是否遲交&#13;&#10;SELECT 廠商,品號,品名,規格,需求量,單位,需求日,採購單別,採購單號,採購序號,預交日到貨量,已到貨量,最後到貨日&#13;&#10;,(CASE WHEN 需求量&gt;預交日到貨量 THEN '少交' ELSE '' END ) AS '預交日數量狀態'&#13;&#10;,(CASE WHEN 需求量&gt;已到貨量 THEN '少交' ELSE '' END ) AS '到貨數量狀態'&#13;&#10;,(CASE WHEN (需求日&lt;最後到貨日 OR ISNULL(最後到貨日,'')='') THEN '遲交' ELSE '' END ) AS '日期狀態'&#13;&#10;FROM (&#13;&#10;SELECT MA002 AS '廠商',TD004 AS '品號',TD005 AS '品名',TD006 AS '規格',TD008 AS '需求量',TD009 AS '單位',TD012 AS '需求日',TD001 AS '採購單別',TD002 AS '採購單號',TD003 AS '採購序號'&#13;&#10;,(SELECT ISNULL(SUM(TH007),0) FROM [TK].dbo.PURTH,[TK].dbo.PURTG WHERE TG001=TH001 AND TG002=TH002 AND TH011=TD001 AND TH012=TD002 AND TH013=TD003 AND TG003&lt;=TD012) AS '預交日到貨量'&#13;&#10;,(SELECT ISNULL(SUM(TH007),0) FROM [TK].dbo.PURTH,[TK].dbo.PURTG WHERE TG001=TH001 AND TG002=TH002 AND TH011=TD001 AND TH012=TD002 AND TH013=TD003 ) AS '已到貨量'&#13;&#10;,(SELECT TOP 1 TG003  FROM [TK].dbo.PURTH,[TK].dbo.PURTG WHERE TG001=TH001 AND TG002=TH002 AND TH011=TD001 AND TH012=TD002 AND TH013=TD003 ORDER BY TG001,TG002 DESC) AS '最後到貨日'&#13;&#10;FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.PURMA&#13;&#10;WHERE TC001=TD001 AND TC002=TD002&#13;&#10;AND TC004=MA001&#13;&#10;AND TD012&gt;='20191101' AND TD012&lt;='20191125'&#13;&#10;) AS TEMP&#13;&#10;ORDER BY 廠商,品號,需求日">
+        <Column Name="廠商" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="規格" DataType="System.String"/>
+        <Column Name="需求量" DataType="System.Decimal"/>
+        <Column Name="單位" DataType="System.String"/>
+        <Column Name="需求日" DataType="System.String"/>
+        <Column Name="採購單別" DataType="System.String"/>
+        <Column Name="採購單號" DataType="System.String"/>
+        <Column Name="採購序號" DataType="System.String"/>
+        <Column Name="預交日到貨量" DataType="System.Decimal"/>
+        <Column Name="已到貨量" DataType="System.Decimal"/>
+        <Column Name="最後到貨日" DataType="System.String"/>
+        <Column Name="日期狀態" DataType="System.String"/>
+        <Column Name="預交日數量狀態" DataType="System.String"/>
+        <Column Name="到貨數量狀態" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="440" PaperHeight="210">
+    <ColumnHeaderBand Name="ColumnHeader1" Width="1587.6" Height="18.9">
+      <TextObject Name="Text2" Width="132.3" Height="18.9" Border.Lines="All" Text="廠商" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="132.3" Width="94.5" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="226.8" Width="189" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="415.8" Width="141.75" Height="18.9" Border.Lines="All" Text="規格" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="557.55" Width="94.5" Height="18.9" Border.Lines="All" Text="需求量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="652.05" Width="56.7" Height="18.9" Border.Lines="All" Text="單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="708.75" Width="75.6" Height="18.9" Border.Lines="All" Text="需求日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="784.35" Width="94.5" Height="18.9" Border.Lines="All" Text="預交日到貨量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="878.85" Width="94.5" Height="18.9" Border.Lines="All" Text="已到貨量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="973.35" Width="75.6" Height="18.9" Border.Lines="All" Text="最後到貨日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="1332.45" Width="75.6" Height="18.9" Border.Lines="All" Text="採購單別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="1407.09" Width="94.5" Height="18.9" Border.Lines="Right, Top, Bottom" Text="採購單號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text30" Left="1502.55" Width="75.6" Height="18.9" Border.Lines="All" Text="採購序號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="1048.95" Width="94.5" Height="18.9" Border.Lines="Right, Top, Bottom" Text="預交日數量狀態" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="1143.45" Width="94.5" Height="18.9" Border.Lines="Right, Top, Bottom" Text="到貨數量狀態" VertAlign="Center"/>
+      <TextObject Name="Text32" Left="1237.95" Width="94.5" Height="18.9" Border.Lines="Right, Top, Bottom" Text="日期狀態" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="22.75" Width="1587.6" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Width="132.3" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="132.3" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="226.8" Width="189" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="415.8" Width="141.75" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.規格]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="557.55" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.需求量]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="652.05" Width="56.7" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.單位]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="708.75" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.需求日]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="784.35" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.預交日到貨量]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="878.85" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.已到貨量]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="973.35" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.最後到貨日]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="1332.45" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購單別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="1407.09" Width="94.5" Height="18.9" Border.Lines="Right, Top, Bottom" CanGrow="true" GrowToBottom="true" Text="[Table.採購單號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="1502.55" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購序號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="1048.95" Width="94.5" Height="18.9" Border.Lines="Right, Top, Bottom" CanGrow="true" GrowToBottom="true" Text="[Table.預交日數量狀態]" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="1143.45" Width="94.5" Height="18.9" Border.Lines="Right, Top, Bottom" CanGrow="true" GrowToBottom="true" Text="[Table.到貨數量狀態]" VertAlign="Center"/>
+      <TextObject Name="Text31" Left="1237.95" Width="94.5" Height="18.9" Border.Lines="Right, Top, Bottom" CanGrow="true" GrowToBottom="true" Text="[Table.日期狀態]" VertAlign="Center"/>
+    </DataBand>
+  </ReportPage>
+</Report>
