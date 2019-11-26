@@ -103,7 +103,12 @@ namespace TKPUR
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
-        {     
+        {
+            textBox3.Text = null;
+            textBox4.Text = null;
+            textBox5.Text = null;
+            textBox6.Text = null;
+
             if (dataGridView1.CurrentRow != null)
             {
                 int rowindex = dataGridView1.CurrentRow.Index;
@@ -111,17 +116,70 @@ namespace TKPUR
                 {
                     DataGridViewRow row = dataGridView1.Rows[rowindex];
 
-                    textBox3.Text = row.Cells["請購單別"].Value.ToString();
-                 
-
+                    textBox3.Text = row.Cells["單身備註"].Value.ToString();
+                    textBox4.Text = row.Cells["採購單別"].Value.ToString();
+                    textBox5.Text = row.Cells["採購單號"].Value.ToString();
+                    textBox6.Text = row.Cells["採購序號"].Value.ToString();
                 }
                 else
                 {
                     dataGridView1.DataSource = null;
 
-             
+                    textBox3.Text = null;
+                    textBox4.Text = null;
+                    textBox5.Text = null;
+                    textBox6.Text = null;
 
                 }
+            }
+        }
+
+        public void UPDATE(string TD001,string TD002,string TD003,string TD012,string TD014)
+        {
+            try
+            {
+
+                //add ZWAREWHOUSEPURTH
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@" UPDATE [TK].dbo.PURTD ");
+                sbSql.AppendFormat(@" SET TD012='{0}' ,TD014='{1}'",TD012,TD014);
+                sbSql.AppendFormat(@" WHERE TD001='{0}' AND TD002='{1}' AND TD003='{2}' ",TD001,TD002,TD003);
+                sbSql.AppendFormat(@"  ");
+                sbSql.AppendFormat(@"  ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
             }
         }
 
@@ -133,6 +191,20 @@ namespace TKPUR
         {
             Search();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(textBox3.Text))
+            {
+                UPDATE(textBox4.Text,textBox5.Text,textBox6.Text,dateTimePicker1.Value.ToString("yyyyMMdd"),textBox3.Text);
+
+                Search();
+            }
+           
+        }
+
         #endregion
+
+
     }
 }
