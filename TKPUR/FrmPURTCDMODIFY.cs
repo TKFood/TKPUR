@@ -120,6 +120,7 @@ namespace TKPUR
                     textBox4.Text = row.Cells["採購單別"].Value.ToString();
                     textBox5.Text = row.Cells["採購單號"].Value.ToString();
                     textBox6.Text = row.Cells["採購序號"].Value.ToString();
+                    dateTimePicker1.Value = Convert.ToDateTime(row.Cells["需求日"].Value.ToString().Substring(0,4)+"/"+ row.Cells["需求日"].Value.ToString().Substring(4, 2) + "/" + row.Cells["需求日"].Value.ToString().Substring(6, 2));
                 }
                 else
                 {
