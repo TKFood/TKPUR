@@ -95,7 +95,7 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[COMMENT] AS '備註' ");
                 sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
-                sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}'",textBox1.Text,textBox2.Text);
+                sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002] LIKE '%{1}%' ",textBox1.Text,textBox2.Text);
                 sbSql.AppendFormat(@"  GROUP BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[COMMENT]");
                 sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[COMMENT]");
                 sbSql.AppendFormat(@"  ");
@@ -544,7 +544,7 @@ namespace TKPUR
 
             FASTSQL.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[TB003] AS '序號',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',[ID],[COMMENT]  AS '備註' ");
             FASTSQL.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
-            FASTSQL.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}' ", RETA001, RETA002, REVERSIONS);
+            FASTSQL.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002] LIKE '%{1}%' AND [VERSIONS]='{2}' ", RETA001, RETA002, REVERSIONS);
             FASTSQL.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[TB003] ");
             FASTSQL.AppendFormat(@"   ");
 
@@ -563,7 +563,7 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數'");
                 sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
-                sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}'", textBox6.Text, textBox7.Text);
+                sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002] LIKE '%{1}%'", textBox6.Text, textBox7.Text);
                 sbSql.AppendFormat(@"  GROUP BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS]");
                 sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS]");
                 sbSql.AppendFormat(@"  ");
