@@ -146,6 +146,7 @@ namespace TKPUR
                     textBox9.Text = row.Cells["請購單別"].Value.ToString();
                     textBox10.Text = row.Cells["請購單號"].Value.ToString();
                     textBox11.Text = row.Cells["單頭備註"].Value.ToString();
+                    textBox12.Text = row.Cells["ID"].Value.ToString();
                     DELID = row.Cells["ID"].Value.ToString();
                   
 
@@ -161,7 +162,7 @@ namespace TKPUR
                     textBox9.Text = null;
                     textBox10.Text = null;
                     textBox11.Text = null;
-
+                    textBox12.Text = null;
                     DELID = null;
 
 
