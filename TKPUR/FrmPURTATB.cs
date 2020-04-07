@@ -273,6 +273,8 @@ namespace TKPUR
 
         public void ADDPURTATB(string TA001,string TA002,string COMMENT)
         {
+            Guid Guid = Guid.NewGuid();
+
             try
             {            
                 connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
@@ -287,7 +289,7 @@ namespace TKPUR
                 sbSql.AppendFormat(" INSERT INTO [TKPUR].[dbo].[PURTATB]");
                 sbSql.AppendFormat(" ([ID],[DATES],[TA001],[TA002],[COMMENT])");
                 sbSql.AppendFormat(" VALUES");
-                sbSql.AppendFormat(" (NEWID(),getdate(),'{0}','{1}','{2}')",  TA001, TA002, COMMENT);
+                sbSql.AppendFormat(" ('{0}',getdate(),'{1}','{2}','{3}')",Guid.ToString() , TA001, TA002, COMMENT);
                 sbSql.AppendFormat(" ");
 
                 sbSql.AppendFormat(" ");
