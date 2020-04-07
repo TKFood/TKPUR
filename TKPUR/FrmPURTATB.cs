@@ -57,9 +57,7 @@ namespace TKPUR
         string RETA001;
         string RETA002;
         string REVERSIONS;
-        string DELTA001;
-        string DELTA002;
-        string DELVERSIONS;
+        string DELID;
 
         public FrmPURTATB()
         {
@@ -93,11 +91,10 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
-                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[COMMENT] AS '備註' ");
+                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[COMMENT] AS '單頭備註', [ID] ");
                 sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
                 sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002] LIKE '%{1}%' ",textBox1.Text,textBox2.Text);
-                sbSql.AppendFormat(@"  GROUP BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[COMMENT]");
-                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS],[COMMENT]");
+                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[COMMENT]");
                 sbSql.AppendFormat(@"  ");
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
@@ -146,34 +143,34 @@ namespace TKPUR
                 {
                     DataGridViewRow row = dataGridView1.Rows[rowindex];
 
-                    textBox3.Text = row.Cells["請購單別"].Value.ToString();
-                    textBox4.Text = row.Cells["請購單號"].Value.ToString();
-                    textBox5.Text = row.Cells["修改次數"].Value.ToString();
-                    DELTA001 = row.Cells["請購單別"].Value.ToString();
-                    DELTA002 = row.Cells["請購單號"].Value.ToString();
-                    DELVERSIONS = row.Cells["修改次數"].Value.ToString();
+                    textBox9.Text = row.Cells["請購單別"].Value.ToString();
+                    textBox10.Text = row.Cells["請購單號"].Value.ToString();
+                    textBox11.Text = row.Cells["單頭備註"].Value.ToString();
+                    DELID = row.Cells["ID"].Value.ToString();
+                  
 
-                    if (!string.IsNullOrEmpty(textBox3.Text)&& !string.IsNullOrEmpty(textBox4.Text) && !string.IsNullOrEmpty(textBox5.Text) )
+                    if (!string.IsNullOrEmpty(row.Cells["ID"].Value.ToString()) )
                     {
-                        Search2();
+                        Search2(row.Cells["ID"].Value.ToString());
                     }
                 }
                 else
                 {
                     dataGridView2.DataSource = null;
 
-                    textBox3.Text = null;
-                    textBox4.Text = null;
-                    textBox5.Text = null;
+                    textBox9.Text = null;
+                    textBox10.Text = null;
+                    textBox11.Text = null;
 
-                    DELTA001 = null;
-                    DELTA002 = null;
-                    DELVERSIONS = null;
+                    DELID = null;
+
+
+
                 }
             }
         }
 
-        public void Search2()
+        public void Search2(string ID)
         {
             try
             {
@@ -183,10 +180,10 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
-                sbSql.AppendFormat(@"  SELECT [TA001] AS '請購單別',[TA002] AS '請購單號',[TB003] AS '序號',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',CONVERT(NVARCHAR,[DATES],112) AS '日期',[VERSIONS] AS '修改次數',[ID]");
-                sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB]");
-                sbSql.AppendFormat(@"  WHERE [TA001]='{0}' AND [TA002]='{1}' AND  [VERSIONS]='{2}' ", textBox3.Text, textBox4.Text, textBox5.Text);
-                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[TA001],[TA002],[VERSIONS]");
+                sbSql.AppendFormat(@"  SELECT [TA001] AS '請購單別',[TA002] AS '請購單號',[TB003] AS '序號',[COMMENTD] AS '單身備註',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',CONVERT(NVARCHAR,[DATES],112) AS '日期',[ID],[MID]");
+                sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATBD]");
+                sbSql.AppendFormat(@"  WHERE [MID]='{0}' ", ID);
+                sbSql.AppendFormat(@"  ORDER BY CONVERT(NVARCHAR,[DATES],112),[ID]");
                 sbSql.AppendFormat(@"  ");
 
 
@@ -446,17 +443,7 @@ namespace TKPUR
                 return serno.ToString();
             }
         }
-        public void SETSTATUSEDIT()
-        {
-            STATUS = "EDIT";
-            textBoxstatus.Text = "修改中";
-        }
-        public void SETSTATUSADD()
-        {
-            STATUS = "ADD";
-            textBoxstatus.Text = "新增中";
-            textBox5.Text = null;
-        }
+       
         public void SETSTATUSFINALLY()
         {
             STATUS = null;
@@ -645,7 +632,7 @@ namespace TKPUR
                 sbSql.Clear();
 
                 sbSql.AppendFormat("   DELETE [TKPUR].[dbo].[PURTATB]");
-                sbSql.AppendFormat("    WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}'",DELTA001,DELTA002,DELVERSIONS);
+               // sbSql.AppendFormat("    WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}'",DELTA001,DELTA002,DELVERSIONS);
                 sbSql.AppendFormat("  ");
 
 
@@ -684,13 +671,13 @@ namespace TKPUR
         {
             Search();
 
-            SETSTATUSEDIT();
+           
         }
         private void button2_Click(object sender, EventArgs e)
         {
             SearchPURTATB();
 
-            SETSTATUSADD();
+            
         }
         private void button3_Click(object sender, EventArgs e)
         {
