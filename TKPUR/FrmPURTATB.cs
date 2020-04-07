@@ -293,26 +293,10 @@ namespace TKPUR
             }
         }
 
-        public void ADD()
+        public void ADDPURTATB(string TA001,string TA002,string COMMENT)
         {
-            string DATES = null;
-            string TA001 = null;
-            string TA002 = null;
-            string VERSIONS = null;
-            string TB003 = null;
-            string MB001 = null;
-            string MB002 = null;
-            string MB003 = null;
-            string MB004 = null;
-            decimal NUM = 0;
-            string COMMNET = textBox8.Text;
-
-            VERSIONS = GETMAXNO();
-
             try
-            {
-
-                //add ZWAREWHOUSEPURTH
+            {            
                 connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
                 sqlConn = new SqlConnection(connectionString);
 
@@ -322,26 +306,11 @@ namespace TKPUR
 
                 sbSql.Clear();
 
-                foreach (DataGridViewRow row in dataGridView2.Rows)
-                {
-                    DATES = DateTime.Now.ToString("yyyy/MM/dd");
-                    TA001 = row.Cells["請購單別"].Value.ToString();
-                    TA002 = row.Cells["請購單號"].Value.ToString();
-                    //VERSIONS = row.Cells["修改次數"].Value.ToString();
-                    TB003 = row.Cells["序號"].Value.ToString();
-                    MB001 = row.Cells["品號"].Value.ToString();
-                    MB002 = row.Cells["品名"].Value.ToString();
-                    MB003 = row.Cells["規格"].Value.ToString();
-                    MB004 = row.Cells["單位"].Value.ToString();
-                    NUM = Convert.ToDecimal(row.Cells["請購數量"].Value.ToString());
-
-                  
-                    sbSql.AppendFormat(" INSERT INTO [TKPUR].[dbo].[PURTATB]");
-                    sbSql.AppendFormat(" ([DATES],[TA001],[TA002],[VERSIONS],[TB003],[MB001],[MB002],[MB003],[MB004],[NUM],[COMMENT])");
-                    sbSql.AppendFormat(" VALUES");
-                    sbSql.AppendFormat(" ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}')", DATES,TA001,TA002,VERSIONS, TB003,MB001, MB002,MB003,MB004,NUM, COMMNET);
-                    sbSql.AppendFormat(" ");
-                }
+                sbSql.AppendFormat(" INSERT INTO [TKPUR].[dbo].[PURTATB]");
+                sbSql.AppendFormat(" ([ID],[DATES],[TA001],[TA002],[COMMENT])");
+                sbSql.AppendFormat(" VALUES");
+                sbSql.AppendFormat(" (NEWID(),getdate(),'{0}','{1}','{2}')",  TA001, TA002, COMMENT);
+                sbSql.AppendFormat(" ");
 
                 sbSql.AppendFormat(" ");
 
@@ -676,9 +645,12 @@ namespace TKPUR
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            SearchPURTATB();
-
-            
+            if(!string.IsNullOrEmpty(textBox9.Text)&& !string.IsNullOrEmpty(textBox10.Text)& !string.IsNullOrEmpty(textBox11.Text))
+            {
+                ADDPURTATB(textBox9.Text, textBox10.Text, textBox11.Text);
+                Search();
+            }
+           
         }
         private void button3_Click(object sender, EventArgs e)
         {
@@ -688,10 +660,7 @@ namespace TKPUR
                 {
                     UPDATE();
                 }
-                else if (STATUS.Equals("ADD"))
-                {
-                    ADD();
-                }
+               
             }
             else
             {
@@ -729,6 +698,10 @@ namespace TKPUR
             }
 
            
+        }
+        private void button7_Click(object sender, EventArgs e)
+        {
+
         }
 
         #endregion

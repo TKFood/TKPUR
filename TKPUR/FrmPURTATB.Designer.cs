@@ -369,6 +369,7 @@
             this.button2.TabIndex = 3;
             this.button2.Text = "新增單頭備註";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button6
             // 
@@ -379,6 +380,7 @@
             this.button6.TabIndex = 13;
             this.button6.Text = "更新單頭備註";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 
@@ -389,6 +391,7 @@
             this.button7.TabIndex = 14;
             this.button7.Text = "刪除單頭備註";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // label9
             // 
