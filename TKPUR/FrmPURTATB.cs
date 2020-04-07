@@ -224,20 +224,10 @@ namespace TKPUR
             }
         }
 
-        public void UPDATE()
+        public void UPDATEPURTATB(string ID,string COMMENT)
         {
-            string TA001 = null;
-            string TA002 = null;
-            string VERSIONS = null;
-            string TB003 = null;
-            string MB001 = null;
-            decimal NUM = 0;
-            string COMMNET = textBox8.Text;
-
             try
             {
-
-                //add ZWAREWHOUSEPURTH
                 connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
                 sqlConn = new SqlConnection(connectionString);
 
@@ -247,24 +237,12 @@ namespace TKPUR
 
                 sbSql.Clear();
 
-
-                foreach (DataGridViewRow row in dataGridView2.Rows)
-                {
-                    TA001 = row.Cells["請購單別"].Value.ToString();
-                    TA002 = row.Cells["請購單號"].Value.ToString();
-                    VERSIONS = row.Cells["修改次數"].Value.ToString();
-                    TB003 = row.Cells["序號"].Value.ToString();
-                    MB001 = row.Cells["品號"].Value.ToString();
-                    NUM = Convert.ToDecimal(row.Cells["請購數量"].Value.ToString());
-
-                    sbSql.AppendFormat(" UPDATE [TKPUR].[dbo].[PURTATB]");
-                    sbSql.AppendFormat(" SET [NUM]='{0}' ,[COMMENT]='{1}' ", NUM, COMMNET);
-                    sbSql.AppendFormat(" WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}' AND [TB003]='{3}' AND [MB001]='{4}'", TA001, TA002, VERSIONS,TB003, MB001);
-                    sbSql.AppendFormat(" ");
-
-                }
-
+                sbSql.AppendFormat(" UPDATE [TKPUR].[dbo].[PURTATB]");
+                sbSql.AppendFormat(" SET [COMMENT]='{0}' ", COMMENT);
+                sbSql.AppendFormat(" WHERE[ID] ='{0}'", ID);
+                sbSql.AppendFormat(" ");
                 sbSql.AppendFormat("  ");
+
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
                 cmd.CommandText = sbSql.ToString();
@@ -586,7 +564,7 @@ namespace TKPUR
             }
         }
 
-        public void DEL()
+        public void DELPURTATB(string ID)
         {
             try
             {
@@ -602,7 +580,7 @@ namespace TKPUR
                 sbSql.Clear();
 
                 sbSql.AppendFormat("   DELETE [TKPUR].[dbo].[PURTATB]");
-               // sbSql.AppendFormat("    WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}'",DELTA001,DELTA002,DELVERSIONS);
+                sbSql.AppendFormat("   WHERE [ID]='{0}' ", ID);
                 sbSql.AppendFormat("  ");
 
 
@@ -639,13 +617,11 @@ namespace TKPUR
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            Search();
-
-           
+            Search();           
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(textBox9.Text)&& !string.IsNullOrEmpty(textBox10.Text)& !string.IsNullOrEmpty(textBox11.Text))
+            if(!string.IsNullOrEmpty(textBox9.Text)&& !string.IsNullOrEmpty(textBox10.Text)&& !string.IsNullOrEmpty(textBox11.Text))
             {
                 ADDPURTATB(textBox9.Text, textBox10.Text, textBox11.Text);
                 Search();
@@ -654,24 +630,7 @@ namespace TKPUR
         }
         private void button3_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(STATUS))
-            {
-                if (STATUS.Equals("EDIT"))
-                {
-                    UPDATE();
-                }
-               
-            }
-            else
-            {
-                MessageBox.Show("請重新查詢");
-            }
 
-            SETSTATUSFINALLY();
-
-            Search();
-
-            MessageBox.Show("已完成");
         }
         private void button5_Click(object sender, EventArgs e)
         {
@@ -684,24 +643,30 @@ namespace TKPUR
 
         private void button6_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(textBox12.Text) && !string.IsNullOrEmpty(textBox11.Text) )
+            {
+                UPDATEPURTATB(textBox12.Text, textBox11.Text);
+                Search();
+            }
+               
+        }
+        private void button7_Click(object sender, EventArgs e)
+        {
             DialogResult dialogResult = MessageBox.Show("要刪除了?", "要刪除了?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                DEL();
+                if(!string.IsNullOrEmpty(textBox12.Text))
+                {
+                    DELPURTATB(textBox12.Text);
 
-                Search();
+                    Search();
+                }               
 
             }
             else if (dialogResult == DialogResult.No)
             {
                 //do something else
             }
-
-           
-        }
-        private void button7_Click(object sender, EventArgs e)
-        {
-
         }
 
         #endregion
