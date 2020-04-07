@@ -59,7 +59,6 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBoxstatus = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -74,6 +73,7 @@
             this.button4 = new System.Windows.Forms.Button();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.previewControl1 = new FastReport.Preview.PreviewControl();
+            this.textBox13 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -440,6 +440,7 @@
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridView2.Size = new System.Drawing.Size(733, 342);
             this.dataGridView2.TabIndex = 3;
+            this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
             // 
             // tableLayoutPanel2
             // 
@@ -452,8 +453,8 @@
             this.tableLayoutPanel2.Controls.Add(this.textBox5, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.label5, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.textBox8, 0, 4);
-            this.tableLayoutPanel2.Controls.Add(this.textBoxstatus, 1, 5);
-            this.tableLayoutPanel2.Controls.Add(this.button3, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.button3, 0, 6);
+            this.tableLayoutPanel2.Controls.Add(this.textBox13, 1, 6);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -509,26 +510,20 @@
             this.textBox5.Size = new System.Drawing.Size(114, 27);
             this.textBox5.TabIndex = 11;
             // 
-            // textBoxstatus
-            // 
-            this.textBoxstatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxstatus.Location = new System.Drawing.Point(123, 206);
-            this.textBoxstatus.Name = "textBoxstatus";
-            this.textBoxstatus.ReadOnly = true;
-            this.textBoxstatus.Size = new System.Drawing.Size(114, 27);
-            this.textBoxstatus.TabIndex = 12;
-            // 
             // textBox8
             // 
             this.textBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox8.Location = new System.Drawing.Point(3, 166);
+            this.tableLayoutPanel2.SetColumnSpan(this.textBox8, 2);
+            this.textBox8.Location = new System.Drawing.Point(3, 163);
+            this.textBox8.Multiline = true;
             this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(114, 27);
+            this.tableLayoutPanel2.SetRowSpan(this.textBox8, 2);
+            this.textBox8.Size = new System.Drawing.Size(234, 74);
             this.textBox8.TabIndex = 13;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(3, 203);
+            this.button3.Location = new System.Drawing.Point(3, 243);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(114, 34);
             this.button3.TabIndex = 7;
@@ -691,6 +686,15 @@
             this.previewControl1.Size = new System.Drawing.Size(966, 365);
             this.previewControl1.TabIndex = 2;
             // 
+            // textBox13
+            // 
+            this.textBox13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox13.Location = new System.Drawing.Point(123, 246);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.ReadOnly = true;
+            this.textBox13.Size = new System.Drawing.Size(114, 27);
+            this.textBox13.TabIndex = 14;
+            // 
             // FrmPURTATB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -757,7 +761,6 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBoxstatus;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private FastReport.Preview.PreviewControl previewControl1;
         private System.Windows.Forms.SplitContainer splitContainer5;
@@ -791,5 +794,6 @@
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBox13;
     }
 }

@@ -401,10 +401,10 @@ namespace TKPUR
         public void SETSTATUSFINALLY()
         {
             STATUS = null;
-            textBoxstatus.Text = null;
+            
 
             STATUS = "EDIT";
-            textBoxstatus.Text = "修改中";
+
         }
 
         public void SearchPURTATB()
@@ -544,6 +544,37 @@ namespace TKPUR
 
             }
         }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView2.CurrentRow != null)
+            {
+                int rowindex = dataGridView2.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView2.Rows[rowindex];
+
+                    textBox3.Text = row.Cells["請購單別"].Value.ToString();
+                    textBox4.Text = row.Cells["請購單號"].Value.ToString();
+                    textBox5.Text = row.Cells["序號"].Value.ToString();
+                    textBox8.Text = row.Cells["單身備註"].Value.ToString();
+                    textBox13.Text = row.Cells["ID"].Value.ToString();
+
+
+
+                }
+                else
+                {
+                    textBox3.Text = null;
+                    textBox4.Text = null;
+                    textBox5.Text = null;
+                    textBox8.Text = null;
+                    textBox13.Text = null;
+
+                }
+            }
+        }
+
         private void dataGridView3_SelectionChanged(object sender, EventArgs e)
         {
            
@@ -585,10 +616,60 @@ namespace TKPUR
 
                 sbSql.Clear();
 
-                sbSql.AppendFormat("   DELETE [TKPUR].[dbo].[PURTATB]");
-                sbSql.AppendFormat("   WHERE [ID]='{0}' ", ID);
+                sbSql.AppendFormat("  DELETE [TKPUR].[dbo].[PURTATB]");
+                sbSql.AppendFormat("  WHERE [ID]='{0}' ", ID);
+                sbSql.AppendFormat("  ");
+                sbSql.AppendFormat("  DELETE [TKPUR].[dbo].[PURTATBD]");
+                sbSql.AppendFormat("  WHERE [MID]='{0}' ", ID);
                 sbSql.AppendFormat("  ");
 
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public void UPDATEPURTATBD(string ID,string COMMENT)
+        {
+            try
+            {
+
+                //add ZWAREWHOUSEPURTH
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat("  UPDATE [TKPUR].[dbo].[PURTATBD]");
+                sbSql.AppendFormat("  SET [COMMENTD]='{0}'",COMMENT);
+                sbSql.AppendFormat("  WHERE [ID]='{0}'",ID);
+                sbSql.AppendFormat("  ");
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -636,6 +717,12 @@ namespace TKPUR
         }
         private void button3_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(textBox13.Text) && !string.IsNullOrEmpty(textBox8.Text))
+            {
+                UPDATEPURTATBD(textBox13.Text, textBox8.Text);
+                Search();
+            }
+
 
         }
         private void button5_Click(object sender, EventArgs e)
@@ -675,8 +762,9 @@ namespace TKPUR
             }
         }
 
+
         #endregion
 
-
+      
     }
 }
