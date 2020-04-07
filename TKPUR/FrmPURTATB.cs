@@ -487,7 +487,9 @@ namespace TKPUR
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
 
-           
+            FASTSQL.AppendFormat(@"   SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[COMMENT] AS '單頭備註', [ID]");
+            FASTSQL.AppendFormat(@"   FROM [TKPUR].[dbo].[PURTATB]");
+            FASTSQL.AppendFormat(@"   WHERE [ID]='{0}'", REPORTID);
             FASTSQL.AppendFormat(@"   ");
 
             return FASTSQL.ToString();
@@ -498,7 +500,10 @@ namespace TKPUR
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
 
-
+            FASTSQL.AppendFormat(@"   SELECT [TA001] AS '請購單別',[TA002] AS '請購單號',[TA003] AS '序號',[COMMENTD] AS '單身備註',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',CONVERT(NVARCHAR,[DATES],112) AS '日期',[ID],[MID]");
+            FASTSQL.AppendFormat(@"   FROM [TKPUR].[dbo].[PURTATBD]");
+            FASTSQL.AppendFormat(@"   WHERE [MID]='{0}'", REPORTID);
+            FASTSQL.AppendFormat(@"   ORDER BY [TA003]");
             FASTSQL.AppendFormat(@"   ");
 
             return FASTSQL.ToString();
