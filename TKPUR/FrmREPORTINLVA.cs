@@ -125,7 +125,7 @@ namespace TKPUR
             FASTSQL.AppendFormat(@"  GROUP BY SUBSTRING(LA004,1,6)");
             FASTSQL.AppendFormat(@"  ) AS TEMP ");
             FASTSQL.AppendFormat(@"  ORDER BY  SEQ,MONTHS");
-            FASTSQL.AppendFormat(@"  ");
+            FASTSQL.AppendFormat(@"   ");
             FASTSQL.AppendFormat(@"  ");
             FASTSQL.AppendFormat(@"  ");
 
