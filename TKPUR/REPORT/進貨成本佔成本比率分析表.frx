@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/09/2020 09:37:27" ReportInfo.Modified="04/09/2020 09:53:12" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9Ks9tK5pEAJPwG/LaOA3+Bu">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20200409 查原料成本率&#13;&#10;SELECT SEQ,KIND,MONTHS,MONEYS&#13;&#10;FROM (&#13;&#10;SELECT '1' AS SEQ ,'營收' AS KIND,SUBSTRING(TA003,1,6) AS MONTHS,SUM(TB004*TB007)*-1 AS  MONEYS&#13;&#10;FROM [TK].dbo.ACTTA  WITH (NOLOCK),[TK].dbo.ACTTB WITH (NOLOCK)&#13;&#10;WHERE TA001=TB001 AND TA002=TB002&#13;&#10;AND TA003 LIKE '2020%' &#13;&#10;AND TB005 LIKE '4%'&#13;&#10;GROUP BY SUBSTRING(TA003,1,6)&#13;&#10;UNION &#13;&#10;SELECT '2' AS SEQ ,'原/物的領料' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS&#13;&#10;FROM [TK].dbo.INVLA,[TK].dbo.MOCTE&#13;&#10;WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003&#13;&#10;AND LA004 LIKE '2020%'&#13;&#10;AND (TE004 LIKE '1%' OR TE004 LIKE '2%')&#13;&#10;GROUP BY SUBSTRING(LA004,1,6)&#13;&#10;UNION &#13;&#10;SELECT '3' AS SEQ ,'二砂' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS&#13;&#10;FROM [TK].dbo.INVLA,[TK].dbo.MOCTE&#13;&#10;WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003&#13;&#10;AND LA004 LIKE '2020%'&#13;&#10;AND  TE004 LIKE '1%'&#13;&#10;AND TE017 LIKE '%二砂%'&#13;&#10;GROUP BY SUBSTRING(LA004,1,6)&#13;&#10;UNION &#13;&#10;SELECT '4' AS SEQ ,'麵粉' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS&#13;&#10;FROM [TK].dbo.INVLA,[TK].dbo.MOCTE&#13;&#10;WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003&#13;&#10;AND LA004 LIKE '2020%'&#13;&#10;AND  TE004 LIKE '1%'&#13;&#10;AND (TE017 LIKE '%中筋%' OR TE017 LIKE '%低筋%'  OR TE017 LIKE '%中粉%' OR TE017 LIKE '%低粉%')&#13;&#10;GROUP BY SUBSTRING(LA004,1,6)&#13;&#10;UNION &#13;&#10;SELECT '5' AS SEQ ,'棕櫚油' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS&#13;&#10;FROM [TK].dbo.INVLA,[TK].dbo.MOCTE&#13;&#10;WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003&#13;&#10;AND LA004 LIKE '2020%'&#13;&#10;AND  TE004 LIKE '1%'&#13;&#10;AND TE017 LIKE '%棕櫚油%'&#13;&#10;GROUP BY SUBSTRING(LA004,1,6)&#13;&#10;UNION &#13;&#10;SELECT '6' AS SEQ ,'袋' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS&#13;&#10;FROM [TK].dbo.INVLA,[TK].dbo.MOCTE&#13;&#10;WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003&#13;&#10;AND LA004 LIKE '2020%'&#13;&#10;AND  TE004 LIKE '2%'&#13;&#10;AND TE017 LIKE '%袋%'&#13;&#10;GROUP BY SUBSTRING(LA004,1,6)&#13;&#10;) AS TEMP &#13;&#10;ORDER BY  SEQ,MONTHS">
+        <Column Name="SEQ" DataType="System.String"/>
+        <Column Name="KIND" DataType="System.String"/>
+        <Column Name="MONTHS" DataType="System.String"/>
+        <Column Name="MONEYS" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="600" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="2192.4" Height="18.9">
+      <TextObject Name="Text1" Width="406.35" Height="18.9" Text="進貨成本佔成本比率分析表"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="22.75" Width="2192.4" Height="33">
+      <MatrixObject Name="Matrix1" Width="184.5" Height="33" FixedRows="1" FixedColumns="2" DataSource="Table">
+        <MatrixColumns>
+          <Header Expression="[Table.MONTHS]"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[Table.SEQ]" Totals="false"/>
+          <Header Expression="[Table.KIND]" Totals="false"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[Table.MONEYS]"/>
+        </MatrixCells>
+        <TableColumn Name="Column1" Width="39.94" AutoSize="true"/>
+        <TableColumn Name="Column2" Width="46.12" AutoSize="true"/>
+        <TableColumn Name="Column3" Width="58.5" AutoSize="true"/>
+        <TableColumn Name="Column4" Width="39.94" AutoSize="true"/>
+        <TableRow Name="Row1" Height="16.5" AutoSize="true">
+          <TableCell Name="Cell1" Border.Lines="All" Text="SEQ" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell2" Border.Lines="All" Text="KIND" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell5" Border.Lines="All" Text="[MONTHS]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell10" Border.Lines="All" Text="Total" HorzAlign="Center" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="16.5" AutoSize="true">
+          <TableCell Name="Cell3" Border.Lines="All" Text="[SEQ]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell4" Border.Lines="All" Text="[KIND]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell6" Border.Lines="All" Text="[MONEYS]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell11" Border.Lines="All" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+  </ReportPage>
+</Report>

@@ -105,6 +105,12 @@
     <Compile Include="FrmPURTCDMODIFY.Designer.cs">
       <DependentUpon>FrmPURTCDMODIFY.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmREPORTINLVA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmREPORTINLVA.Designer.cs">
+      <DependentUpon>FrmREPORTINLVA.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmREPORTPURTD.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,6 +175,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPURTCDMODIFY.resx">
       <DependentUpon>FrmPURTCDMODIFY.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmREPORTINLVA.resx">
+      <DependentUpon>FrmREPORTINLVA.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmREPORTPURTD.resx">
       <DependentUpon>FrmREPORTPURTD.cs</DependentUpon>
