@@ -92,7 +92,15 @@ namespace TKPUR
             FASTSQL.AppendFormat(@"  AND (TE004 LIKE '1%' OR TE004 LIKE '2%')");
             FASTSQL.AppendFormat(@"  GROUP BY SUBSTRING(LA004,1,6)");
             FASTSQL.AppendFormat(@"  UNION ");
-            FASTSQL.AppendFormat(@"  SELECT '3' AS SEQ ,'二砂' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS");
+            FASTSQL.AppendFormat(@"  SELECT '3' AS SEQ ,'鹹蛋黃' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS");
+            FASTSQL.AppendFormat(@"  FROM [TK].dbo.INVLA,[TK].dbo.MOCTE");
+            FASTSQL.AppendFormat(@"  WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003");
+            FASTSQL.AppendFormat(@"  AND LA004 LIKE '{0}%'", dateTimePicker1.Value.Year.ToString());
+            FASTSQL.AppendFormat(@"  AND  TE004 LIKE '1%'");
+            FASTSQL.AppendFormat(@"  AND TE017 LIKE '%鹹蛋黃%'");
+            FASTSQL.AppendFormat(@"  GROUP BY SUBSTRING(LA004,1,6)");
+            FASTSQL.AppendFormat(@"  UNION ");
+            FASTSQL.AppendFormat(@"  SELECT '4' AS SEQ ,'二砂' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS");
             FASTSQL.AppendFormat(@"  FROM [TK].dbo.INVLA,[TK].dbo.MOCTE");
             FASTSQL.AppendFormat(@"  WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003");
             FASTSQL.AppendFormat(@"  AND LA004 LIKE '{0}%'", dateTimePicker1.Value.Year.ToString());
@@ -100,7 +108,7 @@ namespace TKPUR
             FASTSQL.AppendFormat(@"  AND TE017 LIKE '%二砂%'");
             FASTSQL.AppendFormat(@"  GROUP BY SUBSTRING(LA004,1,6)");
             FASTSQL.AppendFormat(@"  UNION ");
-            FASTSQL.AppendFormat(@"  SELECT '4' AS SEQ ,'麵粉' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS");
+            FASTSQL.AppendFormat(@"  SELECT '5' AS SEQ ,'麵粉' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS");
             FASTSQL.AppendFormat(@"  FROM [TK].dbo.INVLA,[TK].dbo.MOCTE");
             FASTSQL.AppendFormat(@"  WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003");
             FASTSQL.AppendFormat(@"  AND LA004 LIKE '{0}%'", dateTimePicker1.Value.Year.ToString());
@@ -108,7 +116,7 @@ namespace TKPUR
             FASTSQL.AppendFormat(@"  AND (TE017 LIKE '%中筋%' OR TE017 LIKE '%低筋%'  OR TE017 LIKE '%中粉%' OR TE017 LIKE '%低粉%' OR TE017 LIKE '%強化%')");
             FASTSQL.AppendFormat(@"  GROUP BY SUBSTRING(LA004,1,6)");
             FASTSQL.AppendFormat(@"  UNION ");
-            FASTSQL.AppendFormat(@"  SELECT '5' AS SEQ ,'棕櫚油' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS");
+            FASTSQL.AppendFormat(@"  SELECT '6' AS SEQ ,'棕櫚油' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS");
             FASTSQL.AppendFormat(@"  FROM [TK].dbo.INVLA,[TK].dbo.MOCTE");
             FASTSQL.AppendFormat(@"  WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003");
             FASTSQL.AppendFormat(@"  AND LA004 LIKE '{0}%'", dateTimePicker1.Value.Year.ToString());
@@ -116,7 +124,7 @@ namespace TKPUR
             FASTSQL.AppendFormat(@"  AND TE017 LIKE '%棕櫚油%'");
             FASTSQL.AppendFormat(@"  GROUP BY SUBSTRING(LA004,1,6)");
             FASTSQL.AppendFormat(@"  UNION ");
-            FASTSQL.AppendFormat(@"  SELECT '6' AS SEQ ,'袋' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS");
+            FASTSQL.AppendFormat(@"  SELECT '7' AS SEQ ,'袋' AS KIND,SUBSTRING(LA004,1,6)  AS MONTHS,SUM(LA005*LA013)*-1  AS  MONEYS");
             FASTSQL.AppendFormat(@"  FROM [TK].dbo.INVLA,[TK].dbo.MOCTE");
             FASTSQL.AppendFormat(@"  WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003");
             FASTSQL.AppendFormat(@"  AND LA004 LIKE '{0}%'",dateTimePicker1.Value.Year.ToString());
