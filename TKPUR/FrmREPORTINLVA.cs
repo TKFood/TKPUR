@@ -278,10 +278,7 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
-        private void button2_Click(object sender, EventArgs e)
-        {
-            SEARCHREPORTINLVA(dateTimePicker2.Value.ToString("yyyy"));
-        }
+      
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
@@ -305,26 +302,88 @@ namespace TKPUR
             }
 
         }
+
+        public void  UPDATEREPORTINLVA(string YM, string MONEYS, string PERS, string COSTS)
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(" UPDATE [TKPUR].[dbo].[REPORTINLVA]");
+                sbSql.AppendFormat(" SET [MONEYS]='{0}',[PERS]='{1}',[COSTS]='{2}'",MONEYS,PERS,COSTS);
+                sbSql.AppendFormat(" WHERE [YM]='{0}'",YM);
+                sbSql.AppendFormat(" ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        #endregion
+
+        #region BUTTON
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SEARCHREPORTINLVA(dateTimePicker2.Value.ToString("yyyy"));
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             if(!string.IsNullOrEmpty(dateTimePicker3.Value.ToString("yyyyMM"))&& !string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && !string.IsNullOrEmpty(textBox3.Text))
             {
                 ADDREPORTINLVA(dateTimePicker3.Value.ToString("yyyyMM"), textBox1.Text, textBox2.Text, textBox3.Text);
+                SEARCHREPORTINLVA(dateTimePicker2.Value.ToString("yyyy"));
             }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-
+            if (!string.IsNullOrEmpty(dateTimePicker3.Value.ToString("yyyyMM")) && !string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && !string.IsNullOrEmpty(textBox3.Text))
+            {
+                if (!string.IsNullOrEmpty(dateTimePicker3.Value.ToString("yyyyMM")) && !string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && !string.IsNullOrEmpty(textBox3.Text))
+                {
+                    UPDATEREPORTINLVA(dateTimePicker3.Value.ToString("yyyyMM"), textBox1.Text, textBox2.Text, textBox3.Text);
+                    SEARCHREPORTINLVA(dateTimePicker2.Value.ToString("yyyy"));
+                }
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
 
         }
-        #endregion
 
-        #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
             SETFASTREPORT();
