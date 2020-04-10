@@ -174,7 +174,20 @@ namespace TKPUR
 
             return FASTSQL.ToString();
         }
+        private void button3_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
         #endregion
 
         #region BUTTON
@@ -183,5 +196,7 @@ namespace TKPUR
             SETFASTREPORT();
         }
         #endregion
+
+
     }
 }
