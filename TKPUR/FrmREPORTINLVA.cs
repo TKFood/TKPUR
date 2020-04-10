@@ -350,6 +350,53 @@ namespace TKPUR
             }
         }
 
+        public void DELREPORTINLVA(string YM)
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(" DELETE [TKPUR].[dbo].[REPORTINLVA]");
+                sbSql.AppendFormat(" WHERE [YM]='{0}'",YM);
+                sbSql.AppendFormat(" ");
+                sbSql.AppendFormat(" ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -381,7 +428,20 @@ namespace TKPUR
 
         private void button5_Click(object sender, EventArgs e)
         {
-
+            DialogResult dialogResult = MessageBox.Show("要刪除了?", "要刪除了?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                if (!string.IsNullOrEmpty(dateTimePicker3.Value.ToString("yyyyMM")))
+                {
+                    DELREPORTINLVA(dateTimePicker3.Value.ToString("yyyyMM"));
+                    SEARCHREPORTINLVA(dateTimePicker2.Value.ToString("yyyy"));
+                }
+                
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //do something else
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
