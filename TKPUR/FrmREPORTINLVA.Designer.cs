@@ -397,6 +397,7 @@
             this.textBox1.Size = new System.Drawing.Size(114, 27);
             this.textBox1.TabIndex = 11;
             this.textBox1.Text = "0";
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // textBox2
             // 
@@ -406,6 +407,7 @@
             this.textBox2.Size = new System.Drawing.Size(114, 27);
             this.textBox2.TabIndex = 12;
             this.textBox2.Text = "0";
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // textBox3
             // 
@@ -415,6 +417,7 @@
             this.textBox3.Size = new System.Drawing.Size(114, 27);
             this.textBox3.TabIndex = 13;
             this.textBox3.Text = "0";
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // button3
             // 

@@ -396,7 +396,25 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            CALPERCOSTS();
+        }
 
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            CALPERCOSTS();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            CALPERCOSTS();
+        }
+
+        public void CALPERCOSTS()
+        {
+            textBox3.Text = (Convert.ToDecimal(textBox1.Text) * Convert.ToDecimal(textBox2.Text) / 100).ToString();
+        }
         #endregion
 
         #region BUTTON
@@ -450,8 +468,9 @@ namespace TKPUR
         }
 
 
+
         #endregion
 
-   
+      
     }
 }
