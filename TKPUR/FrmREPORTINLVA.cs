@@ -35,9 +35,12 @@ namespace TKPUR
         StringBuilder sbSqlQuery = new StringBuilder();
         SqlDataAdapter adapter = new SqlDataAdapter();
         SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+        SqlDataAdapter adapter1 = new SqlDataAdapter();
+        SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();
         SqlTransaction tran;
         SqlCommand cmd = new SqlCommand();
         DataSet ds = new DataSet();
+        DataSet ds1 = new DataSet();
         DataSet ds2 = new DataSet();
         string tablename = null;
         int rownum = 0;
@@ -174,9 +177,140 @@ namespace TKPUR
 
             return FASTSQL.ToString();
         }
+
+        public void SEARCHREPORTINLVA(string YM)
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  SELECT [YM] AS '年月',[MONEYS] AS '營收',[PERS] AS '成本率',[COSTS] AS '成本額'");
+                sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[REPORTINLVA]");
+                sbSql.AppendFormat(@"  WHERE [YM] LIKE '{0}%'",YM);
+                sbSql.AppendFormat(@"  ORDER BY  [YM]");
+                sbSql.AppendFormat(@"  ");
+                sbSql.AppendFormat(@"  ");
+
+                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter1.Fill(ds1, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds1.Tables["TEMPds1"].Rows.Count == 0)
+                {
+
+                }
+                else
+                {
+                    if (ds1.Tables["TEMPds1"].Rows.Count >= 1)
+                    {
+                        //dataGridView1.Rows.Clear();
+                        dataGridView1.DataSource = ds1.Tables["TEMPds1"];
+                        dataGridView1.AutoResizeColumns();
+                        //dataGridView1.CurrentCell = dataGridView1[0, rownum];
+
+                    }
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+        public void ADDREPORTINLVA(string YM,string MONEYS, string PERS,string COSTS)
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(" INSERT INTO [TKPUR].[dbo].[REPORTINLVA]");
+                sbSql.AppendFormat(" ( [YM],[MONEYS],[PERS],[COSTS])");
+                sbSql.AppendFormat(" VALUES ('{0}','{1}','{2}','{3}')",YM,MONEYS,PERS,COSTS);
+                sbSql.AppendFormat(" ");
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SEARCHREPORTINLVA(dateTimePicker2.Value.ToString("yyyy"));
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
+                    dateTimePicker3.Value = Convert.ToDateTime(row.Cells["年月"].Value.ToString().Substring(0,4)+"/"+ row.Cells["年月"].Value.ToString().Substring(4, 2)+"/1");
+                    textBox1.Text = row.Cells["營收"].Value.ToString(); 
+                    textBox2.Text = row.Cells["成本率"].Value.ToString();
+                    textBox3.Text = row.Cells["成本額"].Value.ToString();
+                }
+                else
+                {
+                    textBox1.Text = null;
+                    textBox2.Text = null;
+                    textBox3.Text = null;
+                }
+            }
+
+        }
         private void button3_Click(object sender, EventArgs e)
         {
-
+            if(!string.IsNullOrEmpty(dateTimePicker3.Value.ToString("yyyyMM"))&& !string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && !string.IsNullOrEmpty(textBox3.Text))
+            {
+                ADDREPORTINLVA(dateTimePicker3.Value.ToString("yyyyMM"), textBox1.Text, textBox2.Text, textBox3.Text);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -195,8 +329,10 @@ namespace TKPUR
         {
             SETFASTREPORT();
         }
+
+
         #endregion
 
-
+   
     }
 }
