@@ -111,7 +111,7 @@ namespace TKPUR
             FASTSQL.AppendFormat(@"  WHERE LA006=TE001 AND LA007=TE002 AND LA008=TE003");
             FASTSQL.AppendFormat(@"  AND LA004 LIKE '{0}%'", dateTimePicker1.Value.Year.ToString());
             FASTSQL.AppendFormat(@"  AND  TE004 LIKE '1%'");
-            FASTSQL.AppendFormat(@"  AND TE017 LIKE '%鹹蛋黃%'");
+            FASTSQL.AppendFormat(@"  AND (TE017 LIKE '%松高%' OR TE017 LIKE '%浤良%' OR TE017 LIKE '%宇貹%') ");
             FASTSQL.AppendFormat(@"  GROUP BY SUBSTRING(LA004,1,6)");
             FASTSQL.AppendFormat(@"  UNION");
             FASTSQL.AppendFormat(@"  SELECT '3B' AS SEQ ,'鹹蛋黃%' AS KIND, SUBSTRING(LA004,1,6)  AS MONTHS,CONVERT(DECIMAL(16,4),(SUM(LA005*LA013)*-1)/(SELECT SUM(LA005*LA013)*-1 FROM [TK].dbo.INVLA LA,[TK].dbo.MOCTE TE WHERE LA.LA006=TE.TE001 AND LA.LA007=TE.TE002 AND LA.LA008=TE.TE003 AND LA.LA004 LIKE '{0}%' AND (TE.TE004 LIKE '1%' OR TE.TE004 LIKE '2%') AND  SUBSTRING(LA.LA004,1,6)=SUBSTRING(INVLA.LA004,1,6))) *100 AS  MONEYS", dateTimePicker1.Value.Year.ToString());
