@@ -179,7 +179,7 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
-                sbSql.AppendFormat(@"  SELECT [TA001] AS '請購單別',[TA002] AS '請購單號',[TA003] AS '序號',[COMMENTD] AS '單身備註',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',CONVERT(NVARCHAR,[DATES],112) AS '日期',[ID],[MID]");
+                sbSql.AppendFormat(@"  SELECT [TA001] AS '請購單別',[TA002] AS '請購單號',[TA003] AS '序號',[COMMENTD] AS '單身備註',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',TB011 AS '需求日期',[ID],[MID]");
                 sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATBD]");
                 sbSql.AppendFormat(@"  WHERE [MID]='{0}' ", ID);
                 sbSql.AppendFormat(@"  ORDER BY [TA003]");
@@ -290,8 +290,8 @@ namespace TKPUR
                 sbSql.AppendFormat(" ('{0}',getdate(),'{1}','{2}','{3}','{4}')", Guid.ToString() , TA001, TA002, VERSIONS, COMMENT);
                 sbSql.AppendFormat(" ");
                 sbSql.AppendFormat(" INSERT INTO [TKPUR].[dbo].[PURTATBD]");
-                sbSql.AppendFormat(" ([ID],[MID],[DATES],[TA001],[TA002],[TA003],[MB001],[MB002],[MB003],[MB004],[NUM],[COMMENTD])");
-                sbSql.AppendFormat(" SELECT NEWID(),'{0}',GETDATE(),TB001,TB002,TB003,TB004,TB005,TB006,TB007,TB009,TB012", Guid.ToString());
+                sbSql.AppendFormat(" ([ID],[MID],[DATES],[TA001],[TA002],[TA003],[MB001],[MB002],[MB003],[MB004],[TB011],[NUM],[COMMENTD])");
+                sbSql.AppendFormat(" SELECT NEWID(),'{0}',GETDATE(),TB001,TB002,TB003,TB004,TB005,TB006,TB007,TB011,TB009,TB012", Guid.ToString());
                 sbSql.AppendFormat(" FROM [TK].dbo.PURTB");
                 sbSql.AppendFormat(" WHERE TB001='{0}' AND TB002 ='{1}'",TA001,TA002);
                 sbSql.AppendFormat(" ");
@@ -500,7 +500,7 @@ namespace TKPUR
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
 
-            FASTSQL.AppendFormat(@"   SELECT [TA001] AS '請購單別',[TA002] AS '請購單號',[TA003] AS '序號',[COMMENTD] AS '單身備註',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[NUM] AS '請購數量',CONVERT(NVARCHAR,[DATES],112) AS '日期',[ID],[MID]");
+            FASTSQL.AppendFormat(@"   SELECT [TA001] AS '請購單別',[TA002] AS '請購單號',[TA003] AS '序號',[COMMENTD] AS '單身備註',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[TB011] AS '需求日期',[NUM] AS '請購數量',CONVERT(NVARCHAR,[DATES],112) AS '日期',[ID],[MID]");
             FASTSQL.AppendFormat(@"   FROM [TKPUR].[dbo].[PURTATBD]");
             FASTSQL.AppendFormat(@"   WHERE [MID]='{0}'", REPORTID);
             FASTSQL.AppendFormat(@"   ORDER BY [TA003]");
@@ -661,7 +661,7 @@ namespace TKPUR
             }
         }
 
-        public void UPDATEPURTATBD(string ID,string COMMENT)
+        public void UPDATEPURTATBD(string ID,string COMMENT,string TB011)
         {
             try
             {
@@ -677,7 +677,7 @@ namespace TKPUR
                 sbSql.Clear();
 
                 sbSql.AppendFormat("  UPDATE [TKPUR].[dbo].[PURTATBD]");
-                sbSql.AppendFormat("  SET [COMMENTD]='{0}'",COMMENT);
+                sbSql.AppendFormat("  SET [COMMENTD]='{0}',[TB011]='{1}'",COMMENT, TB011);
                 sbSql.AppendFormat("  WHERE [ID]='{0}'",ID);
                 sbSql.AppendFormat("  ");
 
@@ -729,7 +729,7 @@ namespace TKPUR
         {
             if (!string.IsNullOrEmpty(textBox13.Text) && !string.IsNullOrEmpty(textBox8.Text))
             {
-                UPDATEPURTATBD(textBox13.Text, textBox8.Text);
+                UPDATEPURTATBD(textBox13.Text, textBox8.Text,dateTimePicker1.Value.ToString("yyyyMMdd"));
                 Search();
             }
 
