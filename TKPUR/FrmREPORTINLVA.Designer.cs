@@ -98,7 +98,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage1.Size = new System.Drawing.Size(1138, 653);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "報表";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
@@ -195,7 +195,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage2.Size = new System.Drawing.Size(1138, 653);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "明細新增";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // splitContainer2
