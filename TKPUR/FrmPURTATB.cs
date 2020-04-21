@@ -574,6 +574,7 @@ namespace TKPUR
                     textBox4.Text = row.Cells["請購單號"].Value.ToString();
                     textBox5.Text = row.Cells["序號"].Value.ToString();
                     textBox8.Text = row.Cells["單身備註"].Value.ToString();
+                    textBox14.Text = row.Cells["請購數量"].Value.ToString();
                     textBox13.Text = row.Cells["ID"].Value.ToString();
 
 
@@ -585,6 +586,7 @@ namespace TKPUR
                     textBox4.Text = null;
                     textBox5.Text = null;
                     textBox8.Text = null;
+                    textBox14.Text = null;
                     textBox13.Text = null;
 
                 }
@@ -661,7 +663,7 @@ namespace TKPUR
             }
         }
 
-        public void UPDATEPURTATBD(string ID,string COMMENT,string TB011)
+        public void UPDATEPURTATBD(string ID,string COMMENT,string NUM,string TB011)
         {
             try
             {
@@ -677,7 +679,7 @@ namespace TKPUR
                 sbSql.Clear();
 
                 sbSql.AppendFormat("  UPDATE [TKPUR].[dbo].[PURTATBD]");
-                sbSql.AppendFormat("  SET [COMMENTD]='{0}',[TB011]='{1}'",COMMENT, TB011);
+                sbSql.AppendFormat("  SET [COMMENTD]='{0}',[TB011]='{1}',[NUM]={2}", COMMENT, TB011,NUM);
                 sbSql.AppendFormat("  WHERE [ID]='{0}'",ID);
                 sbSql.AppendFormat("  ");
 
@@ -729,8 +731,9 @@ namespace TKPUR
         {
             if (!string.IsNullOrEmpty(textBox13.Text) && !string.IsNullOrEmpty(textBox8.Text))
             {
-                UPDATEPURTATBD(textBox13.Text, textBox8.Text,dateTimePicker1.Value.ToString("yyyyMMdd"));
+                UPDATEPURTATBD(textBox13.Text, textBox8.Text,textBox14.Text,dateTimePicker1.Value.ToString("yyyyMMdd"));
                 Search();
+                MessageBox.Show("完成");
             }
 
 
