@@ -807,7 +807,7 @@
             // 
             this.splitContainer8.Panel2.Controls.Add(this.dataGridView4);
             this.splitContainer8.Size = new System.Drawing.Size(976, 193);
-            this.splitContainer8.SplitterDistance = 338;
+            this.splitContainer8.SplitterDistance = 279;
             this.splitContainer8.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -833,7 +833,7 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(334, 189);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(275, 189);
             this.tableLayoutPanel5.TabIndex = 7;
             // 
             // label12
@@ -901,7 +901,7 @@
             this.dataGridView4.Name = "dataGridView4";
             this.dataGridView4.RowTemplate.Height = 24;
             this.dataGridView4.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView4.Size = new System.Drawing.Size(630, 189);
+            this.dataGridView4.Size = new System.Drawing.Size(689, 189);
             this.dataGridView4.TabIndex = 5;
             // 
             // previewControl2
@@ -926,6 +926,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmPURTATB";
             this.Text = "FrmPURTATB";
+            this.Load += new System.EventHandler(this.FrmPURTATB_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);

@@ -64,6 +64,37 @@ namespace TKPUR
         }
 
         #region FUNCTION
+
+        private void FrmPURTATB_Load(object sender, EventArgs e)
+        {
+            dataGridView4.AlternatingRowsDefaultCellStyle.BackColor = Color.PaleTurquoise;      //奇數列顏色
+            dataGridView3.AlternatingRowsDefaultCellStyle.BackColor = Color.PaleTurquoise;
+
+
+            //先建立個 CheckBox 欄
+            DataGridViewCheckBoxColumn cbCol = new DataGridViewCheckBoxColumn();
+            cbCol.Width = 120;   //設定寬度
+            cbCol.HeaderText = "　全選";
+            cbCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;   //置中
+            cbCol.TrueValue = true;
+            cbCol.FalseValue = false;
+            dataGridView4.Columns.Insert(0, cbCol);
+
+           
+            //建立个矩形，等下计算 CheckBox 嵌入 GridView 的位置
+            Rectangle rect = dataGridView4.GetCellDisplayRectangle(0, -1, true);
+            rect.X = rect.Location.X + rect.Width / 4 - 18;
+            rect.Y = rect.Location.Y + (rect.Height / 2 - 9);
+
+            CheckBox cbHeader = new CheckBox();
+            cbHeader.Name = "checkboxHeader";
+            cbHeader.Size = new Size(18, 18);
+            cbHeader.Location = rect.Location;
+
+            //将 CheckBox 加入到 dataGridView
+            dataGridView4.Controls.Add(cbHeader);
+
+        }
         public void SETdtADD()
         {
             dtADD.Columns.Add("日期", typeof(String));
@@ -511,6 +542,77 @@ namespace TKPUR
             return FASTSQL.ToString();
         }
 
+        public void SETFASTREPORT2()
+        {
+            StringBuilder MID = new StringBuilder();
+            StringBuilder ID = new StringBuilder();
+
+            MID.Clear();
+            ID.Clear();
+
+            foreach (DataGridViewRow row in dataGridView4.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[0].Value))
+                {
+                    MID.AppendFormat(@" '{0}',", row.Cells["MID"].Value.ToString());
+                    ID.AppendFormat(@" '{0}',",row.Cells["ID"].Value.ToString());
+                }
+            }
+
+            MID.AppendFormat(@" '01e5cf12-ccd4-4d80-a767-0298eaed9bc2'");
+            ID.AppendFormat(@" '01e5cf12-ccd4-4d80-a767-0298eaed9bc2'");
+
+            string SQL;
+            string SQL2;
+            report1 = new Report();
+            report1.Load(@"REPORT\請購變更單明細.frx");
+
+            report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+            TableDataSource Table1 = report1.GetDataSource("Table1") as TableDataSource;
+
+            SQL = SETFASETSQL3(MID.ToString());
+            Table.SelectCommand = SQL;
+
+            SQL2 = SETFASETSQL4(ID.ToString());
+            Table1.SelectCommand = SQL2;
+
+            report1.Preview = previewControl2;
+            report1.Show();
+
+        }
+
+        public string SETFASETSQL3(string REPORTID)
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+            StringBuilder STRQUERY = new StringBuilder();
+
+            FASTSQL.AppendFormat(@"   SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[COMMENT] AS '單頭備註', [ID]");
+            FASTSQL.AppendFormat(@"   FROM [TKPUR].[dbo].[PURTATB]");
+            FASTSQL.AppendFormat(@"   WHERE [ID] IN ({0})", REPORTID);
+            FASTSQL.AppendFormat(@"   ");
+
+            return FASTSQL.ToString();
+        }
+
+        public string SETFASETSQL4(string REPORTID)
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+            StringBuilder STRQUERY = new StringBuilder();
+
+            FASTSQL.AppendFormat(@"   SELECT [TA001] AS '請購單別',[TA002] AS '請購單號',[TA003] AS '序號',[COMMENTD] AS '單身備註',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[TB011] AS '需求日期',[NUM] AS '請購數量',CONVERT(NVARCHAR,[DATES],112) AS '日期',[ID],[MID]");
+            FASTSQL.AppendFormat(@"   ,TD001 AS '採購單別',TD002 AS '採購單號',TD003 AS '採購序號'");
+            FASTSQL.AppendFormat(@"   FROM [TKPUR].[dbo].[PURTATBD]");
+            FASTSQL.AppendFormat(@"   LEFT JOIN [TK].dbo.PURTD ON TD026=TA001 AND TD027=TA002 AND TD028=TA003 ");
+            FASTSQL.AppendFormat(@"   WHERE [ID] IN ({0})", REPORTID);
+            FASTSQL.AppendFormat(@"   ORDER BY [TA001],[TA002],[TA003]");
+            FASTSQL.AppendFormat(@"   ");
+
+            return FASTSQL.ToString();
+        }
+
         public void Search3()
         {
             try
@@ -577,7 +679,7 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
-                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[PURTATBD].[DATES],112) AS '日期',[PURTATBD].[TA001] AS '請購單別',[PURTATBD].[TA002] AS '請購單號',[PURTATBD].[TA003] AS '請購序號',[COMMENT] AS '單頭備註',[PURTATBD].[NUM] AS '數量', [PURTATBD].[COMMENTD] AS '單身備註', [PURTATBD].[ID] ");
+                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[PURTATBD].[DATES],112) AS '日期',[PURTATBD].[TA001] AS '請購單別',[PURTATBD].[TA002] AS '請購單號',[PURTATBD].[TA003] AS '請購序號',[COMMENT] AS '單頭備註',[PURTATBD].[NUM] AS '數量', [PURTATBD].[COMMENTD] AS '單身備註',[PURTATBD].[MID] , [PURTATBD].[ID]  ");
                 sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB],[TKPUR].[dbo].[PURTATBD]");
                 sbSql.AppendFormat(@"  WHERE [PURTATB].ID=[PURTATBD].MID");
                 sbSql.AppendFormat(@"  AND [PURTATBD].[TA001]='{0}' AND [PURTATBD].[TA002] LIKE '%{1}%' ", textBox15.Text.Trim(), textBox16.Text.Trim());
@@ -841,11 +943,12 @@ namespace TKPUR
 
         private void button9_Click(object sender, EventArgs e)
         {
-
+            SETFASTREPORT2();
         }
+
 
         #endregion
 
-
+      
     }
 }
