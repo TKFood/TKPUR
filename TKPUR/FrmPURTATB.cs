@@ -501,10 +501,12 @@ namespace TKPUR
             StringBuilder STRQUERY = new StringBuilder();
 
             FASTSQL.AppendFormat(@"   SELECT [TA001] AS '請購單別',[TA002] AS '請購單號',[TA003] AS '序號',[COMMENTD] AS '單身備註',[MB001] AS '品號',[MB002] AS '品名',[MB003] AS '規格',[MB004] AS '單位',[TB011] AS '需求日期',[NUM] AS '請購數量',CONVERT(NVARCHAR,[DATES],112) AS '日期',[ID],[MID]");
+            FASTSQL.AppendFormat(@"   ,TD001 AS '採購單別',TD002 AS '採購單號',TD003 AS '採購序號'");
             FASTSQL.AppendFormat(@"   FROM [TKPUR].[dbo].[PURTATBD]");
+            FASTSQL.AppendFormat(@"   LEFT JOIN [TK].dbo.PURTD ON TD026=TA001 AND TD027=TA002 AND TD028=TA003 ");
             FASTSQL.AppendFormat(@"   WHERE [MID]='{0}'", REPORTID);
             FASTSQL.AppendFormat(@"   ORDER BY [TA003]");
-            FASTSQL.AppendFormat(@"    ");
+            FASTSQL.AppendFormat(@"   ");
 
             return FASTSQL.ToString();
         }
