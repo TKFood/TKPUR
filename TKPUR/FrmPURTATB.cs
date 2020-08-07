@@ -563,6 +563,63 @@ namespace TKPUR
             }
         }
 
+        public void Search4()
+        {           
+            SqlDataAdapter adapter4 = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder4 = new SqlCommandBuilder();           
+            DataSet ds4 = new DataSet();
+
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  SELECT CONVERT(NVARCHAR,[PURTATBD].[DATES],112) AS '日期',[PURTATBD].[TA001] AS '請購單別',[PURTATBD].[TA002] AS '請購單號',[PURTATBD].[TA003] AS '請購序號',[COMMENT] AS '單頭備註',[PURTATBD].[NUM] AS '數量', [PURTATBD].[COMMENTD] AS '單身備註', [PURTATBD].[ID] ");
+                sbSql.AppendFormat(@"  FROM [TKPUR].[dbo].[PURTATB],[TKPUR].[dbo].[PURTATBD]");
+                sbSql.AppendFormat(@"  WHERE [PURTATB].ID=[PURTATBD].MID");
+                sbSql.AppendFormat(@"  AND [PURTATBD].[TA001]='{0}' AND [PURTATBD].[TA002] LIKE '%{1}%' ", textBox15.Text.Trim(), textBox16.Text.Trim());
+                sbSql.AppendFormat(@"  ORDER BY [PURTATBD].[TA001],[PURTATBD].[TA002],[PURTATBD].[TA003]");
+                sbSql.AppendFormat(@"  ");
+
+                adapter4 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder4 = new SqlCommandBuilder(adapter4);
+                sqlConn.Open();
+                ds4.Clear();
+                adapter4.Fill(ds4, "ds4");
+                sqlConn.Close();
+
+
+                if (ds4.Tables["ds4"].Rows.Count == 0)
+                {
+                    dataGridView4.DataSource = null;
+                }
+                else
+                {
+                    if (ds4.Tables["ds4"].Rows.Count >= 1)
+                    {
+                        dataGridView4.DataSource = ds4.Tables["ds4"];
+                        dataGridView4.AutoResizeColumns();
+
+
+                    }
+
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dataGridView2.CurrentRow != null)
@@ -777,9 +834,18 @@ namespace TKPUR
             }
         }
 
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Search4();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+
+        }
 
         #endregion
 
-      
+
     }
 }
