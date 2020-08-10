@@ -537,7 +537,7 @@ namespace TKPUR
             FASTSQL.AppendFormat(@"   LEFT JOIN [TK].dbo.PURTD ON TD026=TA001 AND TD027=TA002 AND TD028=TA003 ");
             FASTSQL.AppendFormat(@"   WHERE [MID]='{0}'", REPORTID);
             FASTSQL.AppendFormat(@"   ORDER BY [TA003]");
-            FASTSQL.AppendFormat(@"   ");
+            FASTSQL.AppendFormat(@"      ");
 
             return FASTSQL.ToString();
         }
