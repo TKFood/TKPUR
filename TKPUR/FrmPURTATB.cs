@@ -57,6 +57,9 @@ namespace TKPUR
         string REPORTID;
         string DELID;
 
+        int ROWSINDEX = 0;
+        int COLUMNSINDEX = 0;
+
         public FrmPURTATB()
         {
             InitializeComponent();
@@ -150,6 +153,43 @@ namespace TKPUR
 
                 }
 
+                if (ROWSINDEX > 0 || COLUMNSINDEX > 0)
+                {
+                    dataGridView1.CurrentCell = dataGridView1.Rows[ROWSINDEX].Cells[COLUMNSINDEX];
+
+                    DataGridViewRow row = dataGridView1.Rows[ROWSINDEX];
+
+                    if (ROWSINDEX >= 0)
+                    {
+                        DataGridViewRow DGrow = dataGridView1.Rows[ROWSINDEX];
+
+                        textBox9.Text = DGrow.Cells["請購單別"].Value.ToString();
+                        textBox10.Text = DGrow.Cells["請購單號"].Value.ToString();
+                        textBox11.Text = DGrow.Cells["單頭備註"].Value.ToString();
+                        textBox12.Text = DGrow.Cells["ID"].Value.ToString();
+                        DELID = DGrow.Cells["ID"].Value.ToString();
+
+
+                        if (!string.IsNullOrEmpty(DGrow.Cells["ID"].Value.ToString()))
+                        {
+                            Search2(DGrow.Cells["ID"].Value.ToString());
+                        }
+                    }
+                    else
+                    {
+                        dataGridView2.DataSource = null;
+
+                        textBox9.Text = null;
+                        textBox10.Text = null;
+                        textBox11.Text = null;
+                        textBox12.Text = null;
+                        DELID = null;
+
+                    }
+
+
+                }
+
             }
             catch
             {
@@ -168,6 +208,15 @@ namespace TKPUR
             if (dataGridView1.CurrentRow != null)
             {
                 int rowindex = dataGridView1.CurrentRow.Index;
+
+                if (dataGridView1.CurrentCell.RowIndex > 0 || dataGridView1.CurrentCell.ColumnIndex > 0)
+                {                    
+                    ROWSINDEX = dataGridView1.CurrentCell.RowIndex;
+                    COLUMNSINDEX = dataGridView1.CurrentCell.ColumnIndex;
+
+                    rowindex = ROWSINDEX;
+                }
+
                 if (rowindex >= 0)
                 {
                     DataGridViewRow row = dataGridView1.Rows[rowindex];
@@ -241,6 +290,8 @@ namespace TKPUR
                     }
 
                 }
+
+             
 
             }
             catch
