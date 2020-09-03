@@ -791,6 +791,8 @@ namespace TKPUR
                     textBox14.Text = row.Cells["請購數量"].Value.ToString();
                     textBox13.Text = row.Cells["ID"].Value.ToString();
 
+                    DateTime dt=Convert.ToDateTime (row.Cells["需求日期"].Value.ToString().Substring(0,4)+"/"+ row.Cells["需求日期"].Value.ToString().Substring(4, 2) + "/" + row.Cells["需求日期"].Value.ToString().Substring(6, 2));
+                    dateTimePicker1.Value = dt;
 
 
                 }
