@@ -894,11 +894,11 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@" 
                                      UPDATE [TKPUR].[dbo].[PURTATBD]
-                                     SET [PURTATBD].[COMMENTD]='{0}',[PURTATBD].[NUM]={1},[PURTATBD].[TB011]=[PURTB].[TB011]
+                                     SET [PURTATBD].[COMMENTD]='{0}',[PURTATBD].[NUM]={1},[PURTATBD].[TB011]={3}
                                      FROM [TK].dbo.[PURTB]
                                      WHERE [PURTATBD].[ID]='{2}'
                                      AND [PURTB].TB001=[PURTATBD].TA001  AND [PURTB].TB002=[PURTATBD].TA002  AND [PURTB].TB003=[PURTATBD].TA003 
-                                     ", COMMENT, NUM, ID);
+                                     ", COMMENT, NUM, ID, TB011);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
