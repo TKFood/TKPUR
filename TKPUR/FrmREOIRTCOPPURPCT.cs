@@ -126,20 +126,20 @@ namespace TKPUR
             DataSet ds = new DataSet();
 
 
-            ds.Clear();
-            textBox3.Text = "0";
+            ds.Clear();            
             
-
-            try
+            if(string.IsNullOrEmpty(textBox3.Text))
             {
-                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
-                sqlConn = new SqlConnection(connectionString);
+                try
+                {
+                    connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                    sqlConn = new SqlConnection(connectionString);
 
-                sbSql.Clear();
-                sbSqlQuery.Clear();
+                    sbSql.Clear();
+                    sbSqlQuery.Clear();
 
 
-                sbSql.AppendFormat(@"
+                    sbSql.AppendFormat(@"
                                     SELECT CONVERT(INT,SUM(MONEYS)) MONEYS
                                     FROM(
                                     SELECT SUM(TH037) AS 'MONEYS'
@@ -151,41 +151,47 @@ namespace TKPUR
                                     FROM[TK].dbo.POSTB
                                     WHERE  SUBSTRING(TB001, 1, 6) = '{0}'
                                     ) AS TEMP"
-                                    , dateTimePicker4.Value.ToString("yyyyMM"));
+                                        , dateTimePicker4.Value.ToString("yyyyMM"));
 
-                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+                    adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
-                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
-                sqlConn.Open();
-                ds.Clear();
-                adapter1.Fill(ds, "TEMPds1");
-                sqlConn.Close();
+                    sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                    sqlConn.Open();
+                    ds.Clear();
+                    adapter1.Fill(ds, "TEMPds1");
+                    sqlConn.Close();
 
 
-                if (ds.Tables["TEMPds1"].Rows.Count == 0)
-                {
-
-                }
-                else
-                {
-                    if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                    if (ds.Tables["TEMPds1"].Rows.Count == 0)
                     {
 
-                        textBox3.Text = ds.Tables["TEMPds1"].Rows[0]["MONEYS"].ToString();
-                       
+                    }
+                    else
+                    {
+                        if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                        {
+
+                            textBox3.Text = ds.Tables["TEMPds1"].Rows[0]["MONEYS"].ToString();
+
+                        }
+
                     }
 
                 }
+                catch
+                {
 
+                }
+                finally
+                {
+
+                }
             }
-            catch
+            else
             {
-
+                
             }
-            finally
-            {
-
-            }
+            
         }
 
 

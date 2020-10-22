@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/22/2020 15:50:08" ReportInfo.Modified="10/22/2020 16:03:15" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9Kk+qoVVyLAVEI9NKRIOviV">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;[YM] AS '年月' ,[PURMONEY1] AS '原料金額',[PURMONEY2] AS '物料金額',[COPMONEY] AS '營收金額'&#13;&#10;FROM [TKPUR].[dbo].[COPPURPCT]&#13;&#10;WHERE [YM]&gt;='202008' AND [YM]&lt;='202009'">
+        <Column Name="年月" DataType="System.String"/>
+        <Column Name="原料金額" DataType="System.Int32"/>
+        <Column Name="物料金額" DataType="System.Int32"/>
+        <Column Name="營收金額" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="41.92" Width="718.2" Height="28.35">
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="原料金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="物料金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="營收金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="年月" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="74.4" Width="718.2" Height="47.25" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.年月]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.原料金額]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.物料金額]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.營收金額]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[[Table.原料金額]/[Table.營收金額]*100]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="125.77" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>
