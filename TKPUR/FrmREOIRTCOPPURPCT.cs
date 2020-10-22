@@ -40,6 +40,8 @@ namespace TKPUR
         int result;
         Thread TD;
 
+        public Report report1 { get; private set; }
+
         public FrmREOIRTCOPPURPCT()
         {
             InitializeComponent();
@@ -350,12 +352,46 @@ namespace TKPUR
             }
         }
 
+        public void SETFASTREPORT()
+        {
+            string SQL;
+            string SQL2;
+            report1 = new Report();
+            report1.Load(@"REPORT\原物料的營收佔比.frx");
+
+            report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+           
+            SQL = SETFASETSQL();
+            Table.SelectCommand = SQL;
+
+            report1.Preview = previewControl1;
+            report1.Show();
+
+        }
+
+        public string SETFASETSQL()
+        {
+            StringBuilder FASTSQL = new StringBuilder();          
+
+            FASTSQL.AppendFormat(@"   
+                                SELECT 
+                                [YM] AS '年月' ,[PURMONEY1] AS '原料金額',[PURMONEY2] AS '物料金額',[COPMONEY] AS '營收金額'
+                                ,ROUND([PURMONEY1]/[COPMONEY],4) AS '原料佔比',ROUND([PURMONEY2]/[COPMONEY],4) AS '物料佔比'
+                                FROM [TKPUR].[dbo].[COPPURPCT]
+                                WHERE [YM]>='{0}' AND [YM]<='{1}'
+                                ",dateTimePicker1.Value.ToString("yyyyMM"), dateTimePicker2.Value.ToString("yyyyMM"));
+
+            return FASTSQL.ToString();
+        }
         #endregion
 
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-
+            SETFASTREPORT();
         }
 
         private void button4_Click(object sender, EventArgs e)
