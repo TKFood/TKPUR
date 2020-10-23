@@ -381,7 +381,7 @@ namespace TKPUR
                                 [YM] AS '年月' ,[PURMONEY1] AS '原料金額',[PURMONEY2] AS '物料金額',[COPMONEY] AS '營收金額'
                                 ,ROUND([PURMONEY1]/[COPMONEY],4) AS '原料佔比',ROUND([PURMONEY2]/[COPMONEY],4) AS '物料佔比'
                                 FROM [TKPUR].[dbo].[COPPURPCT]
-                                WHERE [YM]>='{0}' AND [YM]<='{1}'
+                                WHERE [YM]>='{0}' AND [YM]<='{1}' 
                                 ",dateTimePicker1.Value.ToString("yyyyMM"), dateTimePicker2.Value.ToString("yyyyMM"));
 
             return FASTSQL.ToString();
