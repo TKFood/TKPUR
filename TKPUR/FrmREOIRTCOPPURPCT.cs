@@ -83,7 +83,7 @@ namespace TKPUR
                                     WHERE TG001=TH001 AND TG002=TH002
                                     AND SUBSTRING(TG003,1,6)='{0}' 
                                     AND (TH004 LIKE '1%' OR TH004 LIKE '2%' )
-                                    GROUP BY SUBSTRING(TH004,1,1)"
+                                    GROUP BY SUBSTRING(TH004,1,1)  "                        
                                     , dateTimePicker4.Value.ToString("yyyyMM"));
 
                 adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
@@ -386,12 +386,55 @@ namespace TKPUR
 
             return FASTSQL.ToString();
         }
+
+        public void SETFASTREPORT2()
+        {
+            string SQL;
+            string SQL2;
+            report1 = new Report();
+            report1.Load(@"REPORT\原物料的進貨矩陣.frx");
+
+            report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+
+            SQL = SETFASETSQL2();
+            Table.SelectCommand = SQL;
+
+            report1.Preview = previewControl2;
+            report1.Show();
+
+        }
+
+        public string SETFASETSQL2()
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+
+            FASTSQL.AppendFormat(@"   
+                                SELECT 年月,品號,品名,數量,單位,進貨金額未稅,
+                                (SELECT ISNULL(SUM([COPMONEY]),0)  FROM [TKPUR].[dbo].[COPPURPCT] WHERE YM=年月) AS COPMONEYS
+                                ,(進貨金額未稅/(SELECT ISNULL(SUM([COPMONEY]),1)  FROM [TKPUR].[dbo].[COPPURPCT] WHERE YM=年月)) AS 'PCT'
+                                FROM (
+                                SELECT SUBSTRING(TG003,1,6) AS '年月',LA001 AS '品號',TH005 AS '品名',SUM(LA011) AS '數量',MB004 AS '單位',SUM(LA013) AS '進貨金額未稅',SUM(TH007) AS '進貨數量',SUM(TH047) AS '進貨金額',SUM(TH048) AS '進貨稅額'
+                                FROM [TK].dbo.PURTG,[TK].dbo.PURTH,[TK].dbo.INVLA,[TK].dbo.INVMB
+                                WHERE TG001=TH001 AND TG002=TH002
+                                AND LA006=TH001 AND LA007=TH002 AND LA008=TH003
+                                AND LA001=MB001
+                                AND SUBSTRING(TG003,1,6)>='{0}' AND SUBSTRING(TG003,1,6)<='{1}' 
+                                GROUP BY SUBSTRING(TG003,1,6),LA001,TH005,MB004
+                                ) AS TEMP
+                                ", dateTimePicker1.Value.ToString("yyyyMM"), dateTimePicker2.Value.ToString("yyyyMM"));
+
+            return FASTSQL.ToString();
+        }
         #endregion
 
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
             SETFASTREPORT();
+            SETFASTREPORT2();
         }
 
         private void button4_Click(object sender, EventArgs e)
