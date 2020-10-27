@@ -81,10 +81,11 @@ namespace TKPUR
                                     SELECT SUBSTRING(TH004,1,1) AS 'KINDS',CONVERT(INT,SUM(TH047+TH048)) AS 'MONEYS'
                                     FROM [TK].dbo.PURTG,[TK].dbo.PURTH
                                     WHERE TG001=TH001 AND TG002=TH002
+                                    AND TH030='Y'
                                     AND SUBSTRING(TG003,1,6)='{0}' 
                                     AND (TH004 LIKE '1%' OR TH004 LIKE '2%' )
-                                    GROUP BY SUBSTRING(TH004,1,1)  "                        
-                                    , dateTimePicker4.Value.ToString("yyyyMM"));
+                                    GROUP BY SUBSTRING(TH004,1,1)  
+                                    ", dateTimePicker4.Value.ToString("yyyyMM"));
 
                 adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
