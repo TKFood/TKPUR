@@ -46,9 +46,46 @@ namespace TKPUR
         public FrmPURTCDMODIFY()
         {
             InitializeComponent();
+
+            comboBox1load();
         }
 
         #region FUNCTION
+
+        public void comboBox1load()
+        {
+            connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT  [ID],[KIND],[NAME] FROM [TKPUR].[dbo].[BASE] WHERE [KIND]='採購變更' ORDER BY ID   ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("NAME", typeof(string));
+            da.Fill(dt);
+            comboBox1.DataSource = dt.DefaultView;
+            comboBox1.ValueMember = "NAME";
+            comboBox1.DisplayMember = "NAME";
+            sqlConn.Close();
+
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(!comboBox1.Text.Trim().Equals("System.Data.DataRowView"))
+            {
+                textBox3.Text = comboBox1.Text.Trim();
+            }
+            
+
+            //if (string.IsNullOrEmpty(textBox3.Text))
+            //{
+               
+            //}
+        }
         public void Search()
         {
             ds.Clear();
@@ -204,8 +241,9 @@ namespace TKPUR
            
         }
 
+
         #endregion
 
-
+       
     }
 }
