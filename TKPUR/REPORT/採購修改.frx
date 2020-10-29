@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/29/2020 11:35:59" ReportInfo.Modified="10/29/2020 11:39:32" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9LzW0Wl/dBa6BrQ8c10LNJC">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10; [ID],CONVERT(nvarchar,[UPDATEDATES],111) AS '修改日期',[TD001] AS '採購單別',[TD002] AS '採購單號',[TD003] AS '採購序號',[TD014] AS '備註',[CHAGECOUNT] AS '修改次數',[COMMENT] AS '修改原因'&#13;&#10;FROM [TKPUR].[dbo].[PURTCDCHANGERECORD]&#13;&#10;WHERE CONVERT(nvarchar,[UPDATEDATES],112)&gt;='20201029' AND  CONVERT(nvarchar,[UPDATEDATES],112)&lt;='20201029'&#13;&#10;ORDER BY [TD001],[TD002],[TD003],[CHAGECOUNT]">
+        <Column Name="ID" DataType="System.Guid"/>
+        <Column Name="修改日期" DataType="System.String"/>
+        <Column Name="採購單別" DataType="System.String"/>
+        <Column Name="採購單號" DataType="System.String"/>
+        <Column Name="採購序號" DataType="System.String"/>
+        <Column Name="備註" DataType="System.String"/>
+        <Column Name="修改次數" DataType="System.Int32"/>
+        <Column Name="修改原因" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="18.9">
+      <TextObject Name="Text1" Width="718.2" Height="18.9" Text="採購單修改" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="23.02" Width="718.2" Height="18.9">
+      <TextObject Name="Text3" Width="66.15" Height="18.9" Border.Lines="All" Text="採購單別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="66.15" Width="94.5" Height="18.9" Border.Lines="All" Text="採購單號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="160.65" Width="66.15" Height="18.9" Border.Lines="All" Text="採購序號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="修改日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="226.8" Width="179.55" Height="18.9" Border.Lines="All" Text="備註" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="406.35" Width="66.15" Height="18.9" Border.Lines="All" Text="修改次數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="472.5" Width="151.2" Height="18.9" Border.Lines="All" Text="修改原因" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="46.05" Width="718.2" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購單別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="66.15" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購單號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="160.65" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.採購序號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.修改日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="226.8" Width="179.55" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.備註]" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="406.35" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.修改次數]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="472.5" Width="151.2" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.修改原因]" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="69.07" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>

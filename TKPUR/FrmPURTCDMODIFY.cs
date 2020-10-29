@@ -34,6 +34,7 @@ namespace TKPUR
         SqlCommand cmd = new SqlCommand();
         DataSet ds = new DataSet();
 
+        public Report report1 { get; private set; }
         int result;
         Thread TD;
 
@@ -320,6 +321,40 @@ namespace TKPUR
             }
         }
 
+        public void SETFASTREPORT()
+        {
+            string SQL;
+            string SQL2;
+            report1 = new Report();
+            report1.Load(@"REPORT\採購修改.frx");
+
+            report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+
+            SQL = SETFASETSQL();
+            Table.SelectCommand = SQL;
+
+            report1.Preview = previewControl1;
+            report1.Show();
+
+        }
+
+        public string SETFASETSQL()
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+
+            FASTSQL.AppendFormat(@"   
+                                SELECT 
+                                 [ID],CONVERT(nvarchar,[UPDATEDATES],111) AS '修改日期',[TD001] AS '採購單別',[TD002] AS '採購單號',[TD003] AS '採購序號',[TD014] AS '備註',[CHAGECOUNT] AS '修改次數',[COMMENT] AS '修改原因'
+                                FROM [TKPUR].[dbo].[PURTCDCHANGERECORD]
+                                WHERE CONVERT(nvarchar,[UPDATEDATES],112)>='{0}' AND  CONVERT(nvarchar,[UPDATEDATES],112)<='{1}'
+                                ORDER BY [TD001],[TD002],[TD003],[CHAGECOUNT]                    
+                                ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+
+            return FASTSQL.ToString();
+        }
         #endregion
 
         #region BUTTON
@@ -333,17 +368,21 @@ namespace TKPUR
         {
             if(!string.IsNullOrEmpty(textBox3.Text))
             {
-                //UPDATE(textBox4.Text,textBox5.Text,textBox6.Text,dateTimePicker1.Value.ToString("yyyyMMdd"),textBox3.Text);
+                UPDATE(textBox4.Text,textBox5.Text,textBox6.Text,dateTimePicker1.Value.ToString("yyyyMMdd"),textBox3.Text);
                 ADDPURTCDCHANGERECORD(DateTime.Now.ToString("yyyy/MM/dd  HH:mm:ss"),textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox3.Text,comboBox1.Text.Trim());
 
                 Search();
             }
            
         }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT();
+        }
 
 
         #endregion
 
-       
+
     }
 }
