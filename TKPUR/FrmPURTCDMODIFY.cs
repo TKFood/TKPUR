@@ -221,6 +221,100 @@ namespace TKPUR
             }
         }
 
+        public void ADDPURTCDCHANGERECORD(string UPDATEDATES,string TD001,string TD002,string TD003,string TD014,string COMMENT)
+        {
+            string CHAGECOUNT= SERACHCHAGECOUNT(TD001, TD002, TD003);
+
+            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+
+            sqlConn.Close();
+            sqlConn.Open();
+            tran = sqlConn.BeginTransaction();
+
+            sbSql.Clear();
+
+           
+            sbSql.AppendFormat(@"  
+                                INSERT INTO [TKPUR].[dbo].[PURTCDCHANGERECORD]
+                                ([ID],[UPDATEDATES],[TD001],[TD002],[TD003],[TD014],[CHAGECOUNT],[COMMENT])
+                                VALUES
+                                ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')
+                                ",Guid.NewGuid(), UPDATEDATES, TD001, TD002, TD003, TD014, CHAGECOUNT, COMMENT);
+
+            cmd.Connection = sqlConn;
+            cmd.CommandTimeout = 60;
+            cmd.CommandText = sbSql.ToString();
+            cmd.Transaction = tran;
+            result = cmd.ExecuteNonQuery();
+
+            if (result == 0)
+            {
+                tran.Rollback();    //交易取消
+            }
+            else
+            {
+                tran.Commit();      //執行交易  
+
+
+            }
+
+        }
+
+        public string SERACHCHAGECOUNT(string TD001, string TD002, string TD003)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+
+            ds.Clear();
+
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                    SELECT COUNT(ID) AS COUNTS
+                                    FROM [TKPUR].[dbo].[PURTCDCHANGERECORD]
+                                    WHERE [TD001]='{0}' AND [TD002]='{1}' AND [TD003]='{2}'
+                                    ",TD001,TD002,TD003);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    return ds.Tables["TEMPds1"].Rows[0]["COUNTS"].ToString().Trim();
+
+                }
+                else
+                {
+                    return "0";
+                }
+
+            }
+            catch
+            {
+                return "0";
+            }
+            finally
+            {
+
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -234,7 +328,8 @@ namespace TKPUR
         {
             if(!string.IsNullOrEmpty(textBox3.Text))
             {
-                UPDATE(textBox4.Text,textBox5.Text,textBox6.Text,dateTimePicker1.Value.ToString("yyyyMMdd"),textBox3.Text);
+                //UPDATE(textBox4.Text,textBox5.Text,textBox6.Text,dateTimePicker1.Value.ToString("yyyyMMdd"),textBox3.Text);
+                ADDPURTCDCHANGERECORD(DateTime.Now.ToString("yyyy/MM/dd  HH:mm:ss"),textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox3.Text,comboBox1.Text.Trim());
 
                 Search();
             }
