@@ -219,16 +219,16 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 312F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 94F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 320F));
-            this.tableLayoutPanel2.Controls.Add(this.label5, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.label4, 1, 3);
-            this.tableLayoutPanel2.Controls.Add(this.textBox3, 2, 3);
-            this.tableLayoutPanel2.Controls.Add(this.comboBox1, 2, 2);
             this.tableLayoutPanel2.Controls.Add(this.button2, 3, 2);
             this.tableLayoutPanel2.Controls.Add(this.dateTimePicker1, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.label2, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.textBox6, 3, 1);
             this.tableLayoutPanel2.Controls.Add(this.textBox5, 2, 1);
             this.tableLayoutPanel2.Controls.Add(this.textBox4, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label4, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.label5, 1, 3);
+            this.tableLayoutPanel2.Controls.Add(this.comboBox1, 2, 3);
+            this.tableLayoutPanel2.Controls.Add(this.textBox3, 2, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -271,11 +271,10 @@
             // textBox3
             // 
             this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox3.Location = new System.Drawing.Point(243, 126);
+            this.textBox3.Location = new System.Drawing.Point(243, 86);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(306, 27);
             this.textBox3.TabIndex = 8;
-            this.textBox3.Text = "客戶延後交期";
             // 
             // label2
             // 
@@ -291,7 +290,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(123, 132);
+            this.label4.Location = new System.Drawing.Point(123, 92);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(114, 16);
             this.label4.TabIndex = 5;
@@ -330,7 +329,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(123, 92);
+            this.label5.Location = new System.Drawing.Point(123, 132);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(114, 16);
             this.label5.TabIndex = 13;
@@ -340,7 +339,7 @@
             // 
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(243, 90);
+            this.comboBox1.Location = new System.Drawing.Point(243, 130);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(306, 24);
             this.comboBox1.TabIndex = 14;

@@ -75,10 +75,10 @@ namespace TKPUR
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(!comboBox1.Text.Trim().Equals("System.Data.DataRowView"))
-            {
-                textBox3.Text = comboBox1.Text.Trim();
-            }
+        //    if(!comboBox1.Text.Trim().Equals("System.Data.DataRowView"))
+        //    {
+        //        textBox3.Text = comboBox1.Text.Trim();
+        //    }
             
 
             //if (string.IsNullOrEmpty(textBox3.Text))
