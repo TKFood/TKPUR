@@ -296,12 +296,17 @@ namespace TKPUR
 
                 if (ds.Tables["TEMPds1"].Rows.Count >= 1)
                 {
-                    return ds.Tables["TEMPds1"].Rows[0]["COUNTS"].ToString().Trim();
+                    //return ds.Tables["TEMPds1"].Rows[0]["COUNTS"].ToString().Trim();
+
+                    int counts = Convert.ToInt32(ds.Tables["TEMPds1"].Rows[0]["COUNTS"].ToString().Trim());
+                    counts = counts + 1;
+                    return counts.ToString();
+
 
                 }
                 else
                 {
-                    return "0";
+                    return "1";
                 }
 
             }
