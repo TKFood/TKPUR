@@ -351,7 +351,7 @@ namespace TKPUR
                                 FROM [TKPUR].[dbo].[PURTCDCHANGERECORD]
                                 WHERE CONVERT(nvarchar,[UPDATEDATES],112)>='{0}' AND  CONVERT(nvarchar,[UPDATEDATES],112)<='{1}'
                                 ORDER BY [TD001],[TD002],[TD003],[CHAGECOUNT]                    
-                                ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+                                ", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
 
             return FASTSQL.ToString();
         }
