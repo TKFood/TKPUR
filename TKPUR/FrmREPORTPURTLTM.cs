@@ -86,12 +86,13 @@ namespace TKPUR
                                 ,(SELECT TOP 1 TM010 FROM [TK].dbo.PURTL TL,[TK].dbo.PURTM TM WHERE TL.TL001=TM.TM001 AND TL.TL002=TM.TM002 AND TM.TM004=PURTM.TM004 AND TL.TL004=PURTL.TL004 AND TL.TL003<>PURTL.TL003 ORDER BY TL003 DESC) AS '上次核價單價'
                                 ,(TM010-(SELECT TOP 1 TM010 FROM [TK].dbo.PURTL TL,[TK].dbo.PURTM TM WHERE TL.TL001=TM.TM001 AND TL.TL002=TM.TM002 AND TM.TM004=PURTM.TM004 AND TL.TL004=PURTL.TL004 AND TL.TL003<>PURTL.TL003 ORDER BY TL003 DESC)) AS '差價'
                                 ,(SELECT TOP 1 TL003+'-'+CONVERT(NVARCHAR,TM010) FROM [TK].dbo.PURTL TL,[TK].dbo.PURTM TM WHERE TL.TL001=TM.TM001 AND TL.TL002=TM.TM002 AND TM.TM004=PURTM.TM004 AND TL.TL004=PURTL.TL004 AND TL.TL003<>PURTL.TL003 ORDER BY TL003 DESC) AS '備註'
+                                ,(SELECT  MB002+ ',' FROM [TK] .dbo.BOMMD,[TK] .dbo.INVMB WHERE MB001=MD001 AND  MD003 = TM004 FOR XML PATH('')) AS '成品'
                                 FROM [TK].dbo.PURTL,[TK].dbo.PURTM,[TK].dbo.PURMA
                                 WHERE TL001=TM001 AND TL002=TM002
                                 AND MA001=TL004
                                 AND TL006='Y'
                                 AND TL003>='{0}' AND TL003<='{1}'
-                                ORDER BY MA002,TL003,TM004
+                                ORDER BY TM004 DESC,TL003,MA002
 
                                 ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
 
