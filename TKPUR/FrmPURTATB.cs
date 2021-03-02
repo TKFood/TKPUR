@@ -574,6 +574,7 @@ namespace TKPUR
             FASTSQL.AppendFormat(@"   
                                 SELECT CONVERT(NVARCHAR,[DATES],112) AS '日期',[TA001] AS '請購單別',[TA002] AS '請購單號',[VERSIONS] AS '修改次數',[COMMENT] AS '單頭備註', [ID]
                                 FROM [TKPUR].[dbo].[PURTATB]
+                                WHERE ID IN ('{0}')
                                 ", REPORTID); 
 
             return FASTSQL.ToString();
