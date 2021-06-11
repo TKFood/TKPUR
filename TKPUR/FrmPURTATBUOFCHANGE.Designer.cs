@@ -67,6 +67,8 @@
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -543,8 +545,10 @@
             this.tableLayoutPanel4.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.textBox7, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.label8, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.button4, 1, 2);
+            this.tableLayoutPanel4.Controls.Add(this.button4, 1, 3);
             this.tableLayoutPanel4.Controls.Add(this.textBox8, 1, 1);
+            this.tableLayoutPanel4.Controls.Add(this.textBox9, 1, 2);
+            this.tableLayoutPanel4.Controls.Add(this.label9, 0, 2);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -588,12 +592,13 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(123, 83);
+            this.button4.Location = new System.Drawing.Point(123, 123);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(114, 34);
             this.button4.TabIndex = 3;
             this.button4.Text = "轉入";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // textBox8
             // 
@@ -603,6 +608,25 @@
             this.textBox8.ReadOnly = true;
             this.textBox8.Size = new System.Drawing.Size(114, 27);
             this.textBox8.TabIndex = 8;
+            // 
+            // textBox9
+            // 
+            this.textBox9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox9.Location = new System.Drawing.Point(123, 86);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.ReadOnly = true;
+            this.textBox9.Size = new System.Drawing.Size(114, 27);
+            this.textBox9.TabIndex = 9;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 92);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(114, 16);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "變更版號";
             // 
             // FrmPURTATBUOFCHANGE
             // 
@@ -703,5 +727,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Label label9;
     }
 }

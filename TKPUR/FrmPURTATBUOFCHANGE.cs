@@ -138,6 +138,9 @@ namespace TKPUR
                 }
 
                 SearchPURTB(textBox7.Text, textBox8.Text);
+
+                string MAXVERSIONS = GETMAXVERSIONSPURTATBCHAGE(textBox7.Text, textBox8.Text);
+                textBox9.Text = (Convert.ToInt32(MAXVERSIONS) + 1).ToString();
             }
         }
 
@@ -207,6 +210,66 @@ namespace TKPUR
 
             }
         }
+
+        public string GETMAXVERSIONSPURTATBCHAGE(string TA001,string TA002)
+        {
+            try
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+                SqlTransaction tran;
+                SqlCommand cmd = new SqlCommand();
+                DataSet ds = new DataSet();
+                string VERSIONS;
+
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+
+                sqlConn = new SqlConnection(connectionString);
+                StringBuilder sbSql = new StringBuilder();
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+                ds.Clear();
+
+               
+                sbSql.AppendFormat(@"  
+                                    SELECT
+                                    [VERSIONS],[TA001],[TA002]
+                                    FROM [TKPUR].[dbo].[PURTATBCHAGE]
+                                    WHERE [TA001]='{0}' AND [TA002]='{1}'
+                                    ",TA001,TA002);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count >= 1)
+                {
+                    VERSIONS = ds.Tables["ds"].Rows[0]["VERSIONS"].ToString();
+                    return VERSIONS;
+
+                }
+                else
+                {
+                    return "0";
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -216,10 +279,14 @@ namespace TKPUR
         }
 
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
 
 
         #endregion
 
-      
+
     }
 }
