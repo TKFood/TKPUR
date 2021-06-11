@@ -525,6 +525,11 @@ namespace TKPUR
             textBox16.Text = SEARCHINVMB(textBox15.Text.Trim());
         }
 
+        private void textBox21_TextChanged(object sender, EventArgs e)
+        {
+            textBox22.Text = SEARCHINVMB(textBox21.Text.Trim());
+        }
+
         public string SEARCHINVMB(string MB001)
         {
             try
@@ -583,15 +588,100 @@ namespace TKPUR
             }
         }
 
-        public void UPDATEPURTATBCHAGETA006()
+        public void UPDATEPURTATBCHAGETA006(string TA001, string TA002, string VERSIONS,string TA006)
         {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
 
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    UPDATE  [TKPUR].[dbo].[PURTATBCHAGE]
+                                    SET [TA006]='{3}'
+                                    WHERE  [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}'
+                                    ", TA001, TA002, VERSIONS,TA006);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
         }
 
 
-        public void UPDATEPURTATBCHAGE()
+        public void UPDATEPURTATBCHAGE(string TA001, string TA002, string VERSIONS, string TB003, string TB004, string TB005, string TB009, string TB011, string TB012)
         {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
 
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    UPDATE  [TKPUR].[dbo].[PURTATBCHAGE]
+                                    SET [TB004]='{4}',[TB005]='{5}',[TB009]='{6}',[TB011]='{7}',[TB012]='{8}'
+                                    WHERE  [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}' AND TB003='{3}'
+                                   
+                                    ", TA001, TA002, VERSIONS, TB003,  TB004,  TB005,  TB009,  TB011,  TB012);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
         }
 
         public void ADDPURTATBCHAGEDETAIL()
@@ -626,20 +716,30 @@ namespace TKPUR
 
         private void button5_Click(object sender, EventArgs e)
         {
+            UPDATEPURTATBCHAGETA006(textBox11.Text, textBox12.Text, textBox10.Text, textBox13.Text);
 
+            SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
+
+            MessageBox.Show("完成");
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
+            UPDATEPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text, textBox14.Text, textBox15.Text, textBox16.Text, textBox17.Text, textBox18.Text, textBox19.Text);
 
+            SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
+
+            MessageBox.Show("完成");
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
 
+            SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
         }
+
         #endregion
 
-
+       
     }
 }
