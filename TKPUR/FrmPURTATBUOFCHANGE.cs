@@ -23,12 +23,12 @@ namespace TKPUR
 {
     public partial class FrmPURTATBUOFCHANGE : Form
     {
-        //測試ID = "170c1ac7-cdd2-46e1-bffa-aa37111ab514";
-        //正式ID ="9c26cd05-861e-4e51-b090-d8e2fe3e685c"
+        //測試ID = "";
+        //正式ID ="c8441ee2-d3bb-4c30-b731-f19a7916566f"
         //測試DB DBNAME = "UOFTEST";
         //正式DB DBNAME = "UOF";
-        string ID = "e45eda63-dc08-44a2-95af-99e95e7d0d9b";
-        string DBNAME = "UOFTEST";
+        string ID = "c8441ee2-d3bb-4c30-b731-f19a7916566f";
+        string DBNAME = "UOF";
 
 
         SqlConnection sqlConn = new SqlConnection();
@@ -300,9 +300,9 @@ namespace TKPUR
                                 
                 sbSql.AppendFormat(@"  
                                     INSERT INTO [TKPUR].[dbo].[PURTATBCHAGE]
-                                    ([VERSIONS],[TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB007],[TB009],[TB010],[TB011],[TB012],[USER_GUID],[NAME],[GROUP_ID],[TITLE_ID],[MA002])
+                                    ([VERSIONS],[TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB006],[TB007],[TB009],[TB010],[TB011],[TB012],[USER_GUID],[NAME],[GROUP_ID],[TITLE_ID],[MA002])
 
-                                    SELECT '{3}',[TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB007],[TB009],[TB010],[TB011],[TB012]
+                                    SELECT '{3}',[TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB006],[TB007],[TB009],[TB010],[TB011],[TB012]
                                     ,USER_GUID
                                     ,[NAME]
                                     ,(SELECT TOP 1 GROUP_ID FROM [192.168.1.223].[{0}].[dbo].[TB_EB_EMPL_DEP] WHERE [TB_EB_EMPL_DEP].USER_GUID=TEMP.USER_GUID) AS 'GROUP_ID'
@@ -310,7 +310,7 @@ namespace TKPUR
                                     ,MA002
                                     FROM 
                                     (
-                                    SELECT [TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB007],[TB009],[TB010],[TB011],[TB012]
+                                    SELECT [TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB006],[TB007],[TB009],[TB010],[TB011],[TB012]
                                     ,[TB_EB_USER].USER_GUID,NAME
                                     ,(SELECT TOP 1 MV002 FROM [TK].dbo.CMSMV WHERE MV001=TA012) AS 'MV002'
                                     ,(SELECT TOP 1 MA002 FROM [TK].dbo.PURMA WHERE MA001=TB010) AS 'MA002'
@@ -429,14 +429,16 @@ namespace TKPUR
                 }
                 else
                 {
-                    textBox7.Text = "";
-                    textBox8.Text = "";
-                    
+                    textBox10.Text = "";
+                    textBox11.Text = "";
+                    textBox12.Text = "";
+
 
                 }
+
                 SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
 
-
+                textBox26.Text= SERACHlDOC_NBR(textBox11.Text+ textBox12.Text+textBox10.Text);
             }
         }
 
@@ -660,6 +662,16 @@ namespace TKPUR
 
         public void UPDATEPURTATBCHAGE(string TA001, string TA002, string VERSIONS, string TB003, string TB004, string TB005, string TB009, string TB011, string TB012)
         {
+            DataSet dsINVMB = new DataSet();
+            
+            dsINVMB = SEARCHINVMBALL(TB004);
+
+
+            string TB006 = dsINVMB.Tables[0].Rows[0]["MB003"].ToString();
+            string TB007 = dsINVMB.Tables[0].Rows[0]["MB004"].ToString();
+            string TB010 = dsINVMB.Tables[0].Rows[0]["MB032"].ToString();
+            string MA002 = dsINVMB.Tables[0].Rows[0]["MA002"].ToString();
+
             try
             {
                 connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
@@ -673,10 +685,10 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  
                                     UPDATE  [TKPUR].[dbo].[PURTATBCHAGE]
-                                    SET [TB004]='{4}',[TB005]='{5}',[TB009]='{6}',[TB011]='{7}',[TB012]='{8}'
+                                    SET [TB004]='{4}',[TB005]='{5}',[TB006]='{6}',[TB009]='{7}',[TB011]='{8}',[TB012]='{9}'
                                     WHERE  [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}' AND TB003='{3}'
                                    
-                                    ", TA001, TA002, VERSIONS, TB003,  TB004,  TB005,  TB009,  TB011,  TB012);
+                                    ", TA001, TA002, VERSIONS, TB003,  TB004,  TB005, TB006,  TB009,  TB011,  TB012);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -721,6 +733,7 @@ namespace TKPUR
             string GROUP_ID = dsUSER.Tables[0].Rows[0]["GROUP_ID"].ToString();
             string TITLE_ID = dsUSER.Tables[0].Rows[0]["TITLE_ID"].ToString();
 
+            string TB006 = dsINVMB.Tables[0].Rows[0]["MB003"].ToString();
             string TB007 = dsINVMB.Tables[0].Rows[0]["MB004"].ToString();
             string TB010 = dsINVMB.Tables[0].Rows[0]["MB032"].ToString();
             string MA002 = dsINVMB.Tables[0].Rows[0]["MA002"].ToString();
@@ -738,10 +751,10 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  
                                      INSERT INTO [TKPUR].[dbo].[PURTATBCHAGE]
-                                    ([VERSIONS],[TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB007],[TB009],[TB010],[TB011],[TB012],[USER_GUID],[NAME],[GROUP_ID],[TITLE_ID],[MA002])
+                                    ([VERSIONS],[TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB006],[TB007],[TB009],[TB010],[TB011],[TB012],[USER_GUID],[NAME],[GROUP_ID],[TITLE_ID],[MA002])
                                     VALUES
-                                    ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}')
-                                    ", VERSIONS,TA001,TA002, TA003, TA006,TA012,TB003,TB004,TB005,TB007,TB009,TB010,TB011,TB012,USER_GUID,NAME,GROUP_ID,TITLE_ID,MA002);
+                                    ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}')
+                                    ", VERSIONS,TA001,TA002, TA003, TA006,TA012,TB003,TB004,TB005, TB006, TB007,TB009,TB010,TB011,TB012,USER_GUID,NAME,GROUP_ID,TITLE_ID,MA002);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -1114,15 +1127,15 @@ namespace TKPUR
                 //Row
                 Row.AppendChild(Cell);
 
-                ////Row	TB006
-                //Cell = xmlDoc.CreateElement("Cell");
-                //Cell.SetAttribute("fieldId", "TB006");
-                //Cell.SetAttribute("fieldValue", od["TB006"].ToString());
-                //Cell.SetAttribute("realValue", "");
-                //Cell.SetAttribute("customValue", "");
-                //Cell.SetAttribute("enableSearch", "True");
-                ////Row
-                //Row.AppendChild(Cell);
+                //Row	TB006
+                Cell = xmlDoc.CreateElement("Cell");
+                Cell.SetAttribute("fieldId", "TB006");
+                Cell.SetAttribute("fieldValue", od["TB006"].ToString());
+                Cell.SetAttribute("realValue", "");
+                Cell.SetAttribute("customValue", "");
+                Cell.SetAttribute("enableSearch", "True");
+                //Row
+                Row.AppendChild(Cell);
 
                 //Row	TB007
                 Cell = xmlDoc.CreateElement("Cell");
@@ -1337,6 +1350,57 @@ namespace TKPUR
                 if (ds1.Tables["ds1"].Rows.Count >= 1)
                 {
                     return ds1.Tables["ds1"];
+
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public string SERACHlDOC_NBR(string  EXTERNAL_FORM_NBR)
+        {
+            SqlDataAdapter adapter1 = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();
+            DataSet ds1 = new DataSet();
+
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbUOF"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    SELECT TOP 1 EXTERNAL_FORM_NBR,DOC_NBR
+                                    FROM [{0}].[dbo].[TB_WKF_EXTERNAL_TASK]
+                                    WHERE EXTERNAL_FORM_NBR='{1}'
+                                    ORDER BY DOC_NBR DESC
+                                    ", DBNAME, EXTERNAL_FORM_NBR);
+
+
+                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter1.Fill(ds1, "ds1");
+                sqlConn.Close();
+
+                if (ds1.Tables["ds1"].Rows.Count >= 1)
+                {
+                    return ds1.Tables["ds1"].Rows[0]["DOC_NBR"].ToString();
 
                 }
                 else
