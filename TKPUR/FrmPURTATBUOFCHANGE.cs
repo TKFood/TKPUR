@@ -487,6 +487,38 @@ namespace TKPUR
             }
         }
 
+        private void dataGridView4_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView4.CurrentRow != null)
+            {
+                int rowindex = dataGridView4.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView4.Rows[rowindex];
+                    textBox13.Text = row.Cells["單頭備註"].Value.ToString().Trim();
+                    textBox14.Text = row.Cells["請購序號"].Value.ToString().Trim();
+                    textBox15.Text = row.Cells["品號"].Value.ToString().Trim();
+                    textBox16.Text = row.Cells["品名"].Value.ToString().Trim();
+                    textBox17.Text = row.Cells["請購教量"].Value.ToString().Trim();
+                    textBox18.Text = row.Cells["需求日"].Value.ToString().Trim();
+                    textBox19.Text = row.Cells["單身備註"].Value.ToString().Trim();
+
+                }
+                else
+                {
+                    textBox13.Text = "";
+                    textBox14.Text = "";
+                    textBox15.Text = "";
+                    textBox16.Text = "";
+                    textBox17.Text = "";
+                    textBox18.Text = "";
+                    textBox19.Text = "";
+
+                }
+               
+
+            }
+        }
 
         #endregion
 
@@ -512,8 +544,9 @@ namespace TKPUR
         }
 
 
+
         #endregion
 
-     
+
     }
 }
