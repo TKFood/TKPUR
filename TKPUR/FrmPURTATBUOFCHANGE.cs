@@ -520,6 +520,69 @@ namespace TKPUR
             }
         }
 
+        private void textBox15_TextChanged(object sender, EventArgs e)
+        {
+            textBox16.Text = SEARCHINVMB(textBox15.Text.Trim());
+        }
+
+        public string SEARCHINVMB(string MB001)
+        {
+            try
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+                SqlTransaction tran;
+                SqlCommand cmd = new SqlCommand();
+                DataSet ds = new DataSet();
+                string MB002;
+
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+
+                sqlConn = new SqlConnection(connectionString);
+                StringBuilder sbSql = new StringBuilder();
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+                ds.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                    SELECT MB002 
+                                    FROM [TK].dbo.INVMB
+                                    WHERE MB001='{0}'
+                                    ", MB001);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count >= 1)
+                {
+                    MB002 = ds.Tables["ds"].Rows[0]["MB002"].ToString();
+                    return MB002;
+
+                }
+                else
+                {
+                    return "";
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -545,8 +608,9 @@ namespace TKPUR
 
 
 
+
         #endregion
 
-
+       
     }
 }
