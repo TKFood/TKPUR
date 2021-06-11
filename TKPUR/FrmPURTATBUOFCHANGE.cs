@@ -684,9 +684,52 @@ namespace TKPUR
             }
         }
 
-        public void ADDPURTATBCHAGEDETAIL()
+        public void ADDPURTATBCHAGEDETAIL(string VERSIONS, string TA001, string TA002, string TA006, string TB003, string TB004, string TB005, string TB009, string TB011, string TB012)
         {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
 
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                     INSERT INTO [TKPUR].[dbo].[PURTATBCHAGE]
+                                    ([VERSIONS],[TA001],[TA002],[TA006],[TB003],[TB004],[TB005],[TB009],[TB011],[TB012])
+                                    VALUES
+                                    ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')
+                                    ", VERSIONS, TA001, TA002, TA006, TB003, TB004, TB005, TB009, TB011, TB012);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
         }
 
         #endregion
@@ -734,8 +777,12 @@ namespace TKPUR
 
         private void button7_Click(object sender, EventArgs e)
         {
-
+            ADDPURTATBCHAGEDETAIL(textBox10.Text, textBox11.Text, textBox12.Text, textBox13.Text, textBox20.Text, textBox21.Text, textBox22.Text, textBox23.Text, textBox24.Text, textBox25.Text);
+                                     
             SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
+
+
+            MessageBox.Show("完成");
         }
 
         #endregion
