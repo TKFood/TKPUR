@@ -1204,7 +1204,7 @@ namespace TKPUR
 
             queryString.AppendFormat(@" INSERT INTO [{0}].dbo.TB_WKF_EXTERNAL_TASK
                                          (EXTERNAL_TASK_ID,FORM_INFO,STATUS,EXTERNAL_FORM_NBR)
-                                        VALUES (NEWID(),@XML,2,{1})
+                                        VALUES (NEWID(),@XML,2,'{1}')
                                         ", DBNAME, EXTERNAL_FORM_NBR);
 
             try
