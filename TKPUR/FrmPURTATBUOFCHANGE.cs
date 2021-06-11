@@ -291,12 +291,25 @@ namespace TKPUR
                                 
                 sbSql.AppendFormat(@"  
                                     INSERT INTO [TKPUR].[dbo].[PURTATBCHAGE]
-                                    ([VERSIONS],[TA001],[TA002],[TA006],[TB003],[TB004],[TB005],[TB009],[TB011],[TB012])
+                                    ([VERSIONS],[TA001],[TA002],[TA006],[TA012],[TB003],[TB004],[TB005],[TB007],[TB009],[TB010],[TB011],[TB012],[USER_GUID],[NAME],[GROUP_ID],[TITLE_ID],[MA002])
 
-                                    SELECT '{2}',[TA001],[TA002],[TA006],[TB003],[TB004],[TB005],[TB009],[TB011],[TB012]
-                                    FROM [TK].dbo.PURTA,[TK].dbo.PURTB
+                                    SELECT '{2}',[TA001],[TA002],[TA006],[TA012],[TB003],[TB004],[TB005],[TB007],[TB009],[TB010],[TB011],[TB012]
+                                    ,USER_GUID
+                                    ,[NAME]
+                                    ,(SELECT TOP 1 GROUP_ID FROM [192.168.1.223].[UOF].[dbo].[TB_EB_EMPL_DEP] WHERE [TB_EB_EMPL_DEP].USER_GUID=TEMP.USER_GUID) AS 'GROUP_ID'
+                                    ,(SELECT TOP 1 TITLE_ID FROM [192.168.1.223].[UOF].[dbo].[TB_EB_EMPL_DEP] WHERE [TB_EB_EMPL_DEP].USER_GUID=TEMP.USER_GUID) AS 'TITLE_ID'
+                                    ,MA002
+                                    FROM 
+                                    (
+                                    SELECT [TA001],[TA002],[TA006],[TA012],[TB003],[TB004],[TB005],[TB007],[TB009],[TB010],[TB011],[TB012]
+                                    ,[TB_EB_USER].USER_GUID,NAME
+                                    ,(SELECT TOP 1 MV002 FROM [TK].dbo.CMSMV WHERE MV001=TA012) AS 'MV002'
+                                    ,(SELECT TOP 1 MA002 FROM [TK].dbo.PURMA WHERE MA001=TB010) AS 'MA002'
+                                    FROM [TK].dbo.PURTB,[TK].dbo.PURTA
+                                    LEFT JOIN [192.168.1.223].[UOF].[dbo].[TB_EB_USER] ON [TB_EB_USER].ACCOUNT= TA012 COLLATE Chinese_Taiwan_Stroke_BIN
                                     WHERE TA001=TB001 AND TA002=TB002
                                     AND TA001='{0}' AND TA002='{1}'
+                                    ) AS TEMP
                                     ", TA001,  TA002,  VERSIONS);
 
                 cmd.Connection = sqlConn;
@@ -785,8 +798,12 @@ namespace TKPUR
             MessageBox.Show("完成");
         }
 
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+        }
         #endregion
 
-       
+
     }
 }
