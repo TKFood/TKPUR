@@ -127,14 +127,19 @@ namespace TKPUR
                     DataGridViewRow row = dataGridView1.Rows[rowindex];
                     textBox7.Text = row.Cells["請購單"].Value.ToString().Trim();
                     textBox8.Text = row.Cells["請購單號"].Value.ToString().Trim();
-                    
+
+                    textBox3.Text = row.Cells["請購單"].Value.ToString().Trim();
+                    textBox4.Text = row.Cells["請購單號"].Value.ToString().Trim();
+
 
                 }
                 else
                 {
                     textBox7.Text = "";
                     textBox8.Text = "";
-                    
+                    textBox3.Text = "";
+                    textBox4.Text = "";
+
                 }
 
                 SearchPURTB(textBox7.Text, textBox8.Text);
@@ -234,10 +239,11 @@ namespace TKPUR
                
                 sbSql.AppendFormat(@"  
                                     SELECT
-                                    [VERSIONS],[TA001],[TA002]
+                                    MAX([VERSIONS]) AS VERSIONS,[TA001],[TA002]
                                     FROM [TKPUR].[dbo].[PURTATBCHAGE]
                                     WHERE [TA001]='{0}' AND [TA002]='{1}'
-                                    ",TA001,TA002);
+                                    GROUP BY [TA001],[TA002]
+                                    ", TA001,TA002);
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -270,6 +276,57 @@ namespace TKPUR
             }
         }
 
+        public void ADDPURTATBCHAGE(string TA001,string TA002,string VERSIONS)
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+                                
+                sbSql.AppendFormat(@"  
+                                    INSERT INTO [TKPUR].[dbo].[PURTATBCHAGE]
+                                    ([VERSIONS],[TA001],[TA002],[TA006],[TB003],[TB004],[TB005],[TB009],[TB011],[TB012])
+
+                                    SELECT '{2}',[TA001],[TA002],[TA006],[TB003],[TB004],[TB005],[TB009],[TB011],[TB012]
+                                    FROM [TK].dbo.PURTA,[TK].dbo.PURTB
+                                    WHERE TA001=TB001 AND TA002=TB002
+                                    AND TA001='{0}' AND TA002='{1}'
+                                    ", TA001,  TA002,  VERSIONS);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -281,9 +338,17 @@ namespace TKPUR
 
         private void button4_Click(object sender, EventArgs e)
         {
+            ADDPURTATBCHAGE(textBox7.Text, textBox8.Text, textBox9.Text);
 
+            textBox9.Text = (Convert.ToInt32(textBox9.Text) + 1).ToString();
+
+            MessageBox.Show("轉入完成");
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
 
         #endregion
 
