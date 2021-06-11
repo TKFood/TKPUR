@@ -327,6 +327,68 @@ namespace TKPUR
             }
         }
 
+        public void SEARCHPURTATBCHAGEVERSIONS(string TA001,string TA002)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"
+                                    SELECT [VERSIONS] AS '變更', [TA001] AS '請購單',[TA002] AS '請購單號'
+                                    FROM [TKPUR].[dbo].[PURTATBCHAGE]
+                                    WHERE [TA001] LIKE '%{0}%' AND [TA002] LIKE '%{1}%'
+                                    GROUP BY [VERSIONS],[TA001],[TA002]
+                                    ORDER BY [TA001],[TA002],[VERSIONS] DESC
+                                    ", TA001, TA002);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count == 0)
+                {
+                    dataGridView3.DataSource = null;
+                }
+                else
+                {
+                    if (ds.Tables["ds"].Rows.Count >= 1)
+                    {
+                        dataGridView3.DataSource = ds.Tables["ds"];
+                        dataGridView3.AutoResizeColumns();
+
+                    }
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -347,7 +409,7 @@ namespace TKPUR
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            SEARCHPURTATBCHAGEVERSIONS(textBox3.Text.Trim(), textBox4.Text.Trim());
         }
 
         #endregion
