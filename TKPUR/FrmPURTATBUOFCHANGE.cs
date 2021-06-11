@@ -699,6 +699,22 @@ namespace TKPUR
 
         public void ADDPURTATBCHAGEDETAIL(string VERSIONS, string TA001, string TA002, string TA006, string TB003, string TB004, string TB005, string TB009, string TB011, string TB012)
         {
+            DataSet dsUSER = new DataSet();
+            DataSet dsINVMB = new DataSet();
+
+            dsUSER = SEARCHUSER(TA001, TA002, VERSIONS);
+            dsINVMB = SEARCHINVMBALL(TB004);
+
+            string TA012 = dsUSER.Tables[0].Rows[0]["TA012"].ToString();
+            string USER_GUID = dsUSER.Tables[0].Rows[0]["USER_GUID"].ToString();
+            string NAME = dsUSER.Tables[0].Rows[0]["NAME"].ToString();
+            string GROUP_ID = dsUSER.Tables[0].Rows[0]["GROUP_ID"].ToString();
+            string TITLE_ID = dsUSER.Tables[0].Rows[0]["TITLE_ID"].ToString();
+
+            string TB007 = dsINVMB.Tables[0].Rows[0]["MB004"].ToString();
+            string TB010 = dsINVMB.Tables[0].Rows[0]["MB032"].ToString();
+            string MA002 = dsINVMB.Tables[0].Rows[0]["MA002"].ToString();
+
             try
             {
                 connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
@@ -712,10 +728,10 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  
                                      INSERT INTO [TKPUR].[dbo].[PURTATBCHAGE]
-                                    ([VERSIONS],[TA001],[TA002],[TA006],[TB003],[TB004],[TB005],[TB009],[TB011],[TB012])
+                                    ([VERSIONS],[TA001],[TA002],[TA006],[TA012],[TB003],[TB004],[TB005],[TB007],[TB009],[TB010],[TB011],[TB012],[USER_GUID],[NAME],[GROUP_ID],[TITLE_ID],[MA002])
                                     VALUES
-                                    ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')
-                                    ", VERSIONS, TA001, TA002, TA006, TB003, TB004, TB005, TB009, TB011, TB012);
+                                    ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}')
+                                    ", VERSIONS,TA001,TA002,TA006,TA012,TB003,TB004,TB005,TB007,TB009,TB010,TB011,TB012,USER_GUID,NAME,GROUP_ID,TITLE_ID,MA002);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -739,6 +755,125 @@ namespace TKPUR
 
             }
 
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public DataSet SEARCHUSER(string TA001,string TA002,string VERSIONS)
+        {
+            try
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+                SqlTransaction tran;
+                SqlCommand cmd = new SqlCommand();
+                DataSet ds = new DataSet();
+                string MB002;
+
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+
+                sqlConn = new SqlConnection(connectionString);
+                StringBuilder sbSql = new StringBuilder();
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+                ds.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                    SELECT TOP 1
+                                    [VERSIONS],[TA001],[TA002],[TA006],[TA012],[TB003],[TB004],[TB005],[TB007],[TB009],[TB010],[TB011],[TB012],[USER_GUID],[NAME],[GROUP_ID],[TITLE_ID],[MA002]
+                                    FROM [TKPUR].[dbo].[PURTATBCHAGE]
+                                    WHERE ISNULL(TA012,'')<>''
+                                    AND TA001='{0}' AND TA002='{1}' AND [VERSIONS]='{2}'
+                                    ", TA001, TA002, VERSIONS);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count >= 1)
+                {
+                   
+                    return ds;
+
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public DataSet SEARCHINVMBALL(string MB001)
+        {
+            try
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+                SqlTransaction tran;
+                SqlCommand cmd = new SqlCommand();
+                DataSet ds = new DataSet();
+                string MB002;
+
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+
+                sqlConn = new SqlConnection(connectionString);
+                StringBuilder sbSql = new StringBuilder();
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+                ds.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                   SELECT TOP 1 MB001,MB002,MB003,MB004,MB032,MA002
+                                    FROM [TK].dbo.INVMB
+                                    LEFT JOIN [TK].dbo.PURMA ON MA001=MB032
+                                    WHERE MB001='{0}'
+                                    ", MB001);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count >= 1)
+                {
+
+                    return ds;
+
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
             finally
             {
                 sqlConn.Close();
