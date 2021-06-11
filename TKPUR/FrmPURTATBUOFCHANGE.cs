@@ -388,6 +388,105 @@ namespace TKPUR
             }
         }
 
+        private void dataGridView3_SelectionChanged(object sender, EventArgs e)
+        {
+            dataGridView4.DataSource = null;
+
+            if (dataGridView3.CurrentRow != null)
+            {
+                int rowindex = dataGridView3.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView3.Rows[rowindex];
+                    textBox10.Text = row.Cells["變更"].Value.ToString().Trim();
+                    textBox11.Text = row.Cells["請購單"].Value.ToString().Trim();
+                    textBox12.Text = row.Cells["請購單號"].Value.ToString().Trim();
+
+
+
+                }
+                else
+                {
+                    textBox7.Text = "";
+                    textBox8.Text = "";
+                    
+
+                }
+                SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
+
+
+            }
+        }
+
+        public void SEARCHPURTATBCHAGE(string TA001,string TA002,string VERSIONS)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"
+                                    SELECT [VERSIONS] AS '變更版號'
+                                    ,[TA001] AS '請購單'
+                                    ,[TA002] AS '請購單號'
+                                    ,[TA006] AS '單頭備註'
+                                    ,[TB003] AS '請購序號'
+                                    ,[TB004] AS '品號'
+                                    ,[TB005] AS '品名'
+                                    ,[TB009] AS '請購教量'
+                                    ,[TB011] AS '需求日'
+                                    ,[TB012] AS '單身備註'
+                                    FROM [TKPUR].[dbo].[PURTATBCHAGE]
+                                    WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}'
+                                    ORDER BY [TA001] ,[TA002],[TB003]
+                                    ", TA001, TA002, VERSIONS);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count == 0)
+                {
+                    dataGridView4.DataSource = null;
+                }
+                else
+                {
+                    if (ds.Tables["ds"].Rows.Count >= 1)
+                    {
+                        dataGridView4.DataSource = ds.Tables["ds"];
+                        dataGridView4.AutoResizeColumns();
+
+                    }
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
 
         #endregion
 
@@ -412,8 +511,9 @@ namespace TKPUR
             SEARCHPURTATBCHAGEVERSIONS(textBox3.Text.Trim(), textBox4.Text.Trim());
         }
 
+
         #endregion
 
-
+     
     }
 }
