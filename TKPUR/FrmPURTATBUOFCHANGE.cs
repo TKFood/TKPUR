@@ -27,7 +27,7 @@ namespace TKPUR
         //正式ID ="c8441ee2-d3bb-4c30-b731-f19a7916566f"
         //測試DB DBNAME = "UOFTEST";
         //正式DB DBNAME = "UOF";
-        string ID = "c8441ee2-d3bb-4c30-b731-f19a7916566f";
+        string ID = "cc2a0de0-8791-4b54-9af2-be3adeade372";
         string DBNAME = "UOF";
 
 
