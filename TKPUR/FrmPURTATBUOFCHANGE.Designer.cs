@@ -745,6 +745,7 @@
             // 
             // button8
             // 
+            this.button8.ForeColor = System.Drawing.Color.Red;
             this.button8.Location = new System.Drawing.Point(363, 83);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(114, 34);
