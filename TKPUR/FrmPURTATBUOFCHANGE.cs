@@ -1107,8 +1107,18 @@ namespace TKPUR
                 XmlElement Row = xmlDoc.CreateElement("Row");
                 Row.SetAttribute("order", (rowscounts).ToString());
 
-                //Row	TB004
+                //Row	TB003
                 XmlElement Cell = xmlDoc.CreateElement("Cell");
+                Cell.SetAttribute("fieldId", "TB003");
+                Cell.SetAttribute("fieldValue", od["TB003"].ToString());
+                Cell.SetAttribute("realValue", "");
+                Cell.SetAttribute("customValue", "");
+                Cell.SetAttribute("enableSearch", "True");
+                //Row
+                Row.AppendChild(Cell);
+
+                //Row	TB004
+                Cell = xmlDoc.CreateElement("Cell");
                 Cell.SetAttribute("fieldId", "TB004");
                 Cell.SetAttribute("fieldValue", od["TB004"].ToString());
                 Cell.SetAttribute("realValue", "");
