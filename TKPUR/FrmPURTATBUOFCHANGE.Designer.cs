@@ -104,6 +104,7 @@
             this.label25 = new System.Windows.Forms.Label();
             this.textBox25 = new System.Windows.Forms.TextBox();
             this.button7 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -797,6 +798,7 @@
             this.tableLayoutPanel6.Controls.Add(this.label19, 0, 3);
             this.tableLayoutPanel6.Controls.Add(this.textBox19, 1, 3);
             this.tableLayoutPanel6.Controls.Add(this.button6, 5, 3);
+            this.tableLayoutPanel6.Controls.Add(this.button3, 5, 0);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -1094,6 +1096,17 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // button3
+            // 
+            this.button3.ForeColor = System.Drawing.Color.Red;
+            this.button3.Location = new System.Drawing.Point(603, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(114, 34);
+            this.button3.TabIndex = 20;
+            this.button3.Text = "刪除單身";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // FrmPURTATBUOFCHANGE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -1237,5 +1250,6 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.TextBox textBox26;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Button button3;
     }
 }

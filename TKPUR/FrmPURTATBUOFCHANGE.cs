@@ -413,6 +413,9 @@ namespace TKPUR
         private void dataGridView3_SelectionChanged(object sender, EventArgs e)
         {
             dataGridView4.DataSource = null;
+            dataGridView4.DataSource = null;
+            dataGridView4.DataSource = null;
+            dataGridView4.DataSource = null;
 
             if (dataGridView3.CurrentRow != null)
             {
@@ -1429,6 +1432,52 @@ namespace TKPUR
             }
         }
 
+        public void DELPURTATBCHAGE(string VERSIONS, string TA001, string TA002, string TB003)
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                     DELETE [TKPUR].[dbo].[PURTATBCHAGE]
+                                     WHERE [VERSIONS]='{0}' AND [TA001]='{1}' AND [TA002]='{2}' AND [TB003]='{3}'
+                                    ", VERSIONS, TA001, TA002,  TB003);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         public void SETNULL()
         {
             textBox20.Text = null;
@@ -1495,6 +1544,19 @@ namespace TKPUR
         private void button8_Click(object sender, EventArgs e)
         {
             ADDTB_WKF_EXTERNAL_TASK(textBox11.Text.Trim(), textBox12.Text.Trim(),textBox10.Text.Trim());
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("要刪除了?", "要刪除了?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                DELPURTATBCHAGE(textBox10.Text.Trim(), textBox11.Text.Trim(), textBox12.Text.Trim(), textBox14.Text.Trim());
+                SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //do something else
+            }
         }
         #endregion
 
