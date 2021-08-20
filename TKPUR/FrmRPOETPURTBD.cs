@@ -106,6 +106,47 @@ namespace TKPUR
 
             return FASTSQL.ToString();
         }
+
+        public void SETFASTREPORT2()
+        {
+
+            string SQL;
+            report1 = new Report();
+            report1.Load(@"REPORT\請購未採明細表.frx");
+
+            report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+            SQL = SETFASETSQL2();
+            Table.SelectCommand = SQL;
+            report1.Preview = previewControl2;
+            report1.Show();
+
+        }
+
+        public string SETFASETSQL2()
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+            StringBuilder STRQUERY = new StringBuilder();
+
+                     
+            FASTSQL.AppendFormat(@"  
+                                SELECT TA003 AS '請購日期',TB010 AS '廠商代',MA002 AS '廠商',TB001 AS '單別',TB002 AS '單號',TB003 AS '序號',TB004 AS '品號',TB005 AS '品名',TB006 AS '規格',TB009 AS '請購數量',TB007 AS '請購單位',TB014 AS '已採購數量',TB039 AS '是否結案',TA012 AS '請購人代',MV002 AS '請購人',TB011 AS '需求日'
+                                FROM [TK].dbo.PURTA,[TK].dbo.PURTB,[TK].dbo.CMSMV,[TK].dbo.PURMA
+                                WHERE TA001=TB001 AND TA002=TB002
+                                AND TA012=MV001
+                                AND TB010=MA001
+                                AND TB009>0
+                                AND TB025='Y'
+                                AND TB039='N' 
+                                AND (TB009-TB014)>0
+                                ORDER BY TA003,TB001,TB002,TB003
+                                
+                                ");
+
+            return FASTSQL.ToString();
+        }
         #endregion
 
         #region BUTTON
@@ -116,6 +157,12 @@ namespace TKPUR
             textBox1.Text = null;
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT2();
+
+        }
         #endregion
+
     }
 }
