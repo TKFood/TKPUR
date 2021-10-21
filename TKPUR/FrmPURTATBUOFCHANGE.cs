@@ -28,7 +28,7 @@ namespace TKPUR
         //正式ID ="c8441ee2-d3bb-4c30-b731-f19a7916566f"
         //測試DB DBNAME = "UOFTEST";
         //正式DB DBNAME = "UOF";
-        string ID = "cc2a0de0-8791-4b54-9af2-be3adeade372";
+        string PURID = "f07b0c04-5126-43c9-ad2a-371af2af393d";
         string DBNAME = "UOF";
 
 
@@ -1046,7 +1046,7 @@ namespace TKPUR
             XmlElement Form = xmlDoc.CreateElement("Form");
 
             //正式的id
-            Form.SetAttribute("formVersionId", ID);
+            Form.SetAttribute("formVersionId", PURID);
 
             Form.SetAttribute("urgentLevel", "2");
             //加入節點底下
