@@ -501,6 +501,16 @@ namespace TKPUR
 
             return FASTSQL.ToString();
         }
+
+
+        private void dateTimePicker4_ValueChanged(object sender, EventArgs e)
+        {
+            textBox1.Text = null;
+            textBox2.Text = null;
+            textBox3.Text = null;
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -518,8 +528,9 @@ namespace TKPUR
             SERACHCOPPURPCTPTOADDORUPDATE();
         }
 
+
         #endregion
 
-
+      
     }
 }
