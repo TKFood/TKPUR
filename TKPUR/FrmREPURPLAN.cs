@@ -84,20 +84,22 @@ namespace TKPUR
         {
             StringBuilder SB = new StringBuilder();
 
-            SB.AppendFormat(" SELECT 品號,品名,單位,單價,期初存貨,期末存貨,本期秏用數量,(期末存貨+本期秏用數量-期初存貨) AS '本期採購數',(期末存貨+本期秏用數量-期初存貨)*單價 AS '金額'");
-            SB.AppendFormat(" FROM (");
-            SB.AppendFormat(" SELECT MB001 AS '品號',MB002 AS '品名',MB004 AS '單位',MB050 AS '單價'");
-            SB.AppendFormat(" ,ISNULL((SELECT SUM(LA011*LA005)  FROM [TK].dbo.INVLA WITH(NOLOCK)  WHERE LA001=MB001 and LA004<'{0}' ),0) AS '期初存貨'",dateTimePicker1.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" ,ISNULL((SELECT SUM(LA011*LA005)  FROM [TK].dbo.INVLA  WITH(NOLOCK) WHERE LA001=MB001 and LA004<'{0}' ),0) AS '期末存貨'", dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" ,ISNULL((SELECT SUM(LA011*LA005)*-1  FROM [TK].dbo.INVLA WITH(NOLOCK)  WHERE LA001=MB001 AND LA005=-1 AND LA004>='{0}' AND LA004<'{1}'),0) AS '本期秏用數量'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" FROM [TK].dbo.INVMB  WITH(NOLOCK)");
-            SB.AppendFormat(" WHERE  MB001 LIKE '1%'");
-            SB.AppendFormat(" AND MB002 NOT LIKE '%暫停%'");
-            SB.AppendFormat(" ) AS TEMP");
-            SB.AppendFormat(" ORDER BY 品號");
-            SB.AppendFormat(" ");
-            SB.AppendFormat(" ");
-            SB.AppendFormat(" ");
+ 
+            SB.AppendFormat(@" 
+                            SELECT 品號,品名,單位,單價,期初存貨,期末存貨,本期秏用數量,(期末存貨+本期秏用數量-期初存貨) AS '本期採購數',(期末存貨+本期秏用數量-期初存貨)*單價 AS '金額'
+                            FROM (
+                            SELECT MB001 AS '品號',MB002 AS '品名',MB004 AS '單位',MB050 AS '單價'
+                            ,ISNULL((SELECT SUM(LA011*LA005)  FROM [TK].dbo.INVLA WITH(NOLOCK)  WHERE LA001=MB001 and LA004<'{0}' ),0) AS '期初存貨'
+                            ,ISNULL((SELECT SUM(LA011*LA005)  FROM [TK].dbo.INVLA  WITH(NOLOCK) WHERE LA001=MB001 and LA004<'{1}' ),0) AS '期末存貨'
+                            ,ISNULL((SELECT SUM(LA011*LA005)*-1  FROM [TK].dbo.INVLA WITH(NOLOCK)  WHERE LA001=MB001 AND LA005=-1 AND LA004>='{0}' AND LA004<'{1}'),0) AS '本期秏用數量'
+                            FROM [TK].dbo.INVMB  WITH(NOLOCK)
+                            WHERE  MB001 LIKE '1%'
+                            AND MB002 NOT LIKE '%暫停%'
+                            ) AS TEMP
+                            ORDER BY 品號
+
+                            ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+         
 
             return SB;
 
@@ -138,24 +140,22 @@ namespace TKPUR
         {
             StringBuilder SB = new StringBuilder();
 
-            SB.AppendFormat(" SELECT 類別,單位,AVG(單價) AS '單價',SUM(期初存貨) AS '期初存貨',SUM(期末存貨) AS '期末存貨',SUM(本期秏用數量) AS '本期秏用數量',SUM((期末存貨+本期秏用數量-期初存貨)) AS '本期採購數',SUM((期末存貨+本期秏用數量-期初存貨)*單價) AS '金額'");
-            SB.AppendFormat(" FROM (");
-            SB.AppendFormat(" SELECT MA003 AS '類別', MB001 AS '品號',MB002 AS '品名',MB004 AS '單位',MB050 AS '單價'");
-            SB.AppendFormat(" ,ISNULL((SELECT SUM(LA011*LA005)  FROM [TK].dbo.INVLA  WITH(NOLOCK) WHERE LA001=MB001 and LA004<'{0}' ),0) AS '期末存貨'",dateTimePicker3.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" ,ISNULL((SELECT SUM(LA011*LA005)  FROM [TK].dbo.INVLA WITH(NOLOCK)  WHERE LA001=MB001 and LA004<'{0}' ),0) AS '期初存貨'", dateTimePicker4.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" ,ISNULL((SELECT SUM(LA011*LA005)*-1  FROM [TK].dbo.INVLA WITH(NOLOCK)  WHERE LA001=MB001 AND LA005=-1 AND LA004>='{0}' AND LA004<'{1}'),0) AS '本期秏用數量'", dateTimePicker3.Value.ToString("yyyyMMdd"), dateTimePicker4.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" FROM [TK].dbo.INVMB,[TK].dbo.INVMA");
-            SB.AppendFormat(" WHERE  MA001='5'");
-            SB.AppendFormat(" AND MB111=MA002");
-            SB.AppendFormat(" AND MB001 LIKE '2%'");
-            SB.AppendFormat(" AND MB002 NOT LIKE '%暫停%' ) AS TEMP");
-            SB.AppendFormat(" GROUP BY 類別,單位");
-            SB.AppendFormat(" ORDER BY 類別,單位");
-            SB.AppendFormat(" ");
-            SB.AppendFormat(" ");
-            SB.AppendFormat(" ");
-            SB.AppendFormat(" ");
-            SB.AppendFormat(" ");
+
+            SB.AppendFormat(@" 
+                            SELECT 類別,單位,AVG(單價) AS '單價',SUM(期初存貨) AS '期初存貨',SUM(期末存貨) AS '期末存貨',SUM(本期秏用數量) AS '本期秏用數量',SUM((期末存貨+本期秏用數量-期初存貨)) AS '本期採購數',SUM((期末存貨+本期秏用數量-期初存貨)*單價) AS '金額'
+                            FROM (
+                            SELECT MA003 AS '類別', MB001 AS '品號',MB002 AS '品名',MB004 AS '單位',MB050 AS '單價'
+                            ,ISNULL((SELECT SUM(LA011*LA005)  FROM [TK].dbo.INVLA  WITH(NOLOCK) WHERE LA001=MB001 and LA004<'{0}' ),0) AS '期末存貨'
+                            ,ISNULL((SELECT SUM(LA011*LA005)  FROM [TK].dbo.INVLA WITH(NOLOCK)  WHERE LA001=MB001 and LA004<'{1}' ),0) AS '期初存貨'
+                            ,ISNULL((SELECT SUM(LA011*LA005)*-1  FROM [TK].dbo.INVLA WITH(NOLOCK)  WHERE LA001=MB001 AND LA005=-1 AND LA004>='{0}' AND LA004<'{1}'),0) AS '本期秏用數量'
+                            FROM [TK].dbo.INVMB,[TK].dbo.INVMA
+                            WHERE  MA001='5'
+                            AND MB111=MA002
+                            AND MB001 LIKE '2%'
+                            AND MB002 NOT LIKE '%暫停%' ) AS TEMP
+                            GROUP BY 類別,單位
+                            ORDER BY 類別,單位
+                            ", dateTimePicker3.Value.ToString("yyyyMMdd"), dateTimePicker4.Value.ToString("yyyyMMdd"));
 
             return SB;
 
