@@ -234,6 +234,65 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
+
+        public void SETFASTREPORT()
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL();
+            Report report1 = new Report();
+            report1.Load(@"REPORT\原物料人工上漲影響成毛利.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            //report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
+            report1.Preview = previewControl1;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL()
+        {
+            StringBuilder SB = new StringBuilder();
+
+         
+            SB.AppendFormat(@" 
+                            SELECT 
+                            [ID]
+                            ,[SORTS]
+                            ,[TYPES] AS '類別'
+                            ,[PRODPCTS]  AS '佔製造成本百分比 '
+                            ,[COMPCTS] AS '佔營業成本百分比 A'
+                            ,[ITEMS] AS '細項目'
+                            ,[INCOMEPCTS] AS '進貨金額佔類別平均% B'
+                            ,[ADDPCTS] AS '調幅增加(減少)% C'
+                            ,[TPCTS] AS '影響成本率增加(減少)% D=A*B*C'
+                            FROM [TKPUR].[dbo].[TBCOSTCAL]
+                            ORDER BY [SORTS]
+                            ");
+
+            return SB;
+
+        }
+
+
+
         #endregion
 
         #region BUTTON
@@ -252,7 +311,7 @@ namespace TKPUR
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            SETFASTREPORT();
         }
 
         #endregion
