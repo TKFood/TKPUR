@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/05/2021 09:32:49" ReportInfo.Modified="11/05/2021 09:55:52" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEim7iENU2kAZQHNiVzulHH">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="/****** SSMS 中 SelectTopNRows 命令的指令碼  ******/&#13;&#10;SELECT &#13;&#10;[ID]&#13;&#10;,[SORTS]&#13;&#10;,[TYPES] AS '類別'&#13;&#10;,[PRODPCTS]  AS '佔製造成本百分比 '&#13;&#10;,[COMPCTS] AS '佔營業成本百分比 A'&#13;&#10;,[ITEMS] AS '細項目'&#13;&#10;,[INCOMEPCTS] AS '進貨金額佔類別平均% B'&#13;&#10;,[ADDPCTS] AS '調幅增加(減少)% C'&#13;&#10;,[TPCTS] AS '影響成本率增加(減少)% D=A*B*C'&#13;&#10;FROM [TKPUR].[dbo].[TBCOSTCAL]&#13;&#10;ORDER BY [SORTS]">
+        <Column Name="ID" DataType="System.Decimal"/>
+        <Column Name="SORTS" DataType="System.Int32"/>
+        <Column Name="類別" DataType="System.String"/>
+        <Column Name="佔製造成本百分比 " DataType="System.Decimal"/>
+        <Column Name="佔營業成本百分比 A" DataType="System.Decimal"/>
+        <Column Name="細項目" DataType="System.String"/>
+        <Column Name="影響成本率增加(減少)% D=A*B*C" DataType="System.Decimal"/>
+        <Column Name="進貨金額佔類別平均% B" DataType="System.Decimal"/>
+        <Column Name="調幅增加(減少)% C" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Total Name="Total" Expression="[Table.影響成本率增加(減少)% D=A*B*C]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="Total進貨金額" Expression="[Table.進貨金額佔類別平均% B]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="Total影響成本" Expression="[Table.影響成本率增加(減少)% D=A*B*C]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text1" Width="1039.5" Height="18.9" Text="原料、物料、人工 上漲影響成本及毛利" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="23.39" Width="1047.06" Height="37.8">
+      <TextObject Name="Text3" Width="94.5" Height="37.8" Border.Lines="All" Text="類別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="113.4" Height="37.8" Border.Lines="All" Text="佔製造成本百分比 " HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="207.9" Width="122.85" Height="37.8" Border.Lines="All" Text="佔營業成本百分比 A" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="330.75" Width="302.4" Height="37.8" Border.Lines="All" Text="細項目" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="633.15" Width="141.75" Height="37.8" Border.Lines="All" Text="進貨金額佔類別平均% B" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="774.9" Width="113.4" Height="37.8" Border.Lines="All" Text="調幅增加(減少)% C" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="888.3" Width="151.2" Height="37.8" Border.Lines="All" Text="影響成本率增加(減少)% D=A*B*C" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="65.69" Width="1047.06" Condition="[Table.類別]" SortOrder="None">
+      <DataBand Name="Data1" Top="70.18" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+        <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.類別]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text4" Left="94.5" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.佔製造成本百分比 ]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text6" Left="207.9" Width="122.85" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.佔營業成本百分比 A]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text8" Left="330.75" Width="302.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.細項目]" VertAlign="Center"/>
+        <TextObject Name="Text10" Left="633.15" Width="141.75" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨金額佔類別平均% B]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text12" Left="774.9" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.調幅增加(減少)% C]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text14" Left="888.3" Width="151.2" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.影響成本率增加(減少)% D=A*B*C]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="93.58" Width="1047.06" Height="18.9">
+        <TextObject Name="Text16" Left="888.3" Width="151.2" Height="18.9" Border.Lines="All" Fill.Color="Gold" Text="[Total]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center"/>
+        <TextObject Name="Text17" Left="633.15" Width="141.75" Height="18.9" Border.Lines="All" Text="[Total進貨金額]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center"/>
+        <TextObject Name="Text19" Left="774.9" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text20" Width="633.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="小計" HorzAlign="Center" VertAlign="Center"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="116.97" Width="1047.06" Height="18.9">
+      <TextObject Name="Text18" Left="888.3" Width="151.2" Height="18.9" Border.Lines="All" Fill.Color="Orange" Text="[Total影響成本]" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text24" Width="888.3" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="140.37" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>

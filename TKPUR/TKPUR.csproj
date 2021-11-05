@@ -168,6 +168,12 @@
     <Compile Include="FrmRPOETPURTBD.Designer.cs">
       <DependentUpon>FrmRPOETPURTBD.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmTBCOSTCAL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmTBCOSTCAL.Designer.cs">
+      <DependentUpon>FrmTBCOSTCAL.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmUPDATEPURTB.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRPOETPURTBD.resx">
       <DependentUpon>FrmRPOETPURTBD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmTBCOSTCAL.resx">
+      <DependentUpon>FrmTBCOSTCAL.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmUPDATEPURTB.resx">
       <DependentUpon>FrmUPDATEPURTB.cs</DependentUpon>
