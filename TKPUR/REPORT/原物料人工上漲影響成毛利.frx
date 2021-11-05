@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="11/05/2021 09:32:49" ReportInfo.Modified="11/05/2021 09:55:52" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/05/2021 09:32:49" ReportInfo.Modified="11/05/2021 11:24:46" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEim7iENU2kAZQHNiVzulHH">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFo7jKYvZSySw5zcS3clhwK">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="/****** SSMS 中 SelectTopNRows 命令的指令碼  ******/&#13;&#10;SELECT &#13;&#10;[ID]&#13;&#10;,[SORTS]&#13;&#10;,[TYPES] AS '類別'&#13;&#10;,[PRODPCTS]  AS '佔製造成本百分比 '&#13;&#10;,[COMPCTS] AS '佔營業成本百分比 A'&#13;&#10;,[ITEMS] AS '細項目'&#13;&#10;,[INCOMEPCTS] AS '進貨金額佔類別平均% B'&#13;&#10;,[ADDPCTS] AS '調幅增加(減少)% C'&#13;&#10;,[TPCTS] AS '影響成本率增加(減少)% D=A*B*C'&#13;&#10;FROM [TKPUR].[dbo].[TBCOSTCAL]&#13;&#10;ORDER BY [SORTS]">
         <Column Name="ID" DataType="System.Decimal"/>
         <Column Name="SORTS" DataType="System.Int32"/>

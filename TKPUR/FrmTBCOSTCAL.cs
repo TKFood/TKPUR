@@ -53,7 +53,7 @@ namespace TKPUR
 
         private void FrmTBCOSTCAL_Load(object sender, EventArgs e)
         {
-            SEARCHTBCOSTCAL();
+            SEARCHTBCOSTCAL(); 
         }
 
         public void SEARCHTBCOSTCAL()
