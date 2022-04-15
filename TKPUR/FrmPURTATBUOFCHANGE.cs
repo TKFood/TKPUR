@@ -28,8 +28,8 @@ namespace TKPUR
         //正式ID ="c8441ee2-d3bb-4c30-b731-f19a7916566f"
         //測試DB DBNAME = "UOFTEST";
         //正式DB DBNAME = "UOF";
-        string PURID = "f07b0c04-5126-43c9-ad2a-371af2af393d";
         string DBNAME = "UOF";
+
 
 
         SqlConnection sqlConn = new SqlConnection();
@@ -1024,6 +1024,9 @@ namespace TKPUR
 
         public void ADDTB_WKF_EXTERNAL_TASK(string TA001, string TA002,string VERSIONS)
         {
+            string PURCHID = SEARCHFORM_VERSION_ID("請購變更單");
+           
+
             DataTable DT = SEARCHPURTAPURTB(TA001, TA002, VERSIONS);
             DataTable DTUPFDEP = SEARCHUOFDEP(DT.Rows[0]["TA012"].ToString());
 
@@ -1046,7 +1049,7 @@ namespace TKPUR
             XmlElement Form = xmlDoc.CreateElement("Form");
 
             //正式的id
-            Form.SetAttribute("formVersionId", PURID);
+            Form.SetAttribute("formVersionId", PURCHID);
 
             Form.SetAttribute("urgentLevel", "2");
             //加入節點底下
@@ -1654,6 +1657,69 @@ namespace TKPUR
             textBox24.Text = null;
             textBox25.Text = null;
         }
+
+        public string SEARCHFORM_VERSION_ID(string FORM_NAME)
+        {
+            SqlDataAdapter adapter1 = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();
+            DataSet ds1 = new DataSet();
+
+            try
+            {
+                //connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                //sqlConn = new SqlConnection(connectionString);
+
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dberp"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                    SELECT 
+                                    RTRIM(LTRIM([FORM_VERSION_ID])) AS FORM_VERSION_ID
+                                    ,[FORM_NAME]
+                                    FROM [TKIT].[dbo].[UOF_FORM_VERSION_ID]
+                                    WHERE [FORM_NAME]='{0}'
+                                    ", FORM_NAME);
+
+                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter1.Fill(ds1, "ds1");
+
+
+                if (ds1.Tables["ds1"].Rows.Count >= 1)
+                {
+                    return ds1.Tables["ds1"].Rows[0]["FORM_VERSION_ID"].ToString();
+                }
+                else
+                {
+                    return "";
+                }
+
+            }
+            catch
+            {
+                return "";
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
 
         #endregion
 
