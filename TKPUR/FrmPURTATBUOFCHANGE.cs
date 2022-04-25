@@ -1378,6 +1378,8 @@ namespace TKPUR
                     connection.Close();
                     connection.Dispose();
 
+                    MessageBox.Show("已送出UOF");
+
                 }
             }
             catch
