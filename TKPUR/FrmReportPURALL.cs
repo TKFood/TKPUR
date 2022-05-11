@@ -48,11 +48,11 @@ namespace TKPUR
         }
 
         #region FUNCTION
-        public void SETFASTREPORT(string TH004, string SDATE, string EDATE)
+        public void SETFASTREPORT(string TD004, string SDATE, string EDATE)
         {
             StringBuilder SQL1 = new StringBuilder();
 
-            SQL1 = SETSQL(TH004, SDATE, EDATE);
+            SQL1 = SETSQL(TD004, SDATE, EDATE);
             Report report1 = new Report();
             report1.Load(@"REPORT\進貨採購請購表.frx");
 
@@ -79,38 +79,40 @@ namespace TKPUR
             report1.Show();
         }
 
-        public StringBuilder SETSQL(string TH004,string SDATE,string EDATE)
+        public StringBuilder SETSQL(string TD004, string SDATE,string EDATE)
         {
             StringBuilder SB = new StringBuilder();
 
 
             SB.AppendFormat(@" 
-                            SELECT TG003 AS '進貨日期',TH001 AS '進貨單別',TH002 AS '進貨單號',TH003 AS '進貨序號',TH004 AS '品號',TH005 AS '品名',TH007 AS '進貨數量',TH015 AS '驗收數量',TH016 AS '計價數量',TH017 AS '驗退數量',TH008 AS '進貨單位',TH011 AS '採購單別',TH012 AS '採購單號',TH013 AS '採購序號',ISNULL(TC003,'')  AS '採購日期',ISNULL(TD008,0)  AS '採購數量',ISNULL(TD009,'')  AS '採購單位',ISNULL(TA003,'')  AS '請購日期',ISNULL(TB001,'')  AS '請購單別',ISNULL(TB002,'')  AS '請購單號',ISNULL(TB003,'')  AS '請購序號',ISNULL(TB009,0)  AS '請購數量',ISNULL(TB007,'')  AS '請購單位',ISNULL(TA006,'') AS '請購單頭備註',ISNULL(TB012,'') AS '請購單身備註'
-                            FROM [TK].dbo.PURTG,[TK].dbo.PURTH
-                            LEFT JOIN [TK].dbo.PURTD ON TD018='Y' AND TD001=TH011 AND TD002=TH012 AND TD003=TH013 AND TD004=TH004
-                            LEFT JOIN [TK].dbo.PURTC ON TC014='Y' AND TC001=TD001 AND TC002=TD002 
-                            LEFT JOIN [TK].dbo.PURTB ON TB025='Y' AND TB001=TD026 AND TB002=TD027 AND TB003=TD028 AND TB004=TH004
+                            SELECT ISNULL(TG003,'') AS '進貨日期',ISNULL(TH001,'') AS '進貨單別',ISNULL(TH002,'') AS '進貨單號',ISNULL(TH003,'') AS '進貨序號',ISNULL(TD004,'') AS '品號',ISNULL(TD005,'') AS '品名',ISNULL(TH007,0) AS '進貨數量',ISNULL(TH015,0) AS '驗收數量',ISNULL(TH016,0) AS '計價數量',ISNULL(TH017,0) AS '驗退數量',ISNULL(TH008,'') AS '進貨單位',ISNULL(TD001,'') AS '採購單別',ISNULL(TD002,'') AS '採購單號',ISNULL(TD003,'') AS '採購序號',ISNULL(TC003,'')  AS '採購日期',ISNULL(TD008,0)  AS '採購數量',ISNULL(TD009,'')  AS '採購單位',ISNULL(TA003,'')  AS '請購日期',ISNULL(TB001,'')  AS '請購單別',ISNULL(TB002,'')  AS '請購單號',ISNULL(TB003,'')  AS '請購序號',ISNULL(TB009,0)  AS '請購數量',ISNULL(TB007,'')  AS '請購單位',ISNULL(TA006,'') AS '請購單頭備註',ISNULL(TB012,'') AS '請購單身備註'
+                            FROM [TK].dbo.PURTC,[TK].dbo.PURTD
+
+                            LEFT JOIN [TK].dbo.PURTH ON TH030='Y' AND TD001=TH011 AND TD002=TH012 AND TD003=TH013 AND TD004=TH004
+                            LEFT JOIN [TK].dbo.PURTG ON TG013='Y' AND TG001=TH001 AND TG002=TH002 
+                            LEFT JOIN [TK].dbo.PURTB ON TB025='Y' AND TB001=TD026 AND TB002=TD027 AND TB003=TD028 AND TB004=TD004
                             LEFT JOIN [TK].dbo.PURTA ON TA007='Y' AND TA001=TB001 AND TA002=TB002 
 
                             WHERE 1=1
-                            AND TG013='Y'
-                            AND TG001=TH001 AND TG002=TH002
-                            AND (TH004 LIKE '%{0}%' OR TH005 LIKE '%{0}%')
-                            AND TG003>='{1}' AND TG003<='{2}'
-                            ORDER BY TH001,TH002,TH003
+                            AND TD018='Y'
+                            AND TC001=TD001 AND TC002=TD002
+                            AND (TD004 LIKE '%{0}%' OR TD005 LIKE '%{0}%')
+                            AND TC003>='{1}' AND TC003<='{2}'
 
-                            ", TH004, SDATE, EDATE);
+                            ORDER BY TG003,TH001,TH002,TH003,TC003,TD001,TD002,TD003
+
+                            ", TD004, SDATE, EDATE);
 
 
             return SB;
 
         }
 
-        public void SETFASTREPORT2(string TH012)
+        public void SETFASTREPORT2(string TD002)
         {
             StringBuilder SQL1 = new StringBuilder();
 
-            SQL1 = SETSQL2(TH012);
+            SQL1 = SETSQL2(TD002);
             Report report1 = new Report();
             report1.Load(@"REPORT\進貨採購請購表.frx");
 
@@ -137,27 +139,28 @@ namespace TKPUR
             report1.Show();
         }
 
-        public StringBuilder SETSQL2(string TH012)
+        public StringBuilder SETSQL2(string TD002)
         {
             StringBuilder SB = new StringBuilder();
 
 
             SB.AppendFormat(@" 
-                            SELECT TG003 AS '進貨日期',TH001 AS '進貨單別',TH002 AS '進貨單號',TH003 AS '進貨序號',TH004 AS '品號',TH005 AS '品名',TH007 AS '進貨數量',TH015 AS '驗收數量',TH016 AS '計價數量',TH017 AS '驗退數量',TH008 AS '進貨單位',TH011 AS '採購單別',TH012 AS '採購單號',TH013 AS '採購序號',ISNULL(TC003,'')  AS '採購日期',ISNULL(TD008,0)  AS '採購數量',ISNULL(TD009,'')  AS '採購單位',ISNULL(TA003,'')  AS '請購日期',ISNULL(TB001,'')  AS '請購單別',ISNULL(TB002,'')  AS '請購單號',ISNULL(TB003,'')  AS '請購序號',ISNULL(TB009,0)  AS '請購數量',ISNULL(TB007,'')  AS '請購單位',ISNULL(TA006,'') AS '請購單頭備註',ISNULL(TB012,'') AS '請購單身備註'
-                            FROM [TK].dbo.PURTG,[TK].dbo.PURTH
-                            LEFT JOIN [TK].dbo.PURTD ON TD018='Y' AND TD001=TH011 AND TD002=TH012 AND TD003=TH013 AND TD004=TH004
-                            LEFT JOIN [TK].dbo.PURTC ON TC014='Y' AND TC001=TD001 AND TC002=TD002 
-                            LEFT JOIN [TK].dbo.PURTB ON TB025='Y' AND TB001=TD026 AND TB002=TD027 AND TB003=TD028 AND TB004=TH004
+                            SELECT ISNULL(TG003,'') AS '進貨日期',ISNULL(TH001,'') AS '進貨單別',ISNULL(TH002,'') AS '進貨單號',ISNULL(TH003,'') AS '進貨序號',ISNULL(TD004,'') AS '品號',ISNULL(TD005,'') AS '品名',ISNULL(TH007,0) AS '進貨數量',ISNULL(TH015,0) AS '驗收數量',ISNULL(TH016,0) AS '計價數量',ISNULL(TH017,0) AS '驗退數量',ISNULL(TH008,'') AS '進貨單位',ISNULL(TD001,'') AS '採購單別',ISNULL(TD002,'') AS '採購單號',ISNULL(TD003,'') AS '採購序號',ISNULL(TC003,'')  AS '採購日期',ISNULL(TD008,0)  AS '採購數量',ISNULL(TD009,'')  AS '採購單位',ISNULL(TA003,'')  AS '請購日期',ISNULL(TB001,'')  AS '請購單別',ISNULL(TB002,'')  AS '請購單號',ISNULL(TB003,'')  AS '請購序號',ISNULL(TB009,0)  AS '請購數量',ISNULL(TB007,'')  AS '請購單位',ISNULL(TA006,'') AS '請購單頭備註',ISNULL(TB012,'') AS '請購單身備註'
+                            FROM [TK].dbo.PURTC,[TK].dbo.PURTD
+
+                            LEFT JOIN [TK].dbo.PURTH ON TH030='Y' AND TD001=TH011 AND TD002=TH012 AND TD003=TH013 AND TD004=TH004
+                            LEFT JOIN [TK].dbo.PURTG ON TG013='Y' AND TG001=TH001 AND TG002=TH002 
+                            LEFT JOIN [TK].dbo.PURTB ON TB025='Y' AND TB001=TD026 AND TB002=TD027 AND TB003=TD028 AND TB004=TD004
                             LEFT JOIN [TK].dbo.PURTA ON TA007='Y' AND TA001=TB001 AND TA002=TB002 
 
                             WHERE 1=1
-                            AND TG013='Y'
-                            AND TG001=TH001 AND TG002=TH002
-                            AND TH012 LIKE '%{0}%'
+                            AND TD018='Y'
+                            AND TC001=TD001 AND TC002=TD002
+                            AND TD002 LIKE '%{0}%'
 
-                            ORDER BY TH001,TH002,TH003
+                            ORDER BY TG003,TH001,TH002,TH003,TC003,TD001,TD002,TD003
 
-                            ", TH012);
+                            ", TD002);
 
 
             return SB;
