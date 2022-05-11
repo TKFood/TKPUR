@@ -106,11 +106,11 @@ namespace TKPUR
 
         }
 
-        public void SETFASTREPORT2(string TH012, string SDATE, string EDATE)
+        public void SETFASTREPORT2(string TH012)
         {
             StringBuilder SQL1 = new StringBuilder();
 
-            SQL1 = SETSQL2(TH012, SDATE, EDATE);
+            SQL1 = SETSQL2(TH012);
             Report report1 = new Report();
             report1.Load(@"REPORT\進貨採購請購表.frx");
 
@@ -137,7 +137,7 @@ namespace TKPUR
             report1.Show();
         }
 
-        public StringBuilder SETSQL2(string TH012, string SDATE, string EDATE)
+        public StringBuilder SETSQL2(string TH012)
         {
             StringBuilder SB = new StringBuilder();
 
@@ -154,10 +154,10 @@ namespace TKPUR
                             AND TG013='Y'
                             AND TG001=TH001 AND TG002=TH002
                             AND TH012 LIKE '%{0}%'
-                            AND TG003>='{1}' AND TG003<='{2}'
+
                             ORDER BY TH001,TH002,TH003
 
-                            ", TH012, SDATE, EDATE);
+                            ", TH012);
 
 
             return SB;
@@ -176,7 +176,7 @@ namespace TKPUR
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT2(textBox2.Text.Trim(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SETFASTREPORT2(textBox2.Text.Trim());
         }
 
         #endregion
