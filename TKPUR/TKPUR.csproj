@@ -84,6 +84,12 @@
     <Compile Include="FrmPURTATBUOFCHANGE.Designer.cs">
       <DependentUpon>FrmPURTATBUOFCHANGE.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmReportPURALL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmReportPURALL.Designer.cs">
+      <DependentUpon>FrmReportPURALL.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmREPORTPURTLTM.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,6 +196,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmPURTATBUOFCHANGE.resx">
       <DependentUpon>FrmPURTATBUOFCHANGE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmReportPURALL.resx">
+      <DependentUpon>FrmReportPURALL.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmREPORTPURTLTM.resx">
       <DependentUpon>FrmREPORTPURTLTM.cs</DependentUpon>
