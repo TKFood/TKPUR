@@ -123,11 +123,13 @@ namespace TKPUR
             
                     
             FASTSQL.AppendFormat(@"  
-                               SELECT *
-                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA
+                                SELECT *
+                                ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
+                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV
                                 WHERE TC001=TD001 AND TC002=TD002
                                 AND MQ001=TC001
                                 AND TC004=MA001
+                                AND TC011=MV001
                                 AND TD002='20220623003' 
                                 ");
 
