@@ -123,9 +123,11 @@ namespace TKPUR
             
                     
             FASTSQL.AppendFormat(@"  
-                                SELECT *
-                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD
+                               SELECT *
+                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA
                                 WHERE TC001=TD001 AND TC002=TD002
+                                AND MQ001=TC001
+                                AND TC004=MA001
                                 AND TD002='20220623003' 
                                 ");
 
