@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="06/23/2022 11:52:46" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFoxmVbCYHnn86EWTFpQXt8">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;FROM [TK].dbo.PURTC,[TK].dbo.PURTD&#13;&#10;WHERE TC001=TD001 AND TC002=TD002&#13;&#10;AND TD002='20220623003'">
+        <Column Name="COMPANY" DataType="System.String"/>
+        <Column Name="CREATOR" DataType="System.String"/>
+        <Column Name="USR_GROUP" DataType="System.String"/>
+        <Column Name="CREATE_DATE" DataType="System.String"/>
+        <Column Name="MODIFIER" DataType="System.String"/>
+        <Column Name="MODI_DATE" DataType="System.String"/>
+        <Column Name="FLAG" DataType="System.Decimal"/>
+        <Column Name="CREATE_TIME" DataType="System.String"/>
+        <Column Name="MODI_TIME" DataType="System.String"/>
+        <Column Name="TRANS_TYPE" DataType="System.String"/>
+        <Column Name="TRANS_NAME" DataType="System.String"/>
+        <Column Name="sync_date" DataType="System.String"/>
+        <Column Name="sync_time" DataType="System.String"/>
+        <Column Name="sync_mark" DataType="System.String"/>
+        <Column Name="sync_count" DataType="System.Decimal"/>
+        <Column Name="DataUser" DataType="System.String"/>
+        <Column Name="DataGroup" DataType="System.String"/>
+        <Column Name="TC001" DataType="System.String"/>
+        <Column Name="TC002" DataType="System.String"/>
+        <Column Name="TC003" DataType="System.String"/>
+        <Column Name="TC004" DataType="System.String"/>
+        <Column Name="TC005" DataType="System.String"/>
+        <Column Name="TC006" DataType="System.Decimal"/>
+        <Column Name="TC007" DataType="System.String"/>
+        <Column Name="TC008" DataType="System.String"/>
+        <Column Name="TC009" DataType="System.String"/>
+        <Column Name="TC010" DataType="System.String"/>
+        <Column Name="TC011" DataType="System.String"/>
+        <Column Name="TC012" DataType="System.String"/>
+        <Column Name="TC013" DataType="System.Decimal"/>
+        <Column Name="TC014" DataType="System.String"/>
+        <Column Name="TC015" DataType="System.String"/>
+        <Column Name="TC016" DataType="System.String"/>
+        <Column Name="TC017" DataType="System.String"/>
+        <Column Name="TC018" DataType="System.String"/>
+        <Column Name="TC019" DataType="System.Decimal"/>
+        <Column Name="TC020" DataType="System.Decimal"/>
+        <Column Name="TC021" DataType="System.String"/>
+        <Column Name="TC022" DataType="System.String"/>
+        <Column Name="TC023" DataType="System.Decimal"/>
+        <Column Name="TC024" DataType="System.String"/>
+        <Column Name="TC025" DataType="System.String"/>
+        <Column Name="TC026" DataType="System.Decimal"/>
+        <Column Name="TC027" DataType="System.String"/>
+        <Column Name="TC028" DataType="System.Decimal"/>
+        <Column Name="TC029" DataType="System.Decimal"/>
+        <Column Name="TC030" DataType="System.String"/>
+        <Column Name="TC031" DataType="System.Decimal"/>
+        <Column Name="TC032" DataType="System.String"/>
+        <Column Name="TC033" DataType="System.String"/>
+        <Column Name="TC034" DataType="System.String"/>
+        <Column Name="TC035" DataType="System.String"/>
+        <Column Name="TC036" DataType="System.String"/>
+        <Column Name="TC037" DataType="System.String"/>
+        <Column Name="TC038" DataType="System.String"/>
+        <Column Name="TC039" DataType="System.String"/>
+        <Column Name="TC040" DataType="System.String"/>
+        <Column Name="TC041" DataType="System.String"/>
+        <Column Name="TC042" DataType="System.Decimal"/>
+        <Column Name="TC043" DataType="System.Decimal"/>
+        <Column Name="TC044" DataType="System.String"/>
+        <Column Name="TC045" DataType="System.String"/>
+        <Column Name="TC046" DataType="System.String"/>
+        <Column Name="TC047" DataType="System.String"/>
+        <Column Name="TC048" DataType="System.String"/>
+        <Column Name="TC049" DataType="System.String"/>
+        <Column Name="TC050" DataType="System.String"/>
+        <Column Name="TC051" DataType="System.String"/>
+        <Column Name="TC052" DataType="System.String"/>
+        <Column Name="TC053" DataType="System.String"/>
+        <Column Name="TC054" DataType="System.String"/>
+        <Column Name="TC055" DataType="System.String"/>
+        <Column Name="TC056" DataType="System.String"/>
+        <Column Name="TC057" DataType="System.String"/>
+        <Column Name="TC058" DataType="System.String"/>
+        <Column Name="TC059" DataType="System.String"/>
+        <Column Name="TC060" DataType="System.String"/>
+        <Column Name="TC061" DataType="System.String"/>
+        <Column Name="TC062" DataType="System.String"/>
+        <Column Name="TC063" DataType="System.String"/>
+        <Column Name="TC064" DataType="System.String"/>
+        <Column Name="TC065" DataType="System.String"/>
+        <Column Name="TC066" DataType="System.Decimal"/>
+        <Column Name="TC067" DataType="System.String"/>
+        <Column Name="TC068" DataType="System.String"/>
+        <Column Name="TC069" DataType="System.String"/>
+        <Column Name="TC070" DataType="System.Decimal"/>
+        <Column Name="TC071" DataType="System.Decimal"/>
+        <Column Name="TC072" DataType="System.Decimal"/>
+        <Column Name="TC073" DataType="System.Decimal"/>
+        <Column Name="TC074" DataType="System.Decimal"/>
+        <Column Name="TC075" DataType="System.String"/>
+        <Column Name="TC076" DataType="System.String"/>
+        <Column Name="TC077" DataType="System.String"/>
+        <Column Name="TC078" DataType="System.String"/>
+        <Column Name="TC079" DataType="System.String"/>
+        <Column Name="TC080" DataType="System.String"/>
+        <Column Name="UDF01" DataType="System.String"/>
+        <Column Name="UDF02" DataType="System.String"/>
+        <Column Name="UDF03" DataType="System.String"/>
+        <Column Name="UDF04" DataType="System.String"/>
+        <Column Name="UDF05" DataType="System.String"/>
+        <Column Name="UDF06" DataType="System.Decimal"/>
+        <Column Name="UDF07" DataType="System.Decimal"/>
+        <Column Name="UDF08" DataType="System.Decimal"/>
+        <Column Name="UDF09" DataType="System.Decimal"/>
+        <Column Name="UDF10" DataType="System.Decimal"/>
+        <Column Name="COMPANY1" DataType="System.String"/>
+        <Column Name="CREATOR1" DataType="System.String"/>
+        <Column Name="USR_GROUP1" DataType="System.String"/>
+        <Column Name="CREATE_DATE1" DataType="System.String"/>
+        <Column Name="MODIFIER1" DataType="System.String"/>
+        <Column Name="MODI_DATE1" DataType="System.String"/>
+        <Column Name="FLAG1" DataType="System.Decimal"/>
+        <Column Name="CREATE_TIME1" DataType="System.String"/>
+        <Column Name="MODI_TIME1" DataType="System.String"/>
+        <Column Name="TRANS_TYPE1" DataType="System.String"/>
+        <Column Name="TRANS_NAME1" DataType="System.String"/>
+        <Column Name="sync_date1" DataType="System.String"/>
+        <Column Name="sync_time1" DataType="System.String"/>
+        <Column Name="sync_mark1" DataType="System.String"/>
+        <Column Name="sync_count1" DataType="System.Decimal"/>
+        <Column Name="DataUser1" DataType="System.String"/>
+        <Column Name="DataGroup1" DataType="System.String"/>
+        <Column Name="TD001" DataType="System.String"/>
+        <Column Name="TD002" DataType="System.String"/>
+        <Column Name="TD003" DataType="System.String"/>
+        <Column Name="TD004" DataType="System.String"/>
+        <Column Name="TD005" DataType="System.String"/>
+        <Column Name="TD006" DataType="System.String"/>
+        <Column Name="TD007" DataType="System.String"/>
+        <Column Name="TD008" DataType="System.Decimal"/>
+        <Column Name="TD009" DataType="System.String"/>
+        <Column Name="TD010" DataType="System.Decimal"/>
+        <Column Name="TD011" DataType="System.Decimal"/>
+        <Column Name="TD012" DataType="System.String"/>
+        <Column Name="TD013" DataType="System.String"/>
+        <Column Name="TD014" DataType="System.String"/>
+        <Column Name="TD015" DataType="System.Decimal"/>
+        <Column Name="TD016" DataType="System.String"/>
+        <Column Name="TD017" DataType="System.String"/>
+        <Column Name="TD018" DataType="System.String"/>
+        <Column Name="TD019" DataType="System.Decimal"/>
+        <Column Name="TD020" DataType="System.String"/>
+        <Column Name="TD021" DataType="System.String"/>
+        <Column Name="TD022" DataType="System.String"/>
+        <Column Name="TD023" DataType="System.String"/>
+        <Column Name="TD024" DataType="System.String"/>
+        <Column Name="TD025" DataType="System.String"/>
+        <Column Name="TD026" DataType="System.String"/>
+        <Column Name="TD027" DataType="System.String"/>
+        <Column Name="TD028" DataType="System.String"/>
+        <Column Name="TD029" DataType="System.String"/>
+        <Column Name="TD030" DataType="System.Decimal"/>
+        <Column Name="TD031" DataType="System.Decimal"/>
+        <Column Name="TD032" DataType="System.String"/>
+        <Column Name="TD033" DataType="System.String"/>
+        <Column Name="TD034" DataType="System.Decimal"/>
+        <Column Name="TD035" DataType="System.Decimal"/>
+        <Column Name="TD036" DataType="System.String"/>
+        <Column Name="TD037" DataType="System.String"/>
+        <Column Name="TD038" DataType="System.String"/>
+        <Column Name="TD039" DataType="System.String"/>
+        <Column Name="TD040" DataType="System.String"/>
+        <Column Name="TD041" DataType="System.String"/>
+        <Column Name="TD042" DataType="System.String"/>
+        <Column Name="TD043" DataType="System.String"/>
+        <Column Name="TD044" DataType="System.String"/>
+        <Column Name="TD045" DataType="System.String"/>
+        <Column Name="TD046" DataType="System.String"/>
+        <Column Name="TD047" DataType="System.String"/>
+        <Column Name="TD048" DataType="System.Decimal"/>
+        <Column Name="TD049" DataType="System.Decimal"/>
+        <Column Name="TD050" DataType="System.String"/>
+        <Column Name="TD051" DataType="System.String"/>
+        <Column Name="TD052" DataType="System.String"/>
+        <Column Name="TD053" DataType="System.String"/>
+        <Column Name="TD054" DataType="System.String"/>
+        <Column Name="TD055" DataType="System.String"/>
+        <Column Name="TD056" DataType="System.String"/>
+        <Column Name="TD057" DataType="System.Decimal"/>
+        <Column Name="TD058" DataType="System.String"/>
+        <Column Name="TD059" DataType="System.String"/>
+        <Column Name="TD060" DataType="System.String"/>
+        <Column Name="TD061" DataType="System.String"/>
+        <Column Name="TD062" DataType="System.String"/>
+        <Column Name="TD063" DataType="System.String"/>
+        <Column Name="TD064" DataType="System.String"/>
+        <Column Name="TD065" DataType="System.String"/>
+        <Column Name="TD066" DataType="System.String"/>
+        <Column Name="TD067" DataType="System.String"/>
+        <Column Name="TD068" DataType="System.String"/>
+        <Column Name="TD069" DataType="System.Decimal"/>
+        <Column Name="TD070" DataType="System.String"/>
+        <Column Name="TD071" DataType="System.String"/>
+        <Column Name="TD072" DataType="System.String"/>
+        <Column Name="TD073" DataType="System.String"/>
+        <Column Name="TD074" DataType="System.String"/>
+        <Column Name="TD075" DataType="System.Decimal"/>
+        <Column Name="TD076" DataType="System.String"/>
+        <Column Name="TD077" DataType="System.String"/>
+        <Column Name="TD078" DataType="System.String"/>
+        <Column Name="TD079" DataType="System.Decimal"/>
+        <Column Name="TD080" DataType="System.Decimal"/>
+        <Column Name="TD081" DataType="System.String"/>
+        <Column Name="TD082" DataType="System.Decimal"/>
+        <Column Name="TD083" DataType="System.String"/>
+        <Column Name="TD084" DataType="System.Decimal"/>
+        <Column Name="TD085" DataType="System.String"/>
+        <Column Name="TD086" DataType="System.Decimal"/>
+        <Column Name="TD087" DataType="System.Decimal"/>
+        <Column Name="TD088" DataType="System.Decimal"/>
+        <Column Name="TD089" DataType="System.Decimal"/>
+        <Column Name="TD090" DataType="System.String"/>
+        <Column Name="TD091" DataType="System.String"/>
+        <Column Name="TD092" DataType="System.String"/>
+        <Column Name="TD093" DataType="System.String"/>
+        <Column Name="TD094" DataType="System.String"/>
+        <Column Name="TD095" DataType="System.String"/>
+        <Column Name="UDF011" DataType="System.String"/>
+        <Column Name="UDF021" DataType="System.String"/>
+        <Column Name="UDF031" DataType="System.String"/>
+        <Column Name="UDF041" DataType="System.String"/>
+        <Column Name="UDF051" DataType="System.String"/>
+        <Column Name="UDF061" DataType="System.Decimal"/>
+        <Column Name="UDF071" DataType="System.Decimal"/>
+        <Column Name="UDF081" DataType="System.Decimal"/>
+        <Column Name="UDF091" DataType="System.Decimal"/>
+        <Column Name="UDF101" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="75.6">
+      <TextObject Name="Text1" Width="718.2" Height="18.9" Text="老楊食品股份有限公司" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text2" Top="18.9" Width="718.2" Height="18.9" Text="採購單" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Top="37.8" Width="255.15" Height="18.9" Text="公司電話:05-2956520" VertAlign="Center"/>
+      <TextObject Name="Text4" Top="56.7" Width="255.15" Height="18.9" Text="製表日期:[Year([Date])]/[Month([Date])]/[Day([Date])]" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="463.05" Top="37.8" Width="255.15" Height="18.9" Text="公司傳真:05-2956519" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="463.05" Top="56.7" Width="255.15" Height="18.9" Text="頁次:[Page#]/[TotalPages#]" HorzAlign="Right" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="80.09" Width="718.2" Height="18.9">
+      <TextObject Name="Text7" Width="94.5" Height="18.9" Text="[Table.TC001]" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="94.5" Width="94.5" Height="18.9" Text="[Table.TC002]" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="103.49" Width="718.2" Height="47.25" DataSource="Table">
+      <TextObject Name="Text9" Width="94.5" Height="18.9" Text="[Table.TD004]" VertAlign="Center"/>
+      <TextObject Name="Text10" Top="18.9" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD005]" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="155.23" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>

@@ -78,6 +78,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmPURSEND.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPURSEND.Designer.cs">
+      <DependentUpon>FrmPURSEND.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPURTATBUOFCHANGE.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,6 +200,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FrmPURSEND.resx">
+      <DependentUpon>FrmPURSEND.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmPURTATBUOFCHANGE.resx">
       <DependentUpon>FrmPURTATBUOFCHANGE.cs</DependentUpon>
     </EmbeddedResource>
