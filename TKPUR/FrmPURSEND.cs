@@ -108,7 +108,9 @@ namespace TKPUR
 
                 report1.Export(pdfExport, ms);
 
-                File.WriteAllBytes(@"C:\PDFTEMP\Exported.pdf", ms.ToArray());
+                //設定本機資料夾 
+                string DirectoryNAME = SETPATHFLODER();
+                File.WriteAllBytes(DirectoryNAME+"Exported.pdf", ms.ToArray());
             }
 
 
@@ -130,6 +132,27 @@ namespace TKPUR
             return FASTSQL.ToString();
         }
 
+        //設定本機資料夾 
+        public string  SETPATHFLODER()
+        {
+            string DirectoryNAME = null;
+            string DATES = DateTime.Now.ToString("yyyyMMdd");
+
+            DirectoryNAME = @"C:\PDFTEMP\" + DATES.ToString() + @"\";
+
+            //不存在就新增資料夾
+            if (Directory.Exists(DirectoryNAME))
+            {                
+
+            }
+            else
+            {
+                //新增資料夾
+                Directory.CreateDirectory(DirectoryNAME);
+            }
+
+            return DirectoryNAME;
+        }
         #endregion
 
         #region BUTTON
