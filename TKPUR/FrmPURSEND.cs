@@ -51,9 +51,60 @@ namespace TKPUR
         public FrmPURSEND()
         {
             InitializeComponent();
+
+
         }
 
+        private void FrmPURSEND_Load(object sender, EventArgs e)
+        {
+            SETGRIDVIEW();
+        }
         #region FUNCTION
+        public void  SETGRIDVIEW()
+        {
+            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.PaleTurquoise;      //奇數列顏色
+
+            //先建立個 CheckBox 欄
+            DataGridViewCheckBoxColumn cbCol = new DataGridViewCheckBoxColumn();
+            cbCol.Width = 120;   //設定寬度
+            cbCol.HeaderText = "　勾選";
+            cbCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;   //置中
+            cbCol.TrueValue = true;
+            cbCol.FalseValue = false;
+            dataGridView1.Columns.Insert(0, cbCol);
+
+            #region 建立全选 CheckBox
+
+            //建立个矩形，等下计算 CheckBox 嵌入 GridView 的位置
+            Rectangle rect = dataGridView1.GetCellDisplayRectangle(0, -1, true);
+            rect.X = rect.Location.X + rect.Width / 4 - 18;
+            rect.Y = rect.Location.Y + (rect.Height / 2 - 9);
+
+            CheckBox cbHeader = new CheckBox();
+            cbHeader.Name = "checkboxHeader";
+            cbHeader.Size = new Size(18, 18);
+            cbHeader.Location = rect.Location;
+
+            //全选要设定的事件
+            cbHeader.CheckedChanged += new EventHandler(cbHeader_CheckedChanged);
+
+            //将 CheckBox 加入到 dataGridView
+            dataGridView1.Controls.Add(cbHeader);
+
+            #endregion
+        }
+
+        private void cbHeader_CheckedChanged(object sender, EventArgs e)
+        {
+            dataGridView1.EndEdit();
+
+            foreach (DataGridViewRow dr in dataGridView1.Rows)
+            {
+                dr.Cells[0].Value = ((CheckBox)dataGridView1.Controls.Find("checkboxHeader", true)[0]).Checked;
+
+            }
+
+        }
 
         public void Search(string SDAY,string EDAY)
         {
@@ -245,8 +296,9 @@ namespace TKPUR
         {
             Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
         }
+
         #endregion
 
-
+       
     }
 }
