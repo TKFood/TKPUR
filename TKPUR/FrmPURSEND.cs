@@ -54,6 +54,81 @@ namespace TKPUR
         }
 
         #region FUNCTION
+
+        public void Search(string SDAY,string EDAY)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                
+                sbSql.AppendFormat(@"  
+                                   SELECT TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠'
+                                    ,(      SELECT TD004+TD005+TD006+', '
+                                            FROM   [TK].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002
+                                            FOR XML PATH(''), TYPE  
+                                            ).value('.','nvarchar(max)')  As '明細' 
+                                    FROM [TK].dbo.PURTC,[TK].dbo.PURMA
+                                    WHERE 1=1
+                                    AND TC004=MA001
+                                    AND TC003>='{0}' AND TC003<='{1}'
+                                    ORDER BY TC001,TC002
+
+                                    ", SDAY,EDAY);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count == 0)
+                {
+                    dataGridView1.DataSource = null;
+                }
+                else
+                {
+                    if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                    {
+                        dataGridView1.DataSource = ds.Tables["TEMPds1"];
+                        dataGridView1.AutoResizeColumns();
+
+                    }
+
+                }
+
+             
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+
         public void SETFASTREPORT()
         {
 
@@ -165,6 +240,13 @@ namespace TKPUR
         {
             SETFASTREPORT();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+        }
         #endregion
+
+
     }
 }
