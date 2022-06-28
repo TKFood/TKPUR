@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/28/2022 10:01:18" ReportInfo.Modified="06/28/2022 10:14:39" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHQhUHeSAAeOom5GN7KuC3W">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TL004 AS '廠商代號',MA002 AS '廠商',TL003 AS '核價日期',TL005 AS '幣別',TM004 AS '品號',TM005 AS '品名',TM006 AS '規格',TM010 AS '單價',TM009 AS '計價單位',TM008 AS '分量計價',TM014 AS '生效日',TM015 AS '失效日',TN007 AS '數量以上',TN008 AS '分量計價單價'&#13;&#10;FROM [TK].dbo.PURMA,[TK].dbo.PURTL, [TK].dbo.PURTM  &#13;&#10;LEFT JOIN [TK].dbo.PURTN ON TM001=TN001 AND TM002=TN002 AND TM003=TN003  &#13;&#10;WHERE 1=1&#13;&#10;AND MA001=TL004&#13;&#10;AND TL001=TM001 AND TL002=TM002&#13;&#10;AND TL006='Y'&#13;&#10;AND TL003&gt;='20220101'&#13;&#10;AND (TL004 LIKE '1000002%' OR MA002 LIKE '1000002%')&#13;&#10;ORDER BY TL004,MA002,TM004,TL003,TM009">
+        <Column Name="廠商代號" DataType="System.String"/>
+        <Column Name="廠商" DataType="System.String"/>
+        <Column Name="核價日期" DataType="System.String"/>
+        <Column Name="幣別" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="規格" DataType="System.String"/>
+        <Column Name="單價" DataType="System.Decimal"/>
+        <Column Name="計價單位" DataType="System.String"/>
+        <Column Name="分量計價" DataType="System.String"/>
+        <Column Name="生效日" DataType="System.String"/>
+        <Column Name="失效日" DataType="System.String"/>
+        <Column Name="數量以上" DataType="System.Decimal"/>
+        <Column Name="分量計價單價" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="400" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1436.4" Height="37.8">
+      <TextObject Name="Text1" Width="1426.95" Height="18.9" Text="核價單廠商調價表" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="42.29" Width="1436.4" Height="18.9">
+      <TextObject Name="Text3" Width="94.5" Height="18.9" Border.Lines="All" Text="廠商代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="廠商" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="核價日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="283.5" Width="56.7" Height="18.9" Border.Lines="All" Text="幣別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="434.7" Width="179.55" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="614.25" Width="151.2" Height="18.9" Border.Lines="All" Text="規格" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" Text="計價單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="954.45" Width="94.5" Height="18.9" Border.Lines="All" Text="分量計價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="1237.95" Width="94.5" Height="18.9" Border.Lines="All" Text="生效日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="1332.45" Width="94.5" Height="18.9" Border.Lines="All" Text="失效日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="1048.95" Width="94.5" Height="18.9" Border.Lines="All" Text="數量以上" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="1143.45" Width="94.5" Height="18.9" Border.Lines="All" Text="分量計價單價" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="65.69" Width="1436.4" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商代號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.核價日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="283.5" Width="56.7" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.幣別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="434.7" Width="179.55" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="614.25" Width="151.2" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.規格]" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.單價]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text18" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.計價單位]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="954.45" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.分量計價]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="1237.95" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.生效日]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="1332.45" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.失效日]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="1048.95" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.數量以上]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text28" Left="1143.45" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.分量計價單價]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="89.08" Width="1436.4" Height="18.9"/>
+  </ReportPage>
+</Report>
