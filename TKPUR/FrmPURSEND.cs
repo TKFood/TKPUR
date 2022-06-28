@@ -284,12 +284,25 @@ namespace TKPUR
 
             return DirectoryNAME;
         }
+
+        public void PRESEND()
+        {
+            foreach (DataGridViewRow dr in dataGridView1.Rows)
+            {
+                if (Convert.ToBoolean(dr.Cells[0].Value)==true)
+                {
+                    MessageBox.Show(dr.Cells[1].Value.ToString()+ dr.Cells[2].Value.ToString() );
+                }
+            }
+        }
         #endregion
 
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT();
+            //SETFASTREPORT();
+
+            PRESEND();
         }
 
         private void button2_Click(object sender, EventArgs e)
