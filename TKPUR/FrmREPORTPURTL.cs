@@ -18,11 +18,11 @@ using System.Threading;
 using FastReport;
 using FastReport.Data;
 using TKITDLL;
-using FastReport.Export.Pdf;
+
 
 namespace TKPUR
 {
-    public partial class FrmPURSEND : Form
+    public partial class FrmREPORTPURTL : Form
     {
         SqlConnection sqlConn = new SqlConnection();
         SqlCommand sqlComm = new SqlCommand();
@@ -48,7 +48,7 @@ namespace TKPUR
 
         Report report1 = new Report();
 
-        public FrmPURSEND()
+        public FrmREPORTPURTL()
         {
             InitializeComponent();
         }
@@ -82,37 +82,8 @@ namespace TKPUR
 
             Table.SelectCommand = SQL;
 
-            //report1.Preview = previewControl1;
-            //report1.Show();
-
-            //// prepare a report
-            //report1.Prepare();
-            //// create an instance of HTML export filter
-            //FastReport.Export.Pdf.PDFExport PDFEXPORT = new FastReport.Export.Pdf.PDFExport();
-            //// show the export options dialog and do the export
-            //if (PDFEXPORT.ShowDialog())
-            //{
-            //    report1.Export(PDFEXPORT, "PDFEXPORT.pdf");
-            //}
-
-
-            report1.PrintSettings.ShowDialog = false;
-            report1.Prepare();    // show progress dialog
-            using (var ms = new MemoryStream())
-            {
-                var pdfExport = new PDFExport
-                {
-                    Name = "Exported",
-                    Background = true
-                };
-
-                report1.Export(pdfExport, ms);
-
-                //設定本機資料夾 
-                string DirectoryNAME = SETPATHFLODER();
-                File.WriteAllBytes(DirectoryNAME+"Exported.pdf", ms.ToArray());
-            }
-
+            report1.Preview = previewControl1;
+            report1.Show();
 
         }
 
@@ -120,43 +91,13 @@ namespace TKPUR
         {
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
-            
-                    
+
+
             FASTSQL.AppendFormat(@"  
-                                SELECT *
-                                ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
-                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB
-                                WHERE TC001=TD001 AND TC002=TD002
-                                AND MQ001=TC001
-                                AND TC004=MA001
-                                AND TC011=MV001
-                                AND TC010=MB001
-                                AND TD002='20220623003' 
+                              
                                 ");
 
             return FASTSQL.ToString();
-        }
-
-        //設定本機資料夾 
-        public string  SETPATHFLODER()
-        {
-            string DirectoryNAME = null;
-            string DATES = DateTime.Now.ToString("yyyyMMdd");
-
-            DirectoryNAME = @"C:\PDFTEMP\" + DATES.ToString() + @"\";
-
-            //不存在就新增資料夾
-            if (Directory.Exists(DirectoryNAME))
-            {                
-
-            }
-            else
-            {
-                //新增資料夾
-                Directory.CreateDirectory(DirectoryNAME);
-            }
-
-            return DirectoryNAME;
         }
         #endregion
 
@@ -166,5 +107,6 @@ namespace TKPUR
             SETFASTREPORT();
         }
         #endregion
+
     }
 }

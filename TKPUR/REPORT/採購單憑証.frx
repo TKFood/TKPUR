@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="06/24/2022 11:12:41" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="06/27/2022 16:51:21" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUE+esYsiWQyrkKUXv/YMMdD">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="   SELECT *&#13;&#10;                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA&#13;&#10;                                WHERE TC001=TD001 AND TC002=TD002&#13;&#10;                                AND MQ001=TC001&#13;&#10;                                AND TC004=MA001&#13;&#10;                                AND TD002='20220623003' ">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHm0GUL9P+AqcsTY0mSaiBc">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME&#13;&#10;FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB&#13;&#10;WHERE TC001=TD001 AND TC002=TD002&#13;&#10;AND MQ001=TC001&#13;&#10;AND TC004=MA001&#13;&#10;AND TC011=MV001&#13;&#10;AND TC010=MB001&#13;&#10;AND TD002='20220623003' ">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
         <Column Name="USR_GROUP" DataType="System.String"/>
@@ -508,6 +508,212 @@
         <Column Name="UDF083" DataType="System.Decimal"/>
         <Column Name="UDF093" DataType="System.Decimal"/>
         <Column Name="UDF103" DataType="System.Decimal"/>
+        <Column Name="TC018NAME" DataType="System.String"/>
+        <Column Name="COMPANY4" DataType="System.String"/>
+        <Column Name="CREATOR4" DataType="System.String"/>
+        <Column Name="USR_GROUP4" DataType="System.String"/>
+        <Column Name="CREATE_DATE4" DataType="System.String"/>
+        <Column Name="MODIFIER4" DataType="System.String"/>
+        <Column Name="MODI_DATE4" DataType="System.String"/>
+        <Column Name="FLAG4" DataType="System.Decimal"/>
+        <Column Name="CREATE_TIME4" DataType="System.String"/>
+        <Column Name="MODI_TIME4" DataType="System.String"/>
+        <Column Name="TRANS_TYPE4" DataType="System.String"/>
+        <Column Name="TRANS_NAME4" DataType="System.String"/>
+        <Column Name="sync_date4" DataType="System.String"/>
+        <Column Name="sync_time4" DataType="System.String"/>
+        <Column Name="sync_mark4" DataType="System.String"/>
+        <Column Name="sync_count4" DataType="System.Decimal"/>
+        <Column Name="DataUser4" DataType="System.String"/>
+        <Column Name="DataGroup4" DataType="System.String"/>
+        <Column Name="MV001" DataType="System.String"/>
+        <Column Name="MV002" DataType="System.String"/>
+        <Column Name="MV003" DataType="System.String"/>
+        <Column Name="MV004" DataType="System.String"/>
+        <Column Name="MV005" DataType="System.String"/>
+        <Column Name="MV006" DataType="System.String"/>
+        <Column Name="MV007" DataType="System.String"/>
+        <Column Name="MV008" DataType="System.String"/>
+        <Column Name="MV009" DataType="System.String"/>
+        <Column Name="MV010" DataType="System.String"/>
+        <Column Name="MV011" DataType="System.String"/>
+        <Column Name="MV012" DataType="System.String"/>
+        <Column Name="MV013" DataType="System.String"/>
+        <Column Name="MV014" DataType="System.String"/>
+        <Column Name="MV015" DataType="System.String"/>
+        <Column Name="MV016" DataType="System.String"/>
+        <Column Name="MV017" DataType="System.String"/>
+        <Column Name="MV018" DataType="System.String"/>
+        <Column Name="MV019" DataType="System.String"/>
+        <Column Name="MV020" DataType="System.String"/>
+        <Column Name="MV021" DataType="System.String"/>
+        <Column Name="MV022" DataType="System.String"/>
+        <Column Name="MV023" DataType="System.String"/>
+        <Column Name="MV024" DataType="System.String"/>
+        <Column Name="MV025" DataType="System.String"/>
+        <Column Name="MV026" DataType="System.String"/>
+        <Column Name="MV027" DataType="System.String"/>
+        <Column Name="MV028" DataType="System.String"/>
+        <Column Name="MV029" DataType="System.String"/>
+        <Column Name="MV030" DataType="System.String"/>
+        <Column Name="MV031" DataType="System.Decimal"/>
+        <Column Name="MV032" DataType="System.String"/>
+        <Column Name="MV033" DataType="System.Decimal"/>
+        <Column Name="MV034" DataType="System.String"/>
+        <Column Name="MV035" DataType="System.String"/>
+        <Column Name="MV036" DataType="System.String"/>
+        <Column Name="MV037" DataType="System.Decimal"/>
+        <Column Name="MV038" DataType="System.String"/>
+        <Column Name="MV039" DataType="System.Decimal"/>
+        <Column Name="MV040" DataType="System.Decimal"/>
+        <Column Name="MV041" DataType="System.String"/>
+        <Column Name="MV042" DataType="System.String"/>
+        <Column Name="MV043" DataType="System.Decimal"/>
+        <Column Name="MV044" DataType="System.String"/>
+        <Column Name="MV045" DataType="System.Decimal"/>
+        <Column Name="MV046" DataType="System.String"/>
+        <Column Name="MV047" DataType="System.String"/>
+        <Column Name="MV048" DataType="System.String"/>
+        <Column Name="MV049" DataType="System.String"/>
+        <Column Name="MV050" DataType="System.String"/>
+        <Column Name="MV051" DataType="System.String"/>
+        <Column Name="MV052" DataType="System.String"/>
+        <Column Name="MV053" DataType="System.String"/>
+        <Column Name="MV054" DataType="System.String"/>
+        <Column Name="MV055" DataType="System.Decimal"/>
+        <Column Name="MV056" DataType="System.Decimal"/>
+        <Column Name="MV057" DataType="System.Decimal"/>
+        <Column Name="MV058" DataType="System.String"/>
+        <Column Name="MV059" DataType="System.String"/>
+        <Column Name="MV060" DataType="System.String"/>
+        <Column Name="MV061" DataType="System.String"/>
+        <Column Name="MV062" DataType="System.String"/>
+        <Column Name="MV063" DataType="System.String"/>
+        <Column Name="MV064" DataType="System.String"/>
+        <Column Name="MV065" DataType="System.String"/>
+        <Column Name="MV066" DataType="System.String"/>
+        <Column Name="MV067" DataType="System.String"/>
+        <Column Name="MV068" DataType="System.String"/>
+        <Column Name="MV069" DataType="System.String"/>
+        <Column Name="MV070" DataType="System.String"/>
+        <Column Name="MV071" DataType="System.Decimal"/>
+        <Column Name="MV072" DataType="System.String"/>
+        <Column Name="MV073" DataType="System.String"/>
+        <Column Name="MV074" DataType="System.String"/>
+        <Column Name="MV075" DataType="System.String"/>
+        <Column Name="MV076" DataType="System.Decimal"/>
+        <Column Name="MV077" DataType="System.String"/>
+        <Column Name="MV078" DataType="System.Decimal"/>
+        <Column Name="MV079" DataType="System.Decimal"/>
+        <Column Name="MV080" DataType="System.String"/>
+        <Column Name="MV081" DataType="System.String"/>
+        <Column Name="MV082" DataType="System.String"/>
+        <Column Name="MV083" DataType="System.String"/>
+        <Column Name="MV084" DataType="System.String"/>
+        <Column Name="MV085" DataType="System.String"/>
+        <Column Name="MV086" DataType="System.Decimal"/>
+        <Column Name="MV087" DataType="System.Decimal"/>
+        <Column Name="MV088" DataType="System.String"/>
+        <Column Name="MV089" DataType="System.String"/>
+        <Column Name="MV090" DataType="System.String"/>
+        <Column Name="MV091" DataType="System.String"/>
+        <Column Name="MV092" DataType="System.String"/>
+        <Column Name="MV093" DataType="System.String"/>
+        <Column Name="MV094" DataType="System.String"/>
+        <Column Name="MV095" DataType="System.String"/>
+        <Column Name="MV096" DataType="System.String"/>
+        <Column Name="MV097" DataType="System.String"/>
+        <Column Name="MV098" DataType="System.String"/>
+        <Column Name="MV099" DataType="System.String"/>
+        <Column Name="MV100" DataType="System.String"/>
+        <Column Name="MV101" DataType="System.String"/>
+        <Column Name="MV102" DataType="System.String"/>
+        <Column Name="MV103" DataType="System.String"/>
+        <Column Name="MV104" DataType="System.Decimal"/>
+        <Column Name="MV105" DataType="System.String"/>
+        <Column Name="MV106" DataType="System.String"/>
+        <Column Name="MV107" DataType="System.String"/>
+        <Column Name="MV108" DataType="System.String"/>
+        <Column Name="MV109" DataType="System.String"/>
+        <Column Name="MV110" DataType="System.String"/>
+        <Column Name="MV111" DataType="System.String"/>
+        <Column Name="MV112" DataType="System.String"/>
+        <Column Name="MV113" DataType="System.Decimal"/>
+        <Column Name="MV114" DataType="System.String"/>
+        <Column Name="MV115" DataType="System.String"/>
+        <Column Name="MV116" DataType="System.String"/>
+        <Column Name="MV117" DataType="System.String"/>
+        <Column Name="MV118" DataType="System.String"/>
+        <Column Name="MV119" DataType="System.String"/>
+        <Column Name="MV120" DataType="System.String"/>
+        <Column Name="MV121" DataType="System.Decimal"/>
+        <Column Name="MV122" DataType="System.Decimal"/>
+        <Column Name="MV123" DataType="System.Decimal"/>
+        <Column Name="MV124" DataType="System.Decimal"/>
+        <Column Name="MV125" DataType="System.String"/>
+        <Column Name="MV126" DataType="System.String"/>
+        <Column Name="MV127" DataType="System.String"/>
+        <Column Name="MV128" DataType="System.String"/>
+        <Column Name="MV129" DataType="System.String"/>
+        <Column Name="MV130" DataType="System.String"/>
+        <Column Name="UDF014" DataType="System.String"/>
+        <Column Name="UDF024" DataType="System.String"/>
+        <Column Name="UDF034" DataType="System.String"/>
+        <Column Name="UDF044" DataType="System.String"/>
+        <Column Name="UDF054" DataType="System.String"/>
+        <Column Name="UDF064" DataType="System.Decimal"/>
+        <Column Name="UDF074" DataType="System.Decimal"/>
+        <Column Name="UDF084" DataType="System.Decimal"/>
+        <Column Name="UDF094" DataType="System.Decimal"/>
+        <Column Name="UDF104" DataType="System.Decimal"/>
+        <Column Name="COMPANY5" DataType="System.String"/>
+        <Column Name="CREATOR5" DataType="System.String"/>
+        <Column Name="USR_GROUP5" DataType="System.String"/>
+        <Column Name="CREATE_DATE5" DataType="System.String"/>
+        <Column Name="MODIFIER5" DataType="System.String"/>
+        <Column Name="MODI_DATE5" DataType="System.String"/>
+        <Column Name="FLAG5" DataType="System.Decimal"/>
+        <Column Name="CREATE_TIME5" DataType="System.String"/>
+        <Column Name="MODI_TIME5" DataType="System.String"/>
+        <Column Name="TRANS_TYPE5" DataType="System.String"/>
+        <Column Name="TRANS_NAME5" DataType="System.String"/>
+        <Column Name="sync_date5" DataType="System.String"/>
+        <Column Name="sync_time5" DataType="System.String"/>
+        <Column Name="sync_mark5" DataType="System.String"/>
+        <Column Name="sync_count5" DataType="System.Decimal"/>
+        <Column Name="DataUser5" DataType="System.String"/>
+        <Column Name="DataGroup5" DataType="System.String"/>
+        <Column Name="MB001" DataType="System.String"/>
+        <Column Name="MB002" DataType="System.String"/>
+        <Column Name="MB003" DataType="System.String"/>
+        <Column Name="MB004" DataType="System.String"/>
+        <Column Name="MB005" DataType="System.String"/>
+        <Column Name="MB006" DataType="System.String"/>
+        <Column Name="MB007" DataType="System.String"/>
+        <Column Name="MB008" DataType="System.String"/>
+        <Column Name="MB009" DataType="System.String"/>
+        <Column Name="MB010" DataType="System.String"/>
+        <Column Name="MB011" DataType="System.Decimal"/>
+        <Column Name="MB012" DataType="System.Decimal"/>
+        <Column Name="MB013" DataType="System.String"/>
+        <Column Name="MB014" DataType="System.String"/>
+        <Column Name="MB015" DataType="System.String"/>
+        <Column Name="MB016" DataType="System.String"/>
+        <Column Name="MB017" DataType="System.Decimal"/>
+        <Column Name="MB018" DataType="System.String"/>
+        <Column Name="MB019" DataType="System.String"/>
+        <Column Name="MB020" DataType="System.String"/>
+        <Column Name="MB021" DataType="System.Decimal"/>
+        <Column Name="UDF015" DataType="System.String"/>
+        <Column Name="UDF025" DataType="System.String"/>
+        <Column Name="UDF035" DataType="System.String"/>
+        <Column Name="UDF045" DataType="System.String"/>
+        <Column Name="UDF055" DataType="System.String"/>
+        <Column Name="UDF065" DataType="System.Decimal"/>
+        <Column Name="UDF075" DataType="System.Decimal"/>
+        <Column Name="UDF085" DataType="System.Decimal"/>
+        <Column Name="UDF095" DataType="System.Decimal"/>
+        <Column Name="UDF105" DataType="System.Decimal"/>
       </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
@@ -520,19 +726,100 @@
       <TextObject Name="Text5" Left="463.05" Top="37.8" Width="255.15" Height="18.9" Text="公司傳真:05-2956519" HorzAlign="Right" VertAlign="Center"/>
       <TextObject Name="Text6" Left="463.05" Top="56.7" Width="255.15" Height="18.9" Text="頁次:[Page#]/[TotalPages#]" HorzAlign="Right" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader1" Top="80.09" Width="718.2" Height="132.3">
+    <PageHeaderBand Name="PageHeader1" Top="80.09" Width="718.2" Height="226.8">
       <TextObject Name="Text7" Width="189" Height="18.9" Text="採購單別:[Table.TC001] [Table.MQ002]" VertAlign="Center"/>
       <TextObject Name="Text8" Top="18.9" Width="189" Height="18.9" Text="採購單號:[Table.TC002]" VertAlign="Center"/>
-      <TextObject Name="Text11" Top="37.8" Width="189" Height="18.9" Text="單據日期:[Table.TC003]"/>
-      <TextObject Name="Text12" Top="56.7" Width="189" Height="18.9" Text="廠商代號:[Table.TC004] [Table.MA002]"/>
-      <TextObject Name="Text13" Top="75.6" Width="189" Height="18.9" Text="聯絡人:[Table.MA013]"/>
-      <TextObject Name="Text14" Top="94.5" Width="699.3" Height="18.9" Text="送貨地址:[Table.TC021]"/>
-      <TextObject Name="Text15" Top="113.4" Width="699.3" Height="18.9" Text="運送備註:[Table.TC039]"/>
+      <TextObject Name="Text11" Top="37.8" Width="189" Height="18.9" Text="單據日期:[Table.TC003]" VertAlign="Center"/>
+      <TextObject Name="Text12" Top="56.7" Width="189" Height="18.9" Text="廠商代號:[Table.TC004] [Table.MA002]" VertAlign="Center"/>
+      <TextObject Name="Text13" Top="94.5" Width="189" Height="18.9" Text="聯絡人:[Table.MA013]" VertAlign="Center"/>
+      <TextObject Name="Text14" Top="113.4" Width="699.3" Height="18.9" Text="送貨地址:[Table.TC021]" VertAlign="Center"/>
+      <TextObject Name="Text15" Top="132.3" Width="699.3" Height="18.9" Text="運送備註:[Table.TC039]" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="189" Width="160.65" Height="18.9" Text="交易幣別:[Table.TC005]" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="189" Top="18.9" Width="160.65" Height="18.9" Text="課稅別:[Table.TC018NAME]" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="189" Top="37.8" Width="189" Height="18.9" Text="採購人員:[Table.TC011] [Table.MV002]" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="189" Top="56.7" Width="189" Height="18.9" Text="付款條件:[Table.TC027] [Table.TC008]" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="189" Top="94.5" Width="160.65" Height="18.9" Text="廠商電話:[Table.MA008]" VertAlign="Center"/>
+      <TextObject Name="Text21" Top="75.6" Width="255.15" Height="18.9" Text="廠商全名:[Table.MA003]" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="395.78" Width="113.4" Height="18.9" Text="匯率:[Table.TC006]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="395.78" Top="18.9" Width="113.4" Height="18.9" Text="營業稅率:[Table.TC026]" Format="Percent" Format.UseLocale="true" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text24" Left="510.3" Width="160.65" Height="18.9" Text="運輸方式:[Table.TC017]" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="510.3" Top="18.9" Width="160.65" Height="18.9" Text="價格條件:[Table.TC007]" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="510.3" Top="37.8" Width="160.65" Height="18.9" Text="廠別:[Table.TC010] [Table.MB002]" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="510.3" Top="56.7" Width="160.65" Height="18.9" Text="備註:[Table.TC009]" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="368.55" Top="94.5" Width="207.9" Height="18.9" Text="廠商傳真:[Table.MA010]" VertAlign="Center"/>
+      <TextObject Name="Text47" Left="47.25" Top="160.65" Width="94.5" Height="18.9" Text="品號" VertAlign="Center"/>
+      <TextObject Name="Text46" Top="160.65" Width="47.25" Height="18.9" Text="序號" VertAlign="Center"/>
+      <TextObject Name="Text50" Left="179.55" Top="160.65" Width="75.6" Height="18.9" Text="採購數量" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text53" Left="264.6" Top="160.65" Width="47.25" Height="18.9" Text="單位" VertAlign="Center"/>
+      <TextObject Name="Text55" Left="349.65" Top="160.65" Width="66.15" Height="18.9" Text="交貨庫別" VertAlign="Center"/>
+      <TextObject Name="Text58" Left="444.15" Top="160.65" Width="94.5" Height="18.9" Text="到貨日" VertAlign="Center"/>
+      <TextObject Name="Text60" Left="548.1" Top="160.65" Width="85.05" Height="18.9" Text="專案代號" VertAlign="Center"/>
+      <TextObject Name="Text63" Left="642.6" Top="160.65" Width="75.6" Height="18.9" Text="急料" VertAlign="Center"/>
+      <TextObject Name="Text48" Left="47.25" Top="179.55" Width="94.5" Height="18.9" Text="品名" VertAlign="Center"/>
+      <TextObject Name="Text51" Left="179.55" Top="179.55" Width="75.6" Height="18.9" Text="已交數量" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text54" Left="264.6" Top="179.55" Width="47.25" Height="18.9" Text="小單位" VertAlign="Center"/>
+      <TextObject Name="Text56" Left="349.65" Top="179.55" Width="66.15" Height="18.9" Text="採購單價" VertAlign="Center"/>
+      <TextObject Name="Text59" Left="444.15" Top="179.55" Width="94.5" Height="47.25" Text="請購單別&#13;&#10;請購單號&#13;&#10;請購序號" VertAlign="Center"/>
+      <TextObject Name="Text61" Left="548.1" Top="179.55" Width="85.05" Height="18.9" Text="備註" VertAlign="Center"/>
+      <TextObject Name="Text64" Left="642.6" Top="179.55" Width="75.6" Height="18.9" Text="處理單號" VertAlign="Center"/>
+      <TextObject Name="Text49" Left="47.25" Top="198.45" Width="94.5" Height="18.9" Text="規格" VertAlign="Center"/>
+      <TextObject Name="Text52" Left="160.65" Top="198.45" Width="75.6" Height="18.9" Text="結案碼" VertAlign="Center"/>
+      <TextObject Name="Text57" Left="349.65" Top="198.45" Width="66.15" Height="18.9" Text="採購金額" VertAlign="Center"/>
+      <TextObject Name="Text62" Left="548.1" Top="198.45" Width="85.05" Height="18.9" Text="廠商品號" VertAlign="Center"/>
+      <TextObject Name="Text73" Width="718.2" Height="151.2" Border.Lines="All" HorzAlign="Right"/>
+      <TextObject Name="Text74" Top="151.2" Width="47.25" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+      <TextObject Name="Text75" Left="47.25" Top="151.2" Width="113.4" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+      <TextObject Name="Text76" Left="255.15" Top="151.2" Width="94.5" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+      <TextObject Name="Text77" Left="160.65" Top="151.2" Width="94.5" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+      <TextObject Name="Text78" Left="349.65" Top="151.2" Width="94.5" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+      <TextObject Name="Text79" Left="444.15" Top="151.2" Width="103.95" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+      <TextObject Name="Text80" Left="548.1" Top="151.2" Width="94.5" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+      <TextObject Name="Text81" Left="642.6" Top="151.2" Width="75.6" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
     </PageHeaderBand>
-    <DataBand Name="Data1" Top="216.89" Width="718.2" Height="37.8" DataSource="Table">
-      <TextObject Name="Text9" Width="94.5" Height="18.9" Text="[Table.TD004]" VertAlign="Center"/>
-      <TextObject Name="Text10" Top="18.9" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD005]" VertAlign="Center"/>
-    </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="259.18" Width="718.2" Height="18.9"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="311.39" Width="718.2" Condition="[Table.TD001]+[Table.TD002]+[Table.TD003]">
+      <DataBand Name="Data1" Top="315.88" Width="718.2" Height="75.6" DataSource="Table">
+        <TextObject Name="Text9" Width="37.8" Height="18.9" CanGrow="true" Text="[Table.TD003]" VertAlign="Center"/>
+        <TextObject Name="Text10" Left="47.25" Width="103.95" Height="18.9" CanGrow="true" Text="[Table.TD004]" VertAlign="Center"/>
+        <TextObject Name="Text29" Left="47.25" Top="18.9" Width="103.95" Height="18.9" CanGrow="true" Text="[Table.TD005]" VertAlign="Center"/>
+        <TextObject Name="Text30" Left="47.25" Top="37.8" Width="103.95" Height="18.9" CanGrow="true" Text="[Table.TD006]" VertAlign="Center"/>
+        <TextObject Name="Text31" Left="161.77" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD008]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text32" Left="161.77" Top="18.9" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD015]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text33" Left="160.65" Top="37.8" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD016]" VertAlign="Center"/>
+        <TextObject Name="Text35" Left="444.15" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD012]" VertAlign="Center"/>
+        <TextObject Name="Text36" Left="444.15" Top="18.9" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD026]" VertAlign="Center"/>
+        <TextObject Name="Text37" Left="444.15" Top="37.8" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD027]" VertAlign="Center"/>
+        <TextObject Name="Text38" Left="444.15" Top="56.7" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD028]" VertAlign="Center"/>
+        <TextObject Name="Text39" Left="548.1" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD022]" VertAlign="Center"/>
+        <TextObject Name="Text40" Left="548.1" Top="18.9" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD014]" VertAlign="Center"/>
+        <TextObject Name="Text41" Left="642.6" Width="66.15" Height="18.9" CanGrow="true" Text="[Table.TD025]" VertAlign="Center"/>
+        <TextObject Name="Text42" Left="642.6" Top="18.9" Width="66.15" Height="18.9" CanGrow="true" Text="[Table.TD039]" VertAlign="Center"/>
+        <TextObject Name="Text34" Left="264.6" Width="75.6" Height="18.9" CanGrow="true" Text="[Table.TD009]" VertAlign="Center"/>
+        <TextObject Name="Text43" Left="349.65" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD007]" VertAlign="Center"/>
+        <TextObject Name="Text44" Left="349.65" Top="18.9" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD010]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text45" Left="349.65" Top="37.8" Width="94.5" Height="18.9" CanGrow="true" Text="[Table.TD011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text82" Width="47.25" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+        <TextObject Name="Text83" Left="47.25" Width="113.4" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+        <TextObject Name="Text84" Left="255.15" Width="94.5" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+        <TextObject Name="Text85" Left="160.65" Width="94.5" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+        <TextObject Name="Text86" Left="349.65" Width="94.5" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+        <TextObject Name="Text87" Left="444.15" Width="103.95" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+        <TextObject Name="Text88" Left="548.1" Width="94.5" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+        <TextObject Name="Text89" Left="642.6" Width="75.6" Height="75.6" Border.Lines="All" HorzAlign="Right"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="395.98" Width="718.2"/>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="400.47" Width="718.2" Height="18.9" KeepWithData="true">
+      <TextObject Name="Text65" Width="170.1" Height="18.9" Text="數量合計:[Table.TC023]" Format="Number" Format.UseLocale="true" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text66" Left="160.65" Width="122.85" Height="18.9" Text="採購金額:[Table.TC019]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text67" Left="330.75" Width="113.4" Height="18.9" Text="稅額:[Table.TC020]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text68" Left="519.75" Width="160.65" Height="18.9" Text="金額合計:[[Table.TC019]+[Table.TC020]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text90" Width="718.2" Height="18.9" Border.Lines="All" HorzAlign="Right"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="423.87" Width="718.2" Height="94.5">
+      <TextObject Name="Text69" Width="708.75" Height="37.8" Text="注意事項：&#13;&#10;1.延遲交貨或未依規定期限調換合格品者，每逾一日，按貨款總金額扣罰百分之五，若有事先書面通知者除外。&#13;&#10;2.請依採購數量交貨，若有多於採購數量，皆以檢贈零單價計價，發票不符採購數量者退回重開;出貨產品必需為同一批貨，若製造日期超過1/3者不允收。&#13;&#10;3.販售/生產之原物料/商品，均符合政府相關法令規範，且無任何摻假，若有不實願負一切法律責任，並賠償老楊食品 (股)公司所受損害及利益。" Font="宋体, 6pt"/>
+      <TextObject Name="Text70" Top="47.25" Width="708.75" Height="18.9" Text="核準:                                      審核:                                    採購人員:" VertAlign="Center"/>
+      <TextObject Name="Text71" Top="66.15" Width="170.1" Height="18.9" Text="本文件不得擅自塗改或影印"/>
+      <TextObject Name="Text72" Left="548.1" Top="75.6" Width="170.1" Height="18.9" Text="A05-01-001-02-A" HorzAlign="Right"/>
+    </PageFooterBand>
   </ReportPage>
 </Report>
