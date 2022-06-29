@@ -485,10 +485,11 @@ namespace TKPUR
                         MyMail.To.Add(DR["FROMEMAIL"].ToString()); //設定收件者Email，多筆mail
                                                 //MyMail.To.Add("tk290@tkfood.com.tw"); //設定收件者Email
 
-                        MySMTP.Send(MyMail);
-
-                        MyMail.Dispose(); //釋放資源
                     }
+
+                    MySMTP.Send(MyMail);
+
+                    MyMail.Dispose(); //釋放資源
                 }
                
 
