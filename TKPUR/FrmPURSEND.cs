@@ -337,8 +337,10 @@ namespace TKPUR
                     SETFASTREPORT(DSPURTCTD);
                     //產生採購明細ds
                     DataSet DSMAILPURTCTD = FINDEMAILPURTCTD(dr.Cells["採購單別"].Value.ToString(), dr.Cells["採購單號"].Value.ToString());
-                    //準備寄送email
+                    //準備寄送email+寄送副件
                     PREPARESENDEMAIL("", dr.Cells["EMAIL"].Value.ToString(), MAILATTACHPATH, DSMAILPURTCTD);
+
+                   
 
                 }
             }
@@ -369,7 +371,10 @@ namespace TKPUR
                
             }
 
+            //寄給廠商
             SENDMAIL(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
+            //寄送副件給採購
+            SENDMAILPURCC(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
         }
 
         public void SENDMAIL(StringBuilder Subject, StringBuilder Body,string FROMEMAIL, string TOEMAIL, string Attachments)
@@ -430,6 +435,72 @@ namespace TKPUR
             }
         }
 
+        public void SENDMAILPURCC(StringBuilder Subject, StringBuilder Body, string FROMEMAIL, string TOEMAIL, string Attachments)
+        {
+            string MySMTPCONFIG = ConfigurationManager.AppSettings["MySMTP"];
+            string NAME = ConfigurationManager.AppSettings["NAME"];
+            string PW = ConfigurationManager.AppSettings["PW"];
+            DataSet DSFROMEMAIL = FINDFROMEMAIL();
+            FROMEMAIL = DSFROMEMAIL.Tables[0].Rows[0]["FROMEMAIL"].ToString();
+
+            System.Net.Mail.MailMessage MyMail = new System.Net.Mail.MailMessage();
+            MyMail.From = new System.Net.Mail.MailAddress(FROMEMAIL);
+
+            //MyMail.Bcc.Add("密件副本的收件者Mail"); //加入密件副本的Mail          
+            //MyMail.Subject = "每日訂單-製令追踨表"+DateTime.Now.ToString("yyyy/MM/dd");
+            MyMail.Subject = "副件-"+Subject.ToString();
+            //MyMail.Body = "<h1>Dear SIR</h1>" + Environment.NewLine + "<h1>附件為每日訂單-製令追踨表，請查收</h1>" + Environment.NewLine + "<h1>若訂單沒有相對的製令則需通知製造生管開立</h1>"; //設定信件內容
+            MyMail.Body = Body.ToString();
+            //MyMail.IsBodyHtml = true; //是否使用html格式
+
+            System.Net.Mail.SmtpClient MySMTP = new System.Net.Mail.SmtpClient(MySMTPCONFIG, 25);
+            MySMTP.Credentials = new System.Net.NetworkCredential(NAME, PW);
+
+            Attachment attch = new Attachment(Attachments);
+            MyMail.Attachments.Add(attch);
+
+            //if (Directory.Exists(DirectoryNAME))
+            //{
+            //    tempFile = Directory.GetFiles(DirectoryNAME);//取得資料夾下所有檔案
+
+            //    foreach (string item in tempFile)
+            //    {
+            //        info = new FileInfo(item);
+            //        tFileName = info.Name.ToString().Trim();//取得檔名
+            //        Attachment attch = new Attachment(DirectoryNAME+tFileName);
+            //        MyMail.Attachments.Add(attch);
+
+            //    }
+
+            //}
+
+
+            try
+            {
+
+                if(DSFROMEMAIL.Tables[0].Rows.Count>0)
+                {
+                    foreach(DataRow DR in DSFROMEMAIL.Tables[0].Rows)
+                    {
+                        MyMail.To.Add(DR["FROMEMAIL"].ToString()); //設定收件者Email，多筆mail
+                                                //MyMail.To.Add("tk290@tkfood.com.tw"); //設定收件者Email
+
+                        MySMTP.Send(MyMail);
+
+                        MyMail.Dispose(); //釋放資源
+                    }
+                }
+               
+
+
+            }
+            catch (Exception ex)
+            {
+                //ADDLOG(DateTime.Now, Subject.ToString(), ex.ToString());
+                //ex.ToString();
+            }
+        }
+
         public DataSet FINDFROMEMAIL()
         {
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -455,7 +526,7 @@ namespace TKPUR
 
 
                 sbSql.AppendFormat(@"  
-                                    SELECT TOP 1 [FROMEMAIL] FROM [TKPUR].[dbo].[FROMEMAIL]
+                                    SELECT  [FROMEMAIL] FROM [TKPUR].[dbo].[FROMEMAIL]
 
                                     ");
 
