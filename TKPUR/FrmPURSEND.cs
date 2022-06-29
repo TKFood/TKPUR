@@ -40,6 +40,9 @@ namespace TKPUR
         DataSet ds = new DataSet();
         DataSet ds2 = new DataSet();
         DataSet ds4 = new DataSet();
+
+        DataSet DSPURTCTD = new DataSet();
+
         DataTable dt = new DataTable();
         string tablename = null;
         string EDITID;
@@ -130,7 +133,7 @@ namespace TKPUR
 
                 
                 sbSql.AppendFormat(@"  
-                                   SELECT TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'E-MAIL'
+                                   SELECT TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
                                     ,(      SELECT TD004+TD005+TD006+', '
                                             FROM   [TK].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002
                                             FOR XML PATH(''), TYPE  
@@ -182,7 +185,7 @@ namespace TKPUR
         }
 
 
-        public void SETFASTREPORT()
+        public void SETFASTREPORT(DataSet REPORTDSPURTCTD)
         {
 
             string SQL;
@@ -206,45 +209,51 @@ namespace TKPUR
             //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
 
             TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
-            SQL = SETFASETSQL();
 
-            Table.SelectCommand = SQL;
-
-            //report1.Preview = previewControl1;
-            //report1.Show();
-
-            //// prepare a report
-            //report1.Prepare();
-            //// create an instance of HTML export filter
-            //FastReport.Export.Pdf.PDFExport PDFEXPORT = new FastReport.Export.Pdf.PDFExport();
-            //// show the export options dialog and do the export
-            //if (PDFEXPORT.ShowDialog())
-            //{
-            //    report1.Export(PDFEXPORT, "PDFEXPORT.pdf");
-            //}
-
-
-            report1.PrintSettings.ShowDialog = false;
-            report1.Prepare();    // show progress dialog
-            using (var ms = new MemoryStream())
+            if(REPORTDSPURTCTD.Tables[0].Rows.Count>0)
             {
-                var pdfExport = new PDFExport
+                foreach(DataRow dr in REPORTDSPURTCTD.Tables[0].Rows)
                 {
-                    Name = "Exported",
-                    Background = true
-                };
+                    string MTC001 = dr["TC001"].ToString();
+                    string MTC002 = dr["TC002"].ToString();
+                    string MA001 = dr["MA001"].ToString();
+                    string MA002 = dr["MA002"].ToString();
+                    string MA011 = dr["MA011"].ToString();
 
-                report1.Export(pdfExport, ms);
+                    SQL = SETFASETSQL(MTC001, MTC002);
 
-                //設定本機資料夾 
-                string DirectoryNAME = SETPATHFLODER();
-                File.WriteAllBytes(DirectoryNAME+"Exported.pdf", ms.ToArray());
+                    Table.SelectCommand = SQL;
+
+                    //report1.Preview = previewControl1;
+                    //report1.Show();
+
+                    //// prepare a report
+
+                    report1.PrintSettings.ShowDialog = false;
+                    report1.Prepare();    // show progress dialog
+                    using (var ms = new MemoryStream())
+                    {
+                        var pdfExport = new PDFExport
+                        {
+                            Name = MTC001+ MTC002+"-"+MA002+".pdf",
+                            Background = true
+                        };
+
+                        report1.Export(pdfExport, ms);
+
+                        //設定本機資料夾 
+                        string DirectoryNAME = SETPATHFLODER();
+                        File.WriteAllBytes(DirectoryNAME + pdfExport.Name, ms.ToArray());
+                    }
+                }
+                
             }
+            
 
 
         }
 
-        public string SETFASETSQL()
+        public string SETFASETSQL(string TC001,string TC002)
         {
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
@@ -259,8 +268,8 @@ namespace TKPUR
                                 AND TC004=MA001
                                 AND TC011=MV001
                                 AND TC010=MB001
-                                AND TD002='20220623003' 
-                                ");
+                                AND TD001='{0}' AND TD002='{1}'
+                                ", TC001, TC002);
 
             return FASTSQL.ToString();
         }
@@ -293,7 +302,31 @@ namespace TKPUR
             {
                 if (Convert.ToBoolean(dr.Cells[0].Value)==true)
                 {
-                    MessageBox.Show(dr.Cells[1].Value.ToString()+ dr.Cells[2].Value.ToString() );
+                    //MessageBox.Show(dr.Cells["採購單別"].Value.ToString()+ dr.Cells["採購單號"].Value.ToString()+ dr.Cells["EMAIL"].Value.ToString());
+
+
+                    //將勾選的採購單+廠商email存成ds
+                    DSPURTCTD.Clear();
+
+                    DataTable dt = new DataTable("MyTable");
+                    dt.Columns.Add(new DataColumn("TC001", typeof(string)));
+                    dt.Columns.Add(new DataColumn("TC002", typeof(string)));
+                    dt.Columns.Add(new DataColumn("MA001", typeof(string)));
+                    dt.Columns.Add(new DataColumn("MA002", typeof(string)));
+                    dt.Columns.Add(new DataColumn("MA011", typeof(string)));
+
+                    DataRow NEWdr = dt.NewRow();
+                    NEWdr["TC001"] = dr.Cells["採購單別"].Value.ToString();
+                    NEWdr["TC002"] = dr.Cells["採購單號"].Value.ToString();
+                    NEWdr["MA001"] = dr.Cells["供應廠商"].Value.ToString();
+                    NEWdr["MA002"] = dr.Cells["供應廠"].Value.ToString();
+                    NEWdr["MA011"] = dr.Cells["EMAIL"].Value.ToString();
+
+                    dt.Rows.Add(NEWdr);
+                    DSPURTCTD.Tables.Add(dt);
+
+                    SETFASTREPORT(DSPURTCTD);
+
                 }
             }
         }
