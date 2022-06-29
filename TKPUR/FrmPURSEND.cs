@@ -50,6 +50,7 @@ namespace TKPUR
         Thread TD;
 
         Report report1 = new Report();
+        string MAILATTACHPATH = null;
 
         public FrmPURSEND()
         {
@@ -244,6 +245,10 @@ namespace TKPUR
                         //設定本機資料夾 
                         string DirectoryNAME = SETPATHFLODER();
                         File.WriteAllBytes(DirectoryNAME + pdfExport.Name, ms.ToArray());
+
+                        //MEAIL附件的路徑
+                        MAILATTACHPATH = null;
+                        MAILATTACHPATH = DirectoryNAME + pdfExport.Name;
                     }
                 }
                 
@@ -307,8 +312,9 @@ namespace TKPUR
 
                     //將勾選的採購單+廠商email存成ds
                     DSPURTCTD.Clear();
+                    DSPURTCTD.Reset();
 
-                    DataTable dt = new DataTable("MyTable");
+                     DataTable dt = new DataTable("MyTable");
                     dt.Columns.Add(new DataColumn("TC001", typeof(string)));
                     dt.Columns.Add(new DataColumn("TC002", typeof(string)));
                     dt.Columns.Add(new DataColumn("MA001", typeof(string)));
