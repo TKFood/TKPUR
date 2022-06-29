@@ -352,7 +352,7 @@ namespace TKPUR
 
             SUBJEST.Clear();
             BODY.Clear();
-            SUBJEST.AppendFormat(@"老楊食品-採購單，請將附件用印回簽，謝謝。");
+            SUBJEST.AppendFormat(@"老楊食品-採購單，請將附件用印回簽，謝謝。 "+DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
             BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為楊食品-採購單" + Environment.NewLine+"請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
 
             if(DSMAILPURTCTD.Tables[0].Rows.Count>0)
@@ -361,9 +361,10 @@ namespace TKPUR
 
                 foreach (DataRow DR in DSMAILPURTCTD.Tables[0].Rows)
                 {
-                    BODY.AppendFormat(Environment.NewLine + "品名" + DR["TD005"].ToString());
-                    BODY.AppendFormat(Environment.NewLine + "採購數量" + DR["TD008"].ToString());
-                    BODY.AppendFormat(Environment.NewLine + "採購單位" + DR["TD009"].ToString());
+                    BODY.AppendFormat(Environment.NewLine + "品名     " + DR["TD005"].ToString());
+                    BODY.AppendFormat(Environment.NewLine + "採購數量 " + DR["TD008"].ToString());
+                    BODY.AppendFormat(Environment.NewLine + "採購單位 " + DR["TD009"].ToString());
+                    BODY.AppendFormat(Environment.NewLine );
                 }
                
             }
