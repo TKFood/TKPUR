@@ -130,7 +130,7 @@ namespace TKPUR
 
                 
                 sbSql.AppendFormat(@"  
-                                   SELECT TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠'
+                                   SELECT TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'E-MAIL'
                                     ,(      SELECT TD004+TD005+TD006+', '
                                             FROM   [TK].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002
                                             FOR XML PATH(''), TYPE  
@@ -139,6 +139,8 @@ namespace TKPUR
                                     WHERE 1=1
                                     AND TC004=MA001
                                     AND TC003>='{0}' AND TC003<='{1}'
+                                    
+                                    AND TC002='20220629001'     
                                     ORDER BY TC001,TC002
 
                                     ", SDAY,EDAY);
