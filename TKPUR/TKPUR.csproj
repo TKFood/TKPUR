@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Calendar.NET">
       <HintPath>..\..\CalendarNETSource\bin\Debug\Calendar.NET.dll</HintPath>
@@ -300,7 +303,13 @@
 
 mkdir "$(TargetDir)REPORT"
 
-copy "$(ProjectDir)REPORT\*.*"  "$(TargetDir)REPORT\*.*"  /y</PostBuildEvent>
+copy "$(ProjectDir)REPORT\*.*"  "$(TargetDir)REPORT\*.*"  /y
+
+rd "$(TargetDir)IMAGES" /s /q
+
+mkdir "$(TargetDir)IMAGES"
+
+copy "$(ProjectDir)IMAGES\*.*"  "$(TargetDir)IMAGES\*.*"  /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
