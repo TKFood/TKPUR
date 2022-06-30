@@ -348,6 +348,8 @@ namespace TKPUR
 
         public void PREPARESENDEMAIL(string FROMEMAIL, string TOEMAIL, string Attachments,DataSet DSMAILPURTCTD)
         {
+            string TC001 = null;
+            string TC002 = null;
 
             try
             {
@@ -357,30 +359,77 @@ namespace TKPUR
                 SUBJEST.Clear();
                 BODY.Clear();
                 SUBJEST.AppendFormat(@"老楊食品-採購單，請將附件用印回簽，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
-                BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為老楊食品-採購單" + Environment.NewLine + "請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
+                //BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為老楊食品-採購單" + Environment.NewLine + "請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
+
+                BODY.AppendFormat("<span style='font-size:12.0pt;font-family:微軟正黑體'> <br>" + "Dear SIR" + "<br><br>" + "附件為老楊食品-採購單" + "<br>" + "請將附件用印回簽" + "<br>" + "謝謝" + "</span><br>");
+
 
                 if (DSMAILPURTCTD.Tables[0].Rows.Count > 0)
                 {
-                    BODY.AppendFormat(Environment.NewLine + "採購明細");
+                    BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體'><br>" + "採購明細");
 
                     foreach (DataRow DR in DSMAILPURTCTD.Tables[0].Rows)
                     {
-                        BODY.AppendFormat(Environment.NewLine + "品名     " + DR["TD005"].ToString());
-                        BODY.AppendFormat(Environment.NewLine + "採購數量 " + DR["TD008"].ToString());
-                        BODY.AppendFormat(Environment.NewLine + "採購單位 " + DR["TD009"].ToString());
-                        BODY.AppendFormat(Environment.NewLine);
+                        TC001 = DR["TC001"].ToString();
+                        TC002 = DR["TC002"].ToString();
+
+                        BODY.AppendFormat("<span></span>");
+                        BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體' > <br> " + "品名     " + DR["TD005"].ToString() + "</span>");
+                        BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體' > <br>" + "採購數量 " + DR["TD008"].ToString() + "</span>");
+                        BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體' > <br>" + "採購單位 " + DR["TD009"].ToString() + "</span>");
+                        BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體' > <br>");
                     }
 
                 }
 
+                BODY.AppendFormat(@"  
+                                    <span style='font-family:新細明體,serif;color:#1F497D'><br>★☆★☆★☆★☆★☆★☆★☆★★☆★☆★☆★☆★☆★☆★☆★</span>
+                                    <span lang=EN-US style='color:#1F497D'><br></span>
+                                    <span style='font-size:14.0pt;font-family:標楷體'><br>資材部 徐雅芳
+                                    <br>
+                                    <span lang=EN-US style='font-size:14.0pt;font-family:標楷體'><br>Tel 886-5-2956520 #2000 Fax 886-5-2956519<o:p></o:p>
+                                    <br>
+                                    <span style='font-size:14.0pt;font-family:標楷體'><br>地址：嘉義縣大林鎮大埔美園區五路號
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <span style='font-size:14.0pt;font-family:標楷體'>官網：
+                                    <span lang=EN-US><a href=""http://www.tkfood.com.tw/"">
+                                    <span style = 'color:blue' > http://www.tkfood.com.tw/ </span></a>
+                                    <br>
+                                    <span style='font-size:14.0pt;font-family:標楷體'>ＦＢ：
+                                    <span lang=EN-US><a href=""https://www.facebook.com/tkfood"">
+                                    <span styl ='color:blue'> https://www.facebook.com/tkfood </span></span></a>
+                                    <br>
+                                    <br>
+                                    <img border = 0 width = 554 height = 248 style = 'width:5.7708in;height:2.5833in' id = ""圖片_x0020_1"" src = ""cid:image001.jpg@01D87B29.F7B72480"" alt = Image ></span>
+                                    <br>
+                                    <br>
+                                    <span style = 'font-size:9.0pt;font-family:標楷體'> 本電子郵件及附件所載訊息均為保密資訊，受合約保護或依法不得洩漏。其內容僅供指定收件人按限定範圍或特殊目的使用。未經授權者收到此資訊者均無權閱讀、 使用、 複製、洩漏或散佈。
+                                    <br>
+                                    <br>
+                                    <span style = 'font-size:9.0pt;font-family:標楷體'> 老楊食品股公司將依個人資料保護法之要求妥善保管您的個人資料，並於合法取得之前提下善意使用，據此本公司僅在營運範圍內之目的與您聯繫，包含本公司主辦或協辦之行銷活動、客戶服務等，非經由本公司上開目的下之合法授權，所寄發之資訊並不代表本公司，倘若有前述情形或信件誤遞至您的信箱，請透過下列聯絡方式更正；
+                                    <br>
+                                    <br>
+                                    <span style = 'font-size:9.0pt;font-family:標楷體'> 客服電話：
+                                    <span lang = EN - US > 0800 - 522 - 109 </span>；個資服務信箱：</span>
+                                    <span lang = EN - US style = 'font-family:標楷體'>
+                                    <a href = ""mailto:tk100@tkfood.com.tw"">
+                                    <span style = 'font-size:9.0pt;color:#0563C1'> tk100@tkfood.com.tw  </span ></a></span>
+                                    <span style = 'font-size:9.0pt;font-family:標楷體'>  若您因為誤傳而收到本郵件或者非本郵件之指定收件人，煩請即刻回覆郵件告知並永久刪除此郵件及其附件和銷毀所有複印件。謝謝您的合作！</span>
+
+
+                                    ");
+
                 //寄給廠商
                 SENDMAIL(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
+                
                 //寄送副件給採購
-                SENDMAILPURCC(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
+                //SENDMAILPURCC(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
             }
             catch
             {
-
+                MessageBox.Show("有錯誤"+ TC001 + TC002);
             }
             finally
             {
@@ -444,6 +493,8 @@ namespace TKPUR
                 }
                 catch (Exception ex)
                 {
+                    MessageBox.Show("有錯誤");
+
                     //ADDLOG(DateTime.Now, Subject.ToString(), ex.ToString());
                     //ex.ToString();
                 }
@@ -451,7 +502,7 @@ namespace TKPUR
 
             catch
             {
-
+                MessageBox.Show("有錯誤");
             }
 
             finally
@@ -525,6 +576,8 @@ namespace TKPUR
                 }
                 catch (Exception ex)
                 {
+                    MessageBox.Show("有錯誤");
+
                     //ADDLOG(DateTime.Now, Subject.ToString(), ex.ToString());
                     //ex.ToString();
                 }
@@ -532,7 +585,7 @@ namespace TKPUR
 
             catch
             {
-
+                MessageBox.Show("有錯誤");
             }
 
             finally
@@ -808,8 +861,8 @@ namespace TKPUR
                                     AND TC004=MA001
                                     AND TC011=MV001
                                     AND TC010=MB001
-                                    ANR TC001='{0}' AND TC002='{1}'
-                                   ",TC001,TC002);
+                                    AND TC001='{0}' AND TC002='{1}'
+                                   ", TC001,TC002);
 
                 adapter = new SqlDataAdapter(@"" + sbSql.ToString(), sqlConn);
 
@@ -848,6 +901,8 @@ namespace TKPUR
             //SETFASTREPORT();
 
             PRESEND();
+
+            MessageBox.Show("完成");
         }
 
         private void button2_Click(object sender, EventArgs e)
