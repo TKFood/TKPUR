@@ -20,6 +20,7 @@ using FastReport.Data;
 using TKITDLL;
 using FastReport.Export.Pdf;
 using System.Net.Mail;
+using System.Net.Mime;
 
 namespace TKPUR
 {
@@ -356,6 +357,11 @@ namespace TKPUR
                 StringBuilder SUBJEST = new StringBuilder();
                 StringBuilder BODY = new StringBuilder();
 
+                ////加上附圖
+                //string path = System.Environment.CurrentDirectory+@"/Images/emaillogo.jpg";
+                //LinkedResource res = new LinkedResource(path);
+                //res.ContentId = Guid.NewGuid().ToString();
+
                 SUBJEST.Clear();
                 BODY.Clear();
                 SUBJEST.AppendFormat(@"老楊食品-採購單，請將附件用印回簽，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
@@ -382,44 +388,11 @@ namespace TKPUR
 
                 }
 
-                BODY.AppendFormat(@"  
-                                    <span style='font-family:新細明體,serif;color:#1F497D'><br>★☆★☆★☆★☆★☆★☆★☆★★☆★☆★☆★☆★☆★☆★☆★</span>
-                                    <span lang=EN-US style='color:#1F497D'><br></span>
-                                    <span style='font-size:14.0pt;font-family:標楷體'><br>資材部 徐雅芳
-                                    <br>
-                                    <span lang=EN-US style='font-size:14.0pt;font-family:標楷體'><br>Tel 886-5-2956520 #2000 Fax 886-5-2956519<o:p></o:p>
-                                    <br>
-                                    <span style='font-size:14.0pt;font-family:標楷體'><br>地址：嘉義縣大林鎮大埔美園區五路號
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <span style='font-size:14.0pt;font-family:標楷體'>官網：
-                                    <span lang=EN-US><a href=""http://www.tkfood.com.tw/"">
-                                    <span style = 'color:blue' > http://www.tkfood.com.tw/ </span></a>
-                                    <br>
-                                    <span style='font-size:14.0pt;font-family:標楷體'>ＦＢ：
-                                    <span lang=EN-US><a href=""https://www.facebook.com/tkfood"">
-                                    <span styl ='color:blue'> https://www.facebook.com/tkfood </span></span></a>
-                                    <br>
-                                    <br>
-                                    <img border = 0 width = 554 height = 248 style = 'width:5.7708in;height:2.5833in' id = ""圖片_x0020_1"" src = ""cid:image001.jpg@01D87B29.F7B72480"" alt = Image ></span>
-                                    <br>
-                                    <br>
-                                    <span style = 'font-size:9.0pt;font-family:標楷體'> 本電子郵件及附件所載訊息均為保密資訊，受合約保護或依法不得洩漏。其內容僅供指定收件人按限定範圍或特殊目的使用。未經授權者收到此資訊者均無權閱讀、 使用、 複製、洩漏或散佈。
-                                    <br>
-                                    <br>
-                                    <span style = 'font-size:9.0pt;font-family:標楷體'> 老楊食品股公司將依個人資料保護法之要求妥善保管您的個人資料，並於合法取得之前提下善意使用，據此本公司僅在營運範圍內之目的與您聯繫，包含本公司主辦或協辦之行銷活動、客戶服務等，非經由本公司上開目的下之合法授權，所寄發之資訊並不代表本公司，倘若有前述情形或信件誤遞至您的信箱，請透過下列聯絡方式更正；
-                                    <br>
-                                    <br>
-                                    <span style = 'font-size:9.0pt;font-family:標楷體'> 客服電話：
-                                    <span lang = EN - US > 0800 - 522 - 109 </span>；個資服務信箱：</span>
-                                    <span lang = EN - US style = 'font-family:標楷體'>
-                                    <a href = ""mailto:tk100@tkfood.com.tw"">
-                                    <span style = 'font-size:9.0pt;color:#0563C1'> tk100@tkfood.com.tw  </span ></a></span>
-                                    <span style = 'font-size:9.0pt;font-family:標楷體'>  若您因為誤傳而收到本郵件或者非本郵件之指定收件人，煩請即刻回覆郵件告知並永久刪除此郵件及其附件和銷毀所有複印件。謝謝您的合作！</span>
-
+                BODY.AppendFormat(@"
 
                                     ");
+
+               
 
                 //寄給廠商
                 SENDMAIL(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
@@ -457,6 +430,10 @@ namespace TKPUR
                 //MyMail.Body = "<h1>Dear SIR</h1>" + Environment.NewLine + "<h1>附件為每日訂單-製令追踨表，請查收</h1>" + Environment.NewLine + "<h1>若訂單沒有相對的製令則需通知製造生管開立</h1>"; //設定信件內容
                 MyMail.Body = Body.ToString();
                 MyMail.IsBodyHtml = true; //是否使用html格式
+
+                //加上附圖
+                string path = System.Environment.CurrentDirectory + @"/Images/emaillogo.jpg";
+                MyMail.AlternateViews.Add(GetEmbeddedImage(path, Body));
 
                 System.Net.Mail.SmtpClient MySMTP = new System.Net.Mail.SmtpClient(MySMTPCONFIG, 25);
                 MySMTP.Credentials = new System.Net.NetworkCredential(NAME, PW);
@@ -510,6 +487,56 @@ namespace TKPUR
 
             }
             
+        }
+        private AlternateView GetEmbeddedImage(String filePath,StringBuilder BODY)
+        {
+            LinkedResource res = new LinkedResource(filePath);
+            res.ContentId = Guid.NewGuid().ToString();
+            //string htmlBody = @"<img src='cid:" + res.ContentId + @"'/>";
+            StringBuilder htmlBody = new StringBuilder();
+            htmlBody.AppendFormat(@"
+                                    <span style='font-family:新細明體,serif;color:#1F497D'><br>★☆★☆★☆★☆★☆★☆★☆★★☆★☆★☆★☆★☆★☆★☆★</span>
+                                    <span lang=EN-US style='color:#1F497D'><br></span>
+                                    <span style='font-size:14.0pt;font-family:標楷體'><br>資材部 徐雅芳
+                                    <br>
+                                    <span lang=EN-US style='font-size:14.0pt;font-family:標楷體'><br>Tel 886-5-2956520 #2000 Fax 886-5-2956519<o:p></o:p>
+                                    <br>
+                                    <span style='font-size:14.0pt;font-family:標楷體'><br>地址：嘉義縣大林鎮大埔美園區五路號
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <span style='font-size:14.0pt;font-family:標楷體'>官網：
+                                    <span lang=EN-US><a href=""http://www.tkfood.com.tw/"">
+                                    <span style = 'color:blue' > http://www.tkfood.com.tw/ </span></a>
+                                    <br>
+                                    <span style='font-size:14.0pt;font-family:標楷體'>ＦＢ：
+                                    <span lang=EN-US><a href=""https://www.facebook.com/tkfood"">
+                                    <span styl ='color:blue'> https://www.facebook.com/tkfood </span></span></a>
+                                    <br>
+                                    <br>
+                                    ");
+            htmlBody.AppendFormat(@"<img src='cid:" + res.ContentId + @"'/> ");
+            htmlBody.AppendFormat(@"
+                                    <br>
+                                    <br>
+                                    <span style = 'font-size:9.0pt;font-family:標楷體'> 本電子郵件及附件所載訊息均為保密資訊，受合約保護或依法不得洩漏。其內容僅供指定收件人按限定範圍或特殊目的使用。未經授權者收到此資訊者均無權閱讀、 使用、 複製、洩漏或散佈。
+                                    <br>
+                                    <br>
+                                    <span style = 'font-size:9.0pt;font-family:標楷體'> 老楊食品股公司將依個人資料保護法之要求妥善保管您的個人資料，並於合法取得之前提下善意使用，據此本公司僅在營運範圍內之目的與您聯繫，包含本公司主辦或協辦之行銷活動、客戶服務等，非經由本公司上開目的下之合法授權，所寄發之資訊並不代表本公司，倘若有前述情形或信件誤遞至您的信箱，請透過下列聯絡方式更正；
+                                    <br>
+                                    <br>
+                                    <span style = 'font-size:9.0pt;font-family:標楷體'> 客服電話：
+                                    <span lang = EN - US > 0800 - 522 - 109 </span>；個資服務信箱：</span>
+                                    <span lang = EN - US style = 'font-family:標楷體'>
+                                    <a href = ""mailto:tk100@tkfood.com.tw"">
+                                    <span style = 'font-size:9.0pt;color:#0563C1'> tk100@tkfood.com.tw  </span ></a></span>
+                                    <span style = 'font-size:9.0pt;font-family:標楷體'>  若您因為誤傳而收到本郵件或者非本郵件之指定收件人，煩請即刻回覆郵件告知並永久刪除此郵件及其附件和銷毀所有複印件。謝謝您的合作！</span>
+
+                                    ");
+
+            AlternateView alternateView = AlternateView.CreateAlternateViewFromString(BODY + htmlBody.ToString(), null, MediaTypeNames.Text.Html);
+            alternateView.LinkedResources.Add(res);
+            return alternateView;
         }
 
         public void SENDMAILPURCC(StringBuilder Subject, StringBuilder Body, string FROMEMAIL, string TOEMAIL, string Attachments)
