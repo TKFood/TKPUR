@@ -144,9 +144,8 @@ namespace TKPUR
                                     FROM [TK].dbo.PURTC,[TK].dbo.PURMA
                                     WHERE 1=1
                                     AND TC004=MA001
-                                    AND TC003>='{0}' AND TC003<='{1}'
-                                    
-                                    AND TC002='20220629001'     
+                                    AND TC003>='{0}' AND TC003<='{1}'                                  
+                                   
                                     ORDER BY TC001,TC002
 
                                     ", SDAY,EDAY);
@@ -349,157 +348,198 @@ namespace TKPUR
 
         public void PREPARESENDEMAIL(string FROMEMAIL, string TOEMAIL, string Attachments,DataSet DSMAILPURTCTD)
         {
-            StringBuilder SUBJEST = new StringBuilder();
-            StringBuilder BODY = new StringBuilder();
 
-            SUBJEST.Clear();
-            BODY.Clear();
-            SUBJEST.AppendFormat(@"老楊食品-採購單，請將附件用印回簽，謝謝。 "+DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
-            BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為老楊食品-採購單" + Environment.NewLine+"請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
-
-            if(DSMAILPURTCTD.Tables[0].Rows.Count>0)
+            try
             {
-                BODY.AppendFormat(Environment.NewLine + "採購明細");
+                StringBuilder SUBJEST = new StringBuilder();
+                StringBuilder BODY = new StringBuilder();
 
-                foreach (DataRow DR in DSMAILPURTCTD.Tables[0].Rows)
+                SUBJEST.Clear();
+                BODY.Clear();
+                SUBJEST.AppendFormat(@"老楊食品-採購單，請將附件用印回簽，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為老楊食品-採購單" + Environment.NewLine + "請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
+
+                if (DSMAILPURTCTD.Tables[0].Rows.Count > 0)
                 {
-                    BODY.AppendFormat(Environment.NewLine + "品名     " + DR["TD005"].ToString());
-                    BODY.AppendFormat(Environment.NewLine + "採購數量 " + DR["TD008"].ToString());
-                    BODY.AppendFormat(Environment.NewLine + "採購單位 " + DR["TD009"].ToString());
-                    BODY.AppendFormat(Environment.NewLine );
-                }
-               
-            }
+                    BODY.AppendFormat(Environment.NewLine + "採購明細");
 
-            //寄給廠商
-            SENDMAIL(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
-            //寄送副件給採購
-            SENDMAILPURCC(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
+                    foreach (DataRow DR in DSMAILPURTCTD.Tables[0].Rows)
+                    {
+                        BODY.AppendFormat(Environment.NewLine + "品名     " + DR["TD005"].ToString());
+                        BODY.AppendFormat(Environment.NewLine + "採購數量 " + DR["TD008"].ToString());
+                        BODY.AppendFormat(Environment.NewLine + "採購單位 " + DR["TD009"].ToString());
+                        BODY.AppendFormat(Environment.NewLine);
+                    }
+
+                }
+
+                //寄給廠商
+                SENDMAIL(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
+                //寄送副件給採購
+                SENDMAILPURCC(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+            
         }
 
         public void SENDMAIL(StringBuilder Subject, StringBuilder Body,string FROMEMAIL, string TOEMAIL, string Attachments)
         {
-            string MySMTPCONFIG = ConfigurationManager.AppSettings["MySMTP"];
-            string NAME = ConfigurationManager.AppSettings["NAME"];
-            string PW = ConfigurationManager.AppSettings["PW"];
-            DataSet DSFROMEMAIL = FINDFROMEMAIL();
-            FROMEMAIL = DSFROMEMAIL.Tables[0].Rows[0]["FROMEMAIL"].ToString();
-
-            System.Net.Mail.MailMessage MyMail = new System.Net.Mail.MailMessage();
-            MyMail.From = new System.Net.Mail.MailAddress(FROMEMAIL);
-
-            //MyMail.Bcc.Add("密件副本的收件者Mail"); //加入密件副本的Mail          
-            //MyMail.Subject = "每日訂單-製令追踨表"+DateTime.Now.ToString("yyyy/MM/dd");
-            MyMail.Subject = Subject.ToString();
-            //MyMail.Body = "<h1>Dear SIR</h1>" + Environment.NewLine + "<h1>附件為每日訂單-製令追踨表，請查收</h1>" + Environment.NewLine + "<h1>若訂單沒有相對的製令則需通知製造生管開立</h1>"; //設定信件內容
-            MyMail.Body = Body.ToString();
-            MyMail.IsBodyHtml = true; //是否使用html格式
-
-            System.Net.Mail.SmtpClient MySMTP = new System.Net.Mail.SmtpClient(MySMTPCONFIG, 25);
-            MySMTP.Credentials = new System.Net.NetworkCredential(NAME, PW);
-
-            Attachment attch = new Attachment(Attachments);
-            MyMail.Attachments.Add(attch);
-
-            //if (Directory.Exists(DirectoryNAME))
-            //{
-            //    tempFile = Directory.GetFiles(DirectoryNAME);//取得資料夾下所有檔案
-
-            //    foreach (string item in tempFile)
-            //    {
-            //        info = new FileInfo(item);
-            //        tFileName = info.Name.ToString().Trim();//取得檔名
-            //        Attachment attch = new Attachment(DirectoryNAME+tFileName);
-            //        MyMail.Attachments.Add(attch);
-
-            //    }
-
-            //}
-
-
             try
             {
-                MyMail.To.Add(TOEMAIL); //設定收件者Email，多筆mail
-                //MyMail.To.Add("tk290@tkfood.com.tw"); //設定收件者Email
+                string MySMTPCONFIG = ConfigurationManager.AppSettings["MySMTP"];
+                string NAME = ConfigurationManager.AppSettings["NAME"];
+                string PW = ConfigurationManager.AppSettings["PW"];
+                DataSet DSFROMEMAIL = FINDFROMEMAIL();
+                FROMEMAIL = DSFROMEMAIL.Tables[0].Rows[0]["FROMEMAIL"].ToString();
 
-                MySMTP.Send(MyMail);
+                System.Net.Mail.MailMessage MyMail = new System.Net.Mail.MailMessage();
+                MyMail.From = new System.Net.Mail.MailAddress(FROMEMAIL);
 
-                MyMail.Dispose(); //釋放資源
+                //MyMail.Bcc.Add("密件副本的收件者Mail"); //加入密件副本的Mail          
+                //MyMail.Subject = "每日訂單-製令追踨表"+DateTime.Now.ToString("yyyy/MM/dd");
+                MyMail.Subject = Subject.ToString();
+                //MyMail.Body = "<h1>Dear SIR</h1>" + Environment.NewLine + "<h1>附件為每日訂單-製令追踨表，請查收</h1>" + Environment.NewLine + "<h1>若訂單沒有相對的製令則需通知製造生管開立</h1>"; //設定信件內容
+                MyMail.Body = Body.ToString();
+                MyMail.IsBodyHtml = true; //是否使用html格式
 
+                System.Net.Mail.SmtpClient MySMTP = new System.Net.Mail.SmtpClient(MySMTPCONFIG, 25);
+                MySMTP.Credentials = new System.Net.NetworkCredential(NAME, PW);
 
-            }
-            catch (Exception ex)
-            {
-                //ADDLOG(DateTime.Now, Subject.ToString(), ex.ToString());
-                //ex.ToString();
-            }
-        }
+                Attachment attch = new Attachment(Attachments);
+                MyMail.Attachments.Add(attch);
 
-        public void SENDMAILPURCC(StringBuilder Subject, StringBuilder Body, string FROMEMAIL, string TOEMAIL, string Attachments)
-        {
-            string MySMTPCONFIG = ConfigurationManager.AppSettings["MySMTP"];
-            string NAME = ConfigurationManager.AppSettings["NAME"];
-            string PW = ConfigurationManager.AppSettings["PW"];
-            DataSet DSFROMEMAIL = FINDFROMEMAIL();
-            FROMEMAIL = DSFROMEMAIL.Tables[0].Rows[0]["FROMEMAIL"].ToString();
+                //if (Directory.Exists(DirectoryNAME))
+                //{
+                //    tempFile = Directory.GetFiles(DirectoryNAME);//取得資料夾下所有檔案
 
-            System.Net.Mail.MailMessage MyMail = new System.Net.Mail.MailMessage();
-            MyMail.From = new System.Net.Mail.MailAddress(FROMEMAIL);
+                //    foreach (string item in tempFile)
+                //    {
+                //        info = new FileInfo(item);
+                //        tFileName = info.Name.ToString().Trim();//取得檔名
+                //        Attachment attch = new Attachment(DirectoryNAME+tFileName);
+                //        MyMail.Attachments.Add(attch);
 
-            //MyMail.Bcc.Add("密件副本的收件者Mail"); //加入密件副本的Mail          
-            //MyMail.Subject = "每日訂單-製令追踨表"+DateTime.Now.ToString("yyyy/MM/dd");
-            MyMail.Subject = "副件-"+Subject.ToString();
-            //MyMail.Body = "<h1>Dear SIR</h1>" + Environment.NewLine + "<h1>附件為每日訂單-製令追踨表，請查收</h1>" + Environment.NewLine + "<h1>若訂單沒有相對的製令則需通知製造生管開立</h1>"; //設定信件內容
-            MyMail.Body = Body.ToString();
-            //MyMail.IsBodyHtml = true; //是否使用html格式
+                //    }
 
-            System.Net.Mail.SmtpClient MySMTP = new System.Net.Mail.SmtpClient(MySMTPCONFIG, 25);
-            MySMTP.Credentials = new System.Net.NetworkCredential(NAME, PW);
-
-            Attachment attch = new Attachment(Attachments);
-            MyMail.Attachments.Add(attch);
-
-            //if (Directory.Exists(DirectoryNAME))
-            //{
-            //    tempFile = Directory.GetFiles(DirectoryNAME);//取得資料夾下所有檔案
-
-            //    foreach (string item in tempFile)
-            //    {
-            //        info = new FileInfo(item);
-            //        tFileName = info.Name.ToString().Trim();//取得檔名
-            //        Attachment attch = new Attachment(DirectoryNAME+tFileName);
-            //        MyMail.Attachments.Add(attch);
-
-            //    }
-
-            //}
+                //}
 
 
-            try
-            {
-
-                if(DSFROMEMAIL.Tables[0].Rows.Count>0)
+                try
                 {
-                    foreach(DataRow DR in DSFROMEMAIL.Tables[0].Rows)
-                    {
-                        MyMail.To.Add(DR["FROMEMAIL"].ToString()); //設定收件者Email，多筆mail
-                                                //MyMail.To.Add("tk290@tkfood.com.tw"); //設定收件者Email
-
-                    }
+                    MyMail.To.Add(TOEMAIL); //設定收件者Email，多筆mail
+                                            //MyMail.To.Add("tk290@tkfood.com.tw"); //設定收件者Email
 
                     MySMTP.Send(MyMail);
 
                     MyMail.Dispose(); //釋放資源
+
+
                 }
-               
-
-
+                catch (Exception ex)
+                {
+                    //ADDLOG(DateTime.Now, Subject.ToString(), ex.ToString());
+                    //ex.ToString();
+                }
             }
-            catch (Exception ex)
+
+            catch
             {
-                //ADDLOG(DateTime.Now, Subject.ToString(), ex.ToString());
-                //ex.ToString();
+
             }
+
+            finally
+            {
+
+            }
+            
+        }
+
+        public void SENDMAILPURCC(StringBuilder Subject, StringBuilder Body, string FROMEMAIL, string TOEMAIL, string Attachments)
+        {
+            try
+            {
+                string MySMTPCONFIG = ConfigurationManager.AppSettings["MySMTP"];
+                string NAME = ConfigurationManager.AppSettings["NAME"];
+                string PW = ConfigurationManager.AppSettings["PW"];
+                DataSet DSFROMEMAIL = FINDFROMEMAIL();
+                FROMEMAIL = DSFROMEMAIL.Tables[0].Rows[0]["FROMEMAIL"].ToString();
+
+                System.Net.Mail.MailMessage MyMail = new System.Net.Mail.MailMessage();
+                MyMail.From = new System.Net.Mail.MailAddress(FROMEMAIL);
+
+                //MyMail.Bcc.Add("密件副本的收件者Mail"); //加入密件副本的Mail          
+                //MyMail.Subject = "每日訂單-製令追踨表"+DateTime.Now.ToString("yyyy/MM/dd");
+                MyMail.Subject = "副件-" + Subject.ToString();
+                //MyMail.Body = "<h1>Dear SIR</h1>" + Environment.NewLine + "<h1>附件為每日訂單-製令追踨表，請查收</h1>" + Environment.NewLine + "<h1>若訂單沒有相對的製令則需通知製造生管開立</h1>"; //設定信件內容
+                MyMail.Body = Body.ToString();
+                //MyMail.IsBodyHtml = true; //是否使用html格式
+
+                System.Net.Mail.SmtpClient MySMTP = new System.Net.Mail.SmtpClient(MySMTPCONFIG, 25);
+                MySMTP.Credentials = new System.Net.NetworkCredential(NAME, PW);
+
+                Attachment attch = new Attachment(Attachments);
+                MyMail.Attachments.Add(attch);
+
+                //if (Directory.Exists(DirectoryNAME))
+                //{
+                //    tempFile = Directory.GetFiles(DirectoryNAME);//取得資料夾下所有檔案
+
+                //    foreach (string item in tempFile)
+                //    {
+                //        info = new FileInfo(item);
+                //        tFileName = info.Name.ToString().Trim();//取得檔名
+                //        Attachment attch = new Attachment(DirectoryNAME+tFileName);
+                //        MyMail.Attachments.Add(attch);
+
+                //    }
+
+                //}
+
+
+                try
+                {
+
+                    if (DSFROMEMAIL.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow DR in DSFROMEMAIL.Tables[0].Rows)
+                        {
+                            MyMail.To.Add(DR["FROMEMAIL"].ToString()); //設定收件者Email，多筆mail
+                                                                       //MyMail.To.Add("tk290@tkfood.com.tw"); //設定收件者Email
+
+                        }
+
+                        MySMTP.Send(MyMail);
+
+                        MyMail.Dispose(); //釋放資源
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    //ADDLOG(DateTime.Now, Subject.ToString(), ex.ToString());
+                    //ex.ToString();
+                }
+            }
+
+            catch
+            {
+
+            }
+
+            finally
+            {
+
+            }
+            
         }
 
         public DataSet FINDFROMEMAIL()
@@ -768,8 +808,8 @@ namespace TKPUR
                                     AND TC004=MA001
                                     AND TC011=MV001
                                     AND TC010=MB001
-                                    AND TD001='A339' AND TD002='20220629001'
-                                   ");
+                                    ANR TC001='{0}' AND TC002='{1}'
+                                   ",TC001,TC002);
 
                 adapter = new SqlDataAdapter(@"" + sbSql.ToString(), sqlConn);
 
