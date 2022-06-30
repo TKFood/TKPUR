@@ -367,7 +367,7 @@ namespace TKPUR
                 SUBJEST.AppendFormat(@"老楊食品-採購單，請將附件用印回簽，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
                 //BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為老楊食品-採購單" + Environment.NewLine + "請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
 
-                BODY.AppendFormat("<span style='font-size:12.0pt;font-family:微軟正黑體'> <br>" + "Dear SIR" + "<br><br>" + "附件為老楊食品-採購單" + "<br>" + "請將附件用印回簽" + "<br>" + "謝謝" + "</span><br>");
+                BODY.AppendFormat("<span style='font-size:12.0pt;font-family:微軟正黑體'> <br>" + "Dear SIR:" + "<br><br>" + "附件為老楊食品-採購單" + "<br>" + "請將附件用印回簽" + "<br>" + "謝謝" + "</span><br>");
 
 
                 if (DSMAILPURTCTD.Tables[0].Rows.Count > 0)
