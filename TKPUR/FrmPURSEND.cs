@@ -379,6 +379,7 @@ namespace TKPUR
                     BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">品名</th>");
                     BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">採購數量</th>");
                     BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">採購單位</th>");
+                    BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">到貨日</th>");
                     BODY.AppendFormat(@"</tr> ");
 
                     foreach (DataRow DR in DSMAILPURTCTD.Tables[0].Rows)
@@ -390,6 +391,7 @@ namespace TKPUR
                         BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["TD005"].ToString() +" </td>");
                         BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["TD008"].ToString() + "</td>");
                         BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["TD009"].ToString() + "</td>");
+                        BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["TD012"].ToString() + "</td>");
                         BODY.AppendFormat(@"</tr> ");
 
                         //BODY.AppendFormat("<span></span>");
@@ -411,7 +413,7 @@ namespace TKPUR
                 SENDMAIL(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
                 
                 //寄送副件給採購
-                //SENDMAILPURCC(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
+                SENDMAILPURCC(SUBJEST, BODY, FROMEMAIL, TOEMAIL, Attachments);
             }
             catch
             {
@@ -570,7 +572,7 @@ namespace TKPUR
                 MyMail.Subject = "副件-" + Subject.ToString();
                 //MyMail.Body = "<h1>Dear SIR</h1>" + Environment.NewLine + "<h1>附件為每日訂單-製令追踨表，請查收</h1>" + Environment.NewLine + "<h1>若訂單沒有相對的製令則需通知製造生管開立</h1>"; //設定信件內容
                 MyMail.Body = Body.ToString();
-                //MyMail.IsBodyHtml = true; //是否使用html格式
+                MyMail.IsBodyHtml = true; //是否使用html格式
 
                 System.Net.Mail.SmtpClient MySMTP = new System.Net.Mail.SmtpClient(MySMTPCONFIG, 25);
                 MySMTP.Credentials = new System.Net.NetworkCredential(NAME, PW);
