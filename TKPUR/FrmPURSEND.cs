@@ -351,7 +351,7 @@ namespace TKPUR
         {
             string TC001 = null;
             string TC002 = null;
-
+             
             try
             {
                 StringBuilder SUBJEST = new StringBuilder();
