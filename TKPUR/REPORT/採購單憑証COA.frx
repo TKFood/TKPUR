@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="07/25/2022 16:03:32" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="07/25/2022 16:08:02" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHDe5Yb8I+FViNbuRNMDWEI">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEjA+Ta8RaO89gUCfygIPsT">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME&#13;&#10;FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB&#13;&#10;WHERE TC001=TD001 AND TC002=TD002&#13;&#10;AND MQ001=TC001&#13;&#10;AND TC004=MA001&#13;&#10;AND TC011=MV001&#13;&#10;AND TC010=MB001&#13;&#10;AND TD002='20220623003' ">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>

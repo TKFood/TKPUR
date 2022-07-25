@@ -59,7 +59,7 @@ namespace TKPUR
         {
             InitializeComponent();
 
-
+            comboBox1load();
         }
 
         private void FrmPURSEND_Load(object sender, EventArgs e)
@@ -67,6 +67,36 @@ namespace TKPUR
             SETGRIDVIEW();
         }
         #region FUNCTION
+        public void comboBox1load()
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT FORM FROM [TKPUR].[dbo].[PURREPORTFORM] WHERE [REPORT]='採購單' ORDER BY ID  ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("FORM", typeof(string));
+
+            da.Fill(dt);
+            comboBox1.DataSource = dt.DefaultView;
+            comboBox1.ValueMember = "FORM";
+            comboBox1.DisplayMember = "FORM";
+            sqlConn.Close();
+
+
+        }
+
         public void  SETGRIDVIEW()
         {
             dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.PaleTurquoise;      //奇數列顏色
@@ -193,7 +223,24 @@ namespace TKPUR
 
             StringBuilder SQL=new StringBuilder();
             report1 = new Report();
-            report1.Load(@"REPORT\採購單憑証.frx");
+
+            if(comboBox1.Text.ToString().Equals("COA"))
+            {
+                report1.Load(@"REPORT\採購單憑証COA.frx");
+            }
+            else if (comboBox1.Text.ToString().Equals("進口報價"))
+            {
+                report1.Load(@"REPORT\採購單憑証進口報價.frx");
+            }
+            else if(comboBox1.Text.ToString().Equals("COA+進口報價"))
+            {
+                report1.Load(@"REPORT\採購單憑証COA進口報價.frx");
+            }
+            else 
+            {
+                report1.Load(@"REPORT\採購單憑証.frx");
+            }
+           
 
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
@@ -338,7 +385,7 @@ namespace TKPUR
                     //產生採購明細ds
                     DataSet DSMAILPURTCTD = FINDEMAILPURTCTD(dr.Cells["採購單別"].Value.ToString(), dr.Cells["採購單號"].Value.ToString());
                     //準備寄送email+寄送副件
-                    PREPARESENDEMAIL("", dr.Cells["EMAIL"].Value.ToString(), MAILATTACHPATH, DSMAILPURTCTD);
+                    //PREPARESENDEMAIL("", dr.Cells["EMAIL"].Value.ToString(), MAILATTACHPATH, DSMAILPURTCTD);
 
                    
 
