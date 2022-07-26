@@ -159,8 +159,11 @@ namespace TKPUR
 
                      
             FASTSQL.AppendFormat(@"  
-                                SELECT TA003 AS '請購日期',TB010 AS '廠商代',MA002 AS '廠商',TB001 AS '單別',TB002 AS '單號',TB003 AS '序號',TB004 AS '品號',TB005 AS '品名',TB006 AS '規格',TB009 AS '請購數量',TB007 AS '請購單位',TB039 AS '是否結案',TA012 AS '請購人代',MV002 AS '請購人',TB011 AS '需求日'
+                                
+                                SELECT 
+                                TA003 AS '請購日期',TB010 AS '廠商代',MA002 AS '廠商',TB001 AS '單別',TB002 AS '單號',TB003 AS '序號',TB004 AS '品號',TB005 AS '品名',TB006 AS '規格',TB009 AS '請購數量',TB007 AS '請購單位',TB039 AS '是否結案',TA012 AS '請購人代',MV002 AS '請購人',TB011 AS '需求日'
                                 ,(SELECT ISNULL(SUM(TD008),0) FROM [TK].dbo.PURTC,[TK].dbo.PURTD WHERE TC001=TD001 AND TC002=TD002 AND TD026=TB001 AND TD027=TB002 AND TD028=TB003) AS '已採購數量'
+                                ,TA006 AS '單頭備註'
                                 FROM [TK].dbo.PURTA,[TK].dbo.CMSMV,[TK].dbo.PURTB
                                 LEFT JOIN [TK].dbo.PURMA ON  TB010=MA001
 
