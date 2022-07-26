@@ -167,7 +167,7 @@ namespace TKPUR
 
                 
                 sbSql.AppendFormat(@"  
-                                   SELECT TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
+                                   SELECT ''AS '填寫EMAIL說明',TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
                                     ,(      SELECT TD004+TD005+TD006+', '
                                             FROM   [TK].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002
                                             FOR XML PATH(''), TYPE  
@@ -200,6 +200,8 @@ namespace TKPUR
                     {
                         dataGridView1.DataSource = ds.Tables["TEMPds1"];
                         dataGridView1.AutoResizeColumns();
+
+                        dataGridView1.Columns["填寫EMAIL說明"].Width = 200;
 
                     }
 
@@ -363,12 +365,13 @@ namespace TKPUR
                     DSPURTCTD.Clear();
                     DSPURTCTD.Reset();
 
-                     DataTable dt = new DataTable("MyTable");
+                    DataTable dt = new DataTable("MyTable");
                     dt.Columns.Add(new DataColumn("TC001", typeof(string)));
                     dt.Columns.Add(new DataColumn("TC002", typeof(string)));
                     dt.Columns.Add(new DataColumn("MA001", typeof(string)));
                     dt.Columns.Add(new DataColumn("MA002", typeof(string)));
                     dt.Columns.Add(new DataColumn("MA011", typeof(string)));
+                    dt.Columns.Add(new DataColumn("EMAILCOMMETS", typeof(string)));
 
                     DataRow NEWdr = dt.NewRow();
                     NEWdr["TC001"] = dr.Cells["採購單別"].Value.ToString();
@@ -376,6 +379,7 @@ namespace TKPUR
                     NEWdr["MA001"] = dr.Cells["供應廠商"].Value.ToString();
                     NEWdr["MA002"] = dr.Cells["供應廠"].Value.ToString();
                     NEWdr["MA011"] = dr.Cells["EMAIL"].Value.ToString();
+                    NEWdr["EMAILCOMMETS"] = dr.Cells["填寫EMAIL說明"].Value.ToString();
 
                     dt.Rows.Add(NEWdr);
                     DSPURTCTD.Tables.Add(dt);
@@ -385,7 +389,7 @@ namespace TKPUR
                     //產生採購明細ds
                     DataSet DSMAILPURTCTD = FINDEMAILPURTCTD(dr.Cells["採購單別"].Value.ToString(), dr.Cells["採購單號"].Value.ToString());
                     //準備寄送email+寄送副件
-                    //PREPARESENDEMAIL("", dr.Cells["EMAIL"].Value.ToString(), MAILATTACHPATH, DSMAILPURTCTD);
+                    PREPARESENDEMAIL("", dr.Cells["EMAIL"].Value.ToString(), MAILATTACHPATH, DSMAILPURTCTD, DSPURTCTD);
 
                    
 
@@ -394,7 +398,7 @@ namespace TKPUR
         }
 
 
-        public void PREPARESENDEMAIL(string FROMEMAIL, string TOEMAIL, string Attachments,DataSet DSMAILPURTCTD)
+        public void PREPARESENDEMAIL(string FROMEMAIL, string TOEMAIL, string Attachments,DataSet DSMAILPURTCTD,DataSet DSPURTCTD)
         {
             string TC001 = null;
             string TC002 = null;
@@ -414,7 +418,8 @@ namespace TKPUR
                 SUBJEST.AppendFormat(@"老楊食品-採購單，請將附件用印回簽，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
                 //BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為老楊食品-採購單" + Environment.NewLine + "請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
 
-                BODY.AppendFormat("<span style='font-size:12.0pt;font-family:微軟正黑體'> <br>" + "Dear SIR:" + "<br><br>" + "附件為老楊食品-採購單" + "<br>" + "請將附件用印回簽" + "<br>" + "謝謝" + "</span><br>");
+                string COMMENTS = DSPURTCTD.Tables[0].Rows[0]["EMAILCOMMETS"].ToString();
+                BODY.AppendFormat("<span style='font-size:12.0pt;font-family:微軟正黑體'> <br>" + "Dear SIR:" + "<br><br>" + "附件為老楊食品-採購單" + "<br>" + "請將附件用印回簽" + "<br>" + "謝謝" + "<br>"+ "<br>" + "請注意說明:" + COMMENTS + "</span><br>");
 
 
                 if (DSMAILPURTCTD.Tables[0].Rows.Count > 0)
