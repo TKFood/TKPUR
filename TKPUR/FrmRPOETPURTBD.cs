@@ -173,6 +173,9 @@ namespace TKPUR
                                 AND TB025='Y'
                                 AND TB039='N' 
                                 AND (TB009-(SELECT ISNULL(SUM(TD008),0) FROM [TK].dbo.PURTC,[TK].dbo.PURTD WHERE TC001=TD001 AND TC002=TD002 AND TD026=TB001 AND TD027=TB002 AND TD028=TB003))>0
+                                AND TA007 IN ('Y','N')
+                                AND TB039 IN ('N')
+
                                 ORDER BY TA003,TB001,TB002,TB003
                                 
                                 ");
