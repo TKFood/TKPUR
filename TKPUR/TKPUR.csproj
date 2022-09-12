@@ -99,6 +99,12 @@
     <Compile Include="frmREPORTCHECKPURTDPURTH.Designer.cs">
       <DependentUpon>frmREPORTCHECKPURTDPURTH.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTFORMPURTCPURTD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTFORMPURTCPURTD.Designer.cs">
+      <DependentUpon>frmREPORTFORMPURTCPURTD.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmReportPURALL.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTCHECKPURTDPURTH.resx">
       <DependentUpon>frmREPORTCHECKPURTDPURTH.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTFORMPURTCPURTD.resx">
+      <DependentUpon>frmREPORTFORMPURTCPURTD.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmReportPURALL.resx">
       <DependentUpon>FrmReportPURALL.cs</DependentUpon>
