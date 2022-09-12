@@ -278,7 +278,7 @@ namespace TKPUR
             StringBuilder STRQUERY = new StringBuilder();
 
 
-            FASTSQL.AppendFormat(@"    
+            FASTSQL.AppendFormat(@"      
                                 SELECT *
                                 ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
                                 FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB
