@@ -125,7 +125,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.previewControl1);
             this.splitContainer2.Size = new System.Drawing.Size(970, 493);
-            this.splitContainer2.SplitterDistance = 323;
+            this.splitContainer2.SplitterDistance = 133;
             this.splitContainer2.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -216,6 +216,7 @@
             this.button1.TabIndex = 3;
             this.button1.Text = "列印憑証";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label2
             // 
@@ -246,7 +247,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(966, 319);
+            this.dataGridView1.Size = new System.Drawing.Size(966, 129);
             this.dataGridView1.TabIndex = 6;
             // 
             // previewControl1
@@ -258,7 +259,7 @@
             this.previewControl1.Name = "previewControl1";
             this.previewControl1.PageOffset = new System.Drawing.Point(10, 10);
             this.previewControl1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl1.Size = new System.Drawing.Size(966, 162);
+            this.previewControl1.Size = new System.Drawing.Size(966, 352);
             this.previewControl1.TabIndex = 4;
             // 
             // frmREPORTFORMPURTCPURTD
@@ -271,6 +272,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmREPORTFORMPURTCPURTD";
             this.Text = "frmREPORTFORMPURTCPURTD";
+            this.Load += new System.EventHandler(this.frmREPORTFORMPURTCPURTD_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
