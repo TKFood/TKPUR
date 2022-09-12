@@ -125,7 +125,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.previewControl1);
             this.splitContainer2.Size = new System.Drawing.Size(970, 493);
-            this.splitContainer2.SplitterDistance = 133;
+            this.splitContainer2.SplitterDistance = 231;
             this.splitContainer2.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -247,7 +247,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(966, 129);
+            this.dataGridView1.Size = new System.Drawing.Size(966, 227);
             this.dataGridView1.TabIndex = 6;
             // 
             // previewControl1
@@ -259,7 +259,7 @@
             this.previewControl1.Name = "previewControl1";
             this.previewControl1.PageOffset = new System.Drawing.Point(10, 10);
             this.previewControl1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl1.Size = new System.Drawing.Size(966, 352);
+            this.previewControl1.Size = new System.Drawing.Size(966, 254);
             this.previewControl1.TabIndex = 4;
             // 
             // frmREPORTFORMPURTCPURTD
