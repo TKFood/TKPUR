@@ -267,7 +267,7 @@ namespace TKPUR
 
             TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
 
-            SQL = SETFASETSQL(PRINTSPURTCPURTD);
+            SQL = SETFASETSQL(statusReports,PRINTSPURTCPURTD);
 
             Table.SelectCommand = SQL.ToString(); ;
 
@@ -276,11 +276,23 @@ namespace TKPUR
 
         }
 
-        public StringBuilder SETFASETSQL(string PRINTSPURTCPURTD)
+        public StringBuilder SETFASETSQL(string statusReports,string PRINTSPURTCPURTD)
         {
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
 
+            if (statusReports.Equals("有簽名"))
+            {
+                STRQUERY.AppendFormat(@"
+                                        AND TC014 IN ('Y')
+                                        ");
+            }
+            else
+            {
+                STRQUERY.AppendFormat(@"
+                                        
+                                        ");
+            }
 
             FASTSQL.AppendFormat(@"      
                                 SELECT *
@@ -292,7 +304,10 @@ namespace TKPUR
                                 AND TC011=MV001
                                 AND TC010=MB001
                                 AND TC001+TC002 IN ({0})
-                                ", PRINTSPURTCPURTD); 
+                                {1}
+
+                                ORDER BY TC001,TC002,TD003
+                                ", PRINTSPURTCPURTD, STRQUERY.ToString()); 
 
             return FASTSQL;
         }
