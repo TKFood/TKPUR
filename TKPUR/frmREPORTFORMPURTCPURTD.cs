@@ -216,7 +216,7 @@ namespace TKPUR
 
             }
         }
-        public void PREPRINTS()
+        public void PREPRINTS(string statusReports)
         {
             string PRINTSPURTCPURTD = null;
             foreach (DataGridViewRow dr in dataGridView1.Rows)
@@ -231,18 +231,22 @@ namespace TKPUR
 
             PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'A'";
 
-            SETFASTREPORT(PRINTSPURTCPURTD);
+            SETFASTREPORT(statusReports, PRINTSPURTCPURTD);
             //MessageBox.Show(PRINTSPURTCPURTD);
         }
 
-        public void SETFASTREPORT(string PRINTSPURTCPURTD)
+        public void SETFASTREPORT(string statusReports, string PRINTSPURTCPURTD)
         {
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
 
-            if (comboBox1.Text.ToString().Equals("憑証回傳202209"))
+            if (statusReports.Equals("憑証回傳202209"))
             {
                 report1.Load(@"REPORT\採購單憑証V2.frx");
+            }
+            else if (statusReports.Equals("有簽名"))
+            {
+                report1.Load(@"REPORT\採購單憑証-核準NAMEV2.frx");
             }
 
             //20210902密
@@ -302,7 +306,7 @@ namespace TKPUR
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            PREPRINTS();
+            PREPRINTS(comboBox1.Text.ToString());
         }
 
         #endregion
