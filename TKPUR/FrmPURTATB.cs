@@ -1111,7 +1111,7 @@ namespace TKPUR
                 {
                     DELPURTATB(textBox12.Text);
 
-                    Search();
+                    Search(); 
                 }               
 
             }
