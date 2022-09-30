@@ -283,7 +283,7 @@ namespace TKPUR
 
             if (statusReports.Equals("有簽名"))
             {
-                STRQUERY.AppendFormat(@"
+                STRQUERY.AppendFormat(@"  
                                         AND TC014 IN ('Y')
                                         ");
             }
@@ -297,6 +297,8 @@ namespace TKPUR
             FASTSQL.AppendFormat(@"      
                                 SELECT *
                                 ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
+                                ,PURTC.UDF02 AS 'UOF單號'
+
                                 FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB
                                 WHERE TC001=TD001 AND TC002=TD002
                                 AND MQ001=TC001
@@ -305,7 +307,7 @@ namespace TKPUR
                                 AND TC010=MB001
                                 AND TC001+TC002 IN ({0})
                                 {1}
-
+ 
                                 ORDER BY TC001,TC002,TD003
                                 ", PRINTSPURTCPURTD, STRQUERY.ToString()); 
 
