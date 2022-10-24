@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/24/2022 11:37:34" ReportInfo.Modified="10/24/2022 15:59:11" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHsT/mLiB/Auy6SwZy99QXa">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20221021 可使用品號、品名查詢所有每月原、物料進貨及使用總數量及進貨單價&#13;&#10;&#13;&#10;SELECT NEWMQ008 AS '分類',LA001 AS '品號',SUBSTRING(LA004,1,6)  AS '年月',SUM(LA005*LA011)  AS '數量',INVMB.MB002 AS '品名',INVMB.MB003 AS '規格',INVMB.MB004 AS '單位'&#13;&#10;,INVMB.MB050 AS '最近進貨價'&#13;&#10;--,(SELECT TOP 1 TH008+'-'+CONVERT(NVARCHAR,(CONVERT(decimal(16,2),TH047/TH016))) FROM [TK].dbo.PURTH WHERE TH030='Y' AND TH004=LA001 ORDER BY TH002 DESC)&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT MQ001,MQ002,MQ008,LA001,LA004,LA005,LA006,LA007,LA008,LA011,MB002,MB003,MB004&#13;&#10;,CASE  WHEN MQ001 IN ('A421','A422','A431') AND LA005=-1 THEN '4組合領用' WHEN MQ001 IN ('A421','A422','A431') AND LA005=1 THEN '5組合生產'  WHEN MQ008='1' THEN '1進貨'  WHEN MQ008='2' THEN '2銷貨'  WHEN MQ008='3' THEN '3領用' END NEWMQ008 &#13;&#10;FROM [TK].dbo.INVLA WITH(NOLOCK),[TK].dbo.CMSMQ WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK)&#13;&#10;WHERE LA006=MQ001&#13;&#10;AND LA001=MB001&#13;&#10;AND LA004&gt;='20220701' AND LA004&lt;='20221021'&#13;&#10;AND MQ008 IN ('','1','2','3')&#13;&#10;AND (LA001 LIKE  '%卡比索%' OR MB002 LIKE '%卡比索%')&#13;&#10;) AS TEMP,[TK].dbo.INVMB&#13;&#10;WHERE LA001=MB001&#13;&#10;GROUP BY LA001,NEWMQ008,SUBSTRING(LA004,1,6),INVMB.MB002,INVMB.MB003,INVMB.MB004,INVMB.MB050&#13;&#10;ORDER BY LA001,NEWMQ008,SUBSTRING(LA004,1,6),INVMB.MB002,INVMB.MB003,INVMB.MB004,INVMB.MB050">
+        <Column Name="分類" DataType="System.String"/>
+        <Column Name="年月" DataType="System.String"/>
+        <Column Name="數量" DataType="System.Decimal"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="規格" DataType="System.String"/>
+        <Column Name="單位" DataType="System.String"/>
+        <Column Name="最近進貨價" DataType="System.Decimal"/>
+        <Column Name="品號" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text17" Width="1048.95" Height="18.9" Text="品號進銷領表" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="23.39" Width="1047.06" Height="18.9">
+      <TextObject Name="Text2" Left="670.95" Width="94.5" Height="18.9" Border.Lines="All" Text="分類" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Width="141.75" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="141.75" Width="236.25" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="576.45" Width="94.5" Height="18.9" Border.Lines="All" Text="年月" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" Text="單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="954.45" Width="94.5" Height="18.9" Border.Lines="All" Text="最近進貨價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="378" Width="198.45" Height="18.9" Border.Lines="All" Text="規格" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="46.79" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Left="670.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.分類]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Width="141.75" Height="18.9" Border.Lines="All" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="141.75" Width="236.25" Height="18.9" Border.Lines="All" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="576.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.年月]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.數量]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.單位]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="954.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.最近進貨價]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="378" Width="198.45" Height="18.9" Border.Lines="All" Text="[Table.規格]" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="70.18" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>
