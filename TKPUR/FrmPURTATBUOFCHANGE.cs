@@ -1024,7 +1024,7 @@ namespace TKPUR
 
         public void ADDTB_WKF_EXTERNAL_TASK(string TA001, string TA002,string VERSIONS)
         {
-            string PURCHID = SEARCHFORM_VERSION_ID("請購變更單");
+            string PURCHID = SEARCHFORM_VERSION_ID("PUR20.請購單變更單");
            
 
             DataTable DT = SEARCHPURTAPURTB(TA001, TA002, VERSIONS);
