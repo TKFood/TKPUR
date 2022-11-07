@@ -288,13 +288,13 @@ namespace TKPUR
 	                                    AND TB001='{0}' AND TB002='{1}'	
                                     )
                                     UPDATE [TK].dbo.PURTB
-                                    SET PURTB.TB042=PURTB.TB003,PURTB.TB003=CTE.NEWTB003
+                                    SET PURTB.TB033=PURTB.TB003,PURTB.TB003=CTE.NEWTB003
                                     FROM CTE,[TK].dbo.PURTB
                                     WHERE CTE.TB001=PURTB.TB001 AND CTE.TB002=PURTB.TB002  AND CTE.TB003=PURTB.TB003
                                     AND PURTB.TB025='N'
                                     AND PURTB.TB001='{0}' AND  PURTB.TB002='{1}'
                                  
-                                    ",TB001,TB002);
+                                    ", TB001,TB002);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
