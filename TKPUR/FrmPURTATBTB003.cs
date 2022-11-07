@@ -239,6 +239,8 @@ namespace TKPUR
                         dataGridView2.DataSource = ds.Tables["ds"];
                         dataGridView2.AutoResizeColumns();
 
+                        dataGridView2.Columns["序號"].Width = 50;
+                        dataGridView2.Columns["請購單位"].Width = 100;
                     }
 
                 }
