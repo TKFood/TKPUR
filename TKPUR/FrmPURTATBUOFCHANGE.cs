@@ -1024,8 +1024,9 @@ namespace TKPUR
 
         public void ADDTB_WKF_EXTERNAL_TASK(string TA001, string TA002,string VERSIONS)
         {
-            string PURCHID = SEARCHFORM_VERSION_ID("PUR20.請購單變更單");
-           
+            string PURCHID = SEARCHFORM_UOF_VERSION_ID("PUR20.請購單變更單");
+            //string PURCHID = SEARCHFORM_VERSION_ID("PUR20.請購單變更單");
+
 
             DataTable DT = SEARCHPURTAPURTB(TA001, TA002, VERSIONS);
             DataTable DTUPFDEP = SEARCHUOFDEP(DT.Rows[0]["TA012"].ToString());
@@ -1201,6 +1202,8 @@ namespace TKPUR
             //加入至members節點底下
             FormFieldValue.AppendChild(FieldItem);
 
+          
+
             //建立節點FieldItem
             //TB 表單編號	
             FieldItem = xmlDoc.CreateElement("FieldItem");
@@ -1327,6 +1330,16 @@ namespace TKPUR
                 Cell.SetAttribute("enableSearch", "True");
                 //Row
                 Row.AppendChild(Cell);
+             
+                //TD001002003 	
+                Cell = xmlDoc.CreateElement("Cell");
+                Cell.SetAttribute("fieldId", "TD001002003");
+                Cell.SetAttribute("fieldValue", od["TD001002003"].ToString());
+                Cell.SetAttribute("realValue", "");
+                Cell.SetAttribute("customValue", "");
+                Cell.SetAttribute("enableSearch", "True");
+                //Row
+                Row.AppendChild(Cell);
 
                 rowscounts = rowscounts + 1;
 
@@ -1424,7 +1437,7 @@ namespace TKPUR
                 sbSql.AppendFormat(@"  
                                    SELECT 
                                     [VERSIONS],[TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB006],[TB007],[TB009],[TB010],[TB011],[TB012],[USER_GUID],[NAME],[GROUP_ID],[TITLE_ID],[MA002]
-                                    ,(SELECT TOP 1 TD001+' '+TD002 FROM [TK].dbo.PURTD WHERE TD026=[TA001] AND TD027=[TA002] AND TD028=[TB003] ORDER BY TD001+TD002 DESC) AS TD001002
+                                    ,(SELECT TD001+' '+TD002+' '+TD003 FROM [TK].dbo.PURTD WHERE  TD026=[TA001] AND TD027=[TA002] AND TD028=[TB003] FOR XML PATH('')) AS TD001002003
 
                                     FROM [TKPUR].[dbo].[PURTATBCHAGE]
                                     WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}'
@@ -1662,6 +1675,74 @@ namespace TKPUR
             textBox25.Text = null;
         }
 
+        public string SEARCHFORM_UOF_VERSION_ID(string FORM_NAME)
+        {
+            SqlDataAdapter adapter1 = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();
+
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds1 = new DataSet();
+
+            try
+            {
+                //connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                //sqlConn = new SqlConnection(connectionString);
+
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbUOF"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                   SELECT TOP 1 RTRIM(LTRIM(TB_WKF_FORM_VERSION.FORM_VERSION_ID)) FORM_VERSION_ID,TB_WKF_FORM_VERSION.FORM_ID,TB_WKF_FORM_VERSION.VERSION,TB_WKF_FORM_VERSION.ISSUE_CTL
+                                    ,TB_WKF_FORM.FORM_NAME
+                                    FROM [UOF].dbo.TB_WKF_FORM_VERSION,[UOF].dbo.TB_WKF_FORM
+                                    WHERE 1=1
+                                    AND TB_WKF_FORM_VERSION.FORM_ID=TB_WKF_FORM.FORM_ID
+                                    AND TB_WKF_FORM_VERSION.ISSUE_CTL=1
+                                    AND FORM_NAME='{0}'
+                                    ORDER BY TB_WKF_FORM_VERSION.FORM_ID,TB_WKF_FORM_VERSION.VERSION DESC
+
+                                    ", FORM_NAME);
+
+                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter1.Fill(ds1, "ds1");
+
+
+                if (ds1.Tables["ds1"].Rows.Count >= 1)
+                {
+                    return ds1.Tables["ds1"].Rows[0]["FORM_VERSION_ID"].ToString();
+                }
+                else
+                {
+                    return "";
+                }
+
+            }
+            catch
+            {
+                return "";
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
         public string SEARCHFORM_VERSION_ID(string FORM_NAME)
         {
             SqlDataAdapter adapter1 = new SqlDataAdapter();
