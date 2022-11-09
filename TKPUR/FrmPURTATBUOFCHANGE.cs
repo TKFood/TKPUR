@@ -1437,7 +1437,7 @@ namespace TKPUR
                 sbSql.AppendFormat(@"  
                                    SELECT 
                                     [VERSIONS],[TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB006],[TB007],[TB009],[TB010],[TB011],[TB012],[USER_GUID],[NAME],[GROUP_ID],[TITLE_ID],[MA002]
-                                    ,(SELECT TD001+' '+TD002+' '+TD003 FROM [TK].dbo.PURTD WHERE  TD026=[TA001] AND TD027=[TA002] AND TD028=[TB003] FOR XML PATH('')) AS TD001002003
+                                    ,(SELECT TD001+' '+TD002+' '+TD003+CHAR(10) FROM [TK].dbo.PURTD WHERE  TD026=[TA001] AND TD027=[TA002] AND TD028=[TB003] FOR XML PATH('')) AS TD001002003
 
                                     FROM [TKPUR].[dbo].[PURTATBCHAGE]
                                     WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}'
