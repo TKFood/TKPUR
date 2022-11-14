@@ -168,15 +168,17 @@ namespace TKPUR
 
 
                 sbSql.AppendFormat(@"  
-                                    SELECT TE001 AS '採購變更單別',TE002 AS '採購變更單號',TE003 AS '版次',TE003 AS '變更日期',TE005 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
+                                    SELECT TE001 AS '採購變更單別',TE002 AS '採購變更單號',TE003 AS '版次',TC003 AS '單據日期',TE004 AS '變更日期',TE005 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
                                     ,(      SELECT TF005+TF006+TF007+', '
                                         FROM   [TK].dbo.PURTF WHERE TF001=TE001 AND TF002=TE002 AND TF003=TE003
                                         FOR XML PATH(''), TYPE  
                                         ).value('.','nvarchar(max)')  As '明細' 
-                                    FROM [TK].dbo.PURTE,[TK].dbo.PURMA
+                                    FROM[TK].dbo.PURMA, [TK].dbo.PURTE
+									LEFT JOIN [TK].dbo.PURTC ON TC001=TE001 AND TC002=TE002
+
                                     WHERE 1=1
                                     AND TE005=MA001
-                                    AND TE004>='{0}' AND TE004<='{1}'                                  
+                                    AND TC003>='{0}' AND TC003<='{1}'                                  
                                    
                                     ORDER BY TE001,TE002,TE003
 
@@ -218,6 +220,111 @@ namespace TKPUR
 
             }
         }
+        public void PREPRINTS(string statusReports)
+        {
+            string PRINTSPURTCPURTD = null;
+            foreach (DataGridViewRow dr in dataGridView1.Rows)
+            {
+                if (Convert.ToBoolean(dr.Cells[0].Value) == true)
+                {
+                    //MessageBox.Show(dr.Cells["採購單別"].Value.ToString()+ dr.Cells["採購單號"].Value.ToString());
+
+                    PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'" + dr.Cells["採購變更單別"].Value.ToString().Trim() + dr.Cells["採購變更單號"].Value.ToString().Trim() + dr.Cells["版次"].Value.ToString().Trim() + "',";
+                }
+            }
+
+            PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'A'";
+
+            SETFASTREPORT(statusReports, PRINTSPURTCPURTD);
+            //MessageBox.Show(PRINTSPURTCPURTD);
+        }
+
+        public void SETFASTREPORT(string statusReports, string PRINTSPURTCPURTD)
+        {
+            StringBuilder SQL = new StringBuilder();
+            report1 = new Report();
+
+            if (statusReports.Equals("憑証回傳202209"))
+            {
+                report1.Load(@"REPORT\採購單變更憑証.frx");
+            }
+            else if (statusReports.Equals("有簽名"))
+            {
+                report1.Load(@"REPORT\採購單變更憑証-核準NAME.frx");
+            }
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+
+            SQL = SETFASETSQL(statusReports, PRINTSPURTCPURTD);
+
+            Table.SelectCommand = SQL.ToString(); ;
+
+            report1.Preview = previewControl1;
+            report1.Show();
+
+        }
+
+        public StringBuilder SETFASETSQL(string statusReports, string PRINTSPURTCPURTD)
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+            StringBuilder STRQUERY = new StringBuilder();
+
+            if (statusReports.Equals("有簽名"))
+            {
+                STRQUERY.AppendFormat(@"  
+                                        AND TE017 IN ('Y')
+                                        ");
+            }
+            else
+            {
+                STRQUERY.AppendFormat(@"
+                                        
+                                        ");
+            }
+
+            FASTSQL.AppendFormat(@"      
+                                SELECT *
+                                ,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME
+                                ,CASE WHEN TE118='1' THEN '應稅內含' WHEN TE118='2' THEN '應稅外加' WHEN TE118='3' THEN '零稅率' WHEN TE118='4' THEN '免稅 'WHEN TE118='9' THEN '不計稅' END AS TE118NAME
+                                ,PURTE.UDF02 AS 'UOF單號'
+                                ,CONVERT(DECIMAL(16,3),TE008) AS NEWTE008
+                                ,CONVERT(DECIMAL(16,3),TE108) AS NEWTE108
+                                ,CONVERT(DECIMAL(16,3),TF011) AS NEWTF011
+                                ,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012
+                                ,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111
+                                ,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112
+
+                                FROM [TK].dbo.PURTF,[TK].dbo.PURTE
+                                LEFT JOIN [TK].dbo.CMSMQ ON MQ001=TE001
+                                LEFT JOIN [TK].dbo.PURMA ON MA001=TE005
+                                LEFT JOIN [TK].dbo.PURTC ON TC001=TE001 AND TC002=TE002
+                                LEFT JOIN [TK].dbo.CMSMB ON TC010=MB001
+                                WHERE TE001=TF001 AND TE002=TF002
+                                AND TE001+TE002+TE003 IN ({0})
+                                {1}
+
+                                ORDER BY TE001,TE002,TE003,TF004
+                                ", PRINTSPURTCPURTD, STRQUERY.ToString());
+
+            return FASTSQL;
+        }
+
 
         #endregion
 
@@ -226,9 +333,13 @@ namespace TKPUR
         {
             Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
         }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            PREPRINTS(comboBox1.Text.ToString());
+        }
 
         #endregion
 
-     
+
     }
 }
