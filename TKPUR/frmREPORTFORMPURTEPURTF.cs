@@ -335,7 +335,7 @@ namespace TKPUR
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            PREPRINTS(comboBox1.Text.ToString());
+            PREPRINTS(comboBox1.Text.ToString()); 
         }
 
         #endregion
