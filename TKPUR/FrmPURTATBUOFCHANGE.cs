@@ -1805,7 +1805,114 @@ namespace TKPUR
             }
         }
 
+        public void SEARCHPURTATBCHAGEDETAILS(string TA001, string TA002)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
 
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"
+                                    SELECT [VERSIONS] AS '變更版號'
+                                    ,[TA001] AS '請購單'
+                                    ,[TA002] AS '請購單號'
+                                    ,[TA006] AS '單頭備註'
+                                    ,[TB003] AS '請購序號'
+                                    ,[TB004] AS '品號'
+                                    ,[TB005] AS '品名'
+                                    ,[TB009] AS '請購教量'
+                                    ,[TB011] AS '需求日'
+                                    ,[TB012] AS '單身備註'
+                                    FROM [TKPUR].[dbo].[PURTATBCHAGE]
+                                    WHERE [TA001] LIKE '%{0}%' AND [TA002] LIKE '%{1}%'
+                                    ORDER BY [VERSIONS] DESC,[TA001] ,[TA002],[TB003]
+                                    ", TA001, TA002);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count == 0)
+                {
+                    dataGridView5.DataSource = null;
+                }
+                else
+                {
+                    if (ds.Tables["ds"].Rows.Count >= 1)
+                    {
+                        dataGridView5.DataSource = ds.Tables["ds"];
+                        dataGridView5.AutoResizeColumns();
+
+                    }
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+        private void dataGridView5_SelectionChanged(object sender, EventArgs e)
+        {          
+
+            if (dataGridView5.CurrentRow != null)
+            {
+                int rowindex = dataGridView5.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView5.Rows[rowindex];
+                    textBox27.Text = row.Cells["請購單"].Value.ToString().Trim();
+                    textBox28.Text = row.Cells["請購單號"].Value.ToString().Trim();
+                    textBox29.Text = row.Cells["變更版號"].Value.ToString().Trim();
+                    
+                }
+                else
+                {
+                    textBox27.Text = "";
+                    textBox28.Text = "";
+                    textBox29.Text = "";
+                   
+
+                }
+
+                SearchPURTB(textBox7.Text, textBox8.Text);
+
+                string MAXVERSIONS = GETMAXVERSIONSPURTATBCHAGE(textBox7.Text, textBox8.Text);
+                textBox9.Text = (Convert.ToInt32(MAXVERSIONS) + 1).ToString();
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -1876,8 +1983,13 @@ namespace TKPUR
                 //do something else
             }
         }
+        private void button9_Click(object sender, EventArgs e)
+        {
+            SEARCHPURTATBCHAGEDETAILS(textBox5.Text, textBox6.Text);
+        }
+
         #endregion
 
-
+       
     }
 }
