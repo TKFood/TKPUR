@@ -1917,11 +1917,12 @@ namespace TKPUR
 
         public void NEWPURTEPURTF(string TA001,string TA002,string VERSIONS)
         {
-            DataTable DTPURTCPURTD = SEARCHPURTCPURTD(TA001, TA002, VERSIONS);
-
-            if(DTPURTCPURTD.Rows.Count>0)
+            //DataTable DTPURTCPURTD = SEARCHPURTCPURTD(TA001, TA002, VERSIONS);
+            DataTable DTPURTCPURTD = SEARCHPURTCPURTD("A311", "20221027008", "1");
+            DataTable DTOURTE = new DataTable();
+            if (DTPURTCPURTD.Rows.Count>0)
             {
-
+                DTOURTE = FINDPURTE(DTPURTCPURTD);
             }
 
         }
@@ -1998,6 +1999,111 @@ namespace TKPUR
 
            
 
+        }
+
+        public DataTable FINDPURTE(DataTable DTTEMP)
+        {
+            DataTable DT = new DataTable();
+            DT.Clear();
+            DT.Columns.Add("TE001");
+            DT.Columns.Add("TE002");
+            DT.Columns.Add("TE003");
+
+            
+
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+
+            string TE001 = null;
+            string TE002 = null;
+
+            if (DTTEMP.Rows.Count>0)
+            {
+                foreach(DataRow DR in DTTEMP.Rows)
+                {
+
+                    TE001 = DR["TD001"].ToString();
+                    TE002 = DR["TD002"].ToString();
+
+                    try
+                    {
+                        //20210902密
+                        Class1 TKID = new Class1();//用new 建立類別實體
+                        SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                        //資料庫使用者密碼解密
+                        sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                        sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                        String connectionString;
+                        sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                        sbSql.Clear();
+                        sbSqlQuery.Clear();
+
+
+                        sbSql.AppendFormat(@"  
+                                            SELECT TOP 1 TE001,TE002,TE003
+                                            FROM [TK].dbo.PURTE
+                                            WHERE TE001='{0}' AND TE002='{1}'
+                                            ORDER BY TE001 DESC,TE002 DESC,TE003 DESC
+
+                                             ", TE001, TE002);
+
+                        adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                        sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                        sqlConn.Open();
+                        ds.Clear();
+                        adapter.Fill(ds, "TEMPds1");
+                        sqlConn.Close();
+
+
+                        if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                        {
+                            int serno = Convert.ToInt16(ds.Tables["TEMPds1"].Rows[0]["TE003"].ToString());
+                            serno = serno + 1;
+                            string temp = serno.ToString();
+                            temp = temp.PadLeft(4, '0');
+
+                            DataRow NEWDR = DT.NewRow();
+                            NEWDR["TE001"] = TE001;
+                            NEWDR["TE002"] = TE002;
+                            NEWDR["TE003"] = temp;
+                            DT.Rows.Add(NEWDR);
+
+                        }
+                        else
+                        {
+                            DataRow NEWDR = DT.NewRow();
+                            NEWDR["TE001"] = TE001;
+                            NEWDR["TE002"] = TE002;
+                            NEWDR["TE003"] = "0001";
+                            DT.Rows.Add(NEWDR);
+
+                        }
+
+
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                    finally
+                    {
+
+                    }
+                }
+
+                return DT;
+            }
+            else
+            {
+                return null;
+            }
         }
 
 
