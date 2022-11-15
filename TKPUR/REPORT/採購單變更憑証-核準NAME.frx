@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="11/14/2022 16:32:35" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="11/15/2022 09:26:53" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEBYuu62fpFQSW64CmVu2qU">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFJ9JorhDxVa/jh3NvsE+B8">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME&#13;&#10;,CASE WHEN TE118='1' THEN '應稅內含' WHEN TE118='2' THEN '應稅外加' WHEN TE118='3' THEN '零稅率' WHEN TE118='4' THEN '免稅 'WHEN TE118='9' THEN '不計稅' END AS TE118NAME&#13;&#10;,PURTE.UDF02 AS 'UOF單號'&#13;&#10;,CONVERT(DECIMAL(16,3),TE008) AS NEWTE008&#13;&#10;,CONVERT(DECIMAL(16,3),TE108) AS NEWTE108&#13;&#10;,CONVERT(DECIMAL(16,3),TF011) AS NEWTF011&#13;&#10;,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012&#13;&#10;,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111&#13;&#10;,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTF,[TK].dbo.PURTE&#13;&#10;LEFT JOIN [TK].dbo.CMSMQ ON MQ001=TE001&#13;&#10;LEFT JOIN [TK].dbo.PURMA ON MA001=TE005&#13;&#10;LEFT JOIN [TK].dbo.PURTC ON TC001=TE001 AND TC002=TE002&#13;&#10;LEFT JOIN [TK].dbo.CMSMB ON TC010=MB001&#13;&#10;WHERE TE001=TF001 AND TE002=TF002&#13;&#10;AND TE002='20221028014'&#13;&#10;&#13;&#10;ORDER BY TE001,TE002,TE003,TF004">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
@@ -729,12 +729,12 @@
       <TextObject Name="Text90" Left="198.45" Top="122.85" Width="189" Height="18.9" Text="變更原因:[Table.TE006]" VertAlign="Center"/>
       <TextObject Name="Text91" Left="198.45" Top="141.75" Width="189" Height="18.9" Text="交易幣別: [Table.TE107]=&gt;[Table.TE007]" VertAlign="Center"/>
       <TextObject Name="Text92" Left="198.45" Top="160.65" Width="189" Height="18.9" Text="匯率:[Table.NEWTE108]=&gt;[Table.NEWTE008]" VertAlign="Center"/>
-      <TextObject Name="Text93" Left="198.45" Top="179.55" Width="500.85" Height="18.9" Text="付款條件: [Table.TE123] [Table.TE110]=&gt;[Table.TE023] [Table.TE010]" VertAlign="Center"/>
-      <TextObject Name="Text94" Left="463.05" Top="85.05" Width="189" Height="18.9" Text="價格條件[Table.TE109]=&gt;[Table.TE009]" VertAlign="Center"/>
-      <TextObject Name="Text95" Left="463.05" Top="103.95" Width="189" Height="18.9" Text="課 稅 別: [Table.TE118NAME]=&gt;[Table.TE018NAME]" VertAlign="Center"/>
-      <TextObject Name="Text96" Left="463.05" Top="122.85" Width="189" Height="18.9" Text="運輸方式:[Table.TE115]=&gt;[Table.TE015]" VertAlign="Center"/>
-      <TextObject Name="Text97" Left="463.05" Top="141.75" Width="189" Height="18.9" Text="營業稅率:[Table.TE121]=&gt;[Table.TE022]" VertAlign="Center"/>
-      <TextObject Name="Text98" Left="463.05" Top="160.65" Width="189" Height="18.9" Text="確 認 碼:[Table.TE017]" VertAlign="Center"/>
+      <TextObject Name="Text93" Left="198.45" Top="183.55" Width="500.85" Height="18.9" Text="付款條件: [Table.TE123] [Table.TE110]=&gt;[Table.TE023] [Table.TE010]" VertAlign="Center"/>
+      <TextObject Name="Text94" Left="463.05" Top="82.05" Width="189" Height="18.9" Text="價格條件[Table.TE109]=&gt;[Table.TE009]" VertAlign="Center"/>
+      <TextObject Name="Text95" Left="463.05" Top="100.95" Width="189" Height="18.9" Text="課 稅 別: [Table.TE118NAME]=&gt;[Table.TE018NAME]" VertAlign="Center"/>
+      <TextObject Name="Text96" Left="463.05" Top="119.85" Width="189" Height="18.9" Text="運輸方式:[Table.TE115]=&gt;[Table.TE015]" VertAlign="Center"/>
+      <TextObject Name="Text97" Left="463.05" Top="138.75" Width="189" Height="18.9" Text="營業稅率:[Table.TE121]=&gt;[Table.TE022]" VertAlign="Center"/>
+      <TextObject Name="Text98" Left="463.05" Top="156.65" Width="189" Height="18.9" Text="確 認 碼:[Table.TE017]" VertAlign="Center"/>
       <TextObject Name="Text99" Top="292.95" Width="66.15" Height="18.9" Text="採購序號&#13;&#10;" VertAlign="Center"/>
       <TextObject Name="Text50" Left="387.45" Top="274.05" Width="85.05" Height="18.9" Text="採購數量" VertAlign="Center"/>
       <TextObject Name="Text51" Left="387.45" Top="292.95" Width="85.05" Height="18.9" Text="已交數量" VertAlign="Center"/>
@@ -751,6 +751,7 @@
       <TextObject Name="Text133" Left="387.45" Top="274.05" Width="103.95" Height="66.15" Border.Lines="All"/>
       <TextObject Name="Text134" Left="491.4" Top="274.05" Width="94.5" Height="66.15" Border.Lines="All"/>
       <TextObject Name="Text135" Left="585.9" Top="274.05" Width="132.3" Height="66.15" Border.Lines="All"/>
+      <TextObject Name="Text148" Left="463.05" Top="170.1" Width="245.7" Height="18.9" Text="採購變更簽核單:[Table.UOF單號]" VertAlign="Center"/>
       <DataBand Name="Data1" Top="344.69" Width="718.2" Height="114.2" CanGrow="true" Guides="28.35,28.35,37.8,37.8,28.35,28.35,28.35,0,28.35" DataSource="Table">
         <TextObject Name="Text9" Left="2.35" Top="3.45" Width="66.15" Height="18.9" Text="[Table.TF004]"/>
         <TextObject Name="Text10" Left="1" Top="59.15" Width="66.15" Height="18.9" Text="[Table.TF104]"/>
