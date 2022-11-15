@@ -1913,6 +1913,103 @@ namespace TKPUR
                 textBox9.Text = (Convert.ToInt32(MAXVERSIONS) + 1).ToString();
             }
         }
+
+
+        public void NEWPURTEPURTF(string TA001,string TA002,string VERSIONS)
+        {
+            DataTable DTPURTCPURTD = SEARCHPURTCPURTD(TA001, TA002, VERSIONS);
+
+            if(DTPURTCPURTD.Rows.Count>0)
+            {
+
+            }
+
+        }
+
+        public DataTable SEARCHPURTCPURTD(string TA001, string TA002, string VERSIONS)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                  
+                                    SELECT TD001,TD002
+                                    FROM [TK].dbo.PURTD
+                                    WHERE TD026+TD027+TD028 IN 
+                                    (
+                                    SELECT TA001+TA002+TB003
+                                    FROM [TKPUR].[dbo].[PURTATBCHAGE]
+                                    WHERE  TA001='{0}' AND TA002='{1}' AND VERSIONS='{2}'
+                                    )
+                                    GROUP BY  TD001,TD002
+
+                                    ", TA001, TA002, VERSIONS);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+
+                    return ds.Tables["TEMPds1"];
+                }
+                else
+                {
+                    return null;
+
+                }
+
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
+            }
+
+           
+
+        }
+
+
+        public void ADDTOPURTEPURTF(DataTable NEWPURTEPURTF)
+        {
+            if(NEWPURTEPURTF.Rows.Count>0)
+            {
+
+            }
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -1987,9 +2084,13 @@ namespace TKPUR
         {
             SEARCHPURTATBCHAGEDETAILS(textBox5.Text, textBox6.Text);
         }
+        private void button10_Click(object sender, EventArgs e)
+        {
+            NEWPURTEPURTF(textBox27.Text, textBox28.Text, textBox29.Text);
+        }
 
         #endregion
 
-       
+
     }
 }
