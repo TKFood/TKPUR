@@ -1970,32 +1970,129 @@ namespace TKPUR
 
                 }
 
-                SearchPURTB(textBox7.Text, textBox8.Text);
+                SEARCHPURTE(textBox27.Text, textBox28.Text, textBox29.Text);
 
-                string MAXVERSIONS = GETMAXVERSIONSPURTATBCHAGE(textBox7.Text, textBox8.Text);
-                textBox9.Text = (Convert.ToInt32(MAXVERSIONS) + 1).ToString();
+               
             }
         }
 
 
         public void NEWPURTEPURTF(string TA001,string TA002,string VERSIONS)
         {
-            //找出請購變更單有幾張採購單，要1對多
-            //DataTable DTPURTCPURTD = SEARCHPURTCPURTD(TA001, TA002, VERSIONS);
-            DataTable DTPURTCPURTD = SEARCHPURTCPURTD("A311", "20221027008", "1");
-            DataTable DTOURTE = new DataTable();
 
-            //找出採購單跟最大的版次
-            if (DTPURTCPURTD.Rows.Count>0)
+            //A311 20221101011 1
+            //檢查請購變更單的採購單，是否有採購變更單未核準
+            DataTable DTCHECKPURTEPURTF = CHECKPURTEPURTF(TA001, TA002, VERSIONS);
+
+            if(DTCHECKPURTEPURTF== null)
             {
-                DTOURTE = FINDPURTE(DTPURTCPURTD);
+                //找出請購變更單有幾張採購單，要1對多
+                DataTable DTPURTCPURTD = SEARCHPURTCPURTD(TA001, TA002, VERSIONS);
+                //DataTable DTPURTCPURTD = SEARCHPURTCPURTD("A312", "20221116001", "2");
+                DataTable DTOURTE = new DataTable();
+
+                //找出採購單跟最大的版次
+                if (DTPURTCPURTD.Rows.Count > 0)
+                {
+                    DTOURTE = FINDPURTE(DTPURTCPURTD);
+                }
+
+                //新增採購變更單
+                if (DTOURTE.Rows.Count > 0)
+                {
+                    ADDTOPURTEPURTF(DTOURTE);
+                }
+            }
+            else
+            {
+                StringBuilder MESS = new StringBuilder();
+                foreach(DataRow DR in DTCHECKPURTEPURTF.Rows)
+                {
+                    MESS.AppendFormat(@" 採購變更單:"+ DR["TE001"].ToString()+" "+ DR["TE002"].ToString() + ""+"變更版次:" + DR["TE003"].ToString()+" 沒有核準 ");
+                }
+
+                MessageBox.Show(MESS.ToString());
+            }
+           
+
+        }
+
+        public DataTable CHECKPURTEPURTF(string TA001, string TA002, string VERSIONS)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                    SELECT TE001,TE002,TE003
+                                    FROM [TK].dbo.PURTE
+                                    WHERE TE017 IN ('N')
+                                    AND TE001+TE002 IN 
+                                    (
+                                    SELECT TD001+TD002
+                                    FROM [TK].dbo.PURTD
+                                    WHERE TD026+TD027+TD028 IN 
+                                    (
+                                    SELECT TA001+TA002+TB003
+                                    FROM [TKPUR].[dbo].[PURTATBCHAGE]
+                                    WHERE  TA001='{0}' AND TA002='{1}' AND VERSIONS='{2}'
+                                    )
+                                    GROUP BY  TD001,TD002
+                                    )
+
+                                    ", TA001, TA002, VERSIONS);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+
+                    return ds.Tables["TEMPds1"];
+                }
+                else
+                {
+                    return null;
+
+                }
+
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
             }
 
-            //新增採購變更單
-            if (DTOURTE.Rows.Count > 0)
-            {
-                ADDTOPURTEPURTF(DTOURTE);
-            }
+
 
         }
 
@@ -2502,6 +2599,7 @@ namespace TKPUR
                                             FROM [TK].dbo.PURTD,[TKPUR].[dbo].[PURTATBCHAGE]
                                             WHERE 1=1
                                             AND PURTD.TD026=[PURTATBCHAGE].TA001 AND PURTD.TD027=[PURTATBCHAGE].TA002 AND PURTD.TD028=[PURTATBCHAGE].TB003
+                                            AND TD001='{4}' AND TD002='{5}'
                                             AND [PURTATBCHAGE].TA001='{0}' AND [PURTATBCHAGE].TA002='{1}' AND [PURTATBCHAGE].VERSIONS='{2}'
 
 
@@ -2628,7 +2726,7 @@ namespace TKPUR
                                             ,[UDF09]
                                             ,[UDF10]
                                             )
-                                            SELECT TOP 1 
+                                            SELECT 
                                             PURTC.[COMPANY]
                                             ,PURTC.[CREATOR]
                                             ,PURTC.[USR_GROUP]
@@ -2751,7 +2849,7 @@ namespace TKPUR
                                             FROM  [TK].dbo.PURTC
                                             WHERE 1=1
                                             AND TC001='{4}' AND TC002='{5}'
-                                            ",DR["TA001"].ToString(), DR["TA002"].ToString(), DR["VERSIONS"].ToString(), DR["TE003"].ToString(), DR["TE001"].ToString(), DR["TE002"].ToString());
+                                            ", DR["TA001"].ToString(), DR["TA002"].ToString(), DR["VERSIONS"].ToString(), DR["TE003"].ToString(), DR["TE001"].ToString(), DR["TE002"].ToString());
                     }
 
                     sbSql.AppendFormat(@"  
@@ -2789,6 +2887,87 @@ namespace TKPUR
             }
         }
 
+        public void SEARCHPURTE(string TA001, string TA002,string VERSIONS)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"
+                                 
+                                    SELECT TE001 AS '採購變更單別',TE002 AS '採購變更單號',TE003 AS '版次'
+                                    FROM [TK].dbo.PURTE
+                                    WHERE TE001+TE002 IN 
+                                    (
+                                    SELECT TD001+TD002
+                                    FROM [TK].dbo.PURTD
+                                    WHERE TD026+TD027+TD028 IN 
+                                    (
+                                    SELECT TA001+TA002+TB003
+                                    FROM [TKPUR].[dbo].[PURTATBCHAGE]
+                                    WHERE  TA001='{0}' AND TA002='{1}' AND VERSIONS='{2}'
+                                    )
+                                    GROUP BY  TD001,TD002
+                                    )
+
+                                    ", TA001, TA002, VERSIONS);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count == 0)
+                {
+                    dataGridView6.DataSource = null;
+                }
+                else
+                {
+                    if (ds.Tables["ds"].Rows.Count >= 1)
+                    {
+                        dataGridView6.DataSource = ds.Tables["ds"];
+                        dataGridView6.AutoResizeColumns();
+
+                    }
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
 
         #endregion
 
