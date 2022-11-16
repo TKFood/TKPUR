@@ -1609,6 +1609,69 @@ namespace TKPUR
             }
         }
 
+        public string SERACHlDOC_NBR_CHECK(string EXTERNAL_FORM_NBR)
+        {
+            SqlDataAdapter adapter1 = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();
+            DataSet ds1 = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbUOF"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    SELECT TOP 1 EXTERNAL_FORM_NBR,[TB_WKF_EXTERNAL_TASK].DOC_NBR,TB_WKF_TASK.TASK_RESULT
+                                    FROM [UOF].[dbo].[TB_WKF_EXTERNAL_TASK],[UOF].[dbo].TB_WKF_TASK 
+                                    WHERE [TB_WKF_EXTERNAL_TASK].DOC_NBR=TB_WKF_TASK.DOC_NBR
+                                    AND ISNULL(TB_WKF_TASK.TASK_RESULT,'-1') NOT IN ('0','1','2')
+                                    AND EXTERNAL_FORM_NBR LIKE '%{0}%'
+                                    ORDER BY DOC_NBR DESC
+                                    ", EXTERNAL_FORM_NBR);
+
+
+                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter1.Fill(ds1, "ds1");
+                sqlConn.Close();
+
+                if (ds1.Tables["ds1"].Rows.Count >= 1)
+                {
+                    return "Y";
+
+                }
+                else
+                {
+                    return "N";
+                }
+
+            }
+            catch
+            {
+                return "N";
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         public void DELPURTATBCHAGE(string VERSIONS, string TA001, string TA002, string TB003)
         {
             try
@@ -2171,7 +2234,31 @@ namespace TKPUR
 
         private void button8_Click(object sender, EventArgs e)
         {
-            ADDTB_WKF_EXTERNAL_TASK(textBox11.Text.Trim(), textBox12.Text.Trim(),textBox10.Text.Trim());
+            string ISUOFSTATUS = "N";
+            string DOC_NBR = "";
+
+            ISUOFSTATUS = SERACHlDOC_NBR_CHECK(textBox11.Text + textBox12.Text + textBox10.Text);
+            textBox26.Text = SERACHlDOC_NBR(textBox11.Text + textBox12.Text + textBox10.Text);
+            DOC_NBR = SERACHlDOC_NBR(textBox11.Text + textBox12.Text + textBox10.Text);
+            
+
+            //沒有產生過UOF表單
+            if (string.IsNullOrEmpty(DOC_NBR))
+            {
+                ADDTB_WKF_EXTERNAL_TASK(textBox11.Text.Trim(), textBox12.Text.Trim(), textBox10.Text.Trim());
+            }
+            //UOF表單是否沒有在簽核中
+            else if(!string.IsNullOrEmpty(DOC_NBR) && ISUOFSTATUS.Equals("N"))
+            {
+                ADDTB_WKF_EXTERNAL_TASK(textBox11.Text.Trim(), textBox12.Text.Trim(), textBox10.Text.Trim());
+            }
+            else
+            {
+                MessageBox.Show(textBox11.Text + textBox12.Text + textBox10.Text+"已發出請購變更單"+ DOC_NBR + " ，但未完成簽核。");
+
+            }
+
+            
         }
         private void button3_Click(object sender, EventArgs e)
         {
