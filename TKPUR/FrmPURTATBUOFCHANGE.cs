@@ -3070,6 +3070,7 @@ namespace TKPUR
         private void button10_Click(object sender, EventArgs e)
         {
             NEWPURTEPURTF(textBox27.Text, textBox28.Text, textBox29.Text);
+            SEARCHPURTE(textBox27.Text, textBox28.Text, textBox29.Text);
         }
 
         #endregion
