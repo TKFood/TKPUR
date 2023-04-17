@@ -1043,6 +1043,7 @@ namespace TKPUR
             string DEPNAME = DTUPFDEP.Rows[0]["DEPNAME"].ToString();
             string DEPNO= DTUPFDEP.Rows[0]["DEPNO"].ToString();
 
+            string CALLQC = comboBox1.Text.ToString();
             int rowscounts = 0;
 
             XmlDocument xmlDoc = new XmlDocument();
@@ -1081,6 +1082,20 @@ namespace TKPUR
             FieldItem.SetAttribute("fieldId", "ID");
             FieldItem.SetAttribute("fieldValue", "");
             FieldItem.SetAttribute("realValue", "");
+            FieldItem.SetAttribute("enableSearch", "True");
+            FieldItem.SetAttribute("fillerName", fillerName);
+            FieldItem.SetAttribute("fillerUserGuid", fillerUserGuid);
+            FieldItem.SetAttribute("fillerAccount", account);
+            FieldItem.SetAttribute("fillSiteId", "");
+            //加入至members節點底下
+            FormFieldValue.AppendChild(FieldItem);
+
+            //建立節點FieldItem
+            //CALLQC 
+            FieldItem = xmlDoc.CreateElement("FieldItem");
+            FieldItem.SetAttribute("fieldId", "CALLQC");
+            FieldItem.SetAttribute("fieldValue", CALLQC);
+            FieldItem.SetAttribute("realValue", CALLQC);
             FieldItem.SetAttribute("enableSearch", "True");
             FieldItem.SetAttribute("fillerName", fillerName);
             FieldItem.SetAttribute("fillerUserGuid", fillerUserGuid);
