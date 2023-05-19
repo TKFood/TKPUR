@@ -529,6 +529,7 @@ namespace TKPUR
                                     ,[TB003] AS '請購序號'
                                     ,[TB004] AS '品號'
                                     ,[TB005] AS '品名'
+                                    ,[TB007] AS '單位'
                                     ,[TB009] AS '請購教量'
                                     ,[TB011] AS '需求日'
                                     ,[TB012] AS '單身備註'
@@ -588,6 +589,7 @@ namespace TKPUR
                     textBox17.Text = row.Cells["請購教量"].Value.ToString().Trim();
                     textBox18.Text = row.Cells["需求日"].Value.ToString().Trim();
                     textBox19.Text = row.Cells["單身備註"].Value.ToString().Trim();
+                    textBox30.Text = row.Cells["單位"].Value.ToString().Trim();
 
                 }
                 else
@@ -599,6 +601,7 @@ namespace TKPUR
                     textBox17.Text = "";
                     textBox18.Text = "";
                     textBox19.Text = "";
+                    textBox30.Text = "";
 
                 }
                
@@ -741,7 +744,7 @@ namespace TKPUR
         }
 
 
-        public void UPDATEPURTATBCHAGE(string TA001, string TA002, string VERSIONS, string TB003, string TB004, string TB005, string TB009, string TB011, string TB012)
+        public void UPDATEPURTATBCHAGE(string TA001, string TA002, string VERSIONS, string TB003, string TB004, string TB005, string TB009, string TB011, string TB012,string TB007)
         {
             DataSet dsINVMB = new DataSet();
             
@@ -749,7 +752,11 @@ namespace TKPUR
 
 
             string TB006 = dsINVMB.Tables[0].Rows[0]["MB003"].ToString();
-            string TB007 = dsINVMB.Tables[0].Rows[0]["MB004"].ToString();
+            if(string.IsNullOrEmpty(TB007))
+            {
+                TB007 = dsINVMB.Tables[0].Rows[0]["MB004"].ToString();
+            }
+            
             string TB010 = dsINVMB.Tables[0].Rows[0]["MB032"].ToString();
             string MA002 = dsINVMB.Tables[0].Rows[0]["MA002"].ToString();
 
@@ -776,10 +783,10 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  
                                     UPDATE  [TKPUR].[dbo].[PURTATBCHAGE]
-                                    SET [TB004]='{4}',[TB005]='{5}',[TB006]='{6}',[TB009]='{7}',[TB011]='{8}',[TB012]='{9}'
+                                    SET [TB004]='{4}',[TB005]='{5}',[TB006]='{6}',[TB009]='{7}',[TB011]='{8}',[TB012]='{9}',[TB007]='{10}'
                                     WHERE  [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}' AND TB003='{3}'
                                    
-                                    ", TA001, TA002, VERSIONS, TB003,  TB004,  TB005, TB006,  TB009,  TB011,  TB012);
+                                    ", TA001, TA002, VERSIONS, TB003,  TB004,  TB005, TB006,  TB009,  TB011,  TB012,TB007);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -809,7 +816,7 @@ namespace TKPUR
             }
         }
 
-        public void ADDPURTATBCHAGEDETAIL(string VERSIONS, string TA001, string TA002, string TA006, string TB003, string TB004, string TB005, string TB009, string TB011, string TB012)
+        public void ADDPURTATBCHAGEDETAIL(string VERSIONS, string TA001, string TA002, string TA006, string TB003, string TB004, string TB005, string TB009, string TB011, string TB012,string TB007)
         {
             DataSet dsUSER = new DataSet();
             DataSet dsINVMB = new DataSet();
@@ -825,7 +832,11 @@ namespace TKPUR
             string TITLE_ID = dsUSER.Tables[0].Rows[0]["TITLE_ID"].ToString();
 
             string TB006 = dsINVMB.Tables[0].Rows[0]["MB003"].ToString();
-            string TB007 = dsINVMB.Tables[0].Rows[0]["MB004"].ToString();
+            if (string.IsNullOrEmpty(TB007))
+            {
+                TB007 = dsINVMB.Tables[0].Rows[0]["MB004"].ToString();
+            }
+            
             string TB010 = dsINVMB.Tables[0].Rows[0]["MB032"].ToString();
             string MA002 = dsINVMB.Tables[0].Rows[0]["MA002"].ToString();
 
@@ -3020,7 +3031,7 @@ namespace TKPUR
 
         private void button6_Click(object sender, EventArgs e)
         {
-            UPDATEPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text, textBox14.Text, textBox15.Text, textBox16.Text, textBox17.Text, textBox18.Text, textBox19.Text);
+            UPDATEPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text, textBox14.Text, textBox15.Text, textBox16.Text, textBox17.Text, textBox18.Text, textBox19.Text,textBox30.Text);
 
             SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
 
@@ -3029,7 +3040,7 @@ namespace TKPUR
 
         private void button7_Click(object sender, EventArgs e)
         {
-            ADDPURTATBCHAGEDETAIL(textBox10.Text, textBox11.Text, textBox12.Text, textBox13.Text, textBox20.Text, textBox21.Text, textBox22.Text, textBox23.Text, textBox24.Text, textBox25.Text);
+            ADDPURTATBCHAGEDETAIL(textBox10.Text, textBox11.Text, textBox12.Text, textBox13.Text, textBox20.Text, textBox21.Text, textBox22.Text, textBox23.Text, textBox24.Text, textBox25.Text, textBox31.Text);
                                      
             SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
 
