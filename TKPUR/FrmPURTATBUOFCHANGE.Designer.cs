@@ -94,7 +94,6 @@
             this.label18 = new System.Windows.Forms.Label();
             this.textBox18 = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
-            this.textBox30 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -870,8 +869,7 @@
             this.tableLayoutPanel6.Controls.Add(this.label18, 2, 2);
             this.tableLayoutPanel6.Controls.Add(this.textBox18, 3, 2);
             this.tableLayoutPanel6.Controls.Add(this.label31, 4, 2);
-            this.tableLayoutPanel6.Controls.Add(this.textBox30, 5, 2);
-            this.tableLayoutPanel6.Controls.Add(this.comboBox2, 4, 0);
+            this.tableLayoutPanel6.Controls.Add(this.comboBox2, 5, 2);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -1029,14 +1027,6 @@
             this.label31.Size = new System.Drawing.Size(114, 16);
             this.label31.TabIndex = 21;
             this.label31.Text = "單位";
-            // 
-            // textBox30
-            // 
-            this.textBox30.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox30.Location = new System.Drawing.Point(603, 86);
-            this.textBox30.Name = "textBox30";
-            this.textBox30.Size = new System.Drawing.Size(114, 27);
-            this.textBox30.TabIndex = 22;
             // 
             // tableLayoutPanel7
             // 
@@ -1479,7 +1469,7 @@
             // 
             this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(483, 10);
+            this.comboBox2.Location = new System.Drawing.Point(603, 90);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(114, 24);
             this.comboBox2.TabIndex = 23;
@@ -1670,7 +1660,6 @@
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.TextBox textBox30;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.TextBox textBox31;
         private System.Windows.Forms.ComboBox comboBox2;

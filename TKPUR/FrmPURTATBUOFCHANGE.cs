@@ -79,18 +79,23 @@ namespace TKPUR
             sqlConn = new SqlConnection(sqlsb.ConnectionString);
 
             StringBuilder Sequel = new StringBuilder();
-            Sequel.AppendFormat(@"SELECT MD001,MD002 FROM [TK].dbo.INVMD WHERE MD001='{0}' ", MD001);
+            Sequel.AppendFormat(@"
+                                SELECT MB001,MB004 FROM [TK].dbo.INVMB WHERE MB001='{0}'
+                                UNION ALL
+                                SELECT MD001,MD002 FROM [TK].dbo.INVMD WHERE  MD001='{0}'"
+                                , MD001);
+
             SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
             DataTable dt = new DataTable();
             sqlConn.Open();
 
-            dt.Columns.Add("MD001", typeof(string));
-            dt.Columns.Add("MD002", typeof(string));
+            dt.Columns.Add("MB001", typeof(string));
+            dt.Columns.Add("MB004", typeof(string));
 
             da.Fill(dt);
             comboBox2.DataSource = dt.DefaultView;
-            comboBox2.ValueMember = "MD002";
-            comboBox2.DisplayMember = "MD002";
+            comboBox2.ValueMember = "MB004";
+            comboBox2.DisplayMember = "MB004";
             sqlConn.Close();
 
 
@@ -620,7 +625,10 @@ namespace TKPUR
                     textBox17.Text = row.Cells["請購教量"].Value.ToString().Trim();
                     textBox18.Text = row.Cells["需求日"].Value.ToString().Trim();
                     textBox19.Text = row.Cells["單身備註"].Value.ToString().Trim();
-                    textBox30.Text = row.Cells["單位"].Value.ToString().Trim();
+                    //textBox30.Text = row.Cells["單位"].Value.ToString().Trim();
+
+                    comboBox2load(row.Cells["品號"].Value.ToString().Trim());
+                    comboBox2.Text = row.Cells["單位"].Value.ToString().Trim();
 
                 }
                 else
@@ -632,7 +640,8 @@ namespace TKPUR
                     textBox17.Text = "";
                     textBox18.Text = "";
                     textBox19.Text = "";
-                    textBox30.Text = "";
+                    //textBox30.Text = "";
+                    comboBox2.Text = "";
 
                 }
                
@@ -3062,7 +3071,7 @@ namespace TKPUR
 
         private void button6_Click(object sender, EventArgs e)
         {
-            UPDATEPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text, textBox14.Text, textBox15.Text, textBox16.Text, textBox17.Text, textBox18.Text, textBox19.Text,textBox30.Text);
+            UPDATEPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text, textBox14.Text, textBox15.Text, textBox16.Text, textBox17.Text, textBox18.Text, textBox19.Text, comboBox2.Text);
 
             SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
 
