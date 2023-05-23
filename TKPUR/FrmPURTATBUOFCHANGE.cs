@@ -101,6 +101,42 @@ namespace TKPUR
 
         }
 
+        public void comboBox3load(string MD001)
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"
+                                SELECT MB001,MB004 FROM [TK].dbo.INVMB WHERE MB001='{0}'
+                                UNION ALL
+                                SELECT MD001,MD002 FROM [TK].dbo.INVMD WHERE  MD001='{0}'"
+                                , MD001);
+
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("MB001", typeof(string));
+            dt.Columns.Add("MB004", typeof(string));
+
+            da.Fill(dt);
+            comboBox3.DataSource = dt.DefaultView;
+            comboBox3.ValueMember = "MB004";
+            comboBox3.DisplayMember = "MB004";
+            sqlConn.Close();
+
+
+        }
+
         public void Search()
         {
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -657,6 +693,7 @@ namespace TKPUR
         private void textBox21_TextChanged(object sender, EventArgs e)
         {
             textBox22.Text = SEARCHINVMB(textBox21.Text.Trim());
+            comboBox3load(textBox21.Text.Trim());
         }
 
         public string SEARCHINVMB(string MB001)
@@ -3080,7 +3117,7 @@ namespace TKPUR
 
         private void button7_Click(object sender, EventArgs e)
         {
-            ADDPURTATBCHAGEDETAIL(textBox10.Text, textBox11.Text, textBox12.Text, textBox13.Text, textBox20.Text, textBox21.Text, textBox22.Text, textBox23.Text, textBox24.Text, textBox25.Text, textBox31.Text);
+            ADDPURTATBCHAGEDETAIL(textBox10.Text, textBox11.Text, textBox12.Text, textBox13.Text, textBox20.Text, textBox21.Text, textBox22.Text, textBox23.Text, textBox24.Text, textBox25.Text, comboBox3.Text);
                                      
             SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
 
