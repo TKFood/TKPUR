@@ -659,7 +659,8 @@ namespace TKPUR
                     textBox15.Text = row.Cells["品號"].Value.ToString().Trim();
                     textBox16.Text = row.Cells["品名"].Value.ToString().Trim();
                     textBox17.Text = row.Cells["請購教量"].Value.ToString().Trim();
-                    textBox18.Text = row.Cells["需求日"].Value.ToString().Trim();
+                    //textBox18.Text = row.Cells["需求日"].Value.ToString().Trim();
+                    dateTimePicker1.Value= Convert.ToDateTime(row.Cells["需求日"].Value.ToString().Trim().Substring(0,4)+'/'+ row.Cells["需求日"].Value.ToString().Trim().Substring(4, 2)+'/'+ row.Cells["需求日"].Value.ToString().Trim().Substring(6, 2));
                     textBox19.Text = row.Cells["單身備註"].Value.ToString().Trim();
                     //textBox30.Text = row.Cells["單位"].Value.ToString().Trim();
 
@@ -674,7 +675,7 @@ namespace TKPUR
                     textBox15.Text = "";
                     textBox16.Text = "";
                     textBox17.Text = "";
-                    textBox18.Text = "";
+                   
                     textBox19.Text = "";
                     //textBox30.Text = "";
                     comboBox2.Text = "";
@@ -1837,7 +1838,7 @@ namespace TKPUR
             textBox21.Text = null;
             textBox22.Text = null;
             textBox23.Text = null;
-            textBox24.Text = null;
+            
             textBox25.Text = null;
         }
 
@@ -3108,7 +3109,7 @@ namespace TKPUR
 
         private void button6_Click(object sender, EventArgs e)
         {
-            UPDATEPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text, textBox14.Text, textBox15.Text, textBox16.Text, textBox17.Text, textBox18.Text, textBox19.Text, comboBox2.Text);
+            UPDATEPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text, textBox14.Text, textBox15.Text, textBox16.Text, textBox17.Text, dateTimePicker1.Value.ToString("yyyyMMdd"), textBox19.Text, comboBox2.Text);
 
             SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
 
@@ -3117,7 +3118,7 @@ namespace TKPUR
 
         private void button7_Click(object sender, EventArgs e)
         {
-            ADDPURTATBCHAGEDETAIL(textBox10.Text, textBox11.Text, textBox12.Text, textBox13.Text, textBox20.Text, textBox21.Text, textBox22.Text, textBox23.Text, textBox24.Text, textBox25.Text, comboBox3.Text);
+            ADDPURTATBCHAGEDETAIL(textBox10.Text, textBox11.Text, textBox12.Text, textBox13.Text, textBox20.Text, textBox21.Text, textBox22.Text, textBox23.Text, dateTimePicker2.Value.ToString("yyyyMMdd"), textBox25.Text, comboBox3.Text);
                                      
             SEARCHPURTATBCHAGE(textBox11.Text, textBox12.Text, textBox10.Text);
 
