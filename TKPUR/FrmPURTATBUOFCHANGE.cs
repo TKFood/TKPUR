@@ -2087,8 +2087,8 @@ namespace TKPUR
             //A311 20221101011 1
             //檢查請購變更單的採購單，是否有採購變更單未核準
             DataTable DTCHECKPURTEPURTF = CHECKPURTEPURTF(TA001, TA002, VERSIONS);
-
-            if(DTCHECKPURTEPURTF== null)
+            DTCHECKPURTEPURTF = null;
+            if (DTCHECKPURTEPURTF== null)
             {
                 //找出請購變更單有幾張採購單，要1對多
                 DataTable DTPURTCPURTD = SEARCHPURTCPURTD(TA001, TA002, VERSIONS);
@@ -3017,25 +3017,31 @@ namespace TKPUR
 
                 sbSql.Clear();
                 sbSqlQuery.Clear();
-
                 sbSql.AppendFormat(@"
-                                 
-                                    SELECT TE001 AS '採購變更單別',TE002 AS '採購變更單號',TE003 AS '版次'
-                                    FROM [TK].dbo.PURTE
-                                    WHERE TE001+TE002 IN 
-                                    (
-                                    SELECT TD001+TD002
-                                    FROM [TK].dbo.PURTD
-                                    WHERE TD026+TD027+TD028 IN 
-                                    (
-                                    SELECT TA001+TA002+TB003
-                                    FROM [TKPUR].[dbo].[PURTATBCHAGE]
-                                    WHERE  TA001='{0}' AND TA002='{1}' AND VERSIONS='{2}'
-                                    )
-                                    GROUP BY  TD001,TD002
-                                    )
+                                    SELECT TF001  AS '採購變更單別',TF002  AS '採購變更單號',TF003 AS '版次'
+                                    FROM [TK].dbo.PURTF
+                                    WHERE UDF01 LIKE '{0}%'
+                                    GROUP BY TF001,TF002 ,TF003
+                                    ", VERSIONS+ TA001+ TA002);
 
-                                    ", TA001, TA002, VERSIONS);
+                //sbSql.AppendFormat(@"
+
+                //                    SELECT TE001 AS '採購變更單別',TE002 AS '採購變更單號',TE003 AS '版次'
+                //                    FROM [TK].dbo.PURTE
+                //                    WHERE TE001+TE002 IN 
+                //                    (
+                //                    SELECT TD001+TD002
+                //                    FROM [TK].dbo.PURTD
+                //                    WHERE TD026+TD027+TD028 IN 
+                //                    (
+                //                    SELECT TA001+TA002+TB003
+                //                    FROM [TKPUR].[dbo].[PURTATBCHAGE]
+                //                    WHERE  TA001='{0}' AND TA002='{1}' AND VERSIONS='{2}'
+                //                    )
+                //                    GROUP BY  TD001,TD002
+                //                    )
+
+                //                    ", TA001, TA002, VERSIONS);
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
