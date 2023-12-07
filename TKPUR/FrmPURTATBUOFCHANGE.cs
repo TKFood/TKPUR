@@ -2087,7 +2087,7 @@ namespace TKPUR
             //A311 20221101011 1
             //檢查請購變更單的採購單，是否有採購變更單未核準
             DataTable DTCHECKPURTEPURTF = CHECKPURTEPURTF(TA001, TA002, VERSIONS);
-            DTCHECKPURTEPURTF = null;
+            //DTCHECKPURTEPURTF = null;
             if (DTCHECKPURTEPURTF== null)
             {
                 //找出請購變更單有幾張採購單，要1對多
