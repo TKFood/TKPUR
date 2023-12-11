@@ -56,7 +56,7 @@ namespace TKPUR
         }
 
         #region FUNCTION
-        public void SETFASTREPORT(string TL003, string TL004)
+        public void SETFASTREPORT(string TL003, string TL004,string MB001, string MB002)
         {
 
             string SQL;
@@ -80,7 +80,7 @@ namespace TKPUR
             //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
 
             TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
-            SQL = SETFASETSQL(TL003, TL004);
+            SQL = SETFASETSQL(TL003, TL004, MB001, MB002);
 
             Table.SelectCommand = SQL;
 
@@ -89,11 +89,29 @@ namespace TKPUR
 
         }
 
-        public string SETFASETSQL(string TL003,string TL004)
+        public string SETFASETSQL(string TL003,string TL004, string MB001, string MB002)
         {
             StringBuilder FASTSQL = new StringBuilder();
-            StringBuilder STRQUERY = new StringBuilder();
+            StringBuilder STRQUERY1 = new StringBuilder();
+            StringBuilder STRQUERY2 = new StringBuilder();
 
+            if(!string.IsNullOrEmpty(MB001))
+            {
+                STRQUERY1.AppendFormat(@" AND TM004 LIKE '%{0}%'", MB001);
+            }
+            else
+            {
+                STRQUERY1.AppendFormat(@" ");
+            }
+
+            if (!string.IsNullOrEmpty(MB002))
+            {
+                STRQUERY2.AppendFormat(@" AND TM005 LIKE '%{0}%'", MB002);
+            }
+            else
+            {
+                STRQUERY2.AppendFormat(@" ");
+            }
 
             FASTSQL.AppendFormat(@"  
                                  SELECT TL004 AS '廠商代號',MA002 AS '廠商',TL003 AS '核價日期',TL005 AS '幣別',TM004 AS '品號',TM005 AS '品名',TM006 AS '規格',TM010 AS '單價',TM009 AS '計價單位',TM008 AS '分量計價',TM014 AS '生效日',TM015 AS '失效日',TN007 AS '數量以上',TN008 AS '分量計價單價'
@@ -105,10 +123,12 @@ namespace TKPUR
                                     AND TL006='Y'
                                     AND TL003>='{0}'
                                     AND (TL004 LIKE '{1}%' OR MA002 LIKE '{1}%')
+                                    {2}
+                                    {3}
                                     ORDER BY TL004,MA002,TM004,TL003,TM009
  
 
-                                ", TL003, TL004);
+                                ", TL003, TL004, STRQUERY1.ToString(), STRQUERY2.ToString());
 
             return FASTSQL.ToString();
         }
@@ -117,7 +137,7 @@ namespace TKPUR
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT(dateTimePicker1.Value.ToString("yyyyMMdd"),textBox1.Text.Trim());
+            SETFASTREPORT(dateTimePicker1.Value.ToString("yyyyMMdd"),textBox1.Text.Trim(), textBox2.Text, textBox3.Text);
         }
         #endregion
 
