@@ -30,6 +30,9 @@ namespace TKPUR
         StringBuilder sbSqlQuery = new StringBuilder();
         SqlDataAdapter adapter = new SqlDataAdapter();
         SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+        SqlTransaction tran;
+        SqlCommand cmd = new SqlCommand();
+        int result;
 
         public frmPURVERSIONSNUMS()
         {
@@ -88,7 +91,7 @@ namespace TKPUR
 
             StringBuilder Sequel = new StringBuilder();
             Sequel.AppendFormat(@"
-                                SELECT  [ID],[KIND],[PARAID],[PARANAME] FROM [TKPUR].[dbo].[TBPARA] WHERE [KIND]='是否結案' ORDER BY ID
+                                SELECT  [ID],[KIND],[PARAID],[PARANAME] FROM [TKPUR].[dbo].[TBPARA] WHERE [KIND]='是否結案2' ORDER BY ID
                                 ");
 
             SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
@@ -239,6 +242,176 @@ namespace TKPUR
                
             }
         }
+
+        public void ADD_PURVERSIONSNUMS(string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS,string TOTALNUMS, string ISCLOSE)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                   INSERT INTO [TKPUR].[dbo].[PURVERSIONSNUMS]
+                                    ([NAMES],[MB001],[MB002],[BACKMONEYS],[TARGETNUMS],[TOTALNUMS],[ISCLOSE])
+                                    VALUES
+                                    ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')
+                                    ", NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+        public void UPDATE_PURVERSIONSNUMS(string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS, string TOTALNUMS, string ISCLOSE)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                   
+                                    UPDATE  [TKPUR].[dbo].[PURVERSIONSNUMS]
+                                    SET MB001='{1}',MB002='{2}',BACKMONEYS='{3}',TARGETNUMS='{4}',TOTALNUMS='{5}',ISCLOSE='{6}'
+                                    WHERE NAMES='{0}'
+                                    ", NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+        public void DELETE_PURVERSIONSNUMS(string NAMES)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    DELETE  [TKPUR].[dbo].[PURVERSIONSNUMS]                                    
+                                    WHERE NAMES='{0}'
+                                    ", NAMES);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -247,8 +420,30 @@ namespace TKPUR
             SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(),comboBox1.Text.ToString());
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ADD_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(),comboBox2.Text.ToString());
+            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            UPDATE_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(), comboBox2.Text.ToString());
+            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            DELETE_PURVERSIONSNUMS(textBox3.Text.Trim());
+            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
+
+        }
+
+
         #endregion
 
-     
+
     }
 }
