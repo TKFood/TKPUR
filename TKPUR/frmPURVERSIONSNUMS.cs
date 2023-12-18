@@ -412,6 +412,79 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+            DataTable DT= FINDPURTE(textBox4.Text.Trim());
+            if(DT!=null&& DT.Rows.Count>=1)
+            {
+                textBox5.Text = DT.Rows[0]["MB002"].ToString();
+            }
+            else
+            {
+                textBox5.Text = "";
+            }
+        }
+        public DataTable FINDPURTE(string MB001)
+        {
+            DataTable DT = new DataTable();
+
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                    SELECT MB002 
+                                    FROM [TK].dbo.INVMB
+                                    WHERE MB001='{0}'
+                                             ", MB001);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    return ds.Tables["TEMPds1"];
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -436,14 +509,23 @@ namespace TKPUR
 
         private void button4_Click(object sender, EventArgs e)
         {
-            DELETE_PURVERSIONSNUMS(textBox3.Text.Trim());
-            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
-
+           
+            DialogResult dialogResult = MessageBox.Show("要刪除了?", "要刪除了?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                DELETE_PURVERSIONSNUMS(textBox3.Text.Trim());
+                SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //do something else
+            }
         }
+
 
 
         #endregion
 
-
+       
     }
 }
