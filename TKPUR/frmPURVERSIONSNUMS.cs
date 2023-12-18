@@ -192,7 +192,11 @@ namespace TKPUR
                     dataGridView1.AutoResizeColumns();
                     // 設定券消費列的數字格式
                     dataGridView1.Columns["已進貨量"].DefaultCellStyle.Format = "#,##0";
-
+                    dataGridView1.Columns["已進貨量"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    dataGridView1.Columns["可退還的版費"].DefaultCellStyle.Format = "#,##0";
+                    dataGridView1.Columns["可退還的版費"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    dataGridView1.Columns["目標進貨量"].DefaultCellStyle.Format = "#,##0";
+                    dataGridView1.Columns["目標進貨量"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }              
                 else
                 {
