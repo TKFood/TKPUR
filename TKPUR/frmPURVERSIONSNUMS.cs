@@ -36,6 +36,7 @@ namespace TKPUR
             InitializeComponent();
 
             comboBox1load();
+            comboBox2load();
         }
 
         #region FUNCTION
@@ -68,6 +69,39 @@ namespace TKPUR
             comboBox1.DataSource = dt.DefaultView;
             comboBox1.ValueMember = "PARANAME";
             comboBox1.DisplayMember = "PARANAME";
+            sqlConn.Close();
+
+
+        }
+        public void comboBox2load()
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"
+                                SELECT  [ID],[KIND],[PARAID],[PARANAME] FROM [TKPUR].[dbo].[TBPARA] WHERE [KIND]='是否結案' ORDER BY ID
+                                ");
+
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("PARAID", typeof(string));
+            dt.Columns.Add("PARANAME", typeof(string));
+
+            da.Fill(dt);
+            comboBox2.DataSource = dt.DefaultView;
+            comboBox2.ValueMember = "PARANAME";
+            comboBox2.DisplayMember = "PARANAME";
             sqlConn.Close();
 
 
@@ -128,7 +162,7 @@ namespace TKPUR
                 sbSql.AppendFormat(@"
                                     SELECT 
                                      [NAMES] AS '版型' 
-                                    ,[MB001] AS '品琥' 
+                                    ,[MB001] AS '品號' 
                                     ,[MB002] AS '品名' 
                                     ,[BACKMONEYS] AS '可退還的版費' 
                                     ,[TARGETNUMS] AS '目標進貨量' 
@@ -172,7 +206,39 @@ namespace TKPUR
 
             }
         }
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {           
 
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];   
+                    textBox3.Text = row.Cells["版型"].Value.ToString().Trim();
+                    textBox4.Text = row.Cells["品號"].Value.ToString().Trim();
+                    textBox5.Text = row.Cells["品名"].Value.ToString().Trim();
+                    textBox6.Text = row.Cells["可退還的版費"].Value.ToString().Trim();
+                    textBox7.Text = row.Cells["目標進貨量"].Value.ToString().Trim();
+                    textBox8.Text = row.Cells["已進貨量"].Value.ToString().Trim();
+                    comboBox2.Text = row.Cells["是否結案"].Value.ToString().Trim();
+
+
+                }
+                else
+                {
+                    textBox3.Text = "";
+                    textBox4.Text = "";
+                    textBox5.Text = "";
+                    textBox6.Text = "";
+                    textBox7.Text = "";
+                    textBox8.Text = "";
+
+                }
+
+               
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -182,5 +248,7 @@ namespace TKPUR
         }
 
         #endregion
+
+     
     }
 }
