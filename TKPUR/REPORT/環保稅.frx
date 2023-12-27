@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/27/2023 10:44:40" ReportInfo.Modified="12/27/2023 10:59:30" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEljdhp13twVDDinlhplmx7">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG005 AS '廠商代',MA002 AS '廠商',MA005 AS '統編',TH004 AS '品號',MB002 AS '品名',SUM(TH015)  AS '進貨驗收數量',TH008 AS '單位'&#13;&#10;FROM [TK].dbo.PURTG,[TK].dbo.PURTH, [TK].dbo.PURMA, [TK].dbo.INVMB &#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND MA001=TG005&#13;&#10;AND MB001=TH004&#13;&#10;AND TG013='Y'&#13;&#10;AND TH004 LIKE '205%'&#13;&#10;AND SUBSTRING(TG003,1,4)='2023'&#13;&#10;AND SUBSTRING(TG003,5,2)='05'&#13;&#10;GROUP BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008&#13;&#10;ORDER BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008&#13;&#10;">
+        <Column Name="年" DataType="System.String"/>
+        <Column Name="月" DataType="System.String"/>
+        <Column Name="廠商代" DataType="System.String"/>
+        <Column Name="廠商" DataType="System.String"/>
+        <Column Name="統編" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="進貨驗收數量" DataType="System.Decimal"/>
+        <Column Name="單位" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT  SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG004 AS '客戶代',MA002 AS '客戶',MA010 AS '統編',TH004 ,MB1.MB002 ,SUM(LA011),MB1.MB004,MC004,MD006,MD007,MD003 AS '品號',MB2.MB002 AS '品名',SUM(CONVERT(DECIMAL(16,0),(LA011/MD006*MD007*MC004)))  AS '數量',MB2.MB004 AS '單位'&#13;&#10;FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB MB1,[TK].dbo.COPMA,[TK].dbo.BOMMC,[TK].dbo.BOMMD,[TK].dbo.INVMB MB2&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND LA006=TH001 AND LA007=TH002 AND LA008=TH003&#13;&#10;AND TH004=MB1.MB001&#13;&#10;AND TG004=MA001&#13;&#10;AND MC001=TH004&#13;&#10;AND MC001=MD001&#13;&#10;AND MD003=MB2.MB001&#13;&#10;AND MD003 LIKE '205%'&#13;&#10;AND MD035 NOT LIKE '%蓋%'&#13;&#10;AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')&#13;&#10;AND SUBSTRING(TG003,1,4)='2023' AND SUBSTRING(TG003,5,2)='05'&#13;&#10;GROUP BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004,MB1.MB002,MB1.MB004,MC004,MD006,MD007,MD003,MB2.MB002,MB2.MB004&#13;&#10;ORDER BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004&#13;&#10;">
+        <Column Name="年" DataType="System.String"/>
+        <Column Name="月" DataType="System.String"/>
+        <Column Name="客戶代" DataType="System.String"/>
+        <Column Name="客戶" DataType="System.String"/>
+        <Column Name="統編" DataType="System.String"/>
+        <Column Name="TH004" DataType="System.String"/>
+        <Column Name="MB002" DataType="System.String"/>
+        <Column Name="Column1" DataType="System.Decimal"/>
+        <Column Name="MB004" DataType="System.String"/>
+        <Column Name="MC004" DataType="System.Decimal"/>
+        <Column Name="MD006" DataType="System.Decimal"/>
+        <Column Name="MD007" DataType="System.Decimal"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="數量" DataType="System.Decimal"/>
+        <Column Name="單位" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="400" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1436.4" Height="18.9">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="環保稅"/>
+    </ReportTitleBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="23.5" Width="1436.4" Height="37.8" Condition="[Table.月]">
+      <TextObject Name="Text7" Left="189" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="廠商代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="年" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="月" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="283.5" Top="18.9" Width="255.15" Height="18.9" Border.Lines="All" Text="廠商" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="538.65" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="統編" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="633.15" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="727.65" Top="18.9" Width="283.5" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="1011.15" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="進貨驗收數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="1105.65" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Width="94.5" Height="18.9" Text="進貨"/>
+      <DataBand Name="Data1" Top="65.9" Width="1436.4" Height="18.9" CanGrow="true" DataSource="Table">
+        <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.年]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.月]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商代]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text8" Left="283.5" Width="255.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商]" VertAlign="Center"/>
+        <TextObject Name="Text10" Left="538.65" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.統編]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text12" Left="633.15" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" VertAlign="Center"/>
+        <TextObject Name="Text14" Left="727.65" Width="283.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+        <TextObject Name="Text16" Left="1011.15" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨驗收數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text18" Left="1105.65" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.單位]" HorzAlign="Center" VertAlign="Center"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="89.39" Width="1436.4"/>
+    </GroupHeaderBand>
+    <GroupHeaderBand Name="GroupHeader2" Top="93.99" Width="1436.4" Height="37.8" Condition="[Table1.月]">
+      <TextObject Name="Text30" Left="189" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="客戶代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text31" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="年" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text32" Left="94.5" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="月" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text33" Left="283.5" Top="18.9" Width="255.15" Height="18.9" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text34" Left="538.65" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="統編" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text35" Left="633.15" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text36" Left="727.65" Top="18.9" Width="283.5" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text37" Left="1011.15" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="銷貨數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text38" Left="1105.65" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text39" Width="94.5" Height="18.9" Text="銷貨"/>
+      <DataBand Name="Data2" Top="136.39" Width="1436.4" Height="18.9" CanGrow="true" DataSource="Table1">
+        <TextObject Name="Text21" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table1.年]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text22" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table1.月]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text23" Left="189" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table1.客戶代]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text24" Left="283.5" Width="255.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table1.客戶]" VertAlign="Center"/>
+        <TextObject Name="Text25" Left="538.65" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table1.統編]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text26" Left="633.15" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table1.品號]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text27" Left="727.65" Width="283.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table1.品名]" VertAlign="Center"/>
+        <TextObject Name="Text28" Left="1011.15" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table1.數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text29" Left="1105.65" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table1.單位]" HorzAlign="Center" VertAlign="Center"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter2" Top="159.89" Width="1436.4"/>
+    </GroupHeaderBand>
+  </ReportPage>
+</Report>
