@@ -103,12 +103,12 @@ namespace TKPUR
                                 AND MA001=TG005
                                 AND MB001=TH004
                                 AND TG013='Y'
-                                AND TH004 LIKE '205%'
+                                AND (TH004 LIKE '205%' OR TH004 LIKE '214%')
                                 AND SUBSTRING(TG003,1,4)='{0}'
                                 AND SUBSTRING(TG003,5,2)='{1}'
                                 GROUP BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008
                                 ORDER BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008
-                                    ",YY,MM);
+                                    ", YY,MM);
 
             return FASTSQL.ToString();
         }
@@ -131,6 +131,7 @@ namespace TKPUR
                                 AND MD003 LIKE '205%'
                                 AND MD035 NOT LIKE '%蓋%'
                                 AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
+                                AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
                                 AND SUBSTRING(TG003,1,4)='{0}' AND SUBSTRING(TG003,5,2)='{1}'
                                 GROUP BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004,MB1.MB002,MB1.MB004,MC004,MD006,MD007,MD003,MB2.MB002,MB2.MB004
                                 ORDER BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004
