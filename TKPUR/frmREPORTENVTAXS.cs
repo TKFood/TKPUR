@@ -147,7 +147,7 @@ namespace TKPUR
 
                 for (int i = 0; i < rowCount; i++)
                 {
-                    STRQUERY.AppendFormat(@"  MB2.MB001  LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+                    STRQUERY.AppendFormat(@" MD003 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
 
                     // 在最後一個元素之後不添加 "OR"
                     if (i < rowCount - 1)
