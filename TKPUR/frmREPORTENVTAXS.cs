@@ -95,7 +95,28 @@ namespace TKPUR
         {
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
-         
+
+            DataTable DT = FIND_TKCOPMATAXSMB001PUR();
+            if(DT!=null&& DT.Rows.Count>=1)
+            {
+                STRQUERY.AppendFormat(@" (");
+                int rowCount = DT.Rows.Count;
+
+                for (int i = 0; i < rowCount; i++)
+                {
+                    STRQUERY.AppendFormat(@" TH004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+
+                    // 在最後一個元素之後不添加 "OR"
+                    if (i < rowCount - 1)
+                    {
+                        STRQUERY.AppendFormat(@" OR");
+                    }
+                }
+
+                STRQUERY.AppendFormat(@" )");
+            }
+
+
             FASTSQL.AppendFormat(@"  
                                 SELECT SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG005 AS '廠商代',MA002 AS '廠商',MA005 AS '統編',TH004 AS '品號',MB002 AS '品名',SUM(TH015)  AS '進貨驗收數量',TH008 AS '單位'
                                 FROM [TK].dbo.PURTG,[TK].dbo.PURTH, [TK].dbo.PURMA, [TK].dbo.INVMB 
@@ -103,12 +124,12 @@ namespace TKPUR
                                 AND MA001=TG005
                                 AND MB001=TH004
                                 AND TG013='Y'
-                                AND (TH004 LIKE '205%' OR TH004 LIKE '214%')
+                                AND  {2} 
                                 AND SUBSTRING(TG003,1,4)='{0}'
                                 AND SUBSTRING(TG003,5,2)='{1}'
                                 GROUP BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008
                                 ORDER BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008
-                                    ", YY,MM);
+                                    ", YY,MM, STRQUERY.ToString());
 
             return FASTSQL.ToString();
         }
@@ -117,6 +138,26 @@ namespace TKPUR
         {
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
+
+            DataTable DT = FIND_TKCOPMATAXSMB001COP();
+            if (DT != null && DT.Rows.Count >= 1)
+            {
+                STRQUERY.AppendFormat(@" (");
+                int rowCount = DT.Rows.Count;
+
+                for (int i = 0; i < rowCount; i++)
+                {
+                    STRQUERY.AppendFormat(@"  MB2.MB001  LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+
+                    // 在最後一個元素之後不添加 "OR"
+                    if (i < rowCount - 1)
+                    {
+                        STRQUERY.AppendFormat(@" OR");
+                    }
+                }
+
+                STRQUERY.AppendFormat(@" )");
+            }
 
             FASTSQL.AppendFormat(@"                                
                                 SELECT  SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG004 AS '客戶代',MA002 AS '客戶',MA010 AS '統編',TH004 ,MB1.MB002 ,SUM(LA011),MB1.MB004,MC004,MD006,MD007,MD003 AS '品號',MB2.MB002 AS '品名',SUM(CONVERT(DECIMAL(16,0),(LA011/MD006*MD007*MC004)))  AS '數量',MB2.MB004 AS '單位'
@@ -128,7 +169,7 @@ namespace TKPUR
                                 AND MC001=TH004
                                 AND MC001=MD001
                                 AND MD003=MB2.MB001
-                                AND MD003 LIKE '205%'
+                                AND {2}
                                 AND MD035 NOT LIKE '%蓋%'
                                 AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
                                 AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
@@ -136,9 +177,135 @@ namespace TKPUR
                                 GROUP BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004,MB1.MB002,MB1.MB004,MC004,MD006,MD007,MD003,MB2.MB002,MB2.MB004
                                 ORDER BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004
 
-                                    ", YY, MM);
+                                    ", YY, MM, STRQUERY.ToString());
 
             return FASTSQL.ToString();
+        }
+
+        public DataTable FIND_TKCOPMATAXSMB001PUR()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            StringBuilder sbSql = new StringBuilder();
+            StringBuilder sbSqlQuery1 = new StringBuilder();
+            StringBuilder sbSqlQuery2 = new StringBuilder();
+            StringBuilder sbSqlQuery3 = new StringBuilder();
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"
+                                   SELECT  [MB001]
+                                    FROM [TKPUR].[dbo].[TKCOPMATAXSMB001PUR]
+                                    ");
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+                if (ds.Tables["ds"].Rows.Count >= 1)
+                {
+                    return ds.Tables["ds"];
+                }
+                else
+                {
+                    return null;
+                }
+
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
+            }
+        }
+
+        public DataTable FIND_TKCOPMATAXSMB001COP()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            StringBuilder sbSql = new StringBuilder();
+            StringBuilder sbSqlQuery1 = new StringBuilder();
+            StringBuilder sbSqlQuery2 = new StringBuilder();
+            StringBuilder sbSqlQuery3 = new StringBuilder();
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"
+                                   SELECT  [MB001]
+                                    FROM [TKPUR].[dbo].[TKCOPMATAXSMB001COP]
+                                    ");
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+                if (ds.Tables["ds"].Rows.Count >= 1)
+                {
+                    return ds.Tables["ds"];
+                }
+                else
+                {
+                    return null;
+                }
+
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
+            }
         }
         #endregion
 
