@@ -129,6 +129,12 @@
     <Compile Include="frmREPORTFORMPURTEPURTF.Designer.cs">
       <DependentUpon>frmREPORTFORMPURTEPURTF.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTINCOUNTS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTINCOUNTS.Designer.cs">
+      <DependentUpon>frmREPORTINCOUNTS.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmREPORTINVLAUSED.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -274,6 +280,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTFORMPURTEPURTF.resx">
       <DependentUpon>frmREPORTFORMPURTEPURTF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTINCOUNTS.resx">
+      <DependentUpon>frmREPORTINCOUNTS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTINVLAUSED.resx">
       <DependentUpon>frmREPORTINVLAUSED.cs</DependentUpon>
