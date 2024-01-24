@@ -1122,15 +1122,28 @@ namespace TKPUR
 
             string EXTERNAL_FORM_NBR= DT.Rows[0]["TA001"].ToString().Trim()+ DT.Rows[0]["TA002"].ToString().Trim() + DT.Rows[0]["VERSIONS"].ToString().Trim();
 
-            string account = DT.Rows[0]["TA012"].ToString();
-            string groupId = DT.Rows[0]["GROUP_ID"].ToString();
+            string account = DT.Rows[0]["TA012"].ToString();        
             string jobTitleId = DT.Rows[0]["TITLE_ID"].ToString();
             string fillerName = DT.Rows[0]["NAME"].ToString();
             string fillerUserGuid = DT.Rows[0]["USER_GUID"].ToString();
-
-
             string DEPNAME = DTUPFDEP.Rows[0]["DEPNAME"].ToString();
             string DEPNO= DTUPFDEP.Rows[0]["DEPNO"].ToString();
+            string groupId = DTUPFDEP.Rows[0]["GROUP_ID"].ToString();
+
+            if (DTUPFDEP.Rows.Count >= 1)
+            {
+                foreach (DataRow DR in DTUPFDEP.Rows)
+                {
+                    if (DR["GROUP_CODE"].ToString().Equals(DT.Rows[0]["TA004"].ToString()))
+                    {
+                        groupId = DR["GROUP_ID"].ToString();
+                        DEPNAME = DR["DEPNAME"].ToString();
+                        DEPNO = DR["DEPNO"].ToString();
+
+                    }
+                }
+
+            }
 
             string CALLQC = comboBox1.Text.ToString();
             int rowscounts = 0;
@@ -1539,11 +1552,12 @@ namespace TKPUR
                 sbSqlQuery.Clear();
 
                 sbSql.AppendFormat(@"  
-                                   SELECT 
-                                    [VERSIONS],[TA001],[TA002],[TA003],[TA006],[TA012],[TB003],[TB004],[TB005],[TB006],[TB007],[TB009],[TB010],[TB011],[TB012],[USER_GUID],[NAME],[GROUP_ID],[TITLE_ID],[MA002]
-                                    ,(SELECT TD001+' '+TD002+' '+TD003+CHAR(10) FROM [TK].dbo.PURTD WHERE  TD026=[TA001] AND TD027=[TA002] AND TD028=[TB003] FOR XML PATH('')) AS TD001002003
-
+                                    SELECT 
+                                    [PURTATBCHAGE].[VERSIONS],[PURTATBCHAGE].[TA001],[PURTATBCHAGE].[TA002],[PURTATBCHAGE].[TA003],[PURTATBCHAGE].[TA006],[PURTATBCHAGE].[TA012],[PURTATBCHAGE].[TB003],[PURTATBCHAGE].[TB004],[PURTATBCHAGE].[TB005],[PURTATBCHAGE].[TB006],[PURTATBCHAGE].[TB007],[PURTATBCHAGE].[TB009],[PURTATBCHAGE].[TB010],[PURTATBCHAGE].[TB011],[PURTATBCHAGE].[TB012],[PURTATBCHAGE].[USER_GUID],[PURTATBCHAGE].[NAME],[PURTATBCHAGE].[GROUP_ID],[PURTATBCHAGE].[TITLE_ID],[PURTATBCHAGE].[MA002]
+                                    ,(SELECT TD001+' '+TD002+' '+TD003+CHAR(10) FROM [TK].dbo.PURTD WHERE  TD026=[PURTATBCHAGE].[TA001] AND TD027=[PURTATBCHAGE].[TA002] AND TD028=[PURTATBCHAGE].[TB003] FOR XML PATH('')) AS TD001002003
+                                    ,PURTA.TA004
                                     FROM [TKPUR].[dbo].[PURTATBCHAGE]
+                                    LEFT JOIN [TK].dbo.PURTA ON PURTA.TA001=[PURTATBCHAGE].TA001 AND PURTA.TA002=[PURTATBCHAGE].TA002
                                     WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}'
                                     ORDER BY [VERSIONS],[TA001],[TA002],[TB003]
                               
@@ -1604,7 +1618,7 @@ namespace TKPUR
                 sbSqlQuery.Clear();
 
                 sbSql.AppendFormat(@"  
-                                    SELECT 
+                                     SELECT 
                                     [GROUP_NAME] AS 'DEPNAME'
                                     ,[TB_EB_EMPL_DEP].[GROUP_ID]+','+[GROUP_NAME]+',False' AS 'DEPNO'
                                     ,[TB_EB_USER].[USER_GUID]
@@ -1614,11 +1628,13 @@ namespace TKPUR
                                     ,[TITLE_ID]     
                                     ,[GROUP_NAME]
                                     ,[GROUP_CODE]
+                                    ,[TB_EB_EMPL_DEP].ORDERS
                                     FROM [192.168.1.223].[{0}].[dbo].[TB_EB_USER],[192.168.1.223].[{0}].[dbo].[TB_EB_EMPL_DEP],[192.168.1.223].[{0}].[dbo].[TB_EB_GROUP]
                                     WHERE [TB_EB_USER].[USER_GUID]=[TB_EB_EMPL_DEP].[USER_GUID]
                                     AND [TB_EB_EMPL_DEP].[GROUP_ID]=[TB_EB_GROUP].[GROUP_ID]
                                     AND ISNULL([TB_EB_GROUP].[GROUP_CODE],'')<>''
                                     AND [ACCOUNT]='{1}'
+                                    ORDER BY [TB_EB_EMPL_DEP].ORDERS
                               
                                     ", DBNAME, ACCOUNT);
 
