@@ -19,6 +19,8 @@ using FastReport;
 using FastReport.Data;
 using System.Xml;
 using TKITDLL;
+using System.Globalization;
+
 namespace TKPUR
 {
     public partial class frmPURVERSIONSNUMS : Form
@@ -171,6 +173,9 @@ namespace TKPUR
                                     ,[TARGETNUMS] AS '目標進貨量' 
                                     ,[TOTALNUMS] AS '已進貨量' 
                                     ,[ISCLOSE] AS '是否結案' 
+                                    ,[PAYKINDS] AS '付款別'
+                                    ,CONVERT(NVARCHAR,[CREATEDATES],112) AS '建立日期'
+                                    ,[COMMENTS] AS '備註'
                                     FROM [TKPUR].[dbo].[PURVERSIONSNUMS]
                                     WHERE 1=1
                                     {0}
@@ -187,7 +192,7 @@ namespace TKPUR
                 sqlConn.Close();
 
                 if (ds.Tables["ds"].Rows.Count >= 1)
-                {
+                {    
                     dataGridView1.DataSource = ds.Tables["ds"];
                     dataGridView1.AutoResizeColumns();
                     // 設定券消費列的數字格式
@@ -216,7 +221,8 @@ namespace TKPUR
             }
         }
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
-        {           
+        {
+            DateTime CREATEDATES;
 
             if (dataGridView1.CurrentRow != null)
             {
@@ -230,8 +236,13 @@ namespace TKPUR
                     textBox6.Text = row.Cells["可退還的版費"].Value.ToString().Trim();
                     textBox7.Text = row.Cells["目標進貨量"].Value.ToString().Trim();
                     textBox8.Text = row.Cells["已進貨量"].Value.ToString().Trim();
+                    textBox10.Text = row.Cells["備註"].Value.ToString().Trim();
+                    
                     comboBox2.Text = row.Cells["是否結案"].Value.ToString().Trim();
+                    comboBox4.Text = row.Cells["付款別"].Value.ToString().Trim();
 
+                    DateTime.TryParseExact(row.Cells["建立日期"].Value.ToString().Trim(), "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out CREATEDATES);
+                    dateTimePicker3.Value = CREATEDATES;
 
                 }
                 else
@@ -242,7 +253,7 @@ namespace TKPUR
                     textBox6.Text = "";
                     textBox7.Text = "";
                     textBox8.Text = "";
-
+                    textBox10.Text = "";
                 }
 
                
