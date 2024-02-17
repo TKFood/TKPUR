@@ -193,7 +193,7 @@ namespace TKPUR
 
 
         }
-        public void SEARCH_PURVERSIONSNUMS(string NAMES, string MB001,string ISCLOSE)
+        public void SEARCH_PURVERSIONSNUMS(string NAMES, string MB001,string ISCLOSE,string PAYKINDS,string SDAYS,string EDAYS,string COMMENTS)
         {
             SqlDataAdapter adapter = new SqlDataAdapter();
             SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
@@ -201,6 +201,9 @@ namespace TKPUR
             StringBuilder sbSqlQuery1 = new StringBuilder();
             StringBuilder sbSqlQuery2 = new StringBuilder();
             StringBuilder sbSqlQuery3 = new StringBuilder();
+            StringBuilder sbSqlQuery4 = new StringBuilder();
+            StringBuilder sbSqlQuery5 = new StringBuilder();
+            StringBuilder sbSqlQuery6 = new StringBuilder();
             SqlTransaction tran;
             SqlCommand cmd = new SqlCommand();
             DataSet ds = new DataSet();
@@ -242,6 +245,27 @@ namespace TKPUR
                 { 
                     sbSqlQuery3.AppendFormat(@" AND [ISCLOSE] LIKE '%{0}%'", ISCLOSE);
                 }
+                if (!string.IsNullOrEmpty(PAYKINDS))
+                {
+                    sbSqlQuery4.AppendFormat(@" AND [PAYKINDS] LIKE '%{0}%'", PAYKINDS);
+                }
+                else
+                {
+                    sbSqlQuery4.AppendFormat(@" ");
+                }
+                if (!string.IsNullOrEmpty(SDAYS)&& !string.IsNullOrEmpty(EDAYS))
+                {
+                    sbSqlQuery5.AppendFormat(@" AND CONVERT(NVARCHAR,[CREATEDATES],112)>='{0}' AND CONVERT(NVARCHAR,[CREATEDATES],112)<='{1}'", SDAYS, EDAYS);
+                }
+               
+                if (!string.IsNullOrEmpty(COMMENTS))
+                {
+                    sbSqlQuery6.AppendFormat(@" AND [COMMENTS] LIKE '%{0}%'", COMMENTS);
+                }
+                else
+                {
+                    sbSqlQuery6.AppendFormat(@" ");
+                }
 
                 sbSql.Clear();
                 sbSqlQuery.Clear();
@@ -263,7 +287,10 @@ namespace TKPUR
                                     {0}
                                     {1}
                                     {2}
-                                    ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString());
+                                    {3}
+                                    {4}
+                                    {5}
+                                    ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString(), sbSqlQuery4.ToString(), sbSqlQuery5.ToString(), sbSqlQuery6.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -645,27 +672,88 @@ namespace TKPUR
             }
         }
 
-        public void SETFASTREPORT(string SDAYS, string EDAYS)
+        public void SETFASTREPORT(string NAMES, string MB001, string ISCLOSE, string PAYKINDS, string SDAYS, string EDAYS, string COMMENTS)
         {
             StringBuilder SQL1 = new StringBuilder();
-            StringBuilder SQL2 = new StringBuilder();
+            StringBuilder sbSql = new StringBuilder();
+            StringBuilder sbSqlQuery1 = new StringBuilder();
+            StringBuilder sbSqlQuery2 = new StringBuilder();
+            StringBuilder sbSqlQuery3 = new StringBuilder();
+            StringBuilder sbSqlQuery4 = new StringBuilder();
+            StringBuilder sbSqlQuery5 = new StringBuilder();
+            StringBuilder sbSqlQuery6 = new StringBuilder();
 
-            SQL1.AppendFormat(@"
-                                SELECT 
-                                [NAMES] AS '版型' 
-                                ,[MB001] AS '品號' 
-                                ,[MB002] AS '品名' 
-                                ,[BACKMONEYS] AS '可退還的版費' 
-                                ,[TARGETNUMS] AS '目標進貨量' 
-                                ,[TOTALNUMS] AS '已進貨量' 
-                                ,[ISCLOSE] AS '是否結案' 
-                                ,[PAYKINDS] AS '付款別'
-                                ,CONVERT(NVARCHAR,[CREATEDATES],112) AS '建立日期'
-                                ,[COMMENTS] AS '備註'
-                                FROM [TKPUR].[dbo].[PURVERSIONSNUMS]
-                                WHERE 1=1
- 
-                                ", SDAYS, EDAYS);
+            if (!string.IsNullOrEmpty(NAMES))
+            {
+                sbSqlQuery1.AppendFormat(@" AND [NAMES] LIKE '%{0}%'", NAMES);
+            }
+            else
+            {
+                sbSqlQuery1.AppendFormat(@" ");
+            }
+            if (!string.IsNullOrEmpty(MB001))
+            {
+                sbSqlQuery2.AppendFormat(@" AND [MB001] LIKE '%{0}%'", MB001);
+            }
+            else
+            {
+                sbSqlQuery2.AppendFormat(@" ");
+            }
+            if (!string.IsNullOrEmpty(ISCLOSE) && ISCLOSE.Equals("全部"))
+            {
+                sbSqlQuery3.AppendFormat(@"");
+            }
+            else if (!string.IsNullOrEmpty(ISCLOSE))
+            {
+                sbSqlQuery3.AppendFormat(@" AND [ISCLOSE] LIKE '%{0}%'", ISCLOSE);
+            }
+            if (!string.IsNullOrEmpty(PAYKINDS))
+            {
+                sbSqlQuery4.AppendFormat(@" AND [PAYKINDS] LIKE '%{0}%'", PAYKINDS);
+            }
+            else
+            {
+                sbSqlQuery4.AppendFormat(@" ");
+            }
+            if (!string.IsNullOrEmpty(SDAYS) && !string.IsNullOrEmpty(EDAYS))
+            {
+                sbSqlQuery5.AppendFormat(@" AND CONVERT(NVARCHAR,[CREATEDATES],112)>='{0}' AND CONVERT(NVARCHAR,[CREATEDATES],112)<='{1}'", SDAYS, EDAYS);
+            }
+
+            if (!string.IsNullOrEmpty(COMMENTS))
+            {
+                sbSqlQuery6.AppendFormat(@" AND [COMMENTS] LIKE '%{0}%'", COMMENTS);
+            }
+            else
+            {
+                sbSqlQuery6.AppendFormat(@" ");
+            }
+
+            sbSql.Clear();
+            sbSqlQuery.Clear();
+
+            sbSql.AppendFormat(@"
+                                    SELECT 
+                                     [NAMES] AS '版型' 
+                                    ,[MB001] AS '品號' 
+                                    ,[MB002] AS '品名' 
+                                    ,[BACKMONEYS] AS '可退還的版費' 
+                                    ,[TARGETNUMS] AS '目標進貨量' 
+                                    ,[TOTALNUMS] AS '已進貨量' 
+                                    ,[ISCLOSE] AS '是否結案' 
+                                    ,[PAYKINDS] AS '付款別'
+                                    ,CONVERT(NVARCHAR,[CREATEDATES],112) AS '建立日期'
+                                    ,[COMMENTS] AS '備註'
+                                    FROM [TKPUR].[dbo].[PURVERSIONSNUMS]
+                                    WHERE 1=1
+                                    {0}
+                                    {1}
+                                    {2}
+                                    {3}
+                                    {4}
+                                    {5}
+                                    ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString(), sbSqlQuery4.ToString(), sbSqlQuery5.ToString(), sbSqlQuery6.ToString());
+            SQL1 = sbSql;
 
             Report report1 = new Report();
             report1.Load(@"REPORT\版費.frx");
@@ -697,22 +785,23 @@ namespace TKPUR
         private void button1_Click(object sender, EventArgs e)
         {
             UDPATE_PURVERSIONSNUMS_TOTALNUMS();
-            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(),comboBox1.Text.ToString());
 
-            SETFASTREPORT(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(),comboBox1.Text.ToString(), comboBox3.Text.ToString(),dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
+
+            SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             ADD_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(),comboBox2.Text.ToString());
-            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
+            //SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
 
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             UPDATE_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(), comboBox2.Text.ToString());
-            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
+            //SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
 
         }
 
@@ -723,7 +812,7 @@ namespace TKPUR
             if (dialogResult == DialogResult.Yes)
             {
                 DELETE_PURVERSIONSNUMS(textBox3.Text.Trim());
-                SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
+                //SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
             }
             else if (dialogResult == DialogResult.No)
             {
