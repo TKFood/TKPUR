@@ -175,6 +175,7 @@ namespace TKPUR
                                 ,[PARANAME]
                                 FROM [TKPUR].[dbo].[TBPARA]
                                 WHERE [KIND]='PAYKINDS' 
+                                AND [PARAID] NOT IN ('全部')
                                 ORDER BY [PARANAME]
                                 ");
 
@@ -245,7 +246,11 @@ namespace TKPUR
                 { 
                     sbSqlQuery3.AppendFormat(@" AND [ISCLOSE] LIKE '%{0}%'", ISCLOSE);
                 }
-                if (!string.IsNullOrEmpty(PAYKINDS))
+                if(!string.IsNullOrEmpty(PAYKINDS) && PAYKINDS.Equals("全部"))
+                {
+                    sbSqlQuery4.AppendFormat(@" ");
+                }
+                else if(!string.IsNullOrEmpty(PAYKINDS))
                 {
                     sbSqlQuery4.AppendFormat(@" AND [PAYKINDS] LIKE '%{0}%'", PAYKINDS);
                 }
@@ -426,7 +431,7 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
-        public void UPDATE_PURVERSIONSNUMS(string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS, string TOTALNUMS, string ISCLOSE)
+        public void UPDATE_PURVERSIONSNUMS(string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS, string TOTALNUMS, string ISCLOSE,string PAYKINDS,string CREATEDATES,string COMMENTS)
         {
             try
             {
@@ -452,9 +457,9 @@ namespace TKPUR
                 sbSql.AppendFormat(@"  
                                    
                                     UPDATE  [TKPUR].[dbo].[PURVERSIONSNUMS]
-                                    SET MB001='{1}',MB002='{2}',BACKMONEYS='{3}',TARGETNUMS='{4}',TOTALNUMS='{5}',ISCLOSE='{6}'
+                                    SET MB001='{1}',MB002='{2}',BACKMONEYS='{3}',TARGETNUMS='{4}',TOTALNUMS='{5}',ISCLOSE='{6}',PAYKINDS='{7}',CREATEDATES='{8}',COMMENTS='{9}'
                                     WHERE NAMES='{0}'
-                                    ", NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE);
+                                    ", NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE, PAYKINDS, CREATEDATES, COMMENTS);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -707,7 +712,11 @@ namespace TKPUR
             {
                 sbSqlQuery3.AppendFormat(@" AND [ISCLOSE] LIKE '%{0}%'", ISCLOSE);
             }
-            if (!string.IsNullOrEmpty(PAYKINDS))
+            if (!string.IsNullOrEmpty(PAYKINDS) && PAYKINDS.Equals("全部"))
+            {
+                sbSqlQuery4.AppendFormat(@" ");
+            }
+            else if (!string.IsNullOrEmpty(PAYKINDS))
             {
                 sbSqlQuery4.AppendFormat(@" AND [PAYKINDS] LIKE '%{0}%'", PAYKINDS);
             }
@@ -787,21 +796,22 @@ namespace TKPUR
             UDPATE_PURVERSIONSNUMS_TOTALNUMS();
 
             SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(),comboBox1.Text.ToString(), comboBox3.Text.ToString(),dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
-
             SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             ADD_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(),comboBox2.Text.ToString());
-            //SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
+            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
+            SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
 
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            UPDATE_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(), comboBox2.Text.ToString());
-            //SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
+            UPDATE_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(), comboBox2.Text.ToString(), comboBox4.Text.ToString(),dateTimePicker3.Value.ToString("yyyyMMdd"),textBox10.Text.Trim());
+            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
+            SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
 
         }
 
@@ -812,7 +822,8 @@ namespace TKPUR
             if (dialogResult == DialogResult.Yes)
             {
                 DELETE_PURVERSIONSNUMS(textBox3.Text.Trim());
-                //SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString());
+                SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
+                SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
             }
             else if (dialogResult == DialogResult.No)
             {
