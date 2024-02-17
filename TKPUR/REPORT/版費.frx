@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/17/2024 09:29:36" ReportInfo.Modified="02/17/2024 09:47:08" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFBmsK3tTwM07a5F6JTsKeA">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;[NAMES] AS '版型' &#13;&#10;,[MB001] AS '品號' &#13;&#10;,[MB002] AS '品名' &#13;&#10;,[BACKMONEYS] AS '可退還的版費' &#13;&#10;,[TARGETNUMS] AS '目標進貨量' &#13;&#10;,[TOTALNUMS] AS '已進貨量' &#13;&#10;,[ISCLOSE] AS '是否結案' &#13;&#10;,[PAYKINDS] AS '付款別'&#13;&#10;,CONVERT(NVARCHAR,[CREATEDATES],112) AS '建立日期'&#13;&#10;,[COMMENTS] AS '備註'&#13;&#10;FROM [TKPUR].[dbo].[PURVERSIONSNUMS]&#13;&#10;WHERE 1=1">
+        <Column Name="版型" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="可退還的版費" DataType="System.Int32"/>
+        <Column Name="目標進貨量" DataType="System.Int32"/>
+        <Column Name="已進貨量" DataType="System.Int32"/>
+        <Column Name="是否結案" DataType="System.String"/>
+        <Column Name="付款別" DataType="System.String"/>
+        <Column Name="建立日期" DataType="System.String"/>
+        <Column Name="備註" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="500" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1814.4" Height="18.9">
+      <TextObject Name="Text1" Width="1814.4" Height="18.9" Text="版費" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="23.5" Width="1814.4" Height="18.9">
+      <TextObject Name="Text3" Width="330.75" Height="18.9" Border.Lines="All" Text="版型" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="330.75" Width="132.3" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="463.05" Width="378" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="841.05" Width="94.5" Height="18.9" Border.Lines="All" Text="可退還的版費" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="935.55" Width="94.5" Height="18.9" Border.Lines="All" Text="目標進貨量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="1030.05" Width="94.5" Height="18.9" Border.Lines="All" Text="已進貨量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="1124.55" Width="94.5" Height="18.9" Border.Lines="All" Text="是否結案" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="1219.05" Width="94.5" Height="18.9" Border.Lines="All" Text="付款別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="1313.55" Width="94.5" Height="18.9" Border.Lines="All" Text="建立日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="1408.05" Width="406.35" Height="18.9" Border.Lines="All" Text="備註" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="47" Width="1814.4" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="330.75" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.版型]" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="330.75" Width="132.3" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="463.05" Width="378" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="841.05" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.可退還的版費]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="935.55" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.目標進貨量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="1030.05" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.已進貨量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="1124.55" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.是否結案]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="1219.05" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.付款別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="1313.55" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.建立日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="1408.05" Width="406.35" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.備註]" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="70.49" Width="1814.4"/>
+  </ReportPage>
+</Report>

@@ -1558,8 +1558,8 @@ namespace TKPUR
                                     ,PURTA.TA004
                                     FROM [TKPUR].[dbo].[PURTATBCHAGE]
                                     LEFT JOIN [TK].dbo.PURTA ON PURTA.TA001=[PURTATBCHAGE].TA001 AND PURTA.TA002=[PURTATBCHAGE].TA002
-                                    WHERE [TA001]='{0}' AND [TA002]='{1}' AND [VERSIONS]='{2}'
-                                    ORDER BY [VERSIONS],[TA001],[TA002],[TB003]
+                                    WHERE  [PURTATBCHAGE].[TA001]='{0}' AND  [PURTATBCHAGE].[TA002]='{1}' AND  [PURTATBCHAGE].[VERSIONS]='{2}'
+                                    ORDER BY [PURTATBCHAGE].[VERSIONS],[PURTATBCHAGE].[TA001],[PURTATBCHAGE].[TA002],[PURTATBCHAGE].[TB003]
                               
                                     ", TA001, TA002, VERSIONS);
 

@@ -552,6 +552,52 @@ namespace TKPUR
             }
         }
 
+        public void SETFASTREPORT(string SDAYS, string EDAYS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            StringBuilder SQL2 = new StringBuilder();
+
+            SQL1.AppendFormat(@"
+                                SELECT 
+                                [NAMES] AS '版型' 
+                                ,[MB001] AS '品號' 
+                                ,[MB002] AS '品名' 
+                                ,[BACKMONEYS] AS '可退還的版費' 
+                                ,[TARGETNUMS] AS '目標進貨量' 
+                                ,[TOTALNUMS] AS '已進貨量' 
+                                ,[ISCLOSE] AS '是否結案' 
+                                ,[PAYKINDS] AS '付款別'
+                                ,CONVERT(NVARCHAR,[CREATEDATES],112) AS '建立日期'
+                                ,[COMMENTS] AS '備註'
+                                FROM [TKPUR].[dbo].[PURVERSIONSNUMS]
+                                WHERE 1=1
+ 
+                                ", SDAYS, EDAYS);
+
+            Report report1 = new Report();
+            report1.Load(@"REPORT\版費.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            report1.Preview = previewControl1;
+            report1.Show();
+        }
         #endregion
 
         #region BUTTON
@@ -559,6 +605,8 @@ namespace TKPUR
         {
             UDPATE_PURVERSIONSNUMS_TOTALNUMS();
             SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(),comboBox1.Text.ToString());
+
+            SETFASTREPORT(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
         }
 
         private void button2_Click(object sender, EventArgs e)
