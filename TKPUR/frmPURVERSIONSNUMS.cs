@@ -252,7 +252,7 @@ namespace TKPUR
                 }
                 else if(!string.IsNullOrEmpty(PAYKINDS))
                 {
-                    sbSqlQuery4.AppendFormat(@" AND [PAYKINDS] LIKE '%{0}%'", PAYKINDS);
+                    sbSqlQuery4.AppendFormat(@" AND [PAYKINDS] IN ('{0}')", PAYKINDS);
                 }
                 else
                 {
@@ -718,7 +718,7 @@ namespace TKPUR
             }
             else if (!string.IsNullOrEmpty(PAYKINDS))
             {
-                sbSqlQuery4.AppendFormat(@" AND [PAYKINDS] LIKE '%{0}%'", PAYKINDS);
+                sbSqlQuery4.AppendFormat(@" AND [PAYKINDS] IN ('{0}')", PAYKINDS);
             }
             else
             {
