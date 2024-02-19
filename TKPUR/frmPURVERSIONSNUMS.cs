@@ -207,7 +207,7 @@ namespace TKPUR
 
 
         }
-        public void SEARCH_PURVERSIONSNUMS(string NAMES, string MB001,string ISCLOSE,string PAYKINDS,string SDAYS,string EDAYS,string COMMENTS)
+        public void SEARCH_PURVERSIONSNUMS(string NAMES, string MB001,string ISCLOSE,string PAYKINDS,string SDAYS,string EDAYS,string COMMENTS,string MB002)
         {
             SqlDataAdapter adapter = new SqlDataAdapter();
             SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
@@ -218,6 +218,7 @@ namespace TKPUR
             StringBuilder sbSqlQuery4 = new StringBuilder();
             StringBuilder sbSqlQuery5 = new StringBuilder();
             StringBuilder sbSqlQuery6 = new StringBuilder();
+            StringBuilder sbSqlQuery7 = new StringBuilder();
             SqlTransaction tran;
             SqlCommand cmd = new SqlCommand();
             DataSet ds = new DataSet();
@@ -284,6 +285,14 @@ namespace TKPUR
                 {
                     sbSqlQuery6.AppendFormat(@" ");
                 }
+                if (!string.IsNullOrEmpty(MB002))
+                {
+                    sbSqlQuery7.AppendFormat(@" AND [MB002] LIKE '%{0}%'", MB002);
+                }
+                else
+                {
+                    sbSqlQuery7.AppendFormat(@" ");
+                }
 
                 sbSql.Clear();
                 sbSqlQuery.Clear();
@@ -308,7 +317,8 @@ namespace TKPUR
                                     {3}
                                     {4}
                                     {5}
-                                    ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString(), sbSqlQuery4.ToString(), sbSqlQuery5.ToString(), sbSqlQuery6.ToString());
+                                    {6}
+                                    ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString(), sbSqlQuery4.ToString(), sbSqlQuery5.ToString(), sbSqlQuery6.ToString(), sbSqlQuery7.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -690,7 +700,7 @@ namespace TKPUR
             }
         }
 
-        public void SETFASTREPORT(string NAMES, string MB001, string ISCLOSE, string PAYKINDS, string SDAYS, string EDAYS, string COMMENTS)
+        public void SETFASTREPORT(string NAMES, string MB001, string ISCLOSE, string PAYKINDS, string SDAYS, string EDAYS, string COMMENTS,string MB002)
         {
             StringBuilder SQL1 = new StringBuilder();
             StringBuilder sbSql = new StringBuilder();
@@ -700,6 +710,7 @@ namespace TKPUR
             StringBuilder sbSqlQuery4 = new StringBuilder();
             StringBuilder sbSqlQuery5 = new StringBuilder();
             StringBuilder sbSqlQuery6 = new StringBuilder();
+            StringBuilder sbSqlQuery7 = new StringBuilder();
 
             if (!string.IsNullOrEmpty(NAMES))
             {
@@ -750,6 +761,14 @@ namespace TKPUR
             {
                 sbSqlQuery6.AppendFormat(@" ");
             }
+            if (!string.IsNullOrEmpty(MB002))
+            {
+                sbSqlQuery7.AppendFormat(@" AND [MB002] LIKE '%{0}%'", MB002);
+            }
+            else
+            {
+                sbSqlQuery7.AppendFormat(@" ");
+            }
 
             sbSql.Clear();
             sbSqlQuery.Clear();
@@ -774,7 +793,8 @@ namespace TKPUR
                                     {3}
                                     {4}
                                     {5}
-                                    ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString(), sbSqlQuery4.ToString(), sbSqlQuery5.ToString(), sbSqlQuery6.ToString());
+                                    {6}
+                                    ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString(), sbSqlQuery4.ToString(), sbSqlQuery5.ToString(), sbSqlQuery6.ToString(), sbSqlQuery7.ToString());
             SQL1 = sbSql;
 
             Report report1 = new Report();
@@ -808,23 +828,25 @@ namespace TKPUR
         {
             UDPATE_PURVERSIONSNUMS_TOTALNUMS();
 
-            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(),comboBox1.Text.ToString(), comboBox3.Text.ToString(),dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
-            SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
+            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(),comboBox1.Text.ToString(), comboBox3.Text.ToString(),dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
+            SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             ADD_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(),comboBox2.Text.ToString());
-            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
-            SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
+
+            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
+            SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
 
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             UPDATE_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(), comboBox2.Text.ToString(), comboBox4.Text.ToString(),dateTimePicker3.Value.ToString("yyyyMMdd"),textBox10.Text.Trim());
-            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
-            SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
+
+            SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
+            SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
 
         }
 
@@ -835,8 +857,9 @@ namespace TKPUR
             if (dialogResult == DialogResult.Yes)
             {
                 DELETE_PURVERSIONSNUMS(textBox3.Text.Trim());
-                SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
-                SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim());
+
+                SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
+                SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
             }
             else if (dialogResult == DialogResult.No)
             {
