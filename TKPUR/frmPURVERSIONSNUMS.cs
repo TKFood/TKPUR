@@ -397,7 +397,7 @@ namespace TKPUR
             }
         }
 
-        public void ADD_PURVERSIONSNUMS(string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS,string TOTALNUMS, string ISCLOSE)
+        public void ADD_PURVERSIONSNUMS(string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS, string TOTALNUMS, string ISCLOSE, string PAYKINDS, string CREATEDATES, string COMMENTS)
         {
             try
             {
@@ -420,12 +420,14 @@ namespace TKPUR
 
                 sbSql.Clear();
 
+                TOTALNUMS = "0";
+                CREATEDATES = DateTime.Now.ToString("yyyy/MM/dd");
                 sbSql.AppendFormat(@"  
                                    INSERT INTO [TKPUR].[dbo].[PURVERSIONSNUMS]
-                                    ([NAMES],[MB001],[MB002],[BACKMONEYS],[TARGETNUMS],[TOTALNUMS],[ISCLOSE])
+                                    (NAMES,MB001,MB002,BACKMONEYS,TARGETNUMS,TOTALNUMS,ISCLOSE,PAYKINDS,CREATEDATES,COMMENTS)
                                     VALUES
-                                    ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')
-                                    ", NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE);
+                                    ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')
+                                    ", NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE, PAYKINDS, CREATEDATES, COMMENTS);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -834,7 +836,7 @@ namespace TKPUR
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ADD_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(),comboBox2.Text.ToString());
+            ADD_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(), comboBox2.Text.ToString(), comboBox4.Text.ToString(), dateTimePicker3.Value.ToString("yyyyMMdd"), textBox10.Text.Trim());
 
             SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
             SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
