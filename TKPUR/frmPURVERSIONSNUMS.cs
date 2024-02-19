@@ -44,9 +44,22 @@ namespace TKPUR
             comboBox2load();
             comboBox3load();
             comboBox4load();
+
+            SETDATES();
+
         }
 
         #region FUNCTION
+        public void SETDATES()
+        {
+            // 取得今年的第一天
+            DateTime firstDayOfYear = new DateTime(DateTime.Now.Year, 1, 1);
+            // 取得今年的最後一天
+            DateTime lastDayOfYear = new DateTime(DateTime.Now.Year, 12, 31);
+
+            dateTimePicker1.Value = firstDayOfYear;
+            dateTimePicker2.Value = lastDayOfYear;
+        }
         public void comboBox1load()
         {
             //20210902密
