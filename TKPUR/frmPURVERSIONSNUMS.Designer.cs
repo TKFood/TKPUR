@@ -416,12 +416,12 @@
             this.tableLayoutPanel2.Controls.Add(this.comboBox4, 1, 3);
             this.tableLayoutPanel2.Controls.Add(this.label15, 2, 3);
             this.tableLayoutPanel2.Controls.Add(this.dateTimePicker3, 3, 3);
-            this.tableLayoutPanel2.Controls.Add(this.label16, 4, 3);
-            this.tableLayoutPanel2.Controls.Add(this.textBox10, 5, 3);
             this.tableLayoutPanel2.Controls.Add(this.comboBox2, 1, 4);
             this.tableLayoutPanel2.Controls.Add(this.label6, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.button4, 6, 4);
             this.tableLayoutPanel2.Controls.Add(this.button3, 6, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label16, 2, 4);
+            this.tableLayoutPanel2.Controls.Add(this.textBox10, 3, 4);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -600,18 +600,19 @@
             // 
             this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(517, 132);
+            this.label16.Location = new System.Drawing.Point(319, 172);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(46, 16);
+            this.label16.Size = new System.Drawing.Size(75, 16);
             this.label16.TabIndex = 23;
             this.label16.Text = "備註";
             // 
             // textBox10
             // 
             this.textBox10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox10.Location = new System.Drawing.Point(569, 126);
+            this.tableLayoutPanel2.SetColumnSpan(this.textBox10, 3);
+            this.textBox10.Location = new System.Drawing.Point(400, 166);
             this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(163, 27);
+            this.textBox10.Size = new System.Drawing.Size(332, 27);
             this.textBox10.TabIndex = 26;
             // 
             // comboBox2
