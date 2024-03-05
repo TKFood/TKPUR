@@ -207,6 +207,12 @@
     <Compile Include="FrmREPORTPURTD.Designer.cs">
       <DependentUpon>FrmREPORTPURTD.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTUSED.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTUSED.Designer.cs">
+      <DependentUpon>frmREPORTUSED.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmREPURPLAN.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -319,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmREPORTPURTD.resx">
       <DependentUpon>FrmREPORTPURTD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTUSED.resx">
+      <DependentUpon>frmREPORTUSED.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmREPURPLAN.resx">
       <DependentUpon>FrmREPURPLAN.cs</DependentUpon>
