@@ -123,50 +123,40 @@ namespace TKPUR
 
 
             ///BOM表用量，因BOM表修改、同時使用新舊品號，單用品號計算可能會有少算，所以要比對製令超領量
-            sbSql.AppendFormat(@"                                   
+            sbSql.AppendFormat(@"                                  
                                 
-                                SELECT TB003 AS '品號',MB002 AS '品名',MB003 AS '規格',MB004 AS '單位',SUM(TB004) AS '總製令需量',SUM(TB005) AS '總領料量',SUM(BOMUSED) AS '依成品入庫量反推領用量',SUM(OVERUSED) AS '反推領用量-實際領用量(+是多領、-是少領)',(SUM(TB005)-SUM(TB004)) AS '總超領料量'
-                                ,ISNULL((SELECT SUM(LA011) FROM [TK].dbo.PURTG,[TK].dbo.PURTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND TG013='Y' AND TH004=TB003 AND TG003>='{0}' AND TG003<='{1}' ),0) AS '總進貨量'
-                                ,ISNULL((SELECT SUM(TH047) FROM [TK].dbo.PURTG,[TK].dbo.PURTH WHERE TG001=TH001 AND TG002=TH002  AND TG013='Y' AND TH004=TB003 AND TG003>='{0}' AND TG003<='{1}' ),0) AS '總進貨金額'
-                                ,ISNULL((SELECT SUM(TH047) FROM [TK].dbo.PURTG,[TK].dbo.PURTH WHERE TG001=TH001 AND TG002=TH002  AND TG013='Y' AND TH004=TB003 AND TG003>='{0}' AND TG003<='{1}' )/(SELECT SUM(LA011) FROM [TK].dbo.PURTG,[TK].dbo.PURTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND TG013='Y' AND TH004=TB003 AND TG003>='{0}' AND TG003<='{1}' ),0) AS '平均進貨金額'
-                                FROM 
-                                (
-                                SELECT TA001,TA002,TA006,TA017,TB003,TB004,TB005,REALSPCTS,FAKESPCTS
-                                ,ISNULL( (CASE WHEN REALSPCTS>0 THEN REALSPCTS*TA017 ELSE FAKESPCTS*TA017 END ) ,0) AS 'BOMUSED'
-                                ,ISNULL( (TB005-(CASE WHEN REALSPCTS>0 THEN REALSPCTS*TA017 ELSE FAKESPCTS*TA017 END )) ,0) AS 'OVERUSED'
-                                FROM 
-                                (
-                                SELECT TA001,TA002,TA006,TA017,TB003,TB004,TB005
-                                ,(
-                                SELECT AVG(1/MC004*MD006/MD007*(1+MD008))
-                                FROM [TK].dbo.BOMMC,[TK].dbo.BOMMD 
-                                WHERE MC001=MD001 
-                                AND MC001=TA006
-                                AND MD003=TB003
-                                ) AS 'REALSPCTS'
-                                ,(
-                                SELECT AVG(1/MC004*MD006/MD007 )
-                                FROM [TK].dbo.BOMMC,[TK].dbo.BOMMD 
-                                WHERE MC001=MD001 
-                                AND MC001=TA006
-                                AND MD003 LIKE SUBSTRING(TB003,1,6)+'%'
-                                ) AS 'FAKESPCTS'
-                                FROM [TK].dbo.MOCTA,[TK].dbo.MOCTB
-                                WHERE TA001=TB001 AND TA002=TB002
-                                AND TA013='Y'
-                                AND (TB003 LIKE '2%')
-                                AND TA003>='{0}' AND TA003<='{1}'
-                                ) AS TEMP
-                                ) AS TEMP2,[TK].dbo.INVMB
-                                WHERE TEMP2.TB003=MB001
-                                GROUP BY TB003,MB002,MB003,MB004
+                                SELECT 
+                                MB001 AS '品號',MB002 AS '品名',MB003 AS '規格',MB004 AS '單位',SUM(TB004) AS '需領用量',SUM(TB005) AS '已領用量',SUM(CALUSED) AS '依入庫數計算用量(含損秏率)'
+                                ,ISNULL((SELECT AVG(MD008) FROM [TK].dbo.BOMMD WHERE MD003=MB001 AND MD008>0 ),0) AS 'BOM損秏率'
+                                ,(SUM(CALUSED)/(1+ISNULL((SELECT AVG(MD008) FROM [TK].dbo.BOMMD WHERE MD003=MB001 AND MD008>0 ),0))) AS '依入庫數計算用量(不含損秏率)'
+                                ,(SUM(TB005)-(SUM(CALUSED)/(1+ISNULL((SELECT AVG(MD008) FROM [TK].dbo.BOMMD WHERE MD003=MB001 AND MD008>0 ),0)))) AS '已領用量-依入庫數計算用量(不含損秏率)(+多領-少顉)'
+                                ,(1+ISNULL((SELECT AVG(MD008) FROM [TK].dbo.BOMMD WHERE MD003=MB001 AND MD008>0 ),0)) '總損秏率'
+                                ,ISNULL((SELECT SUM(LA011) FROM [TK].dbo.PURTG,[TK].dbo.PURTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND TG013='Y' AND TH004=MB001 AND TG003>='{0}' AND TG003<='{1}' ),0) AS '總進貨量'
+                                ,ISNULL((SELECT SUM(TH047) FROM [TK].dbo.PURTG,[TK].dbo.PURTH WHERE TG001=TH001 AND TG002=TH002  AND TG013='Y' AND TH004=MB001 AND TG003>='{0}' AND TG003<='{1}' ),0) AS '總進貨金額'
+                                ,ISNULL((SELECT SUM(TH047) FROM [TK].dbo.PURTG,[TK].dbo.PURTH WHERE TG001=TH001 AND TG002=TH002  AND TG013='Y' AND TH004=MB001 AND TG003>='{0}' AND TG003<='{1}' )/(SELECT SUM(LA011) FROM [TK].dbo.PURTG,[TK].dbo.PURTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND TG013='Y' AND TH004=MB001 AND TG003>='{0}' AND TG003<='{1}' ),0) AS '平均單位金額'
 
-                                ORDER BY MB002,TB003,MB003,MB004
+                                FROM 
+                                (
+                                SELECT MB001,MB002,MB003,MB004
+                                ,TA001,TA002,TA006,TA015,TA017
+                                ,TB003,TB004,TB005
+                                ,(CASE WHEN TB004>0 THEN CONVERT(DECIMAL(16,3),TB004/TA015*TA017 ) ELSE 0 END ) AS 'CALUSED'
+                                FROM [TK].dbo.MOCTA
+                                LEFT JOIN [TK].dbo.MOCTB ON TA001=TB001 AND TA002=TB002
+                                LEFT JOIN [TK].dbo.INVMB ON MB001=TB003
+                                WHERE TA013='Y'
+                                AND TB003 LIKE '2%'
+                                AND TA003>='{0}' AND TA003<='{1}'
+                                --AND TA006 LIKE '3%'
+                                ) AS TEMP
+                                GROUP BY MB001,MB002,MB003,MB004
+                                ORDER BY MB002,MB004,MB001
+                                
                                     ", SDAYS, EDAYS);
             SQL1 = sbSql;
 
             Report report1 = new Report();
-            report1.Load(@"REPORT\物料使用及損秏bom.frx");
+            report1.Load(@"REPORT\物料使用及損秏bomV2.frx");
 
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
