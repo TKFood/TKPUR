@@ -81,6 +81,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmPURMODELSNUMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPURMODELSNUMS.Designer.cs">
+      <DependentUpon>frmPURMODELSNUMS.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPURSEND.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,6 +269,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmPURMODELSNUMS.resx">
+      <DependentUpon>frmPURMODELSNUMS.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmPURSEND.resx">
       <DependentUpon>FrmPURSEND.cs</DependentUpon>
     </EmbeddedResource>
