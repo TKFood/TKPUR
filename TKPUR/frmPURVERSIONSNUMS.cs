@@ -319,6 +319,7 @@ namespace TKPUR
                                     {4}
                                     {5}
                                     {6}
+                                    ORDER BY CONVERT(NVARCHAR,[CREATEDATES],112)
                                     ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString(), sbSqlQuery4.ToString(), sbSqlQuery5.ToString(), sbSqlQuery6.ToString(), sbSqlQuery7.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
@@ -799,6 +800,7 @@ namespace TKPUR
                                     {4}
                                     {5}
                                     {6}
+                                    ORDER BY CONVERT(NVARCHAR,[CREATEDATES],112)
                                     ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString(), sbSqlQuery4.ToString(), sbSqlQuery5.ToString(), sbSqlQuery6.ToString(), sbSqlQuery7.ToString());
             SQL1 = sbSql;
 
