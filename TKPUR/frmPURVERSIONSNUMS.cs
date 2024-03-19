@@ -309,6 +309,7 @@ namespace TKPUR
                                     ,[PAYKINDS] AS '付款別'
                                     ,CONVERT(NVARCHAR,[CREATEDATES],112) AS '建立日期'
                                     ,[COMMENTS] AS '備註'
+                                    ,[ID]
                                     FROM [TKPUR].[dbo].[PURVERSIONSNUMS]
                                     WHERE 1=1
                                     {0}
@@ -374,7 +375,9 @@ namespace TKPUR
                     textBox7.Text = row.Cells["目標進貨量"].Value.ToString().Trim();
                     textBox8.Text = row.Cells["已進貨量"].Value.ToString().Trim();
                     textBox10.Text = row.Cells["備註"].Value.ToString().Trim();
-                    
+
+                    textBoxID.Text = row.Cells["ID"].Value.ToString().Trim();
+
                     comboBox2.Text = row.Cells["是否結案"].Value.ToString().Trim();
                     comboBox4.Text = row.Cells["付款別"].Value.ToString().Trim();
 
@@ -456,7 +459,7 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
-        public void UPDATE_PURVERSIONSNUMS(string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS, string TOTALNUMS, string ISCLOSE,string PAYKINDS,string CREATEDATES,string COMMENTS)
+        public void UPDATE_PURVERSIONSNUMS(string ID,string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS, string TOTALNUMS, string ISCLOSE,string PAYKINDS,string CREATEDATES,string COMMENTS)
         {
             try
             {
@@ -482,9 +485,9 @@ namespace TKPUR
                 sbSql.AppendFormat(@"  
                                    
                                     UPDATE  [TKPUR].[dbo].[PURVERSIONSNUMS]
-                                    SET MB001='{1}',MB002='{2}',BACKMONEYS='{3}',TARGETNUMS='{4}',TOTALNUMS='{5}',ISCLOSE='{6}',PAYKINDS='{7}',CREATEDATES='{8}',COMMENTS='{9}'
-                                    WHERE NAMES='{0}'
-                                    ", NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE, PAYKINDS, CREATEDATES, COMMENTS);
+                                    SET NAMES='{1}',MB001='{2}',MB002='{3}',BACKMONEYS='{4}',TARGETNUMS='{5}',TOTALNUMS='{6}',ISCLOSE='{7}',PAYKINDS='{8}',CREATEDATES='{9}',COMMENTS='{10}'
+                                    WHERE ID='{0}'
+                                    ", ID, NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE, PAYKINDS, CREATEDATES, COMMENTS);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -845,7 +848,7 @@ namespace TKPUR
 
         private void button3_Click(object sender, EventArgs e)
         {
-            UPDATE_PURVERSIONSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(), comboBox2.Text.ToString(), comboBox4.Text.ToString(),dateTimePicker3.Value.ToString("yyyyMMdd"),textBox10.Text.Trim());
+            UPDATE_PURVERSIONSNUMS(textBoxID.Text, textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(), comboBox2.Text.ToString(), comboBox4.Text.ToString(),dateTimePicker3.Value.ToString("yyyyMMdd"),textBox10.Text.Trim());
 
             SEARCH_PURVERSIONSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
             SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
