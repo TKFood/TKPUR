@@ -19,7 +19,7 @@ using FastReport;
 using FastReport.Data;
 using System.Xml;
 using TKITDLL;
-using System.Globalization;
+using System.Globalization; 
 
 namespace TKPUR
 {
