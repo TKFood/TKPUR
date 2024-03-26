@@ -455,9 +455,10 @@
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel3.SetColumnSpan(this.textBox1, 3);
             this.textBox1.Location = new System.Drawing.Point(123, 86);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(114, 27);
+            this.textBox1.Size = new System.Drawing.Size(274, 27);
             this.textBox1.TabIndex = 19;
             // 
             // previewControl3
