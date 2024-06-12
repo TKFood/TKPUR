@@ -39,12 +39,13 @@ namespace TKPUR
 
         public FrmTBPURCHECKFAX()
         {
-            InitializeComponent();
-
-            SEARCH(dateTimePicker1.Value.ToString("yyyyMMdd"));
+            InitializeComponent();           
         }
 
-
+        private void FrmTBPURCHECKFAX_Load(object sender, EventArgs e)
+        {
+            SEARCH(dateTimePicker1.Value.ToString("yyyyMMdd"));
+        }
         #region FUNCTION
         public void SEARCH(string SDATES)
         {
@@ -103,7 +104,24 @@ namespace TKPUR
                 if (ds.Tables["ds"].Rows.Count >= 1)
                 {
                     dataGridView1.DataSource = ds.Tables["ds"];
-                    dataGridView1.AutoResizeColumns();                  
+                    dataGridView1.AutoResizeColumns();
+
+                    //foreach (DataGridViewRow dgRow in dataGridView1.Rows)
+                    //{
+                    //    //dgRow.DefaultCellStyle.ForeColor = Color.Blue;
+
+                    //    // 确保当前行不是新行并且单元格不为空
+                    //    if (!dgRow.IsNewRow && dgRow.Cells["是否傳真"].Value != null)
+                    //    {
+                    //        // 判断单元格的值是否为 "N"
+                    //        if (dgRow.Cells["是否傳真"].Value.ToString().Trim().Equals("N"))
+                    //        {
+                    //            // 将这行的前景色设置成蓝色
+                    //            //dgRow.DefaultCellStyle.ForeColor = Color.Blue;
+                    //            dgRow.DefaultCellStyle.BackColor = Color.Pink;
+                    //        }
+                    //    }
+                    //}
                 }
                 else
                 {
@@ -120,6 +138,29 @@ namespace TKPUR
             finally
             {
 
+            }
+        }
+
+        private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            ApplyRowStyles();
+        }
+
+        private void ApplyRowStyles()
+        {
+            foreach (DataGridViewRow dgRow in dataGridView1.Rows)
+            {
+                // 确保当前行不是新行并且单元格不为空
+                if (!dgRow.IsNewRow && dgRow.Cells["是否傳真"].Value != null)
+                {
+                    // 判断单元格的值是否为 "N"
+                    if (dgRow.Cells["是否傳真"].Value.ToString().Trim().Equals("N"))
+                    {
+                        // 将这行的背景色设置成蓝色
+                        dgRow.DefaultCellStyle.BackColor = Color.Pink;
+                        dgRow.DefaultCellStyle.ForeColor = Color.Black; // 设置前景色为白色，以确保文本可见
+                    }
+                }
             }
         }
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
@@ -252,9 +293,18 @@ namespace TKPUR
                 sbSql.Clear();
 
                 sbSql.AppendFormat(@"  
+                                   INSERT INTO [TKPUR].[dbo].[TBPURCHECKFAX] 
+                                    (
+                                    TC001,
+                                    TC002
+                                    )
+                                    VALUES
+                                    (
+                                    '{0}'
+                                    ,'{1}'
+                                    )
                                    
-                                   
-                                    ",TC001,TC002 );
+                                    ", TC001,TC002 );
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -270,7 +320,7 @@ namespace TKPUR
                 {
                     tran.Commit();      //執行交易  
 
-
+                    MessageBox.Show("完成");
                 }
             }
             catch
@@ -292,13 +342,21 @@ namespace TKPUR
         }
         private void button1_Click(object sender, EventArgs e)
         {
+            if(!string.IsNullOrEmpty(textBox1.Text.Trim()))
+            {
+                ADD_TBPURCHECKFAX(textBox1.Text.Trim(), textBox2.Text.Trim());
+            }
+
+            SEARCH(dateTimePicker1.Value.ToString("yyyyMMdd"));
 
         }
 
 
 
+
+
         #endregion
 
-        
+       
     }
 }
