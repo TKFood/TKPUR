@@ -75,7 +75,11 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"
                                     SELECT 
-                                    TC004 AS '供應廠商'
+                                    (CASE WHEN (SELECT COUNT(*) FROM [TKPUR].[dbo].[TBPURCHECKFAX] 
+                                    WHERE REPLACE([TBPURCHECKFAX].TC001+[TBPURCHECKFAX].TC002,' ','')=REPLACE(PURTC.TC001+PURTC.TC002,' ',''))>=1 THEN 'Y' ELSE 'N' END
+                                    ) AS '是否傳真'
+                                    
+                                    ,TC004 AS '供應廠商'
                                     ,MA002 AS '廠商'
                                     ,TC001 AS '採購單別'
                                     ,TC002 AS '採購單號'
