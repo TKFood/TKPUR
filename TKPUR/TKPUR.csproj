@@ -255,6 +255,12 @@
     <Compile Include="FrmTBCOSTCAL.Designer.cs">
       <DependentUpon>FrmTBCOSTCAL.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmTBPURCHECKFAX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmTBPURCHECKFAX.Designer.cs">
+      <DependentUpon>FrmTBPURCHECKFAX.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmUPDATEPURTB.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -355,6 +361,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmTBCOSTCAL.resx">
       <DependentUpon>FrmTBCOSTCAL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmTBPURCHECKFAX.resx">
+      <DependentUpon>FrmTBPURCHECKFAX.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmUPDATEPURTB.resx">
       <DependentUpon>FrmUPDATEPURTB.cs</DependentUpon>
