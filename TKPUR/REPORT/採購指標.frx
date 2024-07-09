@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/09/2024 14:00:40" ReportInfo.Modified="07/09/2024 15:02:01" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUE7lTf0LI1d0CnQELHBpzFy">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;&#13;&#10;WITH MonthData AS (&#13;&#10;    SELECT CAST(YEAR('20240101') AS VARCHAR(4)) AS YEARS,&#13;&#10;           1 AS Month,&#13;&#10;		   RIGHT('0' + CAST(1 AS VARCHAR(2)), 2) AS MONTHS,&#13;&#10;		   RIGHT('0' + CAST(2 AS VARCHAR(2)), 2) AS NEXTMONTHS,&#13;&#10;		   CAST(YEAR('20240101') AS VARCHAR(4)) AS NEXTYEARS&#13;&#10;    UNION ALL&#13;&#10;    SELECT YEARS,&#13;&#10;           Month + 1,&#13;&#10;		   RIGHT('0' + CAST((Month + 1) AS VARCHAR(2)), 2) AS MONTHS,&#13;&#10;		   CASE WHEN (Month + 2)&lt;&gt;13 THEN RIGHT('0' + CAST((Month + 2) AS VARCHAR(2)), 2) ELSE '01' END AS NEXTMONTHS,&#13;&#10;		   CASE WHEN (Month + 2)&lt;&gt;13 THEN  CAST(YEAR('20240101') AS VARCHAR(4))  ELSE  CAST((YEAR('20240101')+1) AS VARCHAR(4)) END AS NEXTYEARS&#13;&#10;    FROM MonthData&#13;&#10;    WHERE Month &lt; 12&#13;&#10;)&#13;&#10;&#13;&#10;SELECT *&#13;&#10;,(應付款款期初一月+應付款款期末) AS '應付帳款區間小計'&#13;&#10;,((應付款款期初一月+應付款款期末)/2) AS '平均應付帳款'&#13;&#10;,(銷貨成本累計/((應付款款期初一月+應付款款期末)/2)) AS '應付帳款周轉率'&#13;&#10;,CASE WHEN (銷貨成本累計/((應付款款期初一月+應付款款期末)/2)) &gt;0 THEN (累積天數/(銷貨成本累計/((應付款款期初一月+應付款款期末)/2)) ) ELSE 0 END  AS '應付帳款周轉天數'&#13;&#10;,(CASE WHEN 進貨各月總金額&gt;0 AND 銷貨各月金額&gt;0 THEN 進貨各月總金額/銷貨各月金額 ELSE 0 END ) AS '進貨佔營收佔比'&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT YEARS,MONTHS,NEXTMONTHS,NEXTYEARS&#13;&#10;,(&#13;&#10;SELECT ISNULL(SUM(LA017-LA020-LA022-LA023),0)&#13;&#10;FROM [TK].dbo.SASLA&#13;&#10;WHERE YEAR(LA015)=YEARS AND MONTH(LA015)=MONTHS&#13;&#10;) AS '銷貨各月金額'&#13;&#10;,(&#13;&#10;SELECT ISNULL(SUM(LA024),0)&#13;&#10;FROM [TK].dbo.SASLA&#13;&#10;WHERE YEAR(LA015)=YEARS AND MONTH(LA015)=MONTHS&#13;&#10;) AS '銷貨各月成本'&#13;&#10;,(&#13;&#10;SELECT ISNULL(SUM(LA024),0)&#13;&#10;FROM [TK].dbo.SASLA&#13;&#10;WHERE YEAR(LA015)=YEARS AND MONTH(LA015)&lt;=MONTHS&#13;&#10;) AS '銷貨成本累計'&#13;&#10;,(&#13;&#10;SELECT ISNULL(SUM(TH047+TH048),0) AS TOTALMONEYS&#13;&#10;FROM [TK].dbo.PURTG,[TK].dbo.PURTH&#13;&#10;WHERE 1=1&#13;&#10;AND TG001=TH001 AND TG002=TH002&#13;&#10;AND TG013='Y'&#13;&#10;AND TG003&gt;=YEARS+MONTHS+'01'&#13;&#10;AND TG003&lt;=YEARS+MONTHS+'31'&#13;&#10;) AS '進貨各月總金額'&#13;&#10;,&#13;&#10;(&#13;&#10;SELECT ISNULL(SUM(TA028+TA029),0)&#13;&#10;FROM [TK].dbo.ACPTA&#13;&#10;WHERE 1=1&#13;&#10;AND TA024='Y'&#13;&#10;AND TA003&lt;YEARS+MONTHS+'01'&#13;&#10;AND TA051&gt;YEARS+MONTHS+'01'&#13;&#10;) AS '應付款款期初'&#13;&#10;,&#13;&#10;(&#13;&#10;SELECT ISNULL(SUM(TA028+TA029),0)&#13;&#10;FROM [TK].dbo.ACPTA&#13;&#10;WHERE 1=1&#13;&#10;AND TA024='Y'&#13;&#10;AND TA003&lt;NEXTYEARS+NEXTMONTHS+'01'&#13;&#10;AND TA051&gt;NEXTYEARS+NEXTMONTHS+'01'&#13;&#10;) AS '應付款款期末'&#13;&#10;,&#13;&#10;(&#13;&#10;SELECT SUM(TA028+TA029)&#13;&#10;FROM [TK].dbo.ACPTA&#13;&#10;WHERE 1=1&#13;&#10;AND TA024='Y'&#13;&#10;AND TA003&lt;YEARS+'0101'&#13;&#10;AND TA051&gt;YEARS+'0101'&#13;&#10;) AS '應付款款期初一月'&#13;&#10;,DATEDIFF(day, YEARS+'0101', YEARS+NEXTMONTHS+'01') AS '累積天數'&#13;&#10;FROM MonthData&#13;&#10;) AS TEMP">
+        <Column Name="YEARS" DataType="System.String"/>
+        <Column Name="MONTHS" DataType="System.String"/>
+        <Column Name="NEXTMONTHS" DataType="System.String"/>
+        <Column Name="NEXTYEARS" DataType="System.String"/>
+        <Column Name="銷貨各月金額" DataType="System.Decimal"/>
+        <Column Name="銷貨各月成本" DataType="System.Decimal"/>
+        <Column Name="銷貨成本累計" DataType="System.Decimal"/>
+        <Column Name="進貨各月總金額" DataType="System.Decimal"/>
+        <Column Name="應付款款期初" DataType="System.Decimal"/>
+        <Column Name="應付款款期末" DataType="System.Decimal"/>
+        <Column Name="應付款款期初一月" DataType="System.Decimal"/>
+        <Column Name="累積天數" DataType="System.Int32"/>
+        <Column Name="應付帳款區間小計" DataType="System.Decimal"/>
+        <Column Name="平均應付帳款" DataType="System.Decimal"/>
+        <Column Name="應付帳款周轉率" DataType="System.Decimal"/>
+        <Column Name="應付帳款周轉天數" DataType="System.Decimal"/>
+        <Column Name="進貨佔營收佔比" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="採購指標"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="23.5" Width="1047.06" Height="258.87">
+      <MatrixObject Name="Matrix1" Width="280.39" Height="218.28" Border.Lines="All" FixedRows="1" FixedColumns="2" DataSource="Table">
+        <MatrixColumns>
+          <Header Expression="[Table.MONTHS]" Totals="false"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[Table.YEARS]" Totals="false"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[Table.銷貨各月金額]"/>
+          <Cell Expression="[Table.銷貨各月成本]"/>
+          <Cell Expression="[Table.應付款款期初一月]"/>
+          <Cell Expression="[Table.應付款款期末]"/>
+          <Cell Expression="[Table.應付帳款區間小計]"/>
+          <Cell Expression="[Table.平均應付帳款]"/>
+          <Cell Expression="[Table.累積天數]"/>
+          <Cell Expression="[Table.應付帳款周轉率]"/>
+          <Cell Expression="[Table.應付帳款周轉天數]"/>
+          <Cell Expression="[Table.進貨各月總金額]"/>
+          <Cell Expression="[Table.進貨佔營收佔比]"/>
+        </MatrixCells>
+        <TableColumn Name="Column1" Width="52.31" AutoSize="true"/>
+        <TableColumn Name="Column2" Width="107.86" AutoSize="true"/>
+        <TableColumn Name="Column3" Width="120.22" AutoSize="true"/>
+        <TableRow Name="Row1" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell1" Border.Lines="All" Text="年度" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell2" Border.Lines="All" Text="指標" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell5" Border.Lines="All" Text="[MONTHS]" HorzAlign="Center" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell3" Border.Lines="All" Text="[YEARS]" HorzAlign="Center" VertAlign="Center" RowSpan="11"/>
+          <TableCell Name="Cell4" Border.Lines="All" Text="銷貨各月金額" VertAlign="Center"/>
+          <TableCell Name="Cell6" Border.Lines="All" Text="[銷貨各月金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell7"/>
+          <TableCell Name="Cell8" Border.Lines="All" Text="銷貨各月成本" VertAlign="Center"/>
+          <TableCell Name="Cell9" Border.Lines="All" Text="[銷貨各月成本]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row4" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell13"/>
+          <TableCell Name="Cell14" Border.Lines="All" Text="應付款款期初" VertAlign="Center"/>
+          <TableCell Name="Cell15" Border.Lines="All" Text="[應付款款期初一月]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row5" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell17"/>
+          <TableCell Name="Cell18" Border.Lines="All" Text="應付款款期末" VertAlign="Center"/>
+          <TableCell Name="Cell19" Border.Lines="All" Text="[應付款款期末]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row6" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell21"/>
+          <TableCell Name="Cell22" Border.Lines="All" Text="應付帳款區間小計" VertAlign="Center"/>
+          <TableCell Name="Cell23" Border.Lines="All" Text="[應付帳款區間小計]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row7" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell25"/>
+          <TableCell Name="Cell26" Border.Lines="All" Text="平均應付帳款" VertAlign="Center"/>
+          <TableCell Name="Cell27" Border.Lines="All" Text="[平均應付帳款]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row8" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell29"/>
+          <TableCell Name="Cell30" Border.Lines="All" Text="累積天數" VertAlign="Center"/>
+          <TableCell Name="Cell31" Border.Lines="All" Text="[累積天數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row9" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell33"/>
+          <TableCell Name="Cell34" Border.Lines="All" Text="應付帳款周轉率" VertAlign="Center"/>
+          <TableCell Name="Cell35" Border.Lines="All" Fill.Color="Yellow" Text="[應付帳款周轉率]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="3" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row10" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell37"/>
+          <TableCell Name="Cell38" Border.Lines="All" Text="應付帳款周轉天數" VertAlign="Center"/>
+          <TableCell Name="Cell39" Border.Lines="All" Fill.Color="Yellow" Text="[應付帳款周轉天數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row11" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell41"/>
+          <TableCell Name="Cell42" Border.Lines="All" Text="進貨各月總金額" VertAlign="Center"/>
+          <TableCell Name="Cell43" Border.Lines="All" Text="[進貨各月總金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row12" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell44"/>
+          <TableCell Name="Cell45" Border.Lines="All" Text="進貨佔營收佔比" VertAlign="Center"/>
+          <TableCell Name="Cell46" Border.Lines="All" Fill.Color="Yellow" Text="[進貨佔營收佔比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+  </ReportPage>
+</Report>
