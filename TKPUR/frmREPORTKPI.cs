@@ -42,12 +42,16 @@ namespace TKPUR
         {
             InitializeComponent();
 
+            
+        }
+
+        #region FUNCTION
+        private void frmREPORTKPI_Load(object sender, EventArgs e)
+        {
             comboBox1load();
 
             SETDATES();
         }
-
-        #region FUNCTION
         public void SETDATES()
         {
             // 取得今年的第一天
@@ -97,6 +101,24 @@ namespace TKPUR
             sqlConn.Close();
 
 
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(comboBox1.Text.Equals("應付帳款及進貨佔比"))
+            {
+                dateTimePicker1.Enabled = true;
+
+                dateTimePicker2.Enabled = false;
+                dateTimePicker3.Enabled = false;
+            }
+            else if(comboBox1.Text.Equals("新進廠商清單"))
+            {
+                dateTimePicker1.Enabled = false;
+
+                dateTimePicker2.Enabled = true;
+                dateTimePicker3.Enabled = true;
+            }
         }
         public void SETFASTREPORT(string REPORTNAME)
         {
@@ -265,6 +287,9 @@ namespace TKPUR
         {
             SETFASTREPORT(comboBox1.Text.ToString());
         }
+
         #endregion
+
+       
     }
 }
