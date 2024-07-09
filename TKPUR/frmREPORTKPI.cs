@@ -158,13 +158,13 @@ namespace TKPUR
                                            1 AS Month,
 		                                   RIGHT('0' + CAST(1 AS VARCHAR(2)), 2) AS MONTHS,
 		                                   RIGHT('0' + CAST(2 AS VARCHAR(2)), 2) AS NEXTMONTHS,
-		                                   CAST(YEAR('20240101') AS VARCHAR(4)) AS NEXTYEARS
+		                                   CAST(YEAR('{0}') AS VARCHAR(4)) AS NEXTYEARS
                                     UNION ALL
                                     SELECT YEARS,
                                            Month + 1,
 		                                   RIGHT('0' + CAST((Month + 1) AS VARCHAR(2)), 2) AS MONTHS,
 		                                   CASE WHEN (Month + 2)<>13 THEN RIGHT('0' + CAST((Month + 2) AS VARCHAR(2)), 2) ELSE '01' END AS NEXTMONTHS,
-		                                   CASE WHEN (Month + 2)<>13 THEN  CAST(YEAR('20240101') AS VARCHAR(4))  ELSE  CAST((YEAR('20240101')+1) AS VARCHAR(4)) END AS NEXTYEARS
+		                                   CASE WHEN (Month + 2)<>13 THEN  CAST(YEAR('{0}') AS VARCHAR(4))  ELSE  CAST((YEAR('{0}')+1) AS VARCHAR(4)) END AS NEXTYEARS
                                     FROM MonthData
                                     WHERE Month < 12
                                 )
