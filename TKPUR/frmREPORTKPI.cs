@@ -229,7 +229,7 @@ namespace TKPUR
                                 AND TA003<YEARS+'0101'
                                 AND TA051>YEARS+'0101'
                                 ) AS '應付款款期初一月'
-                                ,DATEDIFF(day, YEARS+'0101', YEARS+NEXTMONTHS+'01') AS '累積天數'
+                                ,CASE WHEN NEXTYEARS=YEARS THEN DATEDIFF(day, YEARS+'0101', YEARS+NEXTMONTHS+'01') ELSE DATEDIFF(day, YEARS+'0101', NEXTYEARS+NEXTMONTHS+'01') END AS '累積天數'
                                 FROM MonthData
                                 ) AS TEMP                               
 
