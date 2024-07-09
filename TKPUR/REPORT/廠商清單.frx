@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="07/08/2024 15:24:13" ReportInfo.Modified="07/09/2024 15:06:48" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/08/2024 15:24:13" ReportInfo.Modified="07/09/2024 15:36:13" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHiLoYjiMxHuay9Lgxgy4kM">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;MA001 AS '廠商代號'&#13;&#10;,MA002 AS '廠商'&#13;&#10;,MA003 AS '地址'&#13;&#10;,MA005 AS '統一編號'&#13;&#10;FROM [TK].dbo.PURMA&#13;&#10;WHERE CREATE_DATE&gt;='20240101'&#13;&#10;AND CREATE_DATE&lt;='20240630'&#13;&#10;ORDER BY MA001">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHKKRa+fQ8M6eWIgK2H4Ao5">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;MA001 AS '廠商代號'&#13;&#10;,MA002 AS '廠商'&#13;&#10;,MA014 AS '地址'&#13;&#10;,MA005 AS '統一編號'&#13;&#10;,CREATE_DATE AS '建立日期'&#13;&#10;FROM [TK].dbo.PURMA&#13;&#10;WHERE CREATE_DATE&gt;='20240101'&#13;&#10;AND CREATE_DATE&lt;='20240630'&#13;&#10;ORDER BY MA001">
         <Column Name="廠商代號" DataType="System.String"/>
         <Column Name="廠商" DataType="System.String"/>
         <Column Name="地址" DataType="System.String"/>
         <Column Name="統一編號" DataType="System.String"/>
+        <Column Name="建立日期" DataType="System.String"/>
       </TableDataSource>
     </MsSqlDataConnection>
     <Parameter Name="P1" DataType="System.String"/>
@@ -17,17 +18,19 @@
       <TextObject Name="Text9" Width="387.45" Height="18.9" Text="日期:[P1]~[P2]"/>
     </ReportTitleBand>
     <PageHeaderBand Name="PageHeader1" Top="23.5" Width="718.2" Height="18.9">
-      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="廠商代號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text4" Left="94.5" Width="189" Height="18.9" Border.Lines="All" Text="廠商" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text6" Left="283.5" Width="321.3" Height="18.9" Border.Lines="All" Text="地址" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text8" Left="604.8" Width="94.5" Height="18.9" Border.Lines="All" Text="統一編號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text2" Left="56.7" Width="75.6" Height="18.9" Border.Lines="All" Text="廠商代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="132.3" Width="160.65" Height="18.9" Border.Lines="All" Text="廠商" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="292.95" Width="330.75" Height="18.9" Border.Lines="All" Text="地址" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="統一編號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="-9.45" Width="66.15" Height="18.9" Border.Lines="All" Text="建立日期" HorzAlign="Center" VertAlign="Center"/>
     </PageHeaderBand>
     <DataBand Name="Data1" Top="47" Width="718.2" Height="18.9" CanGrow="true" DataSource="Table">
-      <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商代號]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text3" Left="94.5" Width="189" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商]" VertAlign="Center"/>
-      <TextObject Name="Text5" Left="283.5" Width="321.3" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.地址]" VertAlign="Center"/>
-      <TextObject Name="Text7" Left="604.8" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.統一編號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text1" Left="56.7" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商代號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="132.3" Width="160.65" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商]" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="292.95" Width="330.75" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.地址]" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.統一編號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="-9.45" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.建立日期]" HorzAlign="Center" VertAlign="Center"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="70.49" Width="718.2" Height="18.9"/>
+    <PageFooterBand Name="PageFooter1" Top="70.49" Width="718.2" Height="37.8"/>
   </ReportPage>
 </Report>

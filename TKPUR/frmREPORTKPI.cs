@@ -264,12 +264,13 @@ namespace TKPUR
         {
             StringBuilder FASTSQL = new StringBuilder();
 
-            FASTSQL.AppendFormat(@"   
+            FASTSQL.AppendFormat(@"                                   
                                 SELECT 
                                 MA001 AS '廠商代號'
                                 ,MA002 AS '廠商'
-                                ,MA003 AS '地址'
+                                ,MA014 AS '地址'
                                 ,MA005 AS '統一編號'
+                                ,CREATE_DATE AS '建立日期'
                                 FROM [TK].dbo.PURMA
                                 WHERE CREATE_DATE>='{0}'
                                 AND CREATE_DATE<='{1}'
