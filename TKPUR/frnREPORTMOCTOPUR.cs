@@ -171,14 +171,71 @@ namespace TKPUR
             }
 
         }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        public void SETFASTREPORT(string REPORTNAME)
+        {
+            report1 = new Report();
+            string SQL = "";
+            
+            report1.Load(@"REPORT\採購指標.frx");
+           
+            SQL = SETFASETSQL1();
+
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+           
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+
+
+            Table.SelectCommand = SQL;
+
+            report1.Preview = previewControl1;
+            report1.Show();
+
+        }
+        public string SETFASETSQL1()
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+
+            FASTSQL.AppendFormat(@"   
+                                                             
+
+                                ");
+
+            return FASTSQL.ToString();
+        }
+
+
         #region BUTTON
 
         private void button1_Click(object sender, EventArgs e)
         {
             SEARCH(textBox1.Text, dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT(comboBox1.Text.ToString());
+        }
         #endregion
 
-    
+
     }
 }
