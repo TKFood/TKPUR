@@ -286,7 +286,7 @@ namespace TKPUR
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT();
+            SETFASTREPORT(comboBox1.Text.ToString());
         }
 
         #endregion
