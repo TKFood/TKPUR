@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/21/2024 15:25:41" ReportInfo.Modified="08/22/2024 10:38:43" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFG2pDBhh/sOM5ven6ly65u">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20240821 託外製令印外採購單&#13;&#10;&#13;&#10;SELECT &#13;&#10;TA001 AS '單別'&#13;&#10;,TA002 AS '單號'&#13;&#10;,CONVERT(NVARCHAR,CONVERT(datetime,TA003),111) AS '單據日期'&#13;&#10;,CONVERT(NVARCHAR,CONVERT(datetime,TA010),111) AS '到貨日'&#13;&#10;,TA032 AS '廠商代號'&#13;&#10;,TA023 AS '單位'&#13;&#10;,TA006 AS '品號'&#13;&#10;,TA034 AS '品名'&#13;&#10;,TA035 AS '規格'&#13;&#10;,TA022 AS '採購單價'&#13;&#10;,TA015 AS '採購數量'&#13;&#10;,TA042 AS '交易幣別'&#13;&#10;,TA043 AS '匯率'&#13;&#10;,TA019 AS '廠別代號'&#13;&#10;,TA020 AS '交貨庫別'&#13;&#10;,TA029 AS '備註'&#13;&#10;,MA002 AS '廠商'&#13;&#10;,MA003 AS '廠商全名'&#13;&#10;,MA008 AS '廠商電話'&#13;&#10;,MA013 AS '聯絡人'&#13;&#10;,MA055 AS '付款條件'&#13;&#10;,MA025 AS '付款'&#13;&#10;--1.應稅內含、2.應稅外加、3.零稅率、4.免稅、9.不計稅  &amp;&amp;880210 &amp;&amp;88-11-25 OLD:預留C10&#13;&#10;,(CASE WHEN MA044=1 THEN '應稅內含' WHEN MA044=2 THEN '應稅外加' WHEN MA044=3 THEN '零稅率' WHEN MA044=4 THEN '免稅' WHEN MA044=9 THEN '不計稅'  END )  AS '課稅別'&#13;&#10;,MA047 AS '採購人員'&#13;&#10;,MA010 AS '廠商傳真'&#13;&#10;,MV002 AS '採購人'&#13;&#10;,(TA022*TA015) AS '採購金額'&#13;&#10;,(CASE WHEN MA044=1 THEN CONVERT(INT,(TA022*TA015)/1.05) WHEN MA044=2 THEN CONVERT(INT,(TA022*TA015)*0.05) WHEN MA044=3 THEN 0 WHEN MA044=4 THEN 0 WHEN MA044=9 THEN 0 END )  AS '稅額'&#13;&#10;,(CASE WHEN MA044=1 THEN CONVERT(INT,(TA022*TA015)) WHEN MA044=2 THEN CONVERT(INT,(TA022*TA015)+(TA022*TA015)*0.05) WHEN MA044=3 THEN (TA022*TA015) WHEN MA044=4 THEN (TA022*TA015) WHEN MA044=9 THEN (TA022*TA015) END )  AS '金額合計'&#13;&#10;&#13;&#10;FROM [TK].dbo.MOCTA&#13;&#10;LEFT JOIN [TK].dbo.PURMA ON MA001=TA032&#13;&#10;LEFT JOIN [TK].dbo.CMSMV ON MV001=MA047&#13;&#10;WHERE TA001='A512'&#13;&#10;AND TA002='20240801005'">
+        <Column Name="單別" DataType="System.String"/>
+        <Column Name="單號" DataType="System.String"/>
+        <Column Name="單據日期" DataType="System.String"/>
+        <Column Name="到貨日" DataType="System.String"/>
+        <Column Name="廠商代號" DataType="System.String"/>
+        <Column Name="單位" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="規格" DataType="System.String"/>
+        <Column Name="採購單價" DataType="System.Decimal"/>
+        <Column Name="採購數量" DataType="System.Decimal"/>
+        <Column Name="交易幣別" DataType="System.String"/>
+        <Column Name="匯率" DataType="System.Decimal"/>
+        <Column Name="廠別代號" DataType="System.String"/>
+        <Column Name="交貨庫別" DataType="System.String"/>
+        <Column Name="備註" DataType="System.String"/>
+        <Column Name="廠商" DataType="System.String"/>
+        <Column Name="廠商全名" DataType="System.String"/>
+        <Column Name="廠商電話" DataType="System.String"/>
+        <Column Name="聯絡人" DataType="System.String"/>
+        <Column Name="付款條件" DataType="System.String"/>
+        <Column Name="付款" DataType="System.String"/>
+        <Column Name="採購人員" DataType="System.String"/>
+        <Column Name="採購人" DataType="System.String"/>
+        <Column Name="課稅別" DataType="System.String"/>
+        <Column Name="廠商傳真" DataType="System.String"/>
+        <Column Name="採購金額" DataType="System.Decimal"/>
+        <Column Name="稅額" DataType="System.Int32"/>
+        <Column Name="金額合計" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="公司電話" DataType="System.String"/>
+    <Parameter Name="製表日期" DataType="System.String"/>
+    <Parameter Name="公司傳真" DataType="System.String"/>
+    <Parameter Name="送貨地址" DataType="System.String"/>
+    <Parameter Name="營業稅率" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="113.4">
+      <TextObject Name="Text1" Width="718.2" Height="28.35" Text="老楊食品服份有限公司" HorzAlign="Center" VertAlign="Center" Font="宋体, 16pt"/>
+      <TextObject Name="Text2" Top="28.35" Width="718.2" Height="28.35" Text="託外採購單" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
+      <TextObject Name="Text3" Top="75.6" Width="66.15" Height="18.9" Text="公司電話:" VertAlign="Center"/>
+      <TextObject Name="Text4" Top="94.5" Width="66.15" Height="18.9" Text="製表日期:" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="576.45" Top="75.6" Width="141.75" Height="18.9" Text="公司傳真:[公司傳真]" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="576.45" Top="94.5" Width="141.75" Height="18.9" Text="頁次:[Page]/[Page#]" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text38" Top="9.45" Width="255.15" Height="66.15" Text="口原物料類&#13;&#10;口非原物料類 口資本支出&#13;&#10;             口費用支出 口製造費用&#13;&#10;                        口營業費用&#13;&#10;             口雜項購(保管品卡)	    "/>
+      <TextObject Name="Text79" Left="66.15" Top="75.6" Width="94.5" Height="18.9" Text="[公司電話]" VertAlign="Center"/>
+      <TextObject Name="Text80" Left="66.15" Top="94.5" Width="94.5" Height="18.9" Text="[製表日期]" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="118" Width="718.2" Height="189">
+      <TextObject Name="Text8" Width="75.6" Height="18.9" Text="單別:" VertAlign="Center"/>
+      <TextObject Name="Text10" Top="18.9" Width="75.6" Height="18.9" Text="單號:" VertAlign="Center"/>
+      <TextObject Name="Text12" Top="37.8" Width="75.6" Height="18.9" Text="單據日期:" VertAlign="Center"/>
+      <TextObject Name="Text16" Top="75.6" Width="75.6" Height="18.9" Text="廠商全名:" VertAlign="Center"/>
+      <TextObject Name="Text18" Top="94.5" Width="75.6" Height="18.9" Text="聯絡人:" VertAlign="Center"/>
+      <TextObject Name="Text14" Top="56.7" Width="75.6" Height="18.9" Text="廠商代號:" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="75.6" Width="122.85" Height="18.9" Text="[Table.單別]" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="75.6" Top="18.9" Width="122.85" Height="18.9" Text="[Table.單號]" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="75.6" Top="37.8" Width="122.85" Height="18.9" Text="[Table.單據日期]" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="75.6" Top="56.7" Width="170.1" Height="18.9" Text="[Table.廠商代號] [Table.廠商]" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="75.6" Top="75.6" Width="170.1" Height="18.9" Text="[Table.廠商全名]" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="75.6" Top="94.5" Width="170.1" Height="18.9" Text="[Table.聯絡人]" VertAlign="Center"/>
+      <TextObject Name="Text19" Top="113.4" Width="75.6" Height="18.9" Text="送貨地址:" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="245.7" Width="66.15" Height="18.9" Text="交易幣別:" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="245.7" Top="18.9" Width="66.15" Height="18.9" Text="課稅別:" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="245.7" Top="37.8" Width="66.15" Height="18.9" Text="採購人:" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="245.7" Top="56.7" Width="66.15" Height="18.9" Text="付款條件:" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="311.85" Width="66.15" Height="18.9" Text="[Table.交易幣別]" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="311.85" Top="18.9" Width="66.15" Height="18.9" Text="[Table.課稅別]" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="311.85" Top="37.8" Width="66.15" Height="18.9" Text="[Table.採購人]" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="311.85" Top="56.7" Width="122.85" Height="18.9" Text="[Table.付款條件] [Table.付款] " VertAlign="Center"/>
+      <TextObject Name="Text29" Left="245.7" Top="75.6" Width="66.15" Height="18.9" Text="廠商電話:" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="311.85" Top="75.6" Width="122.85" Height="18.9" Text="[Table.廠商電話]" VertAlign="Center"/>
+      <TextObject Name="Text31" Left="491.4" Top="75.6" Width="66.15" Height="18.9" Text="廠商傳真" VertAlign="Center"/>
+      <TextObject Name="Text30" Left="557.55" Top="94.5" Width="151.2" Height="18.9" Text="[Table.廠商傳真]" VertAlign="Center"/>
+      <TextObject Name="Text33" Left="491.4" Top="56.7" Width="66.15" Height="18.9" Text="備註" VertAlign="Center"/>
+      <TextObject Name="Text35" Left="491.4" Width="66.15" Height="18.9" Text="運輸方式:" VertAlign="Center"/>
+      <TextObject Name="Text36" Left="491.4" Top="18.9" Width="66.15" Height="18.9" Text="運輸方式:" VertAlign="Center"/>
+      <TextObject Name="Text37" Left="491.4" Top="37.8" Width="66.15" Height="18.9" Text="廠別代號" VertAlign="Center"/>
+      <TextObject Name="Text34" Left="557.55" Top="37.8" Width="151.2" Height="18.9" Text="[Table.廠別代號]" VertAlign="Center"/>
+      <TextObject Name="Text32" Left="557.55" Top="56.7" Width="151.2" Height="37.8" Text="[Table.備註]"/>
+      <TextObject Name="Text40" Left="37.8" Top="132.3" Width="189" Height="18.9" Text="品號" VertAlign="Center"/>
+      <TextObject Name="Text42" Left="37.8" Top="151.2" Width="189" Height="18.9" Text="品名" VertAlign="Center"/>
+      <TextObject Name="Text44" Left="37.8" Top="170.1" Width="189" Height="18.9" Text="規格" VertAlign="Center"/>
+      <TextObject Name="Text45" Top="132.3" Width="37.8" Height="18.9" Text="序號" VertAlign="Center"/>
+      <TextObject Name="Text48" Left="226.8" Top="132.3" Width="94.5" Height="18.9" Text="採購數量" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text49" Left="226.8" Top="151.2" Width="94.5" Height="18.9" Text="已交數量" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text50" Left="226.8" Top="170.1" Width="94.5" Height="18.9" Text="結案碼" VertAlign="Center"/>
+      <TextObject Name="Text54" Left="321.3" Top="132.3" Width="47.25" Height="18.9" Text="單位" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text55" Left="321.3" Top="151.2" Width="47.25" Height="18.9" Text="小單位" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text57" Left="368.55" Top="132.3" Width="94.5" Height="18.9" Text="交貨庫別" VertAlign="Center"/>
+      <TextObject Name="Text59" Left="368.55" Top="151.2" Width="94.5" Height="18.9" Text="採購單價" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text61" Left="463.05" Top="132.3" Width="85.05" Height="18.9" Text="到貨日" VertAlign="Center"/>
+      <TextObject Name="Text63" Left="368.55" Top="170.1" Width="94.5" Height="18.9" Text="採購金額" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text64" Left="463.05" Top="151.2" Width="85.05" Height="18.9" Text="製令單別:" VertAlign="Center"/>
+      <TextObject Name="Text65" Left="463.05" Top="170.1" Width="85.05" Height="18.9" Text="製令單號:" VertAlign="Center"/>
+      <TextObject Name="Text68" Left="548.1" Top="132.3" Width="103.95" Height="18.9" Text="專案代號" VertAlign="Center"/>
+      <TextObject Name="Text70" Left="548.1" Top="151.2" Width="103.95" Height="18.9" Text="備註" VertAlign="Center"/>
+      <TextObject Name="Text71" Left="548.1" Top="170.1" Width="103.95" Height="18.9" Text="廠商品號" VertAlign="Center"/>
+      <TextObject Name="Text72" Left="652.05" Top="132.3" Width="66.15" Height="18.9" Text="急料" VertAlign="Center"/>
+      <TextObject Name="Text73" Left="652.05" Top="151.2" Width="66.15" Height="18.9" Text="處理單號" VertAlign="Center"/>
+      <TextObject Name="Text76" Left="378" Width="66.15" Height="18.9" Text="匯率:" VertAlign="Center"/>
+      <TextObject Name="Text75" Left="444.15" Width="37.8" Height="18.9" Text="[Table.匯率]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text77" Left="378" Top="18.9" Width="66.15" Height="18.9" Text="營業稅率:" VertAlign="Center"/>
+      <TextObject Name="Text81" Left="75.6" Top="113.4" Width="396.9" Height="18.9" Text="[送貨地址]" VertAlign="Center"/>
+      <TextObject Name="Text78" Left="444.15" Top="18.9" Width="47.25" Height="18.9" Text="[營業稅率]" VertAlign="Center"/>
+      <TextObject Name="Text82" Left="9.45" Width="718.2" Height="132.3" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text84" Top="132.3" Width="718.2" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text109" Top="132.3" Width="37.8" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text110" Left="37.8" Top="132.3" Width="189" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text111" Left="226.8" Top="132.3" Width="94.5" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text112" Left="321.3" Top="132.3" Width="47.25" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text113" Left="368.55" Top="132.3" Width="94.5" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text114" Left="463.05" Top="132.3" Width="85.05" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text115" Left="548.1" Top="132.3" Width="103.95" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text116" Left="652.05" Top="132.3" Width="66.15" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="311.6" Width="718.2" Height="113.4" DataSource="Table">
+      <TextObject Name="Text39" Left="37.8" Width="189" Height="18.9" Text="[Table.品號]" VertAlign="Center"/>
+      <TextObject Name="Text41" Left="37.8" Top="18.9" Width="189" Height="18.9" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text43" Left="37.8" Top="37.8" Width="189" Height="18.9" Text="[Table.規格]" VertAlign="Center"/>
+      <TextObject Name="Text46" Width="37.8" Height="18.9" Text="0001" VertAlign="Center"/>
+      <TextObject Name="Text47" Left="226.8" Width="94.5" Height="18.9" Text="[Table.採購數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text51" Left="236.25" Top="18.9" Width="85.05" Height="18.9" Text="0" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text52" Left="236.25" Top="37.8" Width="85.05" Height="18.9" Text="未結案" VertAlign="Center"/>
+      <TextObject Name="Text53" Left="321.3" Width="47.25" Height="18.9" Text="[Table.單位]" VertAlign="Center"/>
+      <TextObject Name="Text56" Left="368.55" Width="94.5" Height="18.9" Text="[Table.交貨庫別]" VertAlign="Center"/>
+      <TextObject Name="Text58" Left="368.55" Top="18.9" Width="94.5" Height="18.9" Text="[Table.採購單價]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text60" Left="463.05" Width="85.05" Height="18.9" Text="[Table.到貨日]" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text62" Left="368.55" Top="37.8" Width="94.5" Height="18.9" Text="[Table.採購金額]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text66" Left="463.05" Top="18.9" Width="85.05" Height="18.9" Text="[Table.單別]" VertAlign="Center"/>
+      <TextObject Name="Text67" Left="463.05" Top="37.8" Width="85.05" Height="18.9" Text="[Table.單號]" VertAlign="Center"/>
+      <TextObject Name="Text69" Left="548.1" Top="18.9" Width="103.95" Height="18.9" Text="[Table.備註]" VertAlign="Center"/>
+      <TextObject Name="Text74" Left="652.05" Width="56.7" Height="18.9" Text="N" VertAlign="Center"/>
+      <TextObject Name="Text83" Width="37.8" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text85" Left="37.8" Width="189" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text87" Left="321.3" Width="47.25" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text89" Left="463.05" Width="85.05" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text90" Left="548.1" Width="103.95" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text91" Left="652.05" Width="66.15" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text119" Left="226.8" Width="94.5" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text120" Left="368.55" Width="94.5" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text127" Top="56.7" Width="37.8" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text128" Left="37.8" Top="56.7" Width="189" Height="56.7" Border.Lines="All" Text="以下空白//" VertAlign="Center"/>
+      <TextObject Name="Text129" Left="226.8" Top="56.7" Width="94.5" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text130" Left="321.3" Top="56.7" Width="47.25" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text131" Left="368.55" Top="56.7" Width="94.5" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text132" Left="463.05" Top="56.7" Width="85.05" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text133" Left="548.1" Top="56.7" Width="103.95" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text134" Left="652.05" Top="56.7" Width="66.15" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      <ChildBand Name="Child1" Top="429.59" Width="718.2" Height="56.7" CompleteToNRows="9">
+        <TextObject Name="Text101" Width="37.8" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+        <TextObject Name="Text102" Left="37.8" Width="189" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+        <TextObject Name="Text103" Left="226.8" Width="94.5" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+        <TextObject Name="Text104" Left="321.3" Width="47.25" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+        <TextObject Name="Text105" Left="368.55" Width="94.5" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+        <TextObject Name="Text106" Left="463.05" Width="85.05" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+        <TextObject Name="Text107" Left="548.1" Width="103.95" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+        <TextObject Name="Text108" Left="652.05" Width="66.15" Height="56.7" Border.Lines="All" VertAlign="Center"/>
+      </ChildBand>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="490.89" Width="718.2" Height="18.9">
+      <TextObject Name="Text117" Left="37.8" Width="189" Height="18.9" Text="數量合計:[Table.採購數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text118" Left="226.8" Width="141.75" Height="18.9" Text="採購金額:[Table.採購金額]" Format="Number" Format.UseLocale="true" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text86" Left="378" Width="132.3" Height="18.9" Text="稅額:[Table.稅額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text88" Left="510.3" Width="160.65" Height="18.9" Text="金額合計:[Table.金額合計]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="514.39" Width="718.2" Height="94.5">
+      <TextObject Name="Text121" Width="708.75" Height="28.35" Text="注意事項：1.延遲交貨或未依規定期限調換合格品者，每逾一日，按貨款總金額扣罰百分之五，若有事先書面通知者除外。&#13;&#10;　　　　　2.請依採購數量交貨，若有多於採購數量，皆以檢贈零單價計價，發票不符採購數量者退回重開;出貨產品必需為同一批貨，若製造日期超過1/3者不允收。&#13;&#10;　　　　　3.販售/生產之原物料/商品，均符合政府相關法令規範，且無任何摻假，若有不實願負一切法律責任，並賠償老楊食品 (股)公司所受損害及利益。" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Font="宋体, 6pt" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text122" Left="56.7" Top="28.35" Width="170.1" Height="18.9" Text="核准: " VertAlign="Center" Font="宋体, 8pt"/>
+      <TextObject Name="Text123" Left="264.6" Top="28.35" Width="170.1" Height="18.9" Text="審核: " VertAlign="Center" Font="宋体, 8pt"/>
+      <TextObject Name="Text124" Left="529.2" Top="28.35" Width="170.1" Height="18.9" Text="採購人員:" VertAlign="Center" Font="宋体, 8pt"/>
+      <TextObject Name="Text125" Top="47.25" Width="170.1" Height="18.9" Text="本文件不得擅自塗改或影印" VertAlign="Center" Font="宋体, 8pt"/>
+      <TextObject Name="Text126" Left="585.9" Top="47.25" Width="170.1" Height="18.9" Text="A05-01-001-02-A" VertAlign="Center" Font="宋体, 8pt"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>
