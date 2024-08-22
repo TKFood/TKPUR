@@ -279,11 +279,11 @@
     <Compile Include="FrmUPDATEPURTD.Designer.cs">
       <DependentUpon>FrmUPDATEPURTD.cs</DependentUpon>
     </Compile>
-    <Compile Include="frnREPORTMOCTOPUR.cs">
+    <Compile Include="FrmREPORTMOCTOPUR.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frnREPORTMOCTOPUR.Designer.cs">
-      <DependentUpon>frnREPORTMOCTOPUR.cs</DependentUpon>
+    <Compile Include="FrmREPORTMOCTOPUR.Designer.cs">
+      <DependentUpon>FrmREPORTMOCTOPUR.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -386,8 +386,8 @@
     <EmbeddedResource Include="FrmUPDATEPURTD.resx">
       <DependentUpon>FrmUPDATEPURTD.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frnREPORTMOCTOPUR.resx">
-      <DependentUpon>frnREPORTMOCTOPUR.cs</DependentUpon>
+    <EmbeddedResource Include="FrmREPORTMOCTOPUR.resx">
+      <DependentUpon>FrmREPORTMOCTOPUR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

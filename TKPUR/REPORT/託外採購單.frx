@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="08/21/2024 15:25:41" ReportInfo.Modified="08/22/2024 10:38:43" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/21/2024 15:25:41" ReportInfo.Modified="08/22/2024 14:39:24" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFG2pDBhh/sOM5ven6ly65u">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHv9dR6iEDtwZGsbIKe9XRN">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20240821 託外製令印外採購單&#13;&#10;&#13;&#10;SELECT &#13;&#10;TA001 AS '單別'&#13;&#10;,TA002 AS '單號'&#13;&#10;,CONVERT(NVARCHAR,CONVERT(datetime,TA003),111) AS '單據日期'&#13;&#10;,CONVERT(NVARCHAR,CONVERT(datetime,TA010),111) AS '到貨日'&#13;&#10;,TA032 AS '廠商代號'&#13;&#10;,TA023 AS '單位'&#13;&#10;,TA006 AS '品號'&#13;&#10;,TA034 AS '品名'&#13;&#10;,TA035 AS '規格'&#13;&#10;,TA022 AS '採購單價'&#13;&#10;,TA015 AS '採購數量'&#13;&#10;,TA042 AS '交易幣別'&#13;&#10;,TA043 AS '匯率'&#13;&#10;,TA019 AS '廠別代號'&#13;&#10;,TA020 AS '交貨庫別'&#13;&#10;,TA029 AS '備註'&#13;&#10;,MA002 AS '廠商'&#13;&#10;,MA003 AS '廠商全名'&#13;&#10;,MA008 AS '廠商電話'&#13;&#10;,MA013 AS '聯絡人'&#13;&#10;,MA055 AS '付款條件'&#13;&#10;,MA025 AS '付款'&#13;&#10;--1.應稅內含、2.應稅外加、3.零稅率、4.免稅、9.不計稅  &amp;&amp;880210 &amp;&amp;88-11-25 OLD:預留C10&#13;&#10;,(CASE WHEN MA044=1 THEN '應稅內含' WHEN MA044=2 THEN '應稅外加' WHEN MA044=3 THEN '零稅率' WHEN MA044=4 THEN '免稅' WHEN MA044=9 THEN '不計稅'  END )  AS '課稅別'&#13;&#10;,MA047 AS '採購人員'&#13;&#10;,MA010 AS '廠商傳真'&#13;&#10;,MV002 AS '採購人'&#13;&#10;,(TA022*TA015) AS '採購金額'&#13;&#10;,(CASE WHEN MA044=1 THEN CONVERT(INT,(TA022*TA015)/1.05) WHEN MA044=2 THEN CONVERT(INT,(TA022*TA015)*0.05) WHEN MA044=3 THEN 0 WHEN MA044=4 THEN 0 WHEN MA044=9 THEN 0 END )  AS '稅額'&#13;&#10;,(CASE WHEN MA044=1 THEN CONVERT(INT,(TA022*TA015)) WHEN MA044=2 THEN CONVERT(INT,(TA022*TA015)+(TA022*TA015)*0.05) WHEN MA044=3 THEN (TA022*TA015) WHEN MA044=4 THEN (TA022*TA015) WHEN MA044=9 THEN (TA022*TA015) END )  AS '金額合計'&#13;&#10;&#13;&#10;FROM [TK].dbo.MOCTA&#13;&#10;LEFT JOIN [TK].dbo.PURMA ON MA001=TA032&#13;&#10;LEFT JOIN [TK].dbo.CMSMV ON MV001=MA047&#13;&#10;WHERE TA001='A512'&#13;&#10;AND TA002='20240801005'">
         <Column Name="單別" DataType="System.String"/>
         <Column Name="單號" DataType="System.String"/>
@@ -109,7 +109,7 @@
       <TextObject Name="Text77" Left="378" Top="18.9" Width="66.15" Height="18.9" Text="營業稅率:" VertAlign="Center"/>
       <TextObject Name="Text81" Left="75.6" Top="113.4" Width="396.9" Height="18.9" Text="[送貨地址]" VertAlign="Center"/>
       <TextObject Name="Text78" Left="444.15" Top="18.9" Width="47.25" Height="18.9" Text="[營業稅率]" VertAlign="Center"/>
-      <TextObject Name="Text82" Left="9.45" Width="718.2" Height="132.3" Border.Lines="All" VertAlign="Center"/>
+      <TextObject Name="Text82" Width="718.2" Height="132.3" Border.Lines="All" VertAlign="Center"/>
       <TextObject Name="Text84" Top="132.3" Width="718.2" Height="56.7" Border.Lines="All" VertAlign="Center"/>
       <TextObject Name="Text109" Top="132.3" Width="37.8" Height="56.7" Border.Lines="All" VertAlign="Center"/>
       <TextObject Name="Text110" Left="37.8" Top="132.3" Width="189" Height="56.7" Border.Lines="All" VertAlign="Center"/>
