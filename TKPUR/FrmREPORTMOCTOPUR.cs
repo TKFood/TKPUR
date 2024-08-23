@@ -42,6 +42,29 @@ namespace TKPUR
             InitializeComponent();
         }
 
+        public class DATA_SET
+        {
+            public string COMPANY;
+            public string CREATOR;
+            public string USR_GROUP;
+            public string CREATE_DATE;
+            public string MODIFIER;
+            public string MODI_DATE;
+            public string FLAG;
+            public string CREATE_TIME;
+            public string MODI_TIME;
+            public string TRANS_TYPE;
+            public string TRANS_NAME;
+            public string sync_date;
+            public string sync_time;
+            public string sync_mark;
+            public string sync_count;
+            public string DataUser;
+            public string DataGroup;
+
+
+        }
+
         #region FUNCTION
 
         #endregion
@@ -803,6 +826,323 @@ namespace TKPUR
             }
         }
 
+        public void ADD_PURTC_PURTD(string TA001,string TA002,string TC001,string TC002,string TC003)
+        {
+            DATA_SET ERPDATA = new DATA_SET();
+            ERPDATA.COMPANY = "TK";
+            ERPDATA.CREATOR = "070002";
+            ERPDATA.USR_GROUP = "112000";
+            ERPDATA.CREATE_DATE = DateTime.Now.ToString("yyyyMMdd");
+            ERPDATA.MODIFIER = "070002";
+            ERPDATA.MODI_DATE = DateTime.Now.ToString("yyyyMMdd");
+            ERPDATA.FLAG = "0";
+            ERPDATA.CREATE_TIME = DateTime.Now.ToString("HH:mm:ss");
+            ERPDATA.MODI_TIME = DateTime.Now.ToString("HH:mm:ss");
+            ERPDATA.TRANS_TYPE = "P001";
+            ERPDATA.TRANS_NAME = "PURMI07";
+            ERPDATA.sync_date = "";
+            ERPDATA.sync_time = "";
+            ERPDATA.sync_mark = "";
+            ERPDATA.sync_count = "0";
+            ERPDATA.DataUser = "";
+            ERPDATA.DataGroup = "112000";
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@" 
+
+                                    INSERT INTO [TK].dbo.PURTC
+                                    (
+                                    COMPANY
+                                    ,CREATOR
+                                    ,USR_GROUP
+                                    ,CREATE_DATE
+                                    ,MODIFIER
+                                    ,MODI_DATE
+                                    ,FLAG
+                                    ,CREATE_TIME
+                                    ,MODI_TIME
+                                    ,TRANS_TYPE
+                                    ,TRANS_NAME
+                                    ,sync_date
+                                    ,sync_time
+                                    ,sync_mark
+                                    ,sync_count
+                                    ,DataUser
+                                    ,DataGroup
+                                    ,TC001
+                                    ,TC002
+                                    ,TC003
+                                    ,TC004
+                                    ,TC005
+                                    ,TC006
+                                    ,TC007
+                                    ,TC008
+                                    ,TC009
+                                    ,TC010
+                                    ,TC011
+                                    ,TC012
+                                    ,TC013
+                                    ,TC014
+                                    ,TC015
+                                    ,TC016
+                                    ,TC017
+                                    ,TC018
+                                    ,TC019
+                                    ,TC020
+                                    ,TC021
+                                    ,TC022
+                                    ,TC023
+                                    ,TC024
+                                    ,TC025
+                                    ,TC026
+                                    ,TC027
+                                    ,TC028
+                                    ,TC029
+                                    ,TC030
+                                    ,TC031
+                                    ,TC032
+                                    ,TC033
+                                    ,TC034
+                                    ,TC035
+                                    ,TC036
+                                    ,TC037
+                                    ,TC038
+                                    ,TC039
+                                    ,TC040
+                                    ,TC041
+                                    ,TC042
+                                    ,TC043
+                                    ,TC044
+                                    ,TC045
+                                    ,TC046
+                                    ,TC047
+                                    ,TC048
+                                    ,TC049
+                                    ,TC050
+                                    ,TC051
+                                    ,TC052
+                                    ,TC053
+                                    ,TC054
+                                    ,TC055
+                                    ,TC056
+                                    ,TC057
+                                    ,TC058
+                                    ,TC059
+                                    ,TC060
+                                    ,TC061
+                                    ,TC062
+                                    ,TC063
+                                    ,TC064
+                                    ,TC065
+                                    ,TC066
+                                    ,TC067
+                                    ,TC068
+                                    ,TC069
+                                    ,TC070
+                                    ,TC071
+                                    ,TC072
+                                    ,TC073
+                                    ,TC074
+                                    ,TC075
+                                    ,TC076
+                                    ,TC077
+                                    ,TC078
+                                    ,TC079
+                                    ,TC080
+                                    ,UDF01
+                                    ,UDF02
+                                    ,UDF03
+                                    ,UDF04
+                                    ,UDF05
+                                    ,UDF06
+                                    ,UDF07
+                                    ,UDF08
+                                    ,UDF09
+                                    ,UDF10
+                                    )
+                                    SELECT 
+                                    '{0}' COMPANY
+                                    ,'{1}' CREATOR
+                                    ,'{2}' USR_GROUP
+                                    ,'{3}' CREATE_DATE
+                                    ,'{4}' MODIFIER
+                                    ,'{5}' MODI_DATE
+                                    ,'{6}' FLAG
+                                    ,'{7}' CREATE_TIME
+                                    ,'{8}' MODI_TIME
+                                    ,'{9}' TRANS_TYPE
+                                    ,'{10}' TRANS_NAME
+                                    ,'{11}' sync_date
+                                    ,'{12}' sync_time
+                                    ,'{13}' sync_mark
+                                    ,'{14}' sync_count
+                                    ,'{15}' DataUser
+                                    ,'{16}' DataGroup
+                                    ,'{17}' TC001
+                                    ,'{18}' TC002
+                                    ,TA003 TC003
+                                    ,TA032 TC004
+                                    ,TA042 TC005
+                                    ,TA043 TC006
+                                    ,'' TC007
+                                    ,MA025 TC008
+                                    ,TA029 TC009
+                                    ,TA019 TC010
+                                    ,MA047 TC011
+                                    ,'1' TC012
+                                    ,'1' TC013
+                                    ,'N' TC014
+                                    ,'' TC015
+                                    ,'' TC016
+                                    ,'' TC017
+                                    ,MA044 TC018
+                                    ,(TA022*TA015) TC019
+                                    ,(CASE WHEN MA044=1 THEN CONVERT(INT,(TA022*TA015)/1.05) WHEN MA044=2 THEN CONVERT(INT,(TA022*TA015)*0.05) WHEN MA044=3 THEN 0 WHEN MA044=4 THEN 0 WHEN MA044=9 THEN 0 END )  TC020
+                                    ,'嘉義縣大林鎮大埔美園區五路3號' TC021
+                                    ,'' TC022
+                                    ,TA015 TC023
+                                    ,TA003 TC024
+                                    ,'' TC025
+                                    ,'0.0500' TC026
+                                    ,MA055 TC027
+                                    ,'0' TC028
+                                    ,'0' TC029
+                                    ,'N' TC030
+                                    ,'0' TC031
+                                    ,'' TC032
+                                    ,'N' TC033
+                                    ,'' TC034
+                                    ,'' TC035
+                                    ,'' TC036
+                                    ,'05-2956520' TC037
+                                    ,'05-2956519' TC038
+                                    ,'' TC039
+                                    ,'' TC040
+                                    ,'' TC041
+                                    ,'0' TC042
+                                    ,'0' TC043
+                                    ,'' TC044
+                                    ,'' TC045
+                                    ,'' TC046
+                                    ,'' TC047
+                                    ,'' TC048
+                                    ,'' TC049
+                                    ,'N' TC050
+                                    ,'' TC051
+                                    ,'' TC052
+                                    ,'' TC053
+                                    ,'' TC054
+                                    ,'' TC055
+                                    ,'' TC056
+                                    ,'' TC057
+                                    ,'' TC058
+                                    ,'' TC059
+                                    ,'' TC060
+                                    ,'' TC061
+                                    ,'' TC062
+                                    ,'' TC063
+                                    ,'' TC064
+                                    ,'' TC065
+                                    ,'0' TC066
+                                    ,'' TC067
+                                    ,'' TC068
+                                    ,'' TC069
+                                    ,'0' TC070
+                                    ,'0' TC071
+                                    ,'0' TC072
+                                    ,'0' TC073
+                                    ,'0' TC074
+                                    ,'' TC075
+                                    ,'' TC076
+                                    ,'' TC077
+                                    ,'' TC078
+                                    ,'' TC079
+                                    ,'' TC080
+                                    ,'' UDF01
+                                    ,'' UDF02
+                                    ,'' UDF03
+                                    ,'' UDF04
+                                    ,'' UDF05
+                                    ,'0' UDF06
+                                    ,'0' UDF07
+                                    ,'0' UDF08
+                                    ,'0' UDF09
+                                    ,'0'  UDF10
+                                    FROM [TK].dbo.MOCTA
+                                    LEFT JOIN [TK].dbo.PURMA ON MA001=TA032
+                                    LEFT JOIN [TK].dbo.CMSMV ON MV001=MA047
+                                    WHERE TA001='A512'
+                                    AND TA002='20240801005'
+                                        ", ERPDATA.COMPANY 
+                                        ,ERPDATA.CREATOR 
+                                        ,ERPDATA.USR_GROUP 
+                                        ,ERPDATA.CREATE_DATE 
+                                        ,ERPDATA.MODIFIER 
+                                        ,ERPDATA.MODI_DATE
+                                        ,ERPDATA.FLAG 
+                                        ,ERPDATA.CREATE_TIME
+                                        ,ERPDATA.MODI_TIME
+                                        ,ERPDATA.TRANS_TYPE 
+                                        ,ERPDATA.TRANS_NAME 
+                                        ,ERPDATA.sync_date 
+                                        ,ERPDATA.sync_time
+                                        ,ERPDATA.sync_mark
+                                        ,ERPDATA.sync_count
+                                        ,ERPDATA.DataUser
+                                        ,ERPDATA.DataGroup 
+                                        ,TC001
+                                        ,TC002
+                                        );
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #region BUTTON
 
         private void button1_Click(object sender, EventArgs e)
@@ -829,11 +1169,14 @@ namespace TKPUR
         }
         private void button6_Click(object sender, EventArgs e)
         {
+            string TA001 = textBox17.Text;
+            string TA002 = textBox18.Text;
             string TC001 = "A334";
             string TC002;
             string TC003 = textBox19.Text;
             TC002 = GETMAXTC002(TC001, TC003);
 
+            ADD_PURTC_PURTD(TA001,TA002,TC001, TC002, TC003);
         }
 
         #endregion
