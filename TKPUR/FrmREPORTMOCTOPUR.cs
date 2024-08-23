@@ -725,6 +725,7 @@ namespace TKPUR
         }
         private void dataGridView3_SelectionChanged(object sender, EventArgs e)
         {
+            string TC045;
             if (dataGridView3.CurrentRow != null)
             {
                 int rowindex = dataGridView3.CurrentRow.Index;
@@ -734,6 +735,10 @@ namespace TKPUR
                     textBox17.Text = row.Cells["單別"].Value.ToString().Trim();
                     textBox18.Text = row.Cells["單號"].Value.ToString().Trim();
                     textBox19.Text = row.Cells["TA003"].Value.ToString().Trim();
+
+                    TC045 = textBox17.Text.Trim() + textBox18.Text.Trim();
+                    //是否已產生託外採購單
+                    SERACH_PURTC(TC045);
                 }
 
             }
@@ -1428,6 +1433,72 @@ namespace TKPUR
             }
         }
 
+        public void SERACH_PURTC(string TC045)
+        {
+            StringBuilder sbSql = new StringBuilder();
+            StringBuilder sbSqlQuery = new StringBuilder();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds1 = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                   SELECT 
+                                    TC001  AS '採購單別'
+                                    ,TC002 AS  '採購單號'
+                                    FROM  [TK].dbo.PURTC
+                                    WHERE TC045='{0}'
+                                    ", TC045);
+
+
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter.Fill(ds1, "ds1");
+                sqlConn.Close();
+
+
+                dataGridView4.DataSource = null;
+                if (ds1.Tables["ds1"].Rows.Count >= 1)
+                {
+                    //dataGridView1.Rows.Clear();
+                    dataGridView4.DataSource = ds1.Tables["ds1"];
+                    dataGridView4.AutoResizeColumns();
+                    //dataGridView1.CurrentCell = dataGridView1[0, rownum];  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
         #region BUTTON
 
         private void button1_Click(object sender, EventArgs e)
@@ -1462,6 +1533,10 @@ namespace TKPUR
             TC002 = GETMAXTC002(TC001, TC003);
 
             ADD_PURTC_PURTD(TA001,TA002,TC001, TC002, TC003);
+
+            string TC045 = textBox17.Text.Trim() + textBox18.Text.Trim();
+            //是否已產生託外採購單
+            SERACH_PURTC(TC045);
         }
 
         #endregion

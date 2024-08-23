@@ -98,6 +98,7 @@
             this.textBox18 = new System.Windows.Forms.TextBox();
             this.button6 = new System.Windows.Forms.Button();
             this.textBox19 = new System.Windows.Forms.TextBox();
+            this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -142,10 +143,12 @@
             this.splitContainer8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).BeginInit();
             this.splitContainer9.Panel1.SuspendLayout();
+            this.splitContainer9.Panel2.SuspendLayout();
             this.splitContainer9.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.tableLayoutPanel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -857,6 +860,10 @@
             // splitContainer9.Panel1
             // 
             this.splitContainer9.Panel1.Controls.Add(this.tableLayoutPanel6);
+            // 
+            // splitContainer9.Panel2
+            // 
+            this.splitContainer9.Panel2.Controls.Add(this.dataGridView4);
             this.splitContainer9.Size = new System.Drawing.Size(386, 731);
             this.splitContainer9.SplitterDistance = 121;
             this.splitContainer9.TabIndex = 0;
@@ -1012,6 +1019,17 @@
             this.textBox19.Size = new System.Drawing.Size(114, 27);
             this.textBox19.TabIndex = 16;
             // 
+            // dataGridView4
+            // 
+            this.dataGridView4.AllowUserToAddRows = false;
+            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView4.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView4.Name = "dataGridView4";
+            this.dataGridView4.RowTemplate.Height = 24;
+            this.dataGridView4.Size = new System.Drawing.Size(382, 602);
+            this.dataGridView4.TabIndex = 3;
+            // 
             // FrmREPORTMOCTOPUR
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -1070,6 +1088,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).EndInit();
             this.splitContainer8.ResumeLayout(false);
             this.splitContainer9.Panel1.ResumeLayout(false);
+            this.splitContainer9.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).EndInit();
             this.splitContainer9.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -1077,6 +1096,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1153,5 +1173,6 @@
         private System.Windows.Forms.TextBox textBox18;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.TextBox textBox19;
+        private System.Windows.Forms.DataGridView dataGridView4;
     }
 }
