@@ -97,6 +97,7 @@
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.textBox18 = new System.Windows.Forms.TextBox();
             this.button6 = new System.Windows.Forms.Button();
+            this.textBox19 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -955,6 +956,7 @@
             this.tableLayoutPanel6.Controls.Add(this.textBox17, 1, 0);
             this.tableLayoutPanel6.Controls.Add(this.textBox18, 2, 0);
             this.tableLayoutPanel6.Controls.Add(this.button6, 2, 1);
+            this.tableLayoutPanel6.Controls.Add(this.textBox19, 1, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -1001,6 +1003,14 @@
             this.button6.Text = "產生託外採購單";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // textBox19
+            // 
+            this.textBox19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox19.Location = new System.Drawing.Point(123, 46);
+            this.textBox19.Name = "textBox19";
+            this.textBox19.Size = new System.Drawing.Size(114, 27);
+            this.textBox19.TabIndex = 16;
             // 
             // FrmREPORTMOCTOPUR
             // 
@@ -1142,5 +1152,6 @@
         private System.Windows.Forms.TextBox textBox17;
         private System.Windows.Forms.TextBox textBox18;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.TextBox textBox19;
     }
 }

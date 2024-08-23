@@ -653,6 +653,7 @@ namespace TKPUR
                                     ,(TA022*TA015) AS '採購金額'
                                     ,(CASE WHEN MA044=1 THEN CONVERT(INT,(TA022*TA015)/1.05) WHEN MA044=2 THEN CONVERT(INT,(TA022*TA015)*0.05) WHEN MA044=3 THEN 0 WHEN MA044=4 THEN 0 WHEN MA044=9 THEN 0 END )  AS '稅額'
                                     ,(CASE WHEN MA044=1 THEN CONVERT(INT,(TA022*TA015)) WHEN MA044=2 THEN CONVERT(INT,(TA022*TA015)+(TA022*TA015)*0.05) WHEN MA044=3 THEN (TA022*TA015) WHEN MA044=4 THEN (TA022*TA015) WHEN MA044=9 THEN (TA022*TA015) END )  AS '金額合計'
+                                    ,TA003
 
                                     FROM [TK].dbo.MOCTA
                                     LEFT JOIN [TK].dbo.PURMA ON MA001=TA032
@@ -708,9 +709,97 @@ namespace TKPUR
                 {
                     DataGridViewRow row = dataGridView3.Rows[rowindex];
                     textBox17.Text = row.Cells["單別"].Value.ToString().Trim();
-                    textBox18.Text = row.Cells["單號"].Value.ToString().Trim();                
+                    textBox18.Text = row.Cells["單號"].Value.ToString().Trim();
+                    textBox19.Text = row.Cells["TA003"].Value.ToString().Trim();
                 }
 
+            }
+        }
+        public string GETMAXTC002(string TC001, string TC003)
+        {
+            string TC002;
+            StringBuilder sbSql = new StringBuilder();
+            StringBuilder sbSqlQuery = new StringBuilder();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds1 = new DataSet();
+
+            try
+            {
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+                ds1.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                               SELECT ISNULL(MAX(TC002),'00000000000') AS TC002
+                                FROM [TK].[dbo].[PURTC]
+                                WHERE  TC001='{0}' AND TC002 LIKE '%{1}%'  
+                                        ", TC001, TC003);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter.Fill(ds1, "ds1");
+                sqlConn.Close();
+
+
+                if (ds1.Tables["ds1"].Rows.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    if (ds1.Tables["ds1"].Rows.Count >= 1)
+                    {
+                        TC002 = SETTC002(ds1.Tables["ds1"].Rows[0]["TC002"].ToString(),TC003);
+
+                        return TC002;
+
+                    }
+                    return null;
+                }
+            }          
+
+        
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public string SETTC002(string TC002,string TC003)
+        {
+            if (TC002.Equals("00000000000"))
+            {
+                return TC003 + "001";
+            }
+
+            else
+            {
+                int serno = Convert.ToInt16(TC002.Substring(8, 3));
+                serno = serno + 1;
+                string temp = serno.ToString();
+                temp = temp.PadLeft(3, '0');
+                return TC003 + temp.ToString();
             }
         }
 
@@ -740,6 +829,10 @@ namespace TKPUR
         }
         private void button6_Click(object sender, EventArgs e)
         {
+            string TC001 = "A334";
+            string TC002;
+            string TC003 = textBox19.Text;
+            TC002 = GETMAXTC002(TC001, TC003);
 
         }
 
