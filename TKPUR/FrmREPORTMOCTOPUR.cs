@@ -1749,6 +1749,11 @@ namespace TKPUR
             }
         }
 
+        public void ADD_PURTE_PURTF(string TE001,string TE002,string TE003,string TO001,string TO002,string TO003)
+        {
+
+        }
+
         #region BUTTON
 
         private void button1_Click(object sender, EventArgs e)
