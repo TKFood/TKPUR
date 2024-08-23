@@ -1752,6 +1752,82 @@ namespace TKPUR
         public void ADD_PURTE_PURTF(string TE001,string TE002,string TE003,string TO001,string TO002,string TO003)
         {
 
+            DATA_SET ERPDATA = new DATA_SET();
+            ERPDATA.COMPANY = "TK";
+            ERPDATA.CREATOR = "070002";
+            ERPDATA.USR_GROUP = "112000";
+            ERPDATA.CREATE_DATE = DateTime.Now.ToString("yyyyMMdd");
+            ERPDATA.MODIFIER = "070002";
+            ERPDATA.MODI_DATE = DateTime.Now.ToString("yyyyMMdd");
+            ERPDATA.FLAG = "0";
+            ERPDATA.CREATE_TIME = DateTime.Now.ToString("HH:mm:ss");
+            ERPDATA.MODI_TIME = DateTime.Now.ToString("HH:mm:ss");
+            ERPDATA.TRANS_TYPE = "P001";
+            ERPDATA.TRANS_NAME = "PURMI07";
+            ERPDATA.sync_date = "";
+            ERPDATA.sync_time = "";
+            ERPDATA.sync_mark = "";
+            ERPDATA.sync_count = "0";
+            ERPDATA.DataUser = "";
+            ERPDATA.DataGroup = "112000";
+
+            //將來源的託外製令單號，放在託外採購單的TC045
+            //合約編號
+            string TE015 = TO001.Trim() + TO002.Trim() + TO003.Trim();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();               
+
+                sbSql.AppendFormat(@" 
+
+                                    ");
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+
         }
 
         #region BUTTON
@@ -1810,8 +1886,8 @@ namespace TKPUR
 
             if (!string.IsNullOrEmpty(textBox24.Text) &&!string.IsNullOrEmpty(textBox25.Text))
             {
-                
 
+                ADD_PURTE_PURTF(TE001, TE002, TE003, TO001, TO002, TO003);
 
             }
             else
