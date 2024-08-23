@@ -1585,6 +1585,8 @@ namespace TKPUR
                                     ,TO005 AS '變更原因'
                                     ,TO113 AS '舊預交日期'
                                     ,(SELECT SUM(TA017) FROM [TK].dbo.MOCTA WHERE TA001=TO001 AND TA002=TO002)  AS '已交數量'
+                                    ,(SELECT TOP 1 TC001 FROM [TK].dbo.PURTC WHERE TC045=REPLACE(TO001+TO002,' ','') ORDER BY TC003 DESC ) AS TC001
+                                    ,(SELECT TOP 1 TC002 FROM [TK].dbo.PURTC WHERE TC045=REPLACE(TO001+TO002,' ','') ORDER BY TC003 DESC ) AS TC002
 
                                     FROM [TK].dbo.MOCTO
                                     LEFT JOIN [TK].dbo.PURMA ON MA001=TO033
@@ -1636,6 +1638,8 @@ namespace TKPUR
             textBox21.Text = null;
             textBox22.Text = null;
             textBox23.Text = null;
+            textBox24.Text = null;
+            textBox25.Text = null;
 
             if (dataGridView5.CurrentRow != null)
             {
@@ -1646,6 +1650,8 @@ namespace TKPUR
                     textBox21.Text = row.Cells["單別"].Value.ToString().Trim();
                     textBox22.Text = row.Cells["單號"].Value.ToString().Trim();
                     textBox23.Text = row.Cells["變更版次"].Value.ToString().Trim();
+                    textBox24.Text = row.Cells["TC001"].Value.ToString().Trim();
+                    textBox25.Text = row.Cells["TC002"].Value.ToString().Trim();
 
                     //TC045 = textBox17.Text.Trim() + textBox18.Text.Trim();
                     ////是否已產生託外採購單
@@ -1699,6 +1705,17 @@ namespace TKPUR
             SEARCH_MOCTO_V2(textBox20.Text, dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
         }
 
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(textBox24.Text) &&!string.IsNullOrEmpty(textBox25.Text))
+            {
+
+            }
+            else
+            {
+                MessageBox.Show("不是用外掛產生的採購單，無法再產生採購變更單");
+            }
+        }
 
         #endregion
 
