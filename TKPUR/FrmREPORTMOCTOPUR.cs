@@ -87,6 +87,8 @@ namespace TKPUR
             dateTimePicker4.Value = lastDayOfMonth;
             dateTimePicker5.Value = firstDayOfMonth;
             dateTimePicker6.Value = lastDayOfMonth;
+            dateTimePicker7.Value = firstDayOfMonth;
+            dateTimePicker8.Value = lastDayOfMonth;
         }
 
         public void SET_TEXT()
@@ -726,6 +728,10 @@ namespace TKPUR
         private void dataGridView3_SelectionChanged(object sender, EventArgs e)
         {
             string TC045;
+            textBox17.Text = null;
+            textBox18.Text = null;
+            textBox19.Text = null;
+
             if (dataGridView3.CurrentRow != null)
             {
                 int rowindex = dataGridView3.CurrentRow.Index;
@@ -1499,6 +1505,156 @@ namespace TKPUR
             }
         }
 
+        public void SEARCH_MOCTO_V2(string TA001,string SDAYS,string EDAYS)
+        {
+            StringBuilder sbSql = new StringBuilder();
+            StringBuilder sbSqlQuery = new StringBuilder();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds1 = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                    SELECT 
+                                    TO001 AS '單別'
+                                    ,TO002 AS '單號'
+                                    ,TO003 AS '變更版次'
+                                    ,CONVERT(NVARCHAR,CONVERT(datetime,TO004),111) AS '單據日期'
+                                    ,CONVERT(NVARCHAR,CONVERT(datetime,TO013),111) AS '到貨日'
+                                    ,CONVERT(NVARCHAR,CONVERT(datetime,TO012),111) AS '採購日期'
+                                    ,TO033 AS '廠商代號'
+                                    ,TO010 AS '單位'
+                                    ,TO009 AS '品號'
+                                    ,TO035 AS '品名'
+                                    ,TO036 AS '規格'
+                                    ,TO024 AS '採購單價'
+                                    ,TO017 AS '採購數量'
+                                    ,TO045 AS '交易幣別'
+                                    ,TO046 AS '匯率'
+                                    ,TO021 AS '廠別代號'
+                                    ,TO022 AS '交貨庫別'
+                                    ,TO031 AS '備註'
+                                    ,MA002 AS '廠商'
+                                    ,MA003 AS '廠商全名'
+                                    ,MA008 AS '廠商電話'
+                                    ,MA013 AS '聯絡人'
+                                    ,MA055 AS '付款條件'
+                                    ,MA025 AS '付款'
+                                    --1.應稅內含、2.應稅外加、3.零稅率、4.免稅、9.不計稅  &&880210 &&88-11-25 OLD:預留C10
+                                    ,(CASE WHEN MA044=1 THEN '應稅內含' WHEN MA044=2 THEN '應稅外加' WHEN MA044=3 THEN '零稅率' WHEN MA044=4 THEN '免稅' WHEN MA044=9 THEN '不計稅'  END )  AS '課稅別'
+                                    ,MA047 AS '採購人員'
+                                    ,MA010 AS '廠商傳真'
+                                    ,MV002 AS '採購人'
+                                    ,(TO024*TO017) AS '採購金額'
+
+                                    ,TO110 AS '舊單位'
+                                    ,TO109 AS '舊品號'
+                                    ,TO135 AS '舊品名'
+                                    ,TO136 AS '舊規格'
+                                    ,TO124 AS '舊採購單價'
+                                    ,TO117 AS '舊採購數量'
+                                    ,TO145 AS '舊交易幣別'
+                                    ,TO146 AS '舊匯率'
+                                    ,TO121 AS '舊廠別代號'
+                                    ,TO122 AS '舊交貨庫別'
+                                    ,TO131 AS '舊備註'
+                                    ,(TO124*TO117) AS '舊採購金額'
+                                    ,(CASE WHEN MA044=1 THEN '應稅內含' WHEN MA044=2 THEN '應稅外加' WHEN MA044=3 THEN '零稅率' WHEN MA044=4 THEN '免稅' WHEN MA044=9 THEN '不計稅'  END )  AS '舊課稅別'
+
+                                    ,(CASE WHEN MA044=1 THEN CONVERT(INT,(TO024*TO017)/1.05) WHEN MA044=2 THEN CONVERT(INT,(TO024*TO017)*0.05) WHEN MA044=3 THEN 0 WHEN MA044=4 THEN 0 WHEN MA044=9 THEN 0 END )  AS '稅額'
+                                    ,(CASE WHEN MA044=1 THEN CONVERT(INT,(TO024*TO017)) WHEN MA044=2 THEN CONVERT(INT,(TO024*TO017)+(TO024*TO017)*0.05) WHEN MA044=3 THEN (TO024*TO017) WHEN MA044=4 THEN (TO024*TO017) WHEN MA044=9 THEN (TO024*TO017) END )  AS '金額合計'
+                                    ,(CASE WHEN MA044=1 THEN CONVERT(INT,(TO124*TO117)/1.05) WHEN MA044=2 THEN CONVERT(INT,(TO124*TO117)*0.05) WHEN MA044=3 THEN 0 WHEN MA044=4 THEN 0 WHEN MA044=9 THEN 0 END )  AS '舊稅額'
+                                    ,(CASE WHEN MA044=1 THEN CONVERT(INT,(TO124*TO117)) WHEN MA044=2 THEN CONVERT(INT,(TO124*TO117)+(TO124*TO117)*0.05) WHEN MA044=3 THEN (TO124*TO117) WHEN MA044=4 THEN (TO124*TO117) WHEN MA044=9 THEN (TO124*TO117) END )  AS '舊金額合計'
+                                    ,TO005 AS '變更原因'
+                                    ,TO113 AS '舊預交日期'
+                                    ,(SELECT SUM(TA017) FROM [TK].dbo.MOCTA WHERE TA001=TO001 AND TA002=TO002)  AS '已交數量'
+
+                                    FROM [TK].dbo.MOCTO
+                                    LEFT JOIN [TK].dbo.PURMA ON MA001=TO033
+                                    LEFT JOIN [TK].dbo.CMSMV ON MV001=TO057
+                                    WHERE TO001='{0}'
+                                    AND TO004>='{1}' AND TO004<='{2}'
+                                    ", TA001, SDAYS, EDAYS);
+
+
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter.Fill(ds1, "ds1");
+                sqlConn.Close();
+
+
+                dataGridView5.DataSource = null;
+                if (ds1.Tables["ds1"].Rows.Count >= 1)
+                {
+                    //dataGridView1.Rows.Clear();
+                    dataGridView5.DataSource = ds1.Tables["ds1"];
+                    dataGridView5.AutoResizeColumns();
+                    //dataGridView1.CurrentCell = dataGridView1[0, rownum];
+                    // 設置欄位順序
+                    dataGridView5.Columns["單別"].DisplayIndex = 0;
+                    dataGridView5.Columns["單號"].DisplayIndex = 1;
+                    dataGridView5.Columns["變更版次"].DisplayIndex = 2;
+                    dataGridView5.Columns["廠商"].DisplayIndex = 3;
+                    dataGridView5.Columns["品名"].DisplayIndex = 4;
+                    dataGridView5.Columns["採購數量"].DisplayIndex = 5;
+
+
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+        private void dataGridView5_SelectionChanged(object sender, EventArgs e)
+        {
+            textBox21.Text = null;
+            textBox22.Text = null;
+            textBox23.Text = null;
+
+            if (dataGridView5.CurrentRow != null)
+            {
+                int rowindex = dataGridView5.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView5.Rows[rowindex];
+                    textBox21.Text = row.Cells["單別"].Value.ToString().Trim();
+                    textBox22.Text = row.Cells["單號"].Value.ToString().Trim();
+                    textBox23.Text = row.Cells["變更版次"].Value.ToString().Trim();
+
+                    //TC045 = textBox17.Text.Trim() + textBox18.Text.Trim();
+                    ////是否已產生託外採購單
+                    //SERACH_PURTC(TC045);
+                }
+
+            }
+        }
+
         #region BUTTON
 
         private void button1_Click(object sender, EventArgs e)
@@ -1538,6 +1694,11 @@ namespace TKPUR
             //是否已產生託外採購單
             SERACH_PURTC(TC045);
         }
+        private void button7_Click(object sender, EventArgs e)
+        {
+            SEARCH_MOCTO_V2(textBox20.Text, dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
+        }
+
 
         #endregion
 
