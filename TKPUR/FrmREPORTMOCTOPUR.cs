@@ -1592,6 +1592,72 @@ namespace TKPUR
 
             }
         }
+        public void SERACH_PURTE(string TE015)
+        {
+            StringBuilder sbSql = new StringBuilder();
+            StringBuilder sbSqlQuery = new StringBuilder();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds1 = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                   SELECT 
+                                    TE001  AS '採購變更單別'
+                                    ,TE002 AS  '採購變更單號'
+                                    ,TE003 AS  '版次'
+                                    FROM  [TK].dbo.PURTE
+                                    WHERE TE015='{0}'
+                                    ", TE015);
+
+
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter.Fill(ds1, "ds1");
+                sqlConn.Close();
+
+
+                dataGridView6.DataSource = null;
+                if (ds1.Tables["ds1"].Rows.Count >= 1)
+                {
+                    //dataGridView1.Rows.Clear();
+                    dataGridView6.DataSource = ds1.Tables["ds1"];
+                    dataGridView6.AutoResizeColumns();
+                    //dataGridView1.CurrentCell = dataGridView1[0, rownum];  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
 
         public void SEARCH_MOCTO_V2(string TA001,string SDAYS,string EDAYS)
         {
@@ -1741,9 +1807,9 @@ namespace TKPUR
                     textBox24.Text = row.Cells["TC001"].Value.ToString().Trim();
                     textBox25.Text = row.Cells["TC002"].Value.ToString().Trim();
 
-                    //TC045 = textBox17.Text.Trim() + textBox18.Text.Trim();
-                    ////是否已產生託外採購單
-                    //SERACH_PURTC(TC045);
+                    string TE015 = textBox21.Text.Trim() + textBox22.Text.Trim() + textBox23.Text.Trim();
+                    //是否已產生託外採購單
+                    SERACH_PURTE(TE015);
                 }
 
             }
@@ -2470,6 +2536,10 @@ namespace TKPUR
             {
 
                 ADD_PURTE_PURTF(TE001, TE002, TE003, TO001, TO002, TO003);
+
+                string TE015 = TO001.Trim() + TO002.Trim() + TO003.Trim();
+                //是否已產生託外採購單
+                SERACH_PURTE(TE015);
 
             }
             else
