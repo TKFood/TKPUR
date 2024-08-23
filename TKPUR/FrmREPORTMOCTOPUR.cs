@@ -837,6 +837,94 @@ namespace TKPUR
             }
         }
 
+        public string GETMAXTE003(string TE001,string TE002)
+        {
+            string TE003;
+            StringBuilder sbSql = new StringBuilder();
+            StringBuilder sbSqlQuery = new StringBuilder();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds1 = new DataSet();
+
+            try
+            {
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+                ds1.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                    SELECT ISNULL(MAX(TE003),'0000') AS TE003
+                                    FROM [TK].[dbo].[PURTE]
+                                    WHERE  TE001='{0}' AND TE002 LIKE '%{1}%'  
+                                        ", TE001, TE002);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter.Fill(ds1, "ds1");
+                sqlConn.Close();
+
+
+                if (ds1.Tables["ds1"].Rows.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    if (ds1.Tables["ds1"].Rows.Count >= 1)
+                    {
+                        TE003 = SETTE003(ds1.Tables["ds1"].Rows[0]["TE003"].ToString());
+
+                        return TE003;
+
+                    }
+                    return null;
+                }
+            }
+
+
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+        public string SETTE003(string TE003)
+        {
+            if (TE003.Equals("0000"))
+            {
+                return "0001";
+            }
+
+            else
+            {
+                int serno = Convert.ToInt16(TE003);
+                serno = serno + 1;
+                string temp = serno.ToString();
+                temp = temp.PadLeft(4, '0');
+                return  temp.ToString();
+            }
+        }
+
+
         public void ADD_PURTC_PURTD(string TA001,string TA002,string TC001,string TC002,string TC003)
         {
             DATA_SET ERPDATA = new DATA_SET();
@@ -1707,8 +1795,18 @@ namespace TKPUR
 
         private void button8_Click(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(textBox24.Text) &&!string.IsNullOrEmpty(textBox25.Text))
+            string TO001 = textBox21.Text;
+            string TO002 = textBox22.Text;
+            string TO003 = textBox23.Text;
+            string TE001 = textBox24.Text;
+            string TE002 = textBox25.Text;
+            string TE003;
+            TE003 = GETMAXTE003(TE001, TE002);
+
+            if (!string.IsNullOrEmpty(textBox24.Text) &&!string.IsNullOrEmpty(textBox25.Text))
             {
+                
+
 
             }
             else
