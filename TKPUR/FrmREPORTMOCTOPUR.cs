@@ -1774,7 +1774,7 @@ namespace TKPUR
             //將來源的託外製令單號，放在託外採購單的TC045
             //合約編號
             string TE015 = TO001.Trim() + TO002.Trim() + TO003.Trim();
-
+            string TE004 = TE002.Substring(0,8);
             try
             {
                 //20210902密
@@ -1796,8 +1796,282 @@ namespace TKPUR
                 sbSql.Clear();               
 
                 sbSql.AppendFormat(@" 
+                                    INSERT INTO [TK].[dbo].[PURTE]
+                                    (
+                                    [COMPANY]
+                                    ,[CREATOR]
+                                    ,[USR_GROUP]
+                                    ,[CREATE_DATE]
+                                    ,[MODIFIER]
+                                    ,[MODI_DATE]
+                                    ,[FLAG]
+                                    ,[CREATE_TIME]
+                                    ,[MODI_TIME]
+                                    ,[TRANS_TYPE]
+                                    ,[TRANS_NAME]
+                                    ,[sync_date]
+                                    ,[sync_time]
+                                    ,[sync_mark]
+                                    ,[sync_count]
+                                    ,[DataUser]
+                                    ,[DataGroup]
+                                    ,[TE001]
+                                    ,[TE002]
+                                    ,[TE003]
+                                    ,[TE004]
+                                    ,[TE005]
+                                    ,[TE006]
+                                    ,[TE007]
+                                    ,[TE008]
+                                    ,[TE009]
+                                    ,[TE010]
+                                    ,[TE011]
+                                    ,[TE012]
+                                    ,[TE013]
+                                    ,[TE014]
+                                    ,[TE015]
+                                    ,[TE016]
+                                    ,[TE017]
+                                    ,[TE018]
+                                    ,[TE019]
+                                    ,[TE020]
+                                    ,[TE021]
+                                    ,[TE022]
+                                    ,[TE023]
+                                    ,[TE024]
+                                    ,[TE025]
+                                    ,[TE026]
+                                    ,[TE027]
+                                    ,[TE028]
+                                    ,[TE029]
+                                    ,[TE030]
+                                    ,[TE031]
+                                    ,[TE032]
+                                    ,[TE033]
+                                    ,[TE034]
+                                    ,[TE035]
+                                    ,[TE036]
+                                    ,[TE037]
+                                    ,[TE038]
+                                    ,[TE039]
+                                    ,[TE040]
+                                    ,[TE041]
+                                    ,[TE042]
+                                    ,[TE043]
+                                    ,[TE045]
+                                    ,[TE046]
+                                    ,[TE047]
+                                    ,[TE048]
+                                    ,[TE103]
+                                    ,[TE107]
+                                    ,[TE108]
+                                    ,[TE109]
+                                    ,[TE110]
+                                    ,[TE113]
+                                    ,[TE114]
+                                    ,[TE115]
+                                    ,[TE118]
+                                    ,[TE119]
+                                    ,[TE120]
+                                    ,[TE121]
+                                    ,[TE122]
+                                    ,[TE123]
+                                    ,[TE124]
+                                    ,[TE125]
+                                    ,[TE134]
+                                    ,[TE135]
+                                    ,[TE136]
+                                    ,[TE137]
+                                    ,[TE138]
+                                    ,[TE139]
+                                    ,[TE140]
+                                    ,[TE141]
+                                    ,[TE142]
+                                    ,[TE143]
+                                    ,[TE144]
+                                    ,[TE145]
+                                    ,[TE146]
+                                    ,[TE147]
+                                    ,[TE148]
+                                    ,[TE149]
+                                    ,[TE150]
+                                    ,[TE151]
+                                    ,[TE152]
+                                    ,[TE153]
+                                    ,[TE154]
+                                    ,[TE155]
+                                    ,[TE156]
+                                    ,[TE157]
+                                    ,[TE158]
+                                    ,[TE159]
+                                    ,[TE160]
+                                    ,[TE161]
+                                    ,[TE162]
+                                    ,[UDF01]
+                                    ,[UDF02]
+                                    ,[UDF03]
+                                    ,[UDF04]
+                                    ,[UDF05]
+                                    ,[UDF06]
+                                    ,[UDF07]
+                                    ,[UDF08]
+                                    ,[UDF09]
+                                    ,[UDF10]
+                                    )
 
-                                    ");
+                                    SELECT
+                                    '{0}' COMPANY
+                                    ,'{1}' CREATOR
+                                    ,'{2}' USR_GROUP
+                                    ,'{3}' CREATE_DATE
+                                    ,'{4}' MODIFIER
+                                    ,'{5}' MODI_DATE
+                                    ,'{6}' FLAG
+                                    ,'{7}' CREATE_TIME
+                                    ,'{8}' MODI_TIME
+                                    ,'{9}' TRANS_TYPE
+                                    ,'{10}' TRANS_NAME
+                                    ,'{11}' sync_date
+                                    ,'{12}' sync_time
+                                    ,'{13}' sync_mark
+                                    ,'{14}' sync_count
+                                    ,'{15}' DataUser
+                                    ,'{16}' DataGroup
+                                    ,'{17}' TE001
+                                    ,'{18}' TE002
+                                    ,'{19}' TE003
+                                    ,'{20}' TE004
+                                    ,TO033 TE005
+                                    ,TO031 TE006
+                                    ,TO045 TE007
+                                    ,TO046 TE008
+                                    ,'' TE009
+                                    ,MA025 TE010
+                                    ,TO004 TE011
+                                    ,'N' TE012
+                                    ,'' TE013
+                                    ,'' TE014
+                                    ,'{24}' TE015
+                                    ,'0' TE016
+                                    ,'N' TE017
+                                    ,MA044 TE018
+                                    ,'嘉義縣大林鎮大埔美園區五路3號' TE019
+                                    ,'' TE020
+                                    ,'' TE021
+                                    ,'0.0500' TE022
+                                    ,MA055 TE023
+                                    ,'0' TE024
+                                    ,'N' TE025
+                                    ,'0' TE026
+                                    ,'' TE027
+                                    ,'N' TE028
+                                    ,'' TE029
+                                    ,'' TE030
+                                    ,'' TE031
+                                    ,'' TE032
+                                    ,'' TE033
+                                    ,'0' TE034
+                                    ,'0' TE035
+                                    ,'' TE036
+                                    ,'070002' TE037
+                                    ,'' TE038
+                                    ,'' TE039
+                                    ,'' TE040
+                                    ,'N' TE041
+                                    ,'' TE042
+                                    ,'' TE043
+                                    ,'' TE045
+                                    ,'' TE046
+                                    ,'' TE047
+                                    ,'' TE048
+                                    ,'' TE103
+                                    ,TO045 TE107
+                                    ,TO046 TE108
+                                    ,'' TE109
+                                    ,MA025 TE110
+                                    ,'' TE113
+                                    ,'' TE114
+                                    ,'' TE115
+                                    ,MA044 TE118
+                                    ,'嘉義縣大林鎮大埔美園區五路3號' TE119
+                                    ,'' TE120
+                                    ,'0.0500' TE121
+                                    ,MA055 TE122
+                                    ,'0' TE123
+                                    ,'' TE124
+                                    ,'' TE125
+                                    ,'0' TE134
+                                    ,'0' TE135
+                                    ,'' TE136
+                                    ,'' TE137
+                                    ,'' TE138
+                                    ,'' TE139
+                                    ,'' TE140
+                                    ,'N' TE141
+                                    ,'' TE142
+                                    ,'' TE143
+                                    ,'' TE144
+                                    ,'' TE145
+                                    ,'' TE146
+                                    ,'' TE147
+                                    ,'070002' TE148
+                                    ,'0' TE149
+                                    ,'0' TE150
+                                    ,'0' TE151
+                                    ,'0' TE152
+                                    ,'' TE153
+                                    ,'' TE154
+                                    ,'' TE155
+                                    ,'' TE156
+                                    ,'' TE157
+                                    ,'' TE158
+                                    ,'' TE159
+                                    ,'' TE160
+                                    ,'' TE161
+                                    ,'' TE162
+                                    ,'' UDF01
+                                    ,'' UDF02
+                                    ,'' UDF03
+                                    ,'' UDF04
+                                    ,'' UDF05
+                                    ,'0' UDF06
+                                    ,'0' UDF07
+                                    ,'0' UDF08
+                                    ,'0' UDF09
+                                    ,'0' UDF10
+                                    FROM [TK].dbo.MOCTO
+                                    LEFT JOIN [TK].dbo.PURMA ON MA001=TO033
+                                    LEFT JOIN [TK].dbo.CMSMV ON MV001=TO057
+
+                                    WHERE TO001='{21}'
+                                    AND TO002='{22}'
+                                    AND TO003='{23}'
+                                    ", ERPDATA.COMPANY
+                                        , ERPDATA.CREATOR
+                                        , ERPDATA.USR_GROUP
+                                        , ERPDATA.CREATE_DATE
+                                        , ERPDATA.MODIFIER
+                                        , ERPDATA.MODI_DATE
+                                        , ERPDATA.FLAG
+                                        , ERPDATA.CREATE_TIME
+                                        , ERPDATA.MODI_TIME
+                                        , ERPDATA.TRANS_TYPE
+                                        , ERPDATA.TRANS_NAME
+                                        , ERPDATA.sync_date
+                                        , ERPDATA.sync_time
+                                        , ERPDATA.sync_mark
+                                        , ERPDATA.sync_count
+                                        , ERPDATA.DataUser
+                                        , ERPDATA.DataGroup
+                                        , TE001
+                                        , TE002
+                                        , TE003
+                                        , TE004
+                                        , TO001
+                                        , TO002
+                                        , TO003
+                                        , TE015
+                                        );
 
 
                 cmd.Connection = sqlConn;
