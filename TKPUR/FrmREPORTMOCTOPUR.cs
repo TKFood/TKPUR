@@ -2073,6 +2073,314 @@ namespace TKPUR
                                         , TE015
                                         );
 
+                sbSql.AppendFormat(@"
+                                    INSERT INTO  [TK].[dbo].[PURTF]
+                                    (
+                                     [COMPANY]
+                                    ,[CREATOR]
+                                    ,[USR_GROUP]
+                                    ,[CREATE_DATE]
+                                    ,[MODIFIER]
+                                    ,[MODI_DATE]
+                                    ,[FLAG]
+                                    ,[CREATE_TIME]
+                                    ,[MODI_TIME]
+                                    ,[TRANS_TYPE]
+                                    ,[TRANS_NAME]
+                                    ,[sync_date]
+                                    ,[sync_time]
+                                    ,[sync_mark]
+                                    ,[sync_count]
+                                    ,[DataUser]
+                                    ,[DataGroup]
+                                    ,[TF001]
+                                    ,[TF002]
+                                    ,[TF003]
+                                    ,[TF004]
+                                    ,[TF005]
+                                    ,[TF006]
+                                    ,[TF007]
+                                    ,[TF008]
+                                    ,[TF009]
+                                    ,[TF010]
+                                    ,[TF011]
+                                    ,[TF012]
+                                    ,[TF013]
+                                    ,[TF014]
+                                    ,[TF015]
+                                    ,[TF016]
+                                    ,[TF017]
+                                    ,[TF018]
+                                    ,[TF019]
+                                    ,[TF020]
+                                    ,[TF021]
+                                    ,[TF022]
+                                    ,[TF023]
+                                    ,[TF024]
+                                    ,[TF025]
+                                    ,[TF026]
+                                    ,[TF027]
+                                    ,[TF028]
+                                    ,[TF029]
+                                    ,[TF030]
+                                    ,[TF031]
+                                    ,[TF032]
+                                    ,[TF033]
+                                    ,[TF034]
+                                    ,[TF035]
+                                    ,[TF036]
+                                    ,[TF037]
+                                    ,[TF038]
+                                    ,[TF039]
+                                    ,[TF040]
+                                    ,[TF041]
+                                    ,[TF104]
+                                    ,[TF105]
+                                    ,[TF106]
+                                    ,[TF107]
+                                    ,[TF108]
+                                    ,[TF109]
+                                    ,[TF110]
+                                    ,[TF111]
+                                    ,[TF112]
+                                    ,[TF113]
+                                    ,[TF114]
+                                    ,[TF118]
+                                    ,[TF119]
+                                    ,[TF120]
+                                    ,[TF121]
+                                    ,[TF122]
+                                    ,[TF123]
+                                    ,[TF124]
+                                    ,[TF125]
+                                    ,[TF126]
+                                    ,[TF127]
+                                    ,[TF128]
+                                    ,[TF129]
+                                    ,[TF130]
+                                    ,[TF131]
+                                    ,[TF132]
+                                    ,[TF133]
+                                    ,[TF134]
+                                    ,[TF135]
+                                    ,[TF136]
+                                    ,[TF137]
+                                    ,[TF138]
+                                    ,[TF139]
+                                    ,[TF140]
+                                    ,[TF141]
+                                    ,[TF142]
+                                    ,[TF143]
+                                    ,[TF144]
+                                    ,[TF145]
+                                    ,[TF146]
+                                    ,[TF147]
+                                    ,[TF148]
+                                    ,[TF149]
+                                    ,[TF150]
+                                    ,[TF151]
+                                    ,[TF152]
+                                    ,[TF153]
+                                    ,[TF154]
+                                    ,[TF155]
+                                    ,[TF156]
+                                    ,[TF157]
+                                    ,[TF158]
+                                    ,[TF159]
+                                    ,[TF160]
+                                    ,[TF161]
+                                    ,[TF162]
+                                    ,[TF163]
+                                    ,[TF164]
+                                    ,[TF165]
+                                    ,[TF166]
+                                    ,[TF167]
+                                    ,[TF168]
+                                    ,[TF169]
+                                    ,[TF170]
+                                    ,[TF171]
+                                    ,[TF172]
+                                    ,[TF173]
+                                    ,[UDF01]
+                                    ,[UDF02]
+                                    ,[UDF03]
+                                    ,[UDF04]
+                                    ,[UDF05]
+                                    ,[UDF06]
+                                    ,[UDF07]
+                                    ,[UDF08]
+                                    ,[UDF09]
+                                    ,[UDF10]
+                                    )
+
+                                    SELECT
+                                    '{0}' COMPANY
+                                    ,'{1}' CREATOR
+                                    ,'{2}' USR_GROUP
+                                    ,'{3}' CREATE_DATE
+                                    ,'{4}' MODIFIER
+                                    ,'{5}' MODI_DATE
+                                    ,'{6}' FLAG
+                                    ,'{7}' CREATE_TIME
+                                    ,'{8}' MODI_TIME
+                                    ,'{9}' TRANS_TYPE
+                                    ,'{10}' TRANS_NAME
+                                    ,'{11}' sync_date
+                                    ,'{12}' sync_time
+                                    ,'{13}' sync_mark
+                                    ,'{14}' sync_count
+                                    ,'{15}' DataUser
+                                    ,'{16}' DataGroup
+                                    ,'{17}' TF001
+                                    ,'{18}' TF002
+                                    ,'{19}' TF003
+                                    ,'0001' TF004
+                                    ,TO009 TF005
+                                    ,TO035 TF006
+                                    ,TO036 TF007
+                                    ,TO022 TF008
+                                    ,TO017 TF009
+                                    ,TO010 TF010
+                                    ,TO024 TF011
+                                    ,(TO024*TO017) TF012
+                                    ,TO013 TF013
+                                    ,'N' TF014
+                                    ,'0' TF015
+                                    ,'N' TF016
+                                    ,TO031 TF017
+                                    ,'0' TF018
+                                    ,'' TF019
+                                    ,'' TF020
+                                    ,'N' TF021
+                                    ,'' TF022
+                                    ,'' TF023
+                                    ,'0' TF024
+                                    ,'' TF025
+                                    ,'' TF026
+                                    ,'' TF027
+                                    ,'' TF028
+                                    ,'' TF029
+                                    ,'' TF030
+                                    ,'' TF031
+                                    ,'' TF032
+                                    ,'' TF033
+                                    ,'' TF034
+                                    ,'' TF035
+                                    ,'0' TF036
+                                    ,'0' TF037
+                                    ,'' TF038
+                                    ,'' TF039
+                                    ,'' TF040
+                                    ,'0' TF041
+                                    ,'0001' TF104
+                                    ,TO109 TF105
+                                    ,TO135 TF106
+                                    ,TO136 TF107
+                                    ,TO122 TF108
+                                    ,TO117 TF109
+                                    ,TO110 TF110
+                                    ,TO124 TF111
+                                    ,(TO124*TO117) TF112
+                                    ,TO013 TF113
+                                    ,'N' TF114
+                                    ,'0' TF118
+                                    ,'' TF119
+                                    ,'' TF120
+                                    ,'N' TF121
+                                    ,'' TF122
+                                    ,'' TF123
+                                    ,'0' TF124
+                                    ,'0' TF125
+                                    ,'' TF126
+                                    ,'' TF127
+                                    ,'0' TF128
+                                    ,'0' TF129
+                                    ,'0' TF130
+                                    ,'0' TF131
+                                    ,'' TF132
+                                    ,'' TF133
+                                    ,'' TF134
+                                    ,'' TF135
+                                    ,'0' TF136
+                                    ,'0' TF137
+                                    ,'' TF138
+                                    ,'' TF139
+                                    ,'' TF140
+                                    ,'0' TF141
+                                    ,'' TF142
+                                    ,'' TF143
+                                    ,'' TF144
+                                    ,'2' TF145
+                                    ,'2' TF146
+                                    ,'' TF147
+                                    ,'' TF148
+                                    ,'' TF149
+                                    ,'' TF150
+                                    ,'' TF151
+                                    ,'0' TF152
+                                    ,'' TF153
+                                    ,'0' TF154
+                                    ,'' TF155
+                                    ,'0' TF156
+                                    ,'' TF157
+                                    ,'0' TF158
+                                    ,'' TF159
+                                    ,'0' TF160
+                                    ,'1' TF161
+                                    ,'0' TF162
+                                    ,'1' TF163
+                                    ,'0' TF164
+                                    ,'0' TF165
+                                    ,'0' TF166
+                                    ,'0' TF167
+                                    ,'' TF168
+                                    ,'' TF169
+                                    ,'' TF170
+                                    ,'' TF171
+                                    ,'' TF172
+                                    ,'' TF173
+                                    ,'' UDF01
+                                    ,'' UDF02
+                                    ,'' UDF03
+                                    ,'' UDF04
+                                    ,'' UDF05
+                                    ,'0' UDF06
+                                    ,'0' UDF07
+                                    ,'0' UDF08
+                                    ,'0' UDF09
+                                    ,'0' UDF10
+                                    FROM [TK].dbo.MOCTO
+                                    LEFT JOIN [TK].dbo.PURMA ON MA001=TO033
+                                    LEFT JOIN [TK].dbo.CMSMV ON MV001=TO057
+
+                                    WHERE TO001='{20}'
+                                    AND TO002='{21}' 
+                                    AND TO003='{22}'
+
+                                    ", ERPDATA.COMPANY
+                                        , ERPDATA.CREATOR
+                                        , ERPDATA.USR_GROUP
+                                        , ERPDATA.CREATE_DATE
+                                        , ERPDATA.MODIFIER
+                                        , ERPDATA.MODI_DATE
+                                        , ERPDATA.FLAG
+                                        , ERPDATA.CREATE_TIME
+                                        , ERPDATA.MODI_TIME
+                                        , ERPDATA.TRANS_TYPE
+                                        , ERPDATA.TRANS_NAME
+                                        , ERPDATA.sync_date
+                                        , ERPDATA.sync_time
+                                        , ERPDATA.sync_mark
+                                        , ERPDATA.sync_count
+                                        , ERPDATA.DataUser
+                                        , ERPDATA.DataGroup
+                                        , TE001
+                                        , TE002
+                                        , TE003                                       
+                                        , TO001
+                                        , TO002
+                                        , TO003
+                                        );
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
