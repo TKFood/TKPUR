@@ -847,6 +847,10 @@ namespace TKPUR
             ERPDATA.DataUser = "";
             ERPDATA.DataGroup = "112000";
 
+            //將來源的託外製令單號，放在託外採購單的TC045
+            //合約編號
+            string TC045 = TA001.Trim() + TA002.Trim();
+
             try
             {
                 //20210902密
@@ -1041,7 +1045,7 @@ namespace TKPUR
                                     ,'0' TC042
                                     ,'0' TC043
                                     ,'' TC044
-                                    ,'' TC045
+                                    ,'{21}' TC045
                                     ,'' TC046
                                     ,'' TC047
                                     ,'' TC048
@@ -1090,8 +1094,8 @@ namespace TKPUR
                                     FROM [TK].dbo.MOCTA
                                     LEFT JOIN [TK].dbo.PURMA ON MA001=TA032
                                     LEFT JOIN [TK].dbo.CMSMV ON MV001=MA047
-                                    WHERE TA001='A512'
-                                    AND TA002='20240801005'
+                                    WHERE TA001='{19}'
+                                    AND TA002='{20}'
                                         ", ERPDATA.COMPANY 
                                         ,ERPDATA.CREATOR 
                                         ,ERPDATA.USR_GROUP 
@@ -1111,7 +1115,288 @@ namespace TKPUR
                                         ,ERPDATA.DataGroup 
                                         ,TC001
                                         ,TC002
+                                        ,TA001
+                                        ,TA002
+                                        ,TC045
                                         );
+
+                sbSql.AppendFormat(@" 
+
+                                    INSERT INTO [TK].[dbo].[PURTD]
+                                    (
+                                    [COMPANY]
+                                    ,[CREATOR]
+                                    ,[USR_GROUP]
+                                    ,[CREATE_DATE]
+                                    ,[MODIFIER]
+                                    ,[MODI_DATE]
+                                    ,[FLAG]
+                                    ,[CREATE_TIME]
+                                    ,[MODI_TIME]
+                                    ,[TRANS_TYPE]
+                                    ,[TRANS_NAME]
+                                    ,[sync_date]
+                                    ,[sync_time]
+                                    ,[sync_mark]
+                                    ,[sync_count]
+                                    ,[DataUser]
+                                    ,[DataGroup]
+                                    ,[TD001]
+                                    ,[TD002]
+                                    ,[TD003]
+                                    ,[TD004]
+                                    ,[TD005]
+                                    ,[TD006]
+                                    ,[TD007]
+                                    ,[TD008]
+                                    ,[TD009]
+                                    ,[TD010]
+                                    ,[TD011]
+                                    ,[TD012]
+                                    ,[TD013]
+                                    ,[TD014]
+                                    ,[TD015]
+                                    ,[TD016]
+                                    ,[TD017]
+                                    ,[TD018]
+                                    ,[TD019]
+                                    ,[TD020]
+                                    ,[TD021]
+                                    ,[TD022]
+                                    ,[TD023]
+                                    ,[TD024]
+                                    ,[TD025]
+                                    ,[TD026]
+                                    ,[TD027]
+                                    ,[TD028]
+                                    ,[TD029]
+                                    ,[TD030]
+                                    ,[TD031]
+                                    ,[TD032]
+                                    ,[TD033]
+                                    ,[TD034]
+                                    ,[TD035]
+                                    ,[TD036]
+                                    ,[TD037]
+                                    ,[TD038]
+                                    ,[TD039]
+                                    ,[TD040]
+                                    ,[TD041]
+                                    ,[TD042]
+                                    ,[TD043]
+                                    ,[TD044]
+                                    ,[TD045]
+                                    ,[TD046]
+                                    ,[TD047]
+                                    ,[TD048]
+                                    ,[TD049]
+                                    ,[TD050]
+                                    ,[TD051]
+                                    ,[TD052]
+                                    ,[TD053]
+                                    ,[TD054]
+                                    ,[TD055]
+                                    ,[TD056]
+                                    ,[TD057]
+                                    ,[TD058]
+                                    ,[TD059]
+                                    ,[TD060]
+                                    ,[TD061]
+                                    ,[TD062]
+                                    ,[TD063]
+                                    ,[TD064]
+                                    ,[TD065]
+                                    ,[TD066]
+                                    ,[TD067]
+                                    ,[TD068]
+                                    ,[TD069]
+                                    ,[TD070]
+                                    ,[TD071]
+                                    ,[TD072]
+                                    ,[TD073]
+                                    ,[TD074]
+                                    ,[TD075]
+                                    ,[TD076]
+                                    ,[TD077]
+                                    ,[TD078]
+                                    ,[TD079]
+                                    ,[TD080]
+                                    ,[TD081]
+                                    ,[TD082]
+                                    ,[TD083]
+                                    ,[TD084]
+                                    ,[TD085]
+                                    ,[TD086]
+                                    ,[TD087]
+                                    ,[TD088]
+                                    ,[TD089]
+                                    ,[TD090]
+                                    ,[TD091]
+                                    ,[TD092]
+                                    ,[TD093]
+                                    ,[TD094]
+                                    ,[TD095]
+                                    ,[UDF01]
+                                    ,[UDF02]
+                                    ,[UDF03]
+                                    ,[UDF04]
+                                    ,[UDF05]
+                                    ,[UDF06]
+                                    ,[UDF07]
+                                    ,[UDF08]
+                                    ,[UDF09]
+                                    ,[UDF10]
+                                    )
+                                    SELECT 
+                                    '{0}' COMPANY
+                                    ,'{1}' CREATOR
+                                    ,'{2}' USR_GROUP
+                                    ,'{3}' CREATE_DATE
+                                    ,'{4}' MODIFIER
+                                    ,'{5}' MODI_DATE
+                                    ,'{6}' FLAG
+                                    ,'{7}' CREATE_TIME
+                                    ,'{8}' MODI_TIME
+                                    ,'{9}' TRANS_TYPE
+                                    ,'{10}' TRANS_NAME
+                                    ,'{11}' sync_date
+                                    ,'{12}' sync_time
+                                    ,'{13}' sync_mark
+                                    ,'{14}' sync_count
+                                    ,'{15}' DataUser
+                                    ,'{16}' DataGroup
+                                    ,'{17}' TD001
+                                    ,'{18}' TD002
+                                    ,'0001 'TD003
+                                    ,TA006 TD004
+                                    ,TA034 TD005
+                                    ,TA035 TD006
+                                    ,TA020 TD007
+                                    ,TA015 TD008
+                                    ,TA023 TD009
+                                    ,TA022 TD010
+                                    ,(TA022*TA015)  TD011
+                                    ,TA010 TD012
+                                    ,'' TD013
+                                    ,TA029 TD014
+                                    ,0 TD015
+                                    ,'N' TD016
+                                    ,'' TD017
+                                    ,'N' TD018
+                                    ,'0' TD019
+                                    ,'' TD020
+                                    ,'' TD021
+                                    ,'' TD022
+                                    ,'' TD023
+                                    ,'' TD024
+                                    ,'N' TD025
+                                    ,'' TD026
+                                    ,'' TD027
+                                    ,'' TD028
+                                    ,'' TD029
+                                    ,'0' TD030
+                                    ,'0' TD031
+                                    ,'' TD032
+                                    ,'' TD033
+                                    ,'0' TD034
+                                    ,'0' TD035
+                                    ,'' TD036
+                                    ,'' TD037
+                                    ,'' TD038
+                                    ,'' TD039
+                                    ,'' TD040
+                                    ,'' TD041
+                                    ,'' TD042
+                                    ,'' TD043
+                                    ,'' TD044
+                                    ,'' TD045
+                                    ,'' TD046
+                                    ,'' TD047
+                                    ,'0' TD048
+                                    ,'0' TD049
+                                    ,'' TD050
+                                    ,'' TD051
+                                    ,'' TD052
+                                    ,'' TD053
+                                    ,'' TD054
+                                    ,'' TD055
+                                    ,'' TD056
+                                    ,'0' TD057
+                                    ,'9' TD058
+                                    ,'' TD059
+                                    ,'' TD060
+                                    ,'' TD061
+                                    ,'2' TD062
+                                    ,'' TD063
+                                    ,'' TD064
+                                    ,'' TD065
+                                    ,'' TD066
+                                    ,'' TD067
+                                    ,'' TD068
+                                    ,'0' TD069
+                                    ,'' TD070
+                                    ,'' TD071
+                                    ,'N' TD072
+                                    ,'' TD073
+                                    ,'' TD074
+                                    ,'0' TD075
+                                    ,'' TD076
+                                    ,'' TD077
+                                    ,'' TD078
+                                    ,'0' TD079
+                                    ,'0' TD080
+                                    ,'' TD081
+                                    ,'0' TD082
+                                    ,'' TD083
+                                    ,'0' TD084
+                                    ,'1' TD085
+                                    ,'0' TD086
+                                    ,'0' TD087
+                                    ,'0' TD088
+                                    ,'0' TD089
+                                    ,'' TD090
+                                    ,'' TD091
+                                    ,'' TD092
+                                    ,'' TD093
+                                    ,'' TD094
+                                    ,'' TD095
+                                    ,'' UDF01
+                                    ,'' UDF02
+                                    ,'' UDF03
+                                    ,'' UDF04
+                                    ,'' UDF05
+                                    ,'0' UDF06
+                                    ,'0' UDF07
+                                    ,'0' UDF08
+                                    ,'0' UDF09
+                                    ,'0' UDF10
+                                    FROM [TK].dbo.MOCTA
+                                    LEFT JOIN [TK].dbo.PURMA ON MA001=TA032
+                                    LEFT JOIN [TK].dbo.CMSMV ON MV001=MA047
+                                    WHERE TA001='{19}'
+                                    AND TA002='{20}'
+                                    ", ERPDATA.COMPANY
+                                        , ERPDATA.CREATOR
+                                        , ERPDATA.USR_GROUP
+                                        , ERPDATA.CREATE_DATE
+                                        , ERPDATA.MODIFIER
+                                        , ERPDATA.MODI_DATE
+                                        , ERPDATA.FLAG
+                                        , ERPDATA.CREATE_TIME
+                                        , ERPDATA.MODI_TIME
+                                        , ERPDATA.TRANS_TYPE
+                                        , ERPDATA.TRANS_NAME
+                                        , ERPDATA.sync_date
+                                        , ERPDATA.sync_time
+                                        , ERPDATA.sync_mark
+                                        , ERPDATA.sync_count
+                                        , ERPDATA.DataUser
+                                        , ERPDATA.DataGroup
+                                        , TC001
+                                        , TC002
+                                        , TA001
+                                        , TA002
+                                    );
 
 
                 cmd.Connection = sqlConn;
