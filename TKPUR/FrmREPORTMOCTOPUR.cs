@@ -740,7 +740,7 @@ namespace TKPUR
                     DataGridViewRow row = dataGridView3.Rows[rowindex];
                     textBox17.Text = row.Cells["單別"].Value.ToString().Trim();
                     textBox18.Text = row.Cells["單號"].Value.ToString().Trim();
-                    textBox19.Text = row.Cells["TA003"].Value.ToString().Trim();
+                    //textBox19.Text = row.Cells["TA003"].Value.ToString().Trim();
 
                     TC045 = textBox17.Text.Trim() + textBox18.Text.Trim();
                     //是否已產生託外採購單
@@ -2508,7 +2508,8 @@ namespace TKPUR
             string TA002 = textBox18.Text;
             string TC001 = "A334";
             string TC002;
-            string TC003 = textBox19.Text;
+            //string TC003 = textBox19.Text;
+            string TC003 = dateTimePicker9.Value.ToString("yyyyMMdd");
             TC002 = GETMAXTC002(TC001, TC003);
 
             ADD_PURTC_PURTD(TA001,TA002,TC001, TC002, TC003);
