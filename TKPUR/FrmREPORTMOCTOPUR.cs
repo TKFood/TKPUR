@@ -78,17 +78,27 @@ namespace TKPUR
         {
             // 取得今年的第一天
             DateTime firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            // 取得今年的最後一天
+            // 取得今天
             DateTime lastDayOfMonth = DateTime.Now;
 
+            // 取得當前日期
+            DateTime today = DateTime.Today;
+            // 取得當前月份的第一天，並加一個月
+            DateTime firstDayOfNextMonth = new DateTime(today.Year, today.Month, 1).AddMonths(1);
+            // 減去一天即為本月的最後一天
+            DateTime lastDayOfThisMonth = firstDayOfNextMonth.AddDays(-1);
+
             dateTimePicker1.Value = firstDayOfMonth;
-            dateTimePicker2.Value = lastDayOfMonth;
+            dateTimePicker2.Value = lastDayOfThisMonth;
             dateTimePicker3.Value = firstDayOfMonth;
-            dateTimePicker4.Value = lastDayOfMonth;
+            dateTimePicker4.Value = lastDayOfThisMonth;
             dateTimePicker5.Value = firstDayOfMonth;
-            dateTimePicker6.Value = lastDayOfMonth;
+            dateTimePicker6.Value = lastDayOfThisMonth;
             dateTimePicker7.Value = firstDayOfMonth;
-            dateTimePicker8.Value = lastDayOfMonth;
+            dateTimePicker8.Value = lastDayOfThisMonth;
+
+            dateTimePicker10.Value = firstDayOfMonth;
+            dateTimePicker11.Value = lastDayOfThisMonth;
         }
 
         public void SET_TEXT()
@@ -2478,6 +2488,93 @@ namespace TKPUR
 
         }
 
+        public void SETFASTREPORT(string SDAY,string EDAY,string MB001,string TA006)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL(SDAY, EDAY, MB001, TA006);
+            Report report1 = new Report();
+            report1.Load(@"REPORT\託外採購-製令-進貨.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            //report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
+            report1.Preview = previewControl3;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL(string SDAY, string EDAY, string MA001, string TA006)
+        {
+            StringBuilder SB = new StringBuilder();
+            StringBuilder SBQUERYS1 = new StringBuilder();
+            StringBuilder SBQUERYS2 = new StringBuilder();
+
+            if(!string.IsNullOrEmpty(MA001))
+            {
+                SBQUERYS1.AppendFormat(@" AND ( MA001 LIKE '%{0}%' OR MA002 LIKE '%{0}%' )", MA001);
+            }
+            else
+            {
+                SBQUERYS1.AppendFormat(@" ");
+            }
+
+            if (!string.IsNullOrEmpty(TA006))
+            {
+                SBQUERYS2.AppendFormat(@" AND ( TA006 LIKE '%{0}%' OR TA034 LIKE '%{0}%' )", TA006);
+            }
+            else
+            {
+                SBQUERYS2.AppendFormat(@" ");
+            }
+
+            SB.AppendFormat(@" 
+                           
+                                SELECT 
+                                MA001 AS '廠商代號'
+                                ,MA002 AS '廠商'
+                                ,TA010 AS '預計到貨日'
+                                ,TC001 AS '託外採購單別'
+                                ,TC002 AS '託外採購單號'
+                                ,TA006 AS '品號'
+                                ,TA034 AS '品名'
+                                ,TA015 AS '採購數量'
+                                ,TA017 AS '進貨數量'
+                                ,TA007 AS '單位'
+                                ,TA001 AS '託外製令單別'
+                                ,TA002 AS '託外製令單號'
+                                ,TC045 
+                                ,TA035 AS '規格'
+                                FROM [TK].dbo.PURTC
+                                LEFT JOIN [TK].dbo.MOCTA ON REPLACE(TA001+TA002,' ','')=TC045
+                                LEFT JOIN [TK].dbo.PURMA ON MA001=TA032
+                                WHERE TC001='A334' 
+                                AND ISNULL(TC045,'')<>''
+                                {0}
+                                {1}
+
+                            ", SBQUERYS1.ToString(), SBQUERYS2.ToString());
+
+
+            return SB;
+
+        }
+
         #region BUTTON
 
         private void button1_Click(object sender, EventArgs e)
@@ -2547,6 +2644,10 @@ namespace TKPUR
             {
                 MessageBox.Show("不是用外掛產生的採購單，無法再產生採購變更單");
             }
+        }
+        private void button9_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT(dateTimePicker10.Value.ToString("yyyyMMdd"), dateTimePicker11.Value.ToString("yyyyMMdd"),textBox26.Text.Trim(),textBox27.Text.Trim());
         }
 
         #endregion
