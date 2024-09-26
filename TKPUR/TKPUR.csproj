@@ -93,6 +93,12 @@
     <Compile Include="FrmPURSEND.Designer.cs">
       <DependentUpon>FrmPURSEND.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmPURSENDMAIL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPURSENDMAIL.Designer.cs">
+      <DependentUpon>FrmPURSENDMAIL.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPURTATBTB003.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,6 +298,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPURSEND.resx">
       <DependentUpon>FrmPURSEND.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPURSENDMAIL.resx">
+      <DependentUpon>FrmPURSENDMAIL.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPURTATBTB003.resx">
       <DependentUpon>FrmPURTATBTB003.cs</DependentUpon>
