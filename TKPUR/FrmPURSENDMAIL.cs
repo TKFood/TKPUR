@@ -78,6 +78,7 @@ namespace TKPUR
                 sbSql.AppendFormat(@" 
                                     SELECT 
                                     [SUBJECT] AS '校稿項目'
+                                    ,[DESIGNER] AS '設計人'
                                     ,[CONTENTS]  AS '內容'
                                     ,[ISMAILS]  AS '是否通知'
                                     FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
