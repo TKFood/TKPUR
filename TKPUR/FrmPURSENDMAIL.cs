@@ -105,6 +105,17 @@ namespace TKPUR
                         dataGridView1.DataSource = ds.Tables["ds"];
                         dataGridView1.AutoResizeColumns();
 
+                        //// 设定 DataGridView 的宽度的 % 给 "校稿項目" 列
+                        dataGridView1.Columns["校稿項目"].Width = (dataGridView1.Width * 40) / 100;
+                        dataGridView1.Columns["設計人"].Width = (dataGridView1.Width * 15) / 100;
+                        dataGridView1.Columns["內容"].Width = (dataGridView1.Width * 35) / 100;
+                        dataGridView1.Columns["是否通知"].Width = (dataGridView1.Width * 10) / 100;
+
+                        // 允许 "內容" 列中的文本换行
+                        dataGridView1.Columns["校稿項目"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                        dataGridView1.Columns["內容"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                        // 自动调整行高以适应多行文本
+                        dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
                     }
 
                 }
