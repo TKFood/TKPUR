@@ -67,6 +67,7 @@ namespace TKPUR
                 sqlsb.Password = TKID.Decryption(sqlsb.Password);
                 sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
 
+
                 String connectionString;
                 sqlConn = new SqlConnection(sqlsb.ConnectionString);
 
@@ -120,6 +121,190 @@ namespace TKPUR
             }
         }
 
+        public void ADD_UOF_DESIGN_INFROM()
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+
+                                    INSERT INTO [TKPUR].[dbo].[UOF_DESIGN_INFROM]
+                                    (
+                                    [SUBJECT]
+                                    ,[BOARD_NAME]
+                                    ,[CREATE_DATE]
+                                    ,[CONTENTS]
+                                    ,[DESIGNER] 
+                                    ,[ISMAILS]
+                                    )
+
+                                    SELECT SUBJECT,BOARD_NAME,CREATE_DATE,資材
+                                    ,(SELECT TOP 1 NAME
+                                    FROM [192.168.1.223].[UOF].[dbo].[View_SUB_TB_EIP_FORUM_ARTICLE] 
+                                    WHERE GROUP_NAME LIKE '%設計%'
+                                    AND [View_SUB_TB_EIP_FORUM_ARTICLE] .SUBJECT=TEMP.SUBJECT
+                                    ORDER BY CREATE_DATE) AS '設計人'
+                                    ,'N' AS 'ISMAILS'
+
+                                    FROM (
+                                        SELECT 
+                                            TB_EIP_FORUM_BOARD.BOARD_NAME,
+                                            CONVERT(NVARCHAR, TB_EIP_FORUM_TOPIC.CREATE_DATE, 112) AS CREATE_DATE,
+                                            TB_EIP_FORUM_ARTICLE.SUBJECT,
+                                            ISNULL(
+                                                (
+                                                    SELECT TOP 1
+                                                        [NAME] + ':' + CHAR(13) + CHAR(10) + CONVERT(NVARCHAR, [CREATE_DATE], 112) + CHAR(13) + CHAR(10) +
+                                                        REPLACE([TKPUR].dbo.udf_StripHTML([cleaned_img_content]), '&nbsp;', '')
+                                                    FROM [192.168.1.223].[UOF].[dbo].[View_SUB_TB_EIP_FORUM_ARTICLE]
+                                                    WHERE [View_SUB_TB_EIP_FORUM_ARTICLE].[SUBJECT] = TB_EIP_FORUM_ARTICLE.SUBJECT
+                                                    AND [View_SUB_TB_EIP_FORUM_ARTICLE].[GROUP_NAME] IN 
+                                                        (SELECT [DEPNAMES] 
+                                                         FROM [192.168.1.223].[UOF].[dbo].[Z_UOF_FORUM_ARTICLE_DEP] 
+                                                         WHERE [DEPKINDS] IN ('資材'))
+                                                    ORDER BY [View_SUB_TB_EIP_FORUM_ARTICLE].[FLOORS] DESC
+                                                ), ''
+                                            ) AS '資材'
+        
+                                        FROM 
+                                            [192.168.1.223].[UOF].dbo.TB_EIP_FORUM_AREA
+                                            INNER JOIN [192.168.1.223].[UOF].dbo.TB_EIP_FORUM_BOARD ON TB_EIP_FORUM_AREA.AREA_GUID = TB_EIP_FORUM_BOARD.AREA_GUID
+                                            INNER JOIN [192.168.1.223].[UOF].dbo.TB_EIP_FORUM_TOPIC ON TB_EIP_FORUM_BOARD.BOARD_GUID = TB_EIP_FORUM_TOPIC.BOARD_GUID
+                                            INNER JOIN [192.168.1.223].[UOF].dbo.TB_EIP_FORUM_ARTICLE ON TB_EIP_FORUM_ARTICLE.TOPIC_GUID = TB_EIP_FORUM_TOPIC.TOPIC_GUID
+                                            INNER JOIN [192.168.1.223].[UOF].[dbo].[TB_EB_USER] ON TB_EB_USER.USER_GUID = TB_EIP_FORUM_ARTICLE.ANNOUNCER
+                                            INNER JOIN [192.168.1.223].[UOF].[dbo].[TB_EB_EMPL_DEP] ON TB_EB_EMPL_DEP.USER_GUID = TB_EB_USER.USER_GUID AND TB_EB_EMPL_DEP.ORDERS = '0'
+                                            INNER JOIN [192.168.1.223].[UOF].[dbo].[TB_EB_GROUP] ON TB_EB_GROUP.GROUP_ID = TB_EB_EMPL_DEP.GROUP_ID
+
+                                        WHERE 
+                                            (TB_EIP_FORUM_BOARD.BOARD_NAME LIKE '%校稿%' OR TB_EIP_FORUM_BOARD.BOARD_NAME LIKE '%設計%')
+                                            AND CONVERT(NVARCHAR, TB_EIP_FORUM_TOPIC.CREATE_DATE, 112) >= '20240101'
+
+                                        GROUP BY 
+                                            TB_EIP_FORUM_BOARD.BOARD_NAME,
+                                            CONVERT(NVARCHAR, TB_EIP_FORUM_TOPIC.CREATE_DATE, 112),
+                                            TB_EIP_FORUM_ARTICLE.SUBJECT
+                                    ) AS TEMP
+                                    WHERE ISNULL(資材,'')<>''
+                                    AND 資材 LIKE '%廠商%'
+                                    AND SUBJECT COLLATE Chinese_Taiwan_Stroke_BIN  NOT IN (
+                                    SELECT SUBJECT
+                                    FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
+                                    )
+                                    ORDER BY 
+                                        TEMP.BOARD_NAME,
+                                        TEMP.CREATE_DATE,
+                                        TEMP.SUBJECT
+                                   
+
+                                    UPDATE [TKPUR].[dbo].[UOF_DESIGN_INFROM]
+                                    SET [UOF_DESIGN_INFROM].[CONTENTS]=TEMP2.資材
+                                    FROM 
+                                    (
+	                                    SELECT SUBJECT,BOARD_NAME,CREATE_DATE,資材
+	                                    ,(SELECT TOP 1 NAME
+	                                    FROM [192.168.1.223].[UOF].[dbo].[View_SUB_TB_EIP_FORUM_ARTICLE] 
+	                                    WHERE GROUP_NAME LIKE '%設計%'
+	                                    AND [View_SUB_TB_EIP_FORUM_ARTICLE] .SUBJECT=TEMP.SUBJECT
+	                                    ORDER BY CREATE_DATE) AS '設計人'
+	                                    ,'N' AS 'ISMAILS'
+
+	                                    FROM (
+		                                    SELECT 
+			                                    TB_EIP_FORUM_BOARD.BOARD_NAME,
+			                                    CONVERT(NVARCHAR, TB_EIP_FORUM_TOPIC.CREATE_DATE, 112) AS CREATE_DATE,
+			                                    TB_EIP_FORUM_ARTICLE.SUBJECT,
+			                                    ISNULL(
+				                                    (
+					                                    SELECT TOP 1
+						                                    [NAME] + ':' + CHAR(13) + CHAR(10) + CONVERT(NVARCHAR, [CREATE_DATE], 112) + CHAR(13) + CHAR(10) +
+						                                    REPLACE([TKPUR].dbo.udf_StripHTML([cleaned_img_content]), '&nbsp;', '')
+					                                    FROM [192.168.1.223].[UOF].[dbo].[View_SUB_TB_EIP_FORUM_ARTICLE]
+					                                    WHERE [View_SUB_TB_EIP_FORUM_ARTICLE].[SUBJECT] = TB_EIP_FORUM_ARTICLE.SUBJECT
+					                                    AND [View_SUB_TB_EIP_FORUM_ARTICLE].[GROUP_NAME] IN 
+						                                    (SELECT [DEPNAMES] 
+						                                     FROM [192.168.1.223].[UOF].[dbo].[Z_UOF_FORUM_ARTICLE_DEP] 
+						                                     WHERE [DEPKINDS] IN ('資材'))
+					                                    ORDER BY [View_SUB_TB_EIP_FORUM_ARTICLE].[FLOORS] DESC
+				                                    ), ''
+			                                    ) AS '資材'
+        
+		                                    FROM 
+			                                    [192.168.1.223].[UOF].dbo.TB_EIP_FORUM_AREA
+			                                    INNER JOIN [192.168.1.223].[UOF].dbo.TB_EIP_FORUM_BOARD ON TB_EIP_FORUM_AREA.AREA_GUID = TB_EIP_FORUM_BOARD.AREA_GUID
+			                                    INNER JOIN [192.168.1.223].[UOF].dbo.TB_EIP_FORUM_TOPIC ON TB_EIP_FORUM_BOARD.BOARD_GUID = TB_EIP_FORUM_TOPIC.BOARD_GUID
+			                                    INNER JOIN [192.168.1.223].[UOF].dbo.TB_EIP_FORUM_ARTICLE ON TB_EIP_FORUM_ARTICLE.TOPIC_GUID = TB_EIP_FORUM_TOPIC.TOPIC_GUID
+			                                    INNER JOIN [192.168.1.223].[UOF].[dbo].[TB_EB_USER] ON TB_EB_USER.USER_GUID = TB_EIP_FORUM_ARTICLE.ANNOUNCER
+			                                    INNER JOIN [192.168.1.223].[UOF].[dbo].[TB_EB_EMPL_DEP] ON TB_EB_EMPL_DEP.USER_GUID = TB_EB_USER.USER_GUID AND TB_EB_EMPL_DEP.ORDERS = '0'
+			                                    INNER JOIN [192.168.1.223].[UOF].[dbo].[TB_EB_GROUP] ON TB_EB_GROUP.GROUP_ID = TB_EB_EMPL_DEP.GROUP_ID
+
+		                                    WHERE 
+			                                    (TB_EIP_FORUM_BOARD.BOARD_NAME LIKE '%校稿%' OR TB_EIP_FORUM_BOARD.BOARD_NAME LIKE '%設計%')
+			                                    AND CONVERT(NVARCHAR, TB_EIP_FORUM_TOPIC.CREATE_DATE, 112) >= '20240101'
+
+		                                    GROUP BY 
+			                                    TB_EIP_FORUM_BOARD.BOARD_NAME,
+			                                    CONVERT(NVARCHAR, TB_EIP_FORUM_TOPIC.CREATE_DATE, 112),
+			                                    TB_EIP_FORUM_ARTICLE.SUBJECT
+	                                    ) AS TEMP
+	                                    WHERE ISNULL(資材,'')<>''
+	                                    AND 資材 LIKE '%廠商%'
+	                                    AND SUBJECT COLLATE Chinese_Taiwan_Stroke_BIN   IN (
+	                                    SELECT SUBJECT
+	                                    FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
+	                                    )
+
+                                    ) AS TEMP2 
+                                    WHERE TEMP2.SUBJECT=[UOF_DESIGN_INFROM].SUBJECT COLLATE Chinese_Taiwan_Stroke_BIN
+                                    AND  [UOF_DESIGN_INFROM].[CONTENTS]<>TEMP2.資材 COLLATE Chinese_Taiwan_Stroke_CI_AS
+
+                                    ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -127,6 +312,16 @@ namespace TKPUR
         {
             SEARCH_UOF_DESIGN_INFROM();
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ADD_UOF_DESIGN_INFROM();
+
+            MessageBox.Show("完成");
+
+        }
+
         #endregion
+
+
     }
 }
