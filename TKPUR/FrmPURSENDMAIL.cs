@@ -51,6 +51,7 @@ namespace TKPUR
         private void FrmPURSENDMAIL_Load(object sender, EventArgs e)
         {
             comboBox1load();
+            ADD_UOF_DESIGN_INFROM();
         }
         public void comboBox1load()
         {
