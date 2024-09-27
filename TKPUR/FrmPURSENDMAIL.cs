@@ -48,7 +48,50 @@ namespace TKPUR
         }
 
         #region FUNCTION
-        public void SEARCH_UOF_DESIGN_INFROM()
+        private void FrmPURSENDMAIL_Load(object sender, EventArgs e)
+        {
+            comboBox1load();
+        }
+        public void comboBox1load()
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"
+                                
+                                SELECT 
+                                [ID]
+                                ,[KIND]
+                                ,[PARAID]
+                                ,[PARANAME]
+                                FROM [TKPUR].[dbo].[TBPARA]
+                                WHERE [KIND]='UOF_DESIGN_INFROM'
+                                ORDER BY [ID]
+                                ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("PARAID", typeof(string));
+            dt.Columns.Add("PARANAME", typeof(string));
+            da.Fill(dt);
+            comboBox1.DataSource = dt.DefaultView;
+            comboBox1.ValueMember = "PARANAME";
+            comboBox1.DisplayMember = "PARANAME";
+            sqlConn.Close();
+
+            //comboBox1.Font = new Font("Arial", 10); // 使用 "Arial" 字體，字體大小為 12
+        }
+        public void SEARCH_UOF_DESIGN_INFROM(string ISMAILS)
         {
             SqlDataAdapter adapter = new SqlDataAdapter();
             SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
@@ -76,14 +119,32 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
+                if (!string.IsNullOrEmpty(ISMAILS))
+                {
+                    if (ISMAILS.Equals("全部"))
+                    {
+                        // 如果 ISMAILS 是 "全部"，不附加任何查询条件
+                        sbSqlQuery.AppendFormat(@" ");
+                    }
+                    else
+                    {
+                        // 如果 ISMAILS 不是 "全部"，添加查询条件
+                        sbSqlQuery.AppendFormat(@" AND ISMAILS IN ('{0}')", ISMAILS);
+                    }
+                }
+
+
                 sbSql.AppendFormat(@" 
-                                    SELECT 
-                                    [SUBJECT] AS '校稿項目'
-                                    ,[DESIGNER] AS '設計人'
-                                    ,[CONTENTS]  AS '內容'
-                                    ,[ISMAILS]  AS '是否通知'
-                                    FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
-                                    ");
+                                SELECT 
+                                [SUBJECT] AS '校稿項目'
+                                ,[DESIGNER] AS '設計人'
+                                ,[CONTENTS]  AS '內容'
+                                ,[ISMAILS]  AS '是否通知'
+                                FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
+                                WHERE 1=1
+                                {0}
+
+                                ", sbSqlQuery.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -321,7 +382,7 @@ namespace TKPUR
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            SEARCH_UOF_DESIGN_INFROM();
+            SEARCH_UOF_DESIGN_INFROM(comboBox1.Text);
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -331,8 +392,9 @@ namespace TKPUR
 
         }
 
+
         #endregion
 
-
+      
     }
 }
