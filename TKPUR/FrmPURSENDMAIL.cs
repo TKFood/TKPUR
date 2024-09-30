@@ -24,6 +24,7 @@ namespace TKPUR
 {
     public partial class FrmPURSENDMAIL : Form
     {
+        int TIMEOUT_LIMITS = 120;
         SqlConnection sqlConn = new SqlConnection();
         SqlCommand sqlComm = new SqlCommand();
         string connectionString;
@@ -488,10 +489,12 @@ namespace TKPUR
 
             StringBuilder SUBJEST = new StringBuilder();
             StringBuilder BODY = new StringBuilder();
+            //指定設計人的email
+            string DESIGNER_EAMIL = "";
 
             try
             {
-                //DS_EMAIL_TO_EMAIL = SERACH_MAIL_TBPURCHECKFAX();
+                DS_EMAIL_TO_EMAIL = SERACH_MAIL_UOF_DESIGN_INFROM_EMAIL_PUR();
                 DT_DATAS = DT;
 
                 if (DT_DATAS != null && DT_DATAS.Rows.Count >= 1)
@@ -528,6 +531,7 @@ namespace TKPUR
 
                         foreach (DataRow DR in DT_DATAS.Rows)
                         {
+                            DESIGNER_EAMIL = DR["EMAIL"].ToString();
 
                             BODY.AppendFormat(@"<tr >");
                             BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["SUBJECT"].ToString() + "</td>");
@@ -572,12 +576,13 @@ namespace TKPUR
 
                         try
                         {
-                            //foreach (DataRow DR in DS_EMAIL_TO_EMAIL.Rows)
-                            //{
-                            //    MyMail.To.Add(DR["MAIL"].ToString()); //設定收件者Email，多筆mail
-                            //}
+                            foreach (DataRow DR in DS_EMAIL_TO_EMAIL.Rows)
+                            {
+                                MyMail.To.Add(DR["EMAIL"].ToString()); //設定收件者Email，多筆mail
+                            }
 
-                            MyMail.To.Add("tk290@tkfood.com.tw"); //設定收件者Email
+                            //MyMail.To.Add("tk290@tkfood.com.tw"); //設定收件者Email
+                            MyMail.To.Add(DESIGNER_EAMIL); //設定收件者Email
                             MySMTP.Send(MyMail);
 
                             MyMail.Dispose(); //釋放資源
@@ -613,6 +618,72 @@ namespace TKPUR
 
             }
 
+        }
+
+        public DataTable SERACH_MAIL_UOF_DESIGN_INFROM_EMAIL_PUR()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                //sbSql.AppendFormat(@"  WHERE [SENDTO]='COP' AND [MAIL]='tk290@tkfood.com.tw' ");
+
+                sbSql.AppendFormat(@"  
+                                    SELECT 
+                                    [NAME]
+                                    ,[EMAIL]
+                                    FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM_EMAIL_PUR]
+                                                                       
+                                    ");
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                // 設置查詢的超時時間，以秒為單位
+                adapter.SelectCommand.CommandTimeout = TIMEOUT_LIMITS;
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+
+                if (ds.Tables["ds"].Rows.Count >= 1)
+                {
+                    return ds.Tables["ds"];
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
+            }
         }
 
         #endregion
