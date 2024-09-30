@@ -392,6 +392,229 @@ namespace TKPUR
                 
         }
 
+        public void SEND_MAIL(string SUBJECTS)
+        {
+            DataTable DT = FIND_View_SUB_TB_EIP_FORUM_ARTICLE(SUBJECTS);
+
+            if(DT!=null && DT.Rows.Count>=1)
+            {
+                SEND_MAIL_TO(DT);
+            }
+        }
+
+        public DataTable FIND_View_SUB_TB_EIP_FORUM_ARTICLE(string SUBJECTS)
+        {
+            DataTable DT = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();               
+
+                if(!string.IsNullOrEmpty(SUBJECTS))
+                {
+                    sbSql.AppendFormat(@" 
+                                        SELECT
+                                        [SUBJECT]
+                                        ,[DESIGNER]
+                                        ,[BOARD_NAME]
+                                        ,[CREATE_DATE]
+                                        ,[CONTENTS]
+                                        ,[ISMAILS]
+                                        ,[CHECK]
+                                        ,[NAME]
+                                        ,[EMAIL]
+                                        FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
+                                        LEFT JOIN [TKPUR].[dbo].[UOF_DESIGN_INFROM_EMAIL] ON [UOF_DESIGN_INFROM_EMAIL].NAME=[UOF_DESIGN_INFROM].[DESIGNER] 
+                                        WHERE SUBJECT ='{0}'
+
+                                ", SUBJECTS);
+                }
+                
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count >= 0)
+                {
+                    return ds.Tables["ds"];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+                    return DT;
+        }
+
+        public void SEND_MAIL_TO(DataTable DT)
+        {
+            DataTable DS_EMAIL_TO_EMAIL = new DataTable();
+            DataTable DT_DATAS = new DataTable();
+
+            StringBuilder SUBJEST = new StringBuilder();
+            StringBuilder BODY = new StringBuilder();
+
+            try
+            {
+                //DS_EMAIL_TO_EMAIL = SERACH_MAIL_TBPURCHECKFAX();
+                DT_DATAS = DT;
+
+                if (DT_DATAS != null && DT_DATAS.Rows.Count >= 1)
+                {
+                    SUBJEST.Clear();
+                    BODY.Clear();
+
+
+                    SUBJEST.AppendFormat(@"系統通知-請查收-採購通知校稿廠商資料，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                    //BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為老楊食品-採購單" + Environment.NewLine + "請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
+
+                    //ERP 採購相關單別、單號未核準的明細
+                    //
+                    BODY.AppendFormat("<span style='font-size:12.0pt;font-family:微軟正黑體'> <br>" + "Dear SIR:" + "<br>"
+                        + "<br>" + "系統通知-請查收採購通知校稿廠商資料，謝謝"
+                        + " <br>"
+                        );
+
+
+
+
+
+                    if (DT_DATAS.Rows.Count > 0)
+                    {
+                        BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體'><br>" + "明細");
+
+                        BODY.AppendFormat(@"<table> ");
+                        BODY.AppendFormat(@"<tr >");
+                        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">校稿項目</th>");
+                        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">設計人</th>");
+                        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">內容</th>");
+
+                        BODY.AppendFormat(@"</tr> ");
+
+                        foreach (DataRow DR in DT_DATAS.Rows)
+                        {
+
+                            BODY.AppendFormat(@"<tr >");
+                            BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["SUBJECT"].ToString() + "</td>");
+                            BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["DESIGNER"].ToString() + "</td>");
+                            BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["CONTENTS"].ToString() + "</td>");
+                        
+                         
+                            BODY.AppendFormat(@"</tr> ");
+
+
+                        }
+                        BODY.AppendFormat(@"</table> ");
+                    }
+                    else
+                    {
+                        BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體'><br>" + "本日無資料");
+                    }
+
+                    try
+                    {
+                        string MySMTPCONFIG = ConfigurationManager.AppSettings["MySMTP"];
+                        string NAME = ConfigurationManager.AppSettings["NAME"];
+                        string PW = ConfigurationManager.AppSettings["PW"];
+
+                        System.Net.Mail.MailMessage MyMail = new System.Net.Mail.MailMessage();
+                        MyMail.From = new System.Net.Mail.MailAddress("tk290@tkfood.com.tw");
+
+                        //MyMail.Bcc.Add("密件副本的收件者Mail"); //加入密件副本的Mail          
+                        //MyMail.Subject = "每日訂單-製令追踨表"+DateTime.Now.ToString("yyyy/MM/dd");
+                        MyMail.Subject = SUBJEST.ToString();
+                        //MyMail.Body = "<h1>Dear SIR</h1>" + Environment.NewLine + "<h1>附件為每日訂單-製令追踨表，請查收</h1>" + Environment.NewLine + "<h1>若訂單沒有相對的製令則需通知製造生管開立</h1>"; //設定信件內容
+                        MyMail.Body = BODY.ToString();
+                        MyMail.IsBodyHtml = true; //是否使用html格式
+
+                        //加上附圖
+                        //string path = System.Environment.CurrentDirectory + @"/Images/emaillogo.jpg";
+                        //MyMail.AlternateViews.Add(GetEmbeddedImage(path, Body));
+
+                        System.Net.Mail.SmtpClient MySMTP = new System.Net.Mail.SmtpClient(MySMTPCONFIG, 25);
+                        MySMTP.Credentials = new System.Net.NetworkCredential(NAME, PW);
+
+
+                        try
+                        {
+                            //foreach (DataRow DR in DS_EMAIL_TO_EMAIL.Rows)
+                            //{
+                            //    MyMail.To.Add(DR["MAIL"].ToString()); //設定收件者Email，多筆mail
+                            //}
+
+                            MyMail.To.Add("tk290@tkfood.com.tw"); //設定收件者Email
+                            MySMTP.Send(MyMail);
+
+                            MyMail.Dispose(); //釋放資源
+
+                        }
+                        catch (Exception ex)
+                        {
+                            //MessageBox.Show("有錯誤");
+
+                            //ADDLOG(DateTime.Now, Subject.ToString(), ex.ToString());
+                            //ex.ToString();
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                    finally
+                    {
+
+                    }
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -409,7 +632,8 @@ namespace TKPUR
         }
         private void button3_Click(object sender, EventArgs e)
         {
-
+            SEND_MAIL(textBox1.Text.Trim());
+            MessageBox.Show("完成");
         }
 
 
