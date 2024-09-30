@@ -377,6 +377,20 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
+
+                    textBox1.Text = row.Cells["校稿項目"].Value.ToString();
+                }
+            }
+                
+        }
 
         #endregion
 
@@ -389,13 +403,19 @@ namespace TKPUR
         {
             ADD_UOF_DESIGN_INFROM();
 
+            SEARCH_UOF_DESIGN_INFROM(comboBox1.Text);
             MessageBox.Show("完成");
+
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
 
         }
 
 
+
         #endregion
 
-      
+
     }
 }
