@@ -142,6 +142,7 @@ namespace TKPUR
                                 ,[DESIGNER] AS '設計人'
                                 ,[CONTENTS]  AS '內容'
                                 ,[ISMAILS]  AS '是否通知'
+                                ,[MAILS_DATE] AS '通知日期'
                                 FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
                                 WHERE 1=1
                                 {0}
@@ -442,7 +443,7 @@ namespace TKPUR
                                         ,[CREATE_DATE]
                                         ,[CONTENTS]
                                         ,[ISMAILS]
-                                        ,[CHECK]
+                                        ,[MAILS_DATE]
                                         ,[NAME]
                                         ,[EMAIL]
                                         FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
@@ -491,6 +492,8 @@ namespace TKPUR
             StringBuilder BODY = new StringBuilder();
             //指定設計人的email
             string DESIGNER_EAMIL = "";
+            //設計項目
+            string SUBJETCS = "["+DT.Rows[0]["SUBJECT"].ToString()+"]";
 
             try
             {
@@ -503,7 +506,7 @@ namespace TKPUR
                     BODY.Clear();
 
 
-                    SUBJEST.AppendFormat(@"系統通知-請查收-採購通知校稿廠商資料，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                    SUBJEST.AppendFormat(@"系統通知-請查收-採購通知校稿廠商資料-"+ SUBJETCS + "，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
                     //BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為老楊食品-採購單" + Environment.NewLine + "請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
 
                     //ERP 採購相關單別、單號未核準的明細
@@ -686,6 +689,63 @@ namespace TKPUR
             }
         }
 
+        public void UPDATE_UOF_DESIGN_INFROM_ISMAILS(string SUBJECT)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    UPDATE [TKPUR].[dbo].[UOF_DESIGN_INFROM]
+                                    SET [ISMAILS]='Y',[MAILS_DATE]=CONVERT(NVARCHAR,GETDATE(),112)
+                                    WHERE [SUBJECT]='{0}'
+                                    ", SUBJECT);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -704,6 +764,8 @@ namespace TKPUR
         private void button3_Click(object sender, EventArgs e)
         {
             SEND_MAIL(textBox1.Text.Trim());
+            UPDATE_UOF_DESIGN_INFROM_ISMAILS(textBox1.Text.Trim());
+
             MessageBox.Show("完成");
         }
 
