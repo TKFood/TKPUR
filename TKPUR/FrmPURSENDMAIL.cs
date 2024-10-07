@@ -747,6 +747,63 @@ namespace TKPUR
             }
         }
 
+        public void UPDATE_UOF_DESIGN_INFROM_MANUFACTOR(string SUBJECT, string MANUFACTOR)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    UPDATE [TKPUR].[dbo].[UOF_DESIGN_INFROM]
+                                    SET [MANUFACTOR]='{1}'
+                                    WHERE [SUBJECT]='{0}'
+                                    ", SUBJECT, MANUFACTOR);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -771,6 +828,18 @@ namespace TKPUR
         }
 
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            UPDATE_UOF_DESIGN_INFROM_MANUFACTOR(textBox1.Text.Trim(), textBox2.Text.Trim());
+
+            SEARCH_UOF_DESIGN_INFROM(comboBox1.Text);
+            MessageBox.Show("完成");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
 
         #endregion
 
