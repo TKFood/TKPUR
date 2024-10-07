@@ -141,6 +141,7 @@ namespace TKPUR
                                 [SUBJECT] AS '校稿項目'
                                 ,[DESIGNER] AS '設計人'
                                 ,[CONTENTS]  AS '內容'
+                                ,[MANUFACTOR] AS '發包廠商'
                                 ,[ISMAILS]  AS '是否通知'
                                 ,[MAILS_DATE] AS '通知日期'
                                 FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
@@ -764,7 +765,7 @@ namespace TKPUR
         private void button3_Click(object sender, EventArgs e)
         {
             SEND_MAIL(textBox1.Text.Trim());
-            UPDATE_UOF_DESIGN_INFROM_ISMAILS(textBox1.Text.Trim());
+            //UPDATE_UOF_DESIGN_INFROM_ISMAILS(textBox1.Text.Trim());
 
             MessageBox.Show("完成");
         }
