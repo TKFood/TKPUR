@@ -50,6 +50,10 @@ namespace TKPUR
         }
 
         #region FUNCTION
+        private void frmPURMODELSNUMS_Load(object sender, EventArgs e)
+        {
+            UDPATE_PURVERSIONSNUMS_TOTALNUMS();
+        }
         public void SETDATES()
         {
             // 取得今年的第一天
@@ -869,8 +873,9 @@ namespace TKPUR
                 //do something else
             }
         }
+
         #endregion
 
-
+      
     }
 }
