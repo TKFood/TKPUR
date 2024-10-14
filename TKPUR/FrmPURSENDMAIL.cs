@@ -93,7 +93,7 @@ namespace TKPUR
 
             //comboBox1.Font = new Font("Arial", 10); // 使用 "Arial" 字體，字體大小為 12
         }
-        public void SEARCH_UOF_DESIGN_INFROM(string ISMAILS)
+        public void SEARCH_UOF_DESIGN_INFROM(string ISMAILS,string SUBJECT)
         {
             SqlDataAdapter adapter = new SqlDataAdapter();
             SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
@@ -101,6 +101,8 @@ namespace TKPUR
             SqlTransaction tran;
             SqlCommand cmd = new SqlCommand();
             DataSet ds = new DataSet();
+
+            StringBuilder sbSqlQuery2 = new StringBuilder();
 
             try
             {
@@ -120,6 +122,7 @@ namespace TKPUR
 
                 sbSql.Clear();
                 sbSqlQuery.Clear();
+                sbSqlQuery2.Clear();
 
                 if (!string.IsNullOrEmpty(ISMAILS))
                 {
@@ -135,6 +138,19 @@ namespace TKPUR
                     }
                 }
 
+                if(!string.IsNullOrEmpty(SUBJECT))
+                {
+                    sbSqlQuery2.AppendFormat(@"
+                                                   AND [SUBJECT] LIKE '%{0}%' 
+                                                ", SUBJECT);
+
+                }
+                else
+                {
+                    sbSqlQuery2.AppendFormat(@"
+                                                ");
+                }
+
 
                 sbSql.AppendFormat(@" 
                                 SELECT 
@@ -147,8 +163,8 @@ namespace TKPUR
                                 FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
                                 WHERE 1=1
                                 {0}
-
-                                ", sbSqlQuery.ToString());
+                                {1}
+                                ", sbSqlQuery.ToString(), sbSqlQuery2.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -390,6 +406,7 @@ namespace TKPUR
                     DataGridViewRow row = dataGridView1.Rows[rowindex];
 
                     textBox1.Text = row.Cells["校稿項目"].Value.ToString();
+                    textBox2.Text = row.Cells["發包廠商"].Value.ToString();
                 }
             }
                 
@@ -969,13 +986,13 @@ namespace TKPUR
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            SEARCH_UOF_DESIGN_INFROM(comboBox1.Text);
+            SEARCH_UOF_DESIGN_INFROM(comboBox1.Text.ToString().Trim(), textBox3.Text.ToString().Trim());
         }
         private void button2_Click(object sender, EventArgs e)
         {
             ADD_UOF_DESIGN_INFROM();
 
-            SEARCH_UOF_DESIGN_INFROM(comboBox1.Text);
+            SEARCH_UOF_DESIGN_INFROM(comboBox1.Text, textBox3.Text.ToString().Trim());
             MessageBox.Show("完成");
 
         }
@@ -992,16 +1009,23 @@ namespace TKPUR
         {
             UPDATE_UOF_DESIGN_INFROM_MANUFACTOR(textBox1.Text.Trim(), textBox2.Text.Trim());
 
-            SEARCH_UOF_DESIGN_INFROM(comboBox1.Text);
+            SEARCH_UOF_DESIGN_INFROM(comboBox1.Text, textBox3.Text.ToString().Trim());
             MessageBox.Show("完成");
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            SEND_MAIL_MANUFACTOR(textBox1.Text.Trim());
-            UPDATE_UOF_DESIGN_INFROM_ISMAILS(textBox1.Text.Trim());
+            if(!string.IsNullOrEmpty(textBox2.Text.ToString()))
+            {
+                SEND_MAIL_MANUFACTOR(textBox1.Text.Trim());
+                UPDATE_UOF_DESIGN_INFROM_ISMAILS(textBox1.Text.Trim());
 
-            MessageBox.Show("完成");
+                MessageBox.Show("完成");
+            }
+            else
+            {
+                MessageBox.Show("沒有指定發包廠商，不能通知");
+            }
         }
 
         #endregion
