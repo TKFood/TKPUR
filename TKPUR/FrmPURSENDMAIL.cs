@@ -788,11 +788,13 @@ namespace TKPUR
 
                 sbSql.Clear();
 
+                //當字串中包含單引號（'）時，SQL 語句會因單引號干擾而導致語法錯誤。在這種情況下，可以通過將字串中的單引號轉義來解決問題。對於 MSSQL 來說，轉義單引號的方式是將每個單引號重複兩次（即變成 ''）。
+                //在 C# 中，你可以使用 .Replace("'", "''") 
                 sbSql.AppendFormat(@"  
                                     UPDATE [TKPUR].[dbo].[UOF_DESIGN_INFROM]
                                     SET [MANUFACTOR]='{1}'
                                     WHERE [SUBJECT]='{0}'
-                                    ", SUBJECT, MANUFACTOR);
+                                    ", SUBJECT.Replace("'", "''"), MANUFACTOR.Replace("'", "''"));
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;

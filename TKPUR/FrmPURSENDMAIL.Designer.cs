@@ -32,10 +32,12 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -47,8 +49,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -132,6 +132,15 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(966, 133);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(123, 10);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(114, 24);
+            this.comboBox1.TabIndex = 91;
+            // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -142,15 +151,25 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "是否已通知";
             // 
-            // button1
+            // label4
             // 
-            this.button1.Location = new System.Drawing.Point(363, 43);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(114, 34);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "查詢";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 52);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(114, 16);
+            this.label4.TabIndex = 92;
+            this.label4.Text = "校稿項目";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.textBox3, 2);
+            this.textBox3.Location = new System.Drawing.Point(123, 43);
+            this.textBox3.Multiline = true;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(234, 34);
+            this.textBox3.TabIndex = 93;
             // 
             // button2
             // 
@@ -162,14 +181,15 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // comboBox1
+            // button1
             // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(123, 8);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(114, 24);
-            this.comboBox1.TabIndex = 91;
+            this.button1.Location = new System.Drawing.Point(363, 43);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(114, 34);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "查詢";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // splitContainer2
             // 
@@ -323,26 +343,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 52);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(114, 16);
-            this.label4.TabIndex = 92;
-            this.label4.Text = "校稿項目";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.SetColumnSpan(this.textBox3, 2);
-            this.textBox3.Location = new System.Drawing.Point(123, 43);
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(234, 34);
-            this.textBox3.TabIndex = 93;
             // 
             // FrmPURSENDMAIL
             // 
