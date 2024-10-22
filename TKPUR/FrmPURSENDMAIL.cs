@@ -469,7 +469,7 @@ namespace TKPUR
                                         LEFT JOIN [TKPUR].[dbo].[UOF_DESIGN_INFROM_EMAIL] ON [UOF_DESIGN_INFROM_EMAIL].NAME=[UOF_DESIGN_INFROM].[DESIGNER] 
                                         WHERE SUBJECT ='{0}'
 
-                                ", SUBJECTS);
+                                ", SUBJECTS.Replace("'", "''"));
                 }
                 
 
@@ -735,7 +735,7 @@ namespace TKPUR
                                     UPDATE [TKPUR].[dbo].[UOF_DESIGN_INFROM]
                                     SET [ISMAILS]='Y',[MAILS_DATE]=CONVERT(NVARCHAR,GETDATE(),112)
                                     WHERE [SUBJECT]='{0}'
-                                    ", SUBJECT);
+                                    ", SUBJECT.Replace("'", "''"));
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
