@@ -1009,10 +1009,18 @@ namespace TKPUR
 
         private void button4_Click(object sender, EventArgs e)
         {
-            UPDATE_UOF_DESIGN_INFROM_MANUFACTOR(textBox1.Text.Trim(), textBox2.Text.Trim());
+            if (!string.IsNullOrEmpty(textBox2.Text.ToString()))
+            {
+                UPDATE_UOF_DESIGN_INFROM_MANUFACTOR(textBox1.Text.Trim(), textBox2.Text.Trim());
+                
+                SEND_MAIL_MANUFACTOR(textBox1.Text.Trim());
+                UPDATE_UOF_DESIGN_INFROM_ISMAILS(textBox1.Text.Trim());
+                
+                SEARCH_UOF_DESIGN_INFROM(comboBox1.Text, textBox3.Text.ToString().Trim());
+                MessageBox.Show("填寫+寄送 完成");
+            }
 
-            SEARCH_UOF_DESIGN_INFROM(comboBox1.Text, textBox3.Text.ToString().Trim());
-            MessageBox.Show("完成");
+               
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -1022,7 +1030,7 @@ namespace TKPUR
                 SEND_MAIL_MANUFACTOR(textBox1.Text.Trim());
                 UPDATE_UOF_DESIGN_INFROM_ISMAILS(textBox1.Text.Trim());
 
-                MessageBox.Show("完成");
+                MessageBox.Show("寄送 完成");
             }
             else
             {

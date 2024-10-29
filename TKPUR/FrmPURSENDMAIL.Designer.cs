@@ -136,7 +136,7 @@
             // 
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(123, 10);
+            this.comboBox1.Location = new System.Drawing.Point(123, 8);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(114, 24);
             this.comboBox1.TabIndex = 91;
@@ -313,11 +313,12 @@
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(3, 363);
+            this.button4.Location = new System.Drawing.Point(3, 364);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(179, 34);
+            this.tableLayoutPanel2.SetRowSpan(this.button4, 2);
+            this.button4.Size = new System.Drawing.Size(179, 72);
             this.button4.TabIndex = 8;
-            this.button4.Text = "填寫發包廠商";
+            this.button4.Text = "填寫發包廠商+發包-寄送MAIL";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
