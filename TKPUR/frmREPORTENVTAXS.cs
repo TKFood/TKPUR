@@ -749,6 +749,44 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
+        private void dataGridView3_SelectionChanged(object sender, EventArgs e)
+        {
+            SET_NULL_V3();
+
+            string CODES = "";
+            string VOLUMES = "";
+            string WEIGHTS = "";
+            string OTHERWEIGHTS = "";
+            string RATES = "";
+            string MB001 = "";
+            string MB002 = "";
+
+            if (dataGridView3.CurrentRow != null)
+            {
+                int rowindex = dataGridView3.CurrentRow.Index;
+
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView3.Rows[rowindex];
+
+                    MB001 = row.Cells["品號"].Value.ToString();
+                    MB002 = row.Cells["品名"].Value.ToString();
+
+                    CODES = textBox13.Text.Trim();
+                    VOLUMES = textBox14.Text.Trim();
+                    WEIGHTS = textBox15.Text.Trim();
+                    OTHERWEIGHTS = textBox16.Text.Trim();
+                    RATES = textBox17.Text.Trim();
+
+                    textBox18.Text = MB001;
+                    textBox19.Text = MB002;
+                }
+                else
+                {
+
+                }
+            }
+        }
 
         public void ADD_TKTAXCODES(string CODES, string VOLUMES, string WEIGHTS, string OTHERWEIGHTS, string RATES)
         {
@@ -996,11 +1034,83 @@ namespace TKPUR
                                     ,{2}
                                     ,{3}
                                     ,{4}
-                                    ,{5}
+                                    ,'{5}'
                                     ,'{6}'
 
 
                                     )
+
+                                   
+                                    ", CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS, RATES, MB001, MB002);
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public void DELETE_TKTAXCODESMB001(
+                  string CODES,
+                  string VOLUMES,
+                  string WEIGHTS,
+                  string OTHERWEIGHTS,
+                  string RATES,
+                  string MB001,
+                  string MB002
+              )
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(@"                                   
+                                   DELETE [TKPUR].[dbo].[TKTAXCODESMB001]
+                                   WHERE 
+                                    [CODES]='{0}'
+                                    AND [VOLUMES]={1}
+                                    AND [WEIGHTS]={2}
+                                    AND [OTHERWEIGHTS]={3}
+                                    AND [RATES]={4}
+                                    AND [MB001]='{5}'
+                                    AND [MB002]='{6}'
+                                   
 
                                    
                                     ", CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS, RATES, MB001, MB002);
@@ -1053,6 +1163,14 @@ namespace TKPUR
             textBox15.Text = "";
             textBox16.Text = "";
         }
+
+        public void SET_NULL_V3()
+        {
+            textBox18.Text = "";
+            textBox19.Text = "";
+      
+        }
+
 
         #endregion
 
@@ -1121,7 +1239,6 @@ namespace TKPUR
 
         private void button7_Click(object sender, EventArgs e)
         {
-
             string CODES = textBox13.Text.Trim();
             string VOLUMES = textBox14.Text.Trim();
             string WEIGHTS = textBox15.Text.Trim();
@@ -1148,8 +1265,45 @@ namespace TKPUR
         }
 
 
+
+
         #endregion
 
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string CODES = textBox13.Text.Trim();
+            string VOLUMES = textBox14.Text.Trim();
+            string WEIGHTS = textBox15.Text.Trim();
+            string OTHERWEIGHTS = textBox16.Text.Trim();
+            string RATES = textBox17.Text.Trim();
 
+            string MB001 = textBox18.Text.Trim();
+            string MB002 = textBox19.Text.Trim();
+           
+
+            DialogResult dialogResult = MessageBox.Show("要刪除了?" , "要刪除了?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                if (!string.IsNullOrEmpty(MB001) && !string.IsNullOrEmpty(MB002))
+                {
+                    DELETE_TKTAXCODESMB001(
+                      CODES,
+                      VOLUMES,
+                      WEIGHTS,
+                      OTHERWEIGHTS,
+                      RATES,
+                      MB001,
+                      MB002
+                    );
+                    Search_TKTAXCODESMB001(CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS);
+                }
+
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //do something else
+            }
+
+        }
     }
 }
