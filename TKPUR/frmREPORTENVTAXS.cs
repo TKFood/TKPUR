@@ -478,6 +478,12 @@ namespace TKPUR
 
         public void Search_TKTAXCODES()
         {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
             try
             {
                 //20210902密
@@ -561,6 +567,174 @@ namespace TKPUR
                 {
                    
                 }
+            }
+        }
+
+        public void Search_TKTAXCODES_V2()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                    SELECT 
+                                    [CODES] AS '材質細碼'
+                                    ,[VOLUMES] AS '容積'
+                                    ,[WEIGHTS] AS '容器本體'
+                                    ,[OTHERWEIGHTS] AS '附件'
+                                    ,[RATES] AS '費率'
+                                    FROM [TKPUR].[dbo].[TKTAXCODES]
+                                    ORDER BY [CODES],[VOLUMES]
+                                    ");
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    dataGridView2.DataSource = ds.Tables["TEMPds1"];
+                    dataGridView2.AutoResizeColumns();
+
+                }
+                else
+                {
+                    dataGridView2.DataSource = null;
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+        private void dataGridView2_SelectionChanged(object sender, EventArgs e)
+        {
+            string CODES = "";
+            string VOLUMES = "";
+            string WEIGHTS = "";
+            string OTHERWEIGHTS = "";
+
+            if (dataGridView2.CurrentRow != null)
+            {
+                int rowindex = dataGridView2.CurrentRow.Index;
+
+
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView2.Rows[rowindex];
+
+                    CODES = row.Cells["材質細碼"].Value.ToString();
+                    VOLUMES = row.Cells["容積"].Value.ToString();
+                    WEIGHTS = row.Cells["容器本體"].Value.ToString();
+                    OTHERWEIGHTS = row.Cells["附件"].Value.ToString();
+
+                    Search_TKTAXCODESMB001(CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS);
+                }
+                else
+                {
+
+                }
+            }
+        }
+
+        public void Search_TKTAXCODESMB001(string CODES, string VOLUMES, string WEIGHTS, string OTHERWEIGHTS)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                    SELECT 
+                                    [MB001] AS '品號'
+                                    ,[MB002] AS '品名'
+                                    FROM [TKPUR].[dbo].[TKTAXCODESMB001]
+                                    WHERE 
+                                    [CODES]='{0}'
+                                    AND [VOLUMES]={1}
+                                    AND [WEIGHTS]={2}
+                                    AND [OTHERWEIGHTS]={3}
+                                    ORDER BY [CODES],[MB001]
+                                    ", CODES,  VOLUMES,  WEIGHTS,  OTHERWEIGHTS);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    dataGridView3.DataSource = ds.Tables["TEMPds1"];
+                    dataGridView3.AutoResizeColumns();
+
+                }
+                else
+                {
+                    dataGridView3.DataSource = null;
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
             }
         }
 
@@ -762,9 +936,14 @@ namespace TKPUR
             }
         }
 
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Search_TKTAXCODES_V2();
+        }
+
 
         #endregion
 
-
+       
     }
 }
