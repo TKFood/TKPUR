@@ -564,6 +564,74 @@ namespace TKPUR
             }
         }
 
+        public void ADD_TKTAXCODES(string CODES, string VOLUMES, string WEIGHTS, string OTHERWEIGHTS, string RATES)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+               
+                sbSql.AppendFormat(@" 
+                                    INSERT INTO  [TKPUR].[dbo].[TKTAXCODES]
+                                    (
+                                    [CODES]
+                                    ,[VOLUMES]
+                                    ,[WEIGHTS]
+                                    ,[OTHERWEIGHTS]
+                                    ,[RATES]
+                                    )
+                                    VALUES
+                                    (
+                                    '{0}'
+                                    ,{1}
+                                    ,{2}
+                                    ,{3}
+                                    ,{4}
+                                    )
+                                    ", CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS, RATES);
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                }
+            }
+            catch(Exception  ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         public void SET_NULL()
         {
             textBox1.Text = "";
@@ -595,10 +663,28 @@ namespace TKPUR
             Search_TKTAXCODES();
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string CODES = textBox1.Text.Trim();
+            string VOLUMES = textBox2.Text.Trim();
+            string WEIGHTS = textBox3.Text.Trim();
+            string OTHERWEIGHTS = textBox4.Text.Trim();
+            string RATES = textBox5.Text.Trim();
+
+            if(!string.IsNullOrEmpty(CODES))
+            {
+                ADD_TKTAXCODES(CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS, RATES);
+
+                SET_NULL();
+                Search_TKTAXCODES();
+            }
+
+          
+        }
 
 
         #endregion
 
-      
+
     }
 }
