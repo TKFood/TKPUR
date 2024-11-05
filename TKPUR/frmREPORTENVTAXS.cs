@@ -632,6 +632,61 @@ namespace TKPUR
             }
         }
 
+        public void DELETE_TKTAXCODES(string CODES, string VOLUMES, string WEIGHTS, string OTHERWEIGHTS, string RATES)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                    DELETE [TKPUR].[dbo].[TKTAXCODES]
+                                    WHERE  [CODES]='{0}'AND [VOLUMES]={1} AND [WEIGHTS]={2} AND [OTHERWEIGHTS]={3} AND [RATES]={4}
+                                   
+                                    ", CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS, RATES);
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         public void SET_NULL()
         {
             textBox1.Text = "";
@@ -680,6 +735,31 @@ namespace TKPUR
             }
 
           
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string CODES = textBox6.Text.Trim();
+            string VOLUMES = textBox7.Text.Trim();
+            string WEIGHTS = textBox8.Text.Trim();
+            string OTHERWEIGHTS = textBox9.Text.Trim();
+            string RATES = textBox10.Text.Trim();
+
+            DialogResult dialogResult = MessageBox.Show("要刪除了?" + Environment.NewLine + "注意:如果刪除材質細碼，會連同品號關係一並刪除", "要刪除了?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                if (!string.IsNullOrEmpty(CODES))
+                {
+                    DELETE_TKTAXCODES(CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS, RATES);
+
+                    SET_NULL();
+                    Search_TKTAXCODES();
+                }
+
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //do something else
+            }
         }
 
 

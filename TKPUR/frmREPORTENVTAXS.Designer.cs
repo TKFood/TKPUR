@@ -365,8 +365,8 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 202F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 47F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 204F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel3.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.label6, 0, 1);
@@ -553,7 +553,7 @@
             this.textBox6.Location = new System.Drawing.Point(483, 6);
             this.textBox6.Name = "textBox6";
             this.textBox6.ReadOnly = true;
-            this.textBox6.Size = new System.Drawing.Size(198, 27);
+            this.textBox6.Size = new System.Drawing.Size(202, 27);
             this.textBox6.TabIndex = 19;
             // 
             // textBox7
@@ -562,7 +562,7 @@
             this.textBox7.Location = new System.Drawing.Point(483, 126);
             this.textBox7.Name = "textBox7";
             this.textBox7.ReadOnly = true;
-            this.textBox7.Size = new System.Drawing.Size(198, 27);
+            this.textBox7.Size = new System.Drawing.Size(202, 27);
             this.textBox7.TabIndex = 20;
             // 
             // textBox8
@@ -571,7 +571,7 @@
             this.textBox8.Location = new System.Drawing.Point(483, 86);
             this.textBox8.Name = "textBox8";
             this.textBox8.ReadOnly = true;
-            this.textBox8.Size = new System.Drawing.Size(198, 27);
+            this.textBox8.Size = new System.Drawing.Size(202, 27);
             this.textBox8.TabIndex = 21;
             // 
             // textBox9
@@ -580,7 +580,7 @@
             this.textBox9.Location = new System.Drawing.Point(483, 46);
             this.textBox9.Name = "textBox9";
             this.textBox9.ReadOnly = true;
-            this.textBox9.Size = new System.Drawing.Size(198, 27);
+            this.textBox9.Size = new System.Drawing.Size(202, 27);
             this.textBox9.TabIndex = 22;
             // 
             // label12
@@ -599,7 +599,7 @@
             this.textBox10.Location = new System.Drawing.Point(483, 166);
             this.textBox10.Name = "textBox10";
             this.textBox10.ReadOnly = true;
-            this.textBox10.Size = new System.Drawing.Size(198, 27);
+            this.textBox10.Size = new System.Drawing.Size(202, 27);
             this.textBox10.TabIndex = 24;
             // 
             // button5
@@ -607,10 +607,11 @@
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.button5.Location = new System.Drawing.Point(483, 243);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(198, 34);
+            this.button5.Size = new System.Drawing.Size(202, 34);
             this.button5.TabIndex = 25;
             this.button5.Text = "刪除";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label13
             // 
@@ -620,9 +621,9 @@
             this.label13.ForeColor = System.Drawing.Color.MidnightBlue;
             this.label13.Location = new System.Drawing.Point(483, 204);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(198, 32);
+            this.label13.Size = new System.Drawing.Size(202, 32);
             this.label13.TabIndex = 26;
-            this.label13.Text = "注意:如果刪除材質細碼，會連同品號一並刪除";
+            this.label13.Text = "注意:如果刪除材質細碼，會連同品號關係一並刪除";
             // 
             // frmREPORTENVTAXS
             // 
