@@ -1141,6 +1141,195 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
+
+        public void ADD_TKTAXREPORTCOP_TKTAXREPORTPUR(string STARTYYYYMM, string ENDYYYYMM)
+        {
+            string STARTYY = STARTYYYYMM.Substring(0, 4);
+            string STARTMM = STARTYYYYMM.Substring(4, 2);
+            string ENDYY = ENDYYYYMM.Substring(0, 4);
+            string ENDMM = ENDYYYYMM.Substring(4, 2);
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                    DELETE [TKPUR].[dbo].[TKTAXREPORTPUR]
+                                    INSERT INTO [TKPUR].[dbo].[TKTAXREPORTPUR]
+                                    (
+                                    [年]
+                                    ,[月]
+                                    ,[廠商代]
+                                    ,[廠商]
+                                    ,[統編]
+
+                                    ,[品號]
+                                    ,[品名]
+                                    ,[進貨驗收數量]
+                                    ,[單位]
+                                    ,[材質細碼]
+                                    ,[容積]
+                                    ,[容器本體]
+                                    ,[附件]
+                                    ,[費率]
+                                    ,[MB001]
+                                    ,[MB002]
+                                    )
+                                    SELECT 
+                                    年,月,廠商代,廠商,統編,品號,品名,進貨驗收數量,單位
+                                    ,[CODES] AS '材質細碼'
+                                    ,[VOLUMES] AS '容積'
+                                    ,[WEIGHTS] AS '容器本體'
+                                    ,[OTHERWEIGHTS] AS '附件'
+                                    ,[RATES] AS '費率'
+                                    ,[MB001]
+                                    ,[MB002]
+                                    FROM 
+                                    (
+                                    SELECT SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG005 AS '廠商代',MA002 AS '廠商',MA005 AS '統編',TH004 AS '品號',MB002 AS '品名',SUM(TH015)  AS '進貨驗收數量',TH008 AS '單位'
+                                    FROM [TK].dbo.PURTG,[TK].dbo.PURTH, [TK].dbo.PURMA, [TK].dbo.INVMB 
+                                    WHERE TG001=TH001 AND TG002=TH002
+                                    AND MA001=TG005
+                                    AND MB001=TH004
+                                    AND TG013='Y'
+                                    AND (
+                                    TH004 LIKE '205%' OR
+                                    TH004 LIKE '214%' OR
+                                    TH004 LIKE '41004070020001%' OR
+                                    TH004 LIKE '503001002001%' OR
+                                    TH004 LIKE '503001002002%' OR
+                                    TH004 LIKE '503001002003%' OR
+                                    TH004 LIKE '503001002004%' 
+                                    )
+                                    AND SUBSTRING(TG003,1,4)='{0}'
+                                    AND SUBSTRING(TG003,5,2)>='{1}'
+
+                                    AND SUBSTRING(TG003,5,2)<='{2}'
+                                    GROUP BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008
+
+                                    ) AS TEMP 
+                                    LEFT JOIN [TKPUR].[dbo].[TKTAXCODESMB001] ON [TKTAXCODESMB001].MB001=TEMP.品號
+                                    ORDER BY  年,月,廠商代,廠商,統編,品號,品名,單位
+                                   
+                                    ", STARTYY, STARTMM, ENDMM);
+
+                sbSql.AppendFormat(@"  ");
+
+                sbSql.AppendFormat(@"  
+                                    DELETE  [TKPUR].[dbo].[TKTAXREPORTCOP]
+                                    INSERT INTO [TKPUR].[dbo].[TKTAXREPORTCOP]
+                                    (
+                                     [年]
+                                    ,[月]
+                                    ,[客戶代]
+                                    ,[客戶]
+                                    ,[統編]
+                                    ,[主品號]
+                                    ,[主品名]
+                                    ,[主銷售數量]
+                                    ,[品號]
+                                    ,[品名]
+                                    ,[進貨驗收數量]
+                                    ,[單位]
+                                    ,[材質細碼]
+                                    ,[容積]
+                                    ,[容器本體]
+                                    ,[附件]
+                                    ,[費率]
+                                    ,[MB001]
+                                    ,[MB002]
+                                    )
+                                    SELECT 
+                                     [年]
+                                    ,[月]
+                                    ,[客戶代]
+                                    ,[客戶]
+                                    ,[統編]
+                                    ,[主品號]
+                                    ,[主品名]
+                                    ,[主銷售數量]
+                                    ,[品號]
+                                    ,[品名]
+                                    ,[數量]
+                                    ,[單位]
+                                    ,[CODES] AS '材質細碼'
+                                    ,[VOLUMES] AS '容積'
+                                    ,[WEIGHTS] AS '容器本體'
+                                    ,[OTHERWEIGHTS] AS '附件'
+                                    ,[RATES] AS '費率'
+                                    ,[MB001]
+                                    ,[MB002]
+                                    FROM 
+                                    (
+                                    SELECT  SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG004 AS '客戶代',MA002 AS '客戶',MA010 AS '統編',TH004  AS '主品號',MB1.MB002 AS '主品名' ,SUM(LA011)  AS '主銷售數量',MB1.MB004,MC004,MD006,MD007,MD003 AS '品號',MB2.MB002 AS '品名',SUM(CONVERT(DECIMAL(16,0),(LA011/MD006*MD007*MC004)))  AS '數量',MB2.MB004 AS '單位'
+                                    FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB MB1,[TK].dbo.COPMA,[TK].dbo.BOMMC,[TK].dbo.BOMMD,[TK].dbo.INVMB MB2
+                                    WHERE TG001=TH001 AND TG002=TH002
+                                    AND LA006=TH001 AND LA007=TH002 AND LA008=TH003
+                                    AND TH004=MB1.MB001
+                                    AND TG004=MA001
+                                    AND MC001=TH004
+                                    AND MC001=MD001
+                                    AND MD003=MB2.MB001
+                                    AND (
+                                    MD003 LIKE '205%'
+                                    )
+                                    AND MD035 NOT LIKE '%蓋%'
+                                    AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
+                                    AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
+                                    AND SUBSTRING(TG003,1,4)='{0}' 
+                                    AND SUBSTRING(TG003,5,2)>='{1}'
+                                    AND SUBSTRING(TG003,5,2)<='{2}'
+                                    GROUP BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004,MB1.MB002,MB1.MB004,MC004,MD006,MD007,MD003,MB2.MB002,MB2.MB004
+                                    )  AS TEMP
+                                    LEFT JOIN [TKPUR].[dbo].[TKTAXCODESMB001] ON [TKTAXCODESMB001].MB001=TEMP.品號
+                                    ORDER BY  年,月,客戶代,客戶,統編,品號,品名,單位
+
+                                    ", STARTYY, STARTMM, ENDMM);
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+
         public void SET_NULL()
         {
             textBox1.Text = "";
@@ -1267,7 +1456,7 @@ namespace TKPUR
 
 
 
-        #endregion
+     
 
         private void button8_Click(object sender, EventArgs e)
         {
@@ -1305,5 +1494,11 @@ namespace TKPUR
             }
 
         }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            ADD_TKTAXREPORTCOP_TKTAXREPORTPUR(dateTimePicker4.Value.ToString("yyyyMM"), dateTimePicker5.Value.ToString("yyyyMM"));
+        }
+        #endregion
     }
 }
