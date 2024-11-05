@@ -1361,6 +1361,74 @@ namespace TKPUR
             }
         }
 
+        public void DELETE_TKTAXCODESMB001_CODE(
+                  string CODES,
+                  string VOLUMES,
+                  string WEIGHTS,
+                  string OTHERWEIGHTS,
+                  string RATES
+            )
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(@"                                   
+                                   DELETE [TKPUR].[dbo].[TKTAXCODESMB001]
+                                   WHERE 
+                                    [CODES]='{0}'
+                                    AND [VOLUMES]={1}
+                                    AND [WEIGHTS]={2}
+                                    AND [OTHERWEIGHTS]={3}
+                                    AND [RATES]={4}
+                          
+                                   
+
+                                   
+                                    ", CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS, RATES);
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
 
         public void SET_NULL()
         {
@@ -1441,6 +1509,14 @@ namespace TKPUR
                 if (!string.IsNullOrEmpty(CODES))
                 {
                     DELETE_TKTAXCODES(CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS, RATES);
+
+                    DELETE_TKTAXCODESMB001_CODE(
+                      CODES,
+                      VOLUMES,
+                      WEIGHTS,
+                      OTHERWEIGHTS,
+                      RATES                    
+                    );
 
                     SET_NULL();
                     Search_TKTAXCODES();
