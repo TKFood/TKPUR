@@ -475,6 +475,69 @@ namespace TKPUR
 
             }
         }
+
+        public void Search_TKTAXCODES()
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);                
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                
+                sbSql.AppendFormat(@"  
+                                    SELECT 
+                                    [CODES] AS '材質細碼'
+                                    ,[VOLUMES] AS '容積'
+                                    ,[WEIGHTS] AS '容器本體'
+                                    ,[OTHERWEIGHTS] AS '附件'
+                                    ,[RATES] AS '費率'
+                                    FROM [TKPUR].[dbo].[TKTAXCODES]
+                                    ORDER BY [CODES],[VOLUMES]
+                                    ");
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    dataGridView1.DataSource = ds.Tables["TEMPds1"];
+                    dataGridView1.AutoResizeColumns();
+
+                }
+                else
+                {
+                    dataGridView1.DataSource = null;
+                }
+               
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -486,9 +549,14 @@ namespace TKPUR
         {
             SETFASTREPORT2(dateTimePicker2.Value.ToString("yyyyMM"), dateTimePicker3.Value.ToString("yyyyMM"));
         }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Search_TKTAXCODES();
+        }
+
 
         #endregion
 
-        
+
     }
 }
