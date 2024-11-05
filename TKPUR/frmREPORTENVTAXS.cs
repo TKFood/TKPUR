@@ -1149,6 +1149,48 @@ namespace TKPUR
             string ENDYY = ENDYYYYMM.Substring(0, 4);
             string ENDMM = ENDYYYYMM.Substring(4, 2);
 
+            StringBuilder STRQUERY1 = new StringBuilder();
+            StringBuilder STRQUERY2 = new StringBuilder();
+
+            DataTable DT = FIND_TKCOPMATAXSMB001PUR();
+            if (DT != null && DT.Rows.Count >= 1)
+            {
+                STRQUERY1.AppendFormat(@" (");
+                int rowCount = DT.Rows.Count;
+
+                for (int i = 0; i < rowCount; i++)
+                {
+                    STRQUERY1.AppendFormat(@" TH004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+
+                    // 在最後一個元素之後不添加 "OR"
+                    if (i < rowCount - 1)
+                    {
+                        STRQUERY1.AppendFormat(@" OR");
+                    }
+                }
+
+                STRQUERY1.AppendFormat(@" )");
+            }
+
+            DataTable DT2 = FIND_TKCOPMATAXSMB001COP();
+            if (DT2 != null && DT2.Rows.Count >= 1)
+            {
+                STRQUERY2.AppendFormat(@" (");
+                int rowCount = DT2.Rows.Count;
+
+                for (int i = 0; i < rowCount; i++)
+                {
+                    STRQUERY2.AppendFormat(@" MD003 LIKE '{0}%'", DT2.Rows[i]["MB001"].ToString());
+
+                    // 在最後一個元素之後不添加 "OR"
+                    if (i < rowCount - 1)
+                    {
+                        STRQUERY2.AppendFormat(@" OR");
+                    }
+                }
+
+                STRQUERY2.AppendFormat(@" )");
+            }
             try
             {
                 //20210902密
@@ -1208,15 +1250,7 @@ namespace TKPUR
                                     AND MA001=TG005
                                     AND MB001=TH004
                                     AND TG013='Y'
-                                    AND (
-                                    TH004 LIKE '205%' OR
-                                    TH004 LIKE '214%' OR
-                                    TH004 LIKE '41004070020001%' OR
-                                    TH004 LIKE '503001002001%' OR
-                                    TH004 LIKE '503001002002%' OR
-                                    TH004 LIKE '503001002003%' OR
-                                    TH004 LIKE '503001002004%' 
-                                    )
+                                    AND {3}
                                     AND SUBSTRING(TG003,1,4)='{0}'
                                     AND SUBSTRING(TG003,5,2)>='{1}'
 
@@ -1227,7 +1261,7 @@ namespace TKPUR
                                     LEFT JOIN [TKPUR].[dbo].[TKTAXCODESMB001] ON [TKTAXCODESMB001].MB001=TEMP.品號
                                     ORDER BY  年,月,廠商代,廠商,統編,品號,品名,單位
                                    
-                                    ", STARTYY, STARTMM, ENDMM);
+                                    ", STARTYY, STARTMM, ENDMM, STRQUERY1.ToString());
 
                 sbSql.AppendFormat(@"  ");
 
@@ -1286,9 +1320,7 @@ namespace TKPUR
                                     AND MC001=TH004
                                     AND MC001=MD001
                                     AND MD003=MB2.MB001
-                                    AND (
-                                    MD003 LIKE '205%'
-                                    )
+                                    AND {3}
                                     AND MD035 NOT LIKE '%蓋%'
                                     AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
                                     AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
@@ -1300,7 +1332,7 @@ namespace TKPUR
                                     LEFT JOIN [TKPUR].[dbo].[TKTAXCODESMB001] ON [TKTAXCODESMB001].MB001=TEMP.品號
                                     ORDER BY  年,月,客戶代,客戶,統編,品號,品名,單位
 
-                                    ", STARTYY, STARTMM, ENDMM);
+                                    ", STARTYY, STARTMM, ENDMM, STRQUERY2.ToString());
 
 
                 cmd.Connection = sqlConn;
