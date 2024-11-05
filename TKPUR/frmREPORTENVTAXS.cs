@@ -472,7 +472,7 @@ namespace TKPUR
             }
             finally
             {
-
+                sqlConn.Close();
             }
         }
 
@@ -540,7 +540,7 @@ namespace TKPUR
             }
             finally
             {
-
+                sqlConn.Close();
             }
         }
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
@@ -577,6 +577,8 @@ namespace TKPUR
             SqlTransaction tran;
             SqlCommand cmd = new SqlCommand();
             DataSet ds = new DataSet();
+
+            
 
             try
             {
@@ -634,16 +636,19 @@ namespace TKPUR
             }
             finally
             {
-
+                sqlConn.Close();
             }
         }
 
         private void dataGridView2_SelectionChanged(object sender, EventArgs e)
         {
+            SET_NULL_V2();
+
             string CODES = "";
             string VOLUMES = "";
             string WEIGHTS = "";
             string OTHERWEIGHTS = "";
+            string RATES = "";
 
             if (dataGridView2.CurrentRow != null)
             {
@@ -658,6 +663,13 @@ namespace TKPUR
                     VOLUMES = row.Cells["容積"].Value.ToString();
                     WEIGHTS = row.Cells["容器本體"].Value.ToString();
                     OTHERWEIGHTS = row.Cells["附件"].Value.ToString();
+                    RATES = row.Cells["費率"].Value.ToString();
+
+                    textBox13.Text = CODES;
+                    textBox14.Text = VOLUMES;
+                    textBox15.Text = WEIGHTS;
+                    textBox16.Text = OTHERWEIGHTS;
+                    textBox17.Text = RATES;
 
                     Search_TKTAXCODESMB001(CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS);
                 }
@@ -734,7 +746,7 @@ namespace TKPUR
             }
             finally
             {
-
+                sqlConn.Close();
             }
         }
 
@@ -861,6 +873,164 @@ namespace TKPUR
             }
         }
 
+        private void textBox11_TextChanged(object sender, EventArgs e)
+        {
+            string MB001= textBox11.Text.Trim();
+            if (!string.IsNullOrEmpty(MB001))
+            {
+                DataTable DT = SEARCH_INVMB(MB001);
+
+                if(DT!=null && DT.Rows.Count>=1)
+                {
+                    textBox12.Text = DT.Rows[0]["MB002"].ToString().Trim();
+                }
+            }
+           
+        }
+
+        public DataTable SEARCH_INVMB(string MB001)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                    SELECT 
+                                    MB001,MB002
+                                    FROM [TK].dbo.INVMB
+                                    WHERE MB001='{0}'
+                                    ", MB001);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    return (ds.Tables["TEMPds1"]);
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public void ADD_TKTAXCODESMB001(
+            string CODES ,
+            string VOLUMES,
+            string WEIGHTS ,
+            string OTHERWEIGHTS ,
+            string RATES ,
+            string MB001,
+            string MB002
+            )
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(@"                                   
+                                    INSERT INTO [TKPUR].[dbo].[TKTAXCODESMB001]
+                                    (
+                                    [CODES]
+                                    ,[VOLUMES]
+                                    ,[WEIGHTS]
+                                    ,[OTHERWEIGHTS]
+                                    ,[RATES]
+                                    ,[MB001]
+                                    ,[MB002]
+                                    )
+                                    VALUES
+                                    (
+                                    '{0}'
+                                    ,{1}
+                                    ,{2}
+                                    ,{3}
+                                    ,{4}
+                                    ,{5}
+                                    ,'{6}'
+
+
+                                    )
+
+                                   
+                                    ", CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS, RATES, MB001, MB002);
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
         public void SET_NULL()
         {
             textBox1.Text = "";
@@ -874,6 +1044,14 @@ namespace TKPUR
             textBox9.Text = "";
             textBox10.Text = "";
 
+        }
+
+        public void SET_NULL_V2()
+        {
+            textBox13.Text = "";
+            textBox14.Text = "";
+            textBox15.Text = "";
+            textBox16.Text = "";
         }
 
         #endregion
@@ -941,9 +1119,37 @@ namespace TKPUR
             Search_TKTAXCODES_V2();
         }
 
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+            string CODES = textBox13.Text.Trim();
+            string VOLUMES = textBox14.Text.Trim();
+            string WEIGHTS = textBox15.Text.Trim();
+            string OTHERWEIGHTS = textBox16.Text.Trim();
+            string RATES = textBox17.Text.Trim();
+            string MB001 = textBox11.Text.Trim();
+            string MB002 = textBox12.Text.Trim();
+
+            if(!string.IsNullOrEmpty(MB001) && !string.IsNullOrEmpty(MB002))
+            {
+                ADD_TKTAXCODESMB001(
+                  CODES,
+                  VOLUMES,
+                  WEIGHTS,
+                  OTHERWEIGHTS,
+                  RATES,
+                  MB001,
+                  MB002
+              );
+
+                Search_TKTAXCODESMB001(CODES, VOLUMES, WEIGHTS, OTHERWEIGHTS);
+            }
+          
+        }
+
 
         #endregion
 
-       
+
     }
 }
