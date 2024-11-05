@@ -537,6 +537,47 @@ namespace TKPUR
 
             }
         }
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            SET_NULL();
+
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+                
+
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
+
+                    textBox6.Text = row.Cells["材質細碼"].Value.ToString();
+                    textBox7.Text = row.Cells["容積"].Value.ToString();
+                    textBox8.Text = row.Cells["容器本體"].Value.ToString();
+                    textBox9.Text = row.Cells["附件"].Value.ToString();
+                    textBox10.Text = row.Cells["費率"].Value.ToString();
+
+                }
+                else
+                {
+                   
+                }
+            }
+        }
+
+        public void SET_NULL()
+        {
+            textBox1.Text = "";
+            textBox2.Text = "";
+            textBox3.Text = "";
+            textBox4.Text = "";
+            textBox5.Text = "";
+            textBox6.Text = "";
+            textBox7.Text = "";
+            textBox8.Text = "";
+            textBox9.Text = "";
+            textBox10.Text = "";
+
+        }
 
         #endregion
 
@@ -555,8 +596,9 @@ namespace TKPUR
         }
 
 
+
         #endregion
 
-
+      
     }
 }
