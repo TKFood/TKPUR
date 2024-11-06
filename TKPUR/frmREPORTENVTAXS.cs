@@ -1222,6 +1222,7 @@ namespace TKPUR
 
             StringBuilder STRQUERY1 = new StringBuilder();
             StringBuilder STRQUERY2 = new StringBuilder();
+            StringBuilder STRQUERY3 = new StringBuilder();
 
             DataTable DT = FIND_TKCOPMATAXSMB001PUR();
             if (DT != null && DT.Rows.Count >= 1)
@@ -1241,6 +1242,25 @@ namespace TKPUR
                 }
 
                 STRQUERY1.AppendFormat(@" )");
+            }
+
+            if (DT != null && DT.Rows.Count >= 1)
+            {
+                STRQUERY3.AppendFormat(@" (");
+                int rowCount = DT.Rows.Count;
+
+                for (int i = 0; i < rowCount; i++)
+                {
+                    STRQUERY3.AppendFormat(@" TI004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+
+                    // 在最後一個元素之後不添加 "OR"
+                    if (i < rowCount - 1)
+                    {
+                        STRQUERY3.AppendFormat(@" OR");
+                    }
+                }
+
+                STRQUERY3.AppendFormat(@" )");
             }
 
             DataTable DT2 = FIND_TKCOPMATAXSMB001COP();
@@ -1324,15 +1344,27 @@ namespace TKPUR
                                     AND {3}
                                     AND SUBSTRING(TG003,1,4)='{0}'
                                     AND SUBSTRING(TG003,5,2)>='{1}'
-
                                     AND SUBSTRING(TG003,5,2)<='{2}'
                                     GROUP BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008
 
+                                    UNION ALL
+                                    SELECT SUBSTRING(TH003,1,4) AS '年',SUBSTRING(TH003,5,2)  AS '月',TH005 AS '廠商代',MA002 AS '廠商',MA005 AS '統編',TI004 AS '品號',MB002 AS '品名',SUM(TI007)  AS '進貨驗收數量',TI008 AS '單位'
+                                    FROM [TK].dbo.MOCTH,[TK].dbo.MOCTI, [TK].dbo.PURMA, [TK].dbo.INVMB 
+                                    WHERE TH001=TI001 AND TH002=TI002
+                                    AND MA001=TH005
+                                    AND MB001=TI004
+                                    AND TH023='Y'
+                                    AND  {4} 
+                                    AND SUBSTRING(TH003,1,4)='{0}'
+                                    AND SUBSTRING(TH003,5,2)>='{1}'
+                                    AND SUBSTRING(TH003,5,2)<='{2}'
+                                    GROUP BY  SUBSTRING(TH003,1,4),SUBSTRING(TH003,5,2),TH005,MA002,MA005,TI004,MB002,MB003,TI008
+                                
                                     ) AS TEMP 
                                     LEFT JOIN [TKPUR].[dbo].[TKTAXCODESMB001] ON [TKTAXCODESMB001].MB001=TEMP.品號
                                     ORDER BY  年,月,廠商代,廠商,統編,品號,品名,單位
                                    
-                                    ", STARTYY, STARTMM, ENDMM, STRQUERY1.ToString());
+                                    ", STARTYY, STARTMM, ENDMM, STRQUERY1.ToString(), STRQUERY3.ToString());
 
                 sbSql.AppendFormat(@"  ");
 
