@@ -117,6 +117,7 @@ namespace TKPUR
         {
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
+            StringBuilder STRQUERY2 = new StringBuilder();
 
             DataTable DT = FIND_TKCOPMATAXSMB001PUR();
             if(DT!=null&& DT.Rows.Count>=1)
@@ -138,8 +139,30 @@ namespace TKPUR
                 STRQUERY.AppendFormat(@" )");
             }
 
+            if (DT != null && DT.Rows.Count >= 1)
+            {
+                STRQUERY2.AppendFormat(@" (");
+                int rowCount = DT.Rows.Count;
+
+                for (int i = 0; i < rowCount; i++)
+                {
+                    STRQUERY2.AppendFormat(@" TI004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+
+                    // 在最後一個元素之後不添加 "OR"
+                    if (i < rowCount - 1)
+                    {
+                        STRQUERY2.AppendFormat(@" OR");
+                    }
+                }
+
+                STRQUERY2.AppendFormat(@" )");
+            }
+
 
             FASTSQL.AppendFormat(@"  
+                                SELECT *
+                                FROM 
+                                (
                                 SELECT SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG005 AS '廠商代',MA002 AS '廠商',MA005 AS '統編',TH004 AS '品號',MB002 AS '品名',SUM(TH015)  AS '進貨驗收數量',TH008 AS '單位'
                                 FROM [TK].dbo.PURTG,[TK].dbo.PURTH, [TK].dbo.PURMA, [TK].dbo.INVMB 
                                 WHERE TG001=TH001 AND TG002=TH002
@@ -150,8 +173,24 @@ namespace TKPUR
                                 AND SUBSTRING(TG003,1,4)='{0}'
                                 AND SUBSTRING(TG003,5,2)='{1}'
                                 GROUP BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008
-                                ORDER BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008
-                                    ", YY,MM, STRQUERY.ToString());
+                               
+                                
+                                UNION ALL
+                                SELECT SUBSTRING(TH003,1,4) AS '年',SUBSTRING(TH003,5,2)  AS '月',TH005 AS '廠商代',MA002 AS '廠商',MA005 AS '統編',TI004 AS '品號',MB002 AS '品名',SUM(TI007)  AS '進貨驗收數量',TI008 AS '單位'
+                                FROM [TK].dbo.MOCTH,[TK].dbo.MOCTI, [TK].dbo.PURMA, [TK].dbo.INVMB 
+                                WHERE TH001=TI001 AND TH002=TI002
+                                AND MA001=TH005
+                                AND MB001=TI004
+                                AND TH023='Y'
+                                AND  {3} 
+                                AND SUBSTRING(TH003,1,4)='{0}'
+                                AND SUBSTRING(TH003,5,2)='{1}'
+                                GROUP BY  SUBSTRING(TH003,1,4),SUBSTRING(TH003,5,2),TH005,MA002,MA005,TI004,MB002,MB003,TI008
+                                
+                                )  AS TEMP
+                                WHERE 1=1
+                                ORDER BY 年,月,廠商代,廠商,統編,品號,品名,單位
+                                    ", YY,MM, STRQUERY.ToString(), STRQUERY2.ToString());
 
             return FASTSQL.ToString();
         }
@@ -247,6 +286,7 @@ namespace TKPUR
         {
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
+            StringBuilder STRQUERY2 = new StringBuilder();
 
             DataTable DT = FIND_TKCOPMATAXSMB001PUR();
             if (DT != null && DT.Rows.Count >= 1)
@@ -268,6 +308,24 @@ namespace TKPUR
                 STRQUERY.AppendFormat(@" )");
             }
 
+            if (DT != null && DT.Rows.Count >= 1)
+            {
+                STRQUERY2.AppendFormat(@" (");
+                int rowCount = DT.Rows.Count;
+
+                for (int i = 0; i < rowCount; i++)
+                {
+                    STRQUERY2.AppendFormat(@" TI004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+
+                    // 在最後一個元素之後不添加 "OR"
+                    if (i < rowCount - 1)
+                    {
+                        STRQUERY2.AppendFormat(@" OR");
+                    }
+                }
+
+                STRQUERY2.AppendFormat(@" )");
+            }
 
             FASTSQL.AppendFormat(@"  
                                 
@@ -280,17 +338,30 @@ namespace TKPUR
                                 AND MA001=TG005
                                 AND MB001=TH004
                                 AND TG013='Y'
-                                AND   ( TH004 LIKE '205%' OR TH004 LIKE '214%' OR TH004 LIKE '41004070020001%' OR TH004 LIKE '503001002001%' OR TH004 LIKE '503001002002%' OR TH004 LIKE '503001002003%' OR TH004 LIKE '503001002004%' ) 
+                                AND  {4}
                                 AND SUBSTRING(TG003,1,4)='{1}'
                                 AND SUBSTRING(TG003,5,2)>='{2}'
                                 AND SUBSTRING(TG003,5,2)<='{3}'
-                                AND  {4} 
                                 GROUP BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008
+                                
+                                UNION ALL
+                                SELECT SUBSTRING(TH003,1,4) AS '年',SUBSTRING(TH003,5,2)  AS '月',TH005 AS '廠商代',MA002 AS '廠商',MA005 AS '統編',TI004 AS '品號',MB002 AS '品名',SUM(TI007)  AS '進貨驗收數量',TI008 AS '單位'
+                                FROM [TK].dbo.MOCTH,[TK].dbo.MOCTI, [TK].dbo.PURMA, [TK].dbo.INVMB 
+                                WHERE TH001=TI001 AND TH002=TI002
+                                AND MA001=TH005
+                                AND MB001=TI004
+                                AND TH023='Y'
+                                AND  {5} 
+                                AND SUBSTRING(TH003,1,4)='{1}'
+                                AND SUBSTRING(TH003,5,2)>='{2}'
+                                AND SUBSTRING(TH003,5,2)<='{3}'
+                                GROUP BY  SUBSTRING(TH003,1,4),SUBSTRING(TH003,5,2),TH005,MA002,MA005,TI004,MB002,MB003,TI008
+                                
                                 ) AS TEMP
                                 GROUP BY 年, 廠商代,廠商,統編,品號,品名,單位
                                 ORDER BY 年, 廠商代,廠商,統編,品號,品名,單位
      
-                                    ", STARTMM+"-"+ ENDMM, STARTYY, STARTMM, ENDMM, STRQUERY.ToString());
+                                    ", STARTMM+"-"+ ENDMM, STARTYY, STARTMM, ENDMM, STRQUERY.ToString(), STRQUERY2.ToString());
 
             return FASTSQL.ToString();
         }
