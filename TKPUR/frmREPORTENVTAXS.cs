@@ -1533,6 +1533,92 @@ namespace TKPUR
             }
         }
 
+        public void SETFASTREPORT_TKTAXREPORTCOP_TKTAXREPORTPUR()
+        {
+            string SQL;
+            string SQL1;
+            report1 = new Report();
+            report1.Load(@"REPORT\環保稅明細表.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+            SQL = SETFASETSQL_TKTAXREPORTCOP_TKTAXREPORTPUR();
+            Table.SelectCommand = SQL;      
+            report1.Preview = previewControl2;
+            report1.Show();
+
+        }
+
+        public string SETFASETSQL_TKTAXREPORTCOP_TKTAXREPORTPUR()
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+            
+
+            FASTSQL.AppendFormat(@"  
+                                SELECT *
+                                FROM 
+                                (
+                                SELECT 
+                                '進貨' AS '類別'
+                                ,[年]
+                                ,[月]
+                                ,[廠商代]
+                                ,[廠商]
+                                ,[統編]
+                                ,[品號]
+                                ,[品名]
+                                ,[進貨驗收數量] AS '數量'
+                                ,[單位]
+                                ,[材質細碼]
+                                ,[容積]
+                                ,[容器本體]
+                                ,[附件]
+                                ,[費率]
+                                ,[MB001]
+                                ,[MB002]
+                                FROM [TKPUR].[dbo].[TKTAXREPORTPUR]
+                                UNION ALL
+                                SELECT 
+                                '銷貨' AS '類別'
+                                ,[年]
+                                ,[月]
+                                ,[客戶代]
+                                ,[客戶]
+                                ,[統編]
+                                ,[品號]
+                                ,[品名]
+                                ,[進貨驗收數量]
+                                ,[單位]
+                                ,[材質細碼]
+                                ,[容積]
+                                ,[容器本體]
+                                ,[附件]
+                                ,[費率]
+                                ,[MB001]
+                                ,[MB002]
+                                FROM [TKPUR].[dbo].[TKTAXREPORTCOP]
+                                ) AS TEMP 
+                                WHERE 1=1
+                                ORDER BY 類別,[材質細碼],年,月,廠商代,品號
+                                    ");
+
+            return FASTSQL.ToString();
+        }
         public void SET_NULL()
         {
             textBox1.Text = "";
@@ -1709,7 +1795,11 @@ namespace TKPUR
         private void button10_Click(object sender, EventArgs e)
         {
             ADD_TKTAXREPORTCOP_TKTAXREPORTPUR(dateTimePicker4.Value.ToString("yyyyMM"), dateTimePicker5.Value.ToString("yyyyMM"));
+
+            SETFASTREPORT_TKTAXREPORTCOP_TKTAXREPORTPUR();
         }
+
+
         #endregion
     }
 }
