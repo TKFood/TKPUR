@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/06/2024 16:26:14" ReportInfo.Modified="11/07/2024 09:18:10" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUH9Cu7cJNz8pZEvYTmktO9D">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20241106 查環保稅&#13;&#10;&#13;&#10;SELECT &#13;&#10;容器供應業者統一編號&#13;&#10;,受託代工廠統一編號&#13;&#10;,材質細碼&#13;&#10;,費率&#13;&#10;,容積&#13;&#10;,容器本體&#13;&#10;,附件&#13;&#10;,SUM(進貨驗收數量)  AS 進貨驗收數量&#13;&#10;,SUM(銷售數量) AS 銷售數量&#13;&#10;,SUM(進貨驗收數量)*(容積+容器本體)/1000 AS '營業量重量'&#13;&#10;,SUM(銷售數量)*(容積+容器本體)/1000 AS '出口量重量'&#13;&#10;,(SUM(進貨驗收數量)-SUM(銷售數量)) AS '應繳費量數量'&#13;&#10;,(SUM(進貨驗收數量)-SUM(銷售數量)) *(容積+容器本體)/1000 AS '應繳費量重量'&#13;&#10;,CONVERT(INT,(SUM(進貨驗收數量)-SUM(銷售數量)) *(容積+容器本體)*費率) AS '應繳金額'&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT&#13;&#10;統編 AS '容器供應業者統一編號'&#13;&#10;,'' AS '受託代工廠統一編號'&#13;&#10;,[進貨驗收數量]&#13;&#10;,0 AS 銷售數量&#13;&#10;,[材質細碼]&#13;&#10;,[容積]&#13;&#10;,[容器本體]&#13;&#10;,[附件]&#13;&#10;,[費率]&#13;&#10;FROM [TKPUR].[dbo].[TKTAXREPORTPUR]&#13;&#10;UNION ALL&#13;&#10;SELECT &#13;&#10;'' AS '容器供應業者統一編號'&#13;&#10;,統編 AS '受託代工廠統一編號'&#13;&#10;,0 AS 進貨驗收數量&#13;&#10;,[銷售數量]&#13;&#10;,[材質細碼]&#13;&#10;,[容積]&#13;&#10;,[容器本體]&#13;&#10;,[附件]&#13;&#10;,[費率]&#13;&#10;FROM [TKPUR].[dbo].[TKTAXREPORTCOP]&#13;&#10;&#13;&#10;) AS TEMP&#13;&#10;WHERE 1=1&#13;&#10;AND ISNULL([材質細碼],'')&lt;&gt;''&#13;&#10;GROUP BY 容器供應業者統一編號&#13;&#10;,受託代工廠統一編號&#13;&#10;,材質細碼&#13;&#10;,容積&#13;&#10;,容器本體&#13;&#10;,附件&#13;&#10;,費率&#13;&#10;ORDER BY &#13;&#10;容器供應業者統一編號 DESC&#13;&#10;,受託代工廠統一編號 DESC">
+        <Column Name="容器供應業者統一編號" DataType="System.String"/>
+        <Column Name="受託代工廠統一編號" DataType="System.String"/>
+        <Column Name="材質細碼" DataType="System.String"/>
+        <Column Name="費率" DataType="System.Decimal"/>
+        <Column Name="容積" DataType="System.Decimal"/>
+        <Column Name="容器本體" DataType="System.Decimal"/>
+        <Column Name="附件" DataType="System.Decimal"/>
+        <Column Name="進貨驗收數量" DataType="System.Decimal"/>
+        <Column Name="銷售數量" DataType="System.Decimal"/>
+        <Column Name="營業量重量" DataType="System.Decimal"/>
+        <Column Name="出口量重量" DataType="System.Decimal"/>
+        <Column Name="應繳費量數量" DataType="System.Decimal"/>
+        <Column Name="應繳費量重量" DataType="System.Decimal"/>
+        <Column Name="應繳金額" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Total Name="Total應繳金額" Expression="[Table.應繳金額]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="400" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1436.4" Height="75.6">
+      <TextObject Name="Text20" Width="359.1" Height="18.9" Text="公司名稱:老食品股份有限公司(統一編號:66608338)" VertAlign="Center"/>
+      <TextObject Name="Text47" Top="37.8" Width="359.1" Height="18.9" Text="填表用途:口營業量申請 口補申報 口修正申報 口重新申請" VertAlign="Center"/>
+      <TextObject Name="Text48" Top="56.7" Width="359.1" Height="18.9" Text="資料期間:     年度 第   期" VertAlign="Center"/>
+      <TextObject Name="Text49" Top="18.9" Width="1436.4" Height="18.9" Text="公司名稱:老食品股份有限公司(統一編號:66608338)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text50" Left="1313.55" Top="56.7" Width="122.85" Height="18.9" CanGrow="true" GrowToBottom="true" Text="申報日期:" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="80.2" Width="1436.4" Height="94.5">
+      <TextObject Name="Text2" Width="37.8" Height="94.5" Border.Lines="All" Text="序號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="37.8" Width="103.95" Height="94.5" Border.Lines="All" Text="容器供應業者&#13;&#10;統一編號&#13;&#10;(製造業者填寫)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="141.75" Width="122.85" Height="94.5" Border.Lines="All" Text="受託代工廠&#13;&#10;統一編號&#13;&#10;(委託製造業者填寫)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="264.6" Width="66.15" Height="94.5" Border.Lines="All" Text="材質&#13;&#10;細碼" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="330.75" Width="66.15" Height="94.5" Border.Lines="All" Text="費率&#13;&#10;(元/公斤)&#13;&#10;(r)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="396.9" Width="66.15" Height="94.5" Border.Lines="All" Text="容積&#13;&#10;(毫升)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="463.05" Top="37.8" Width="66.15" Height="56.7" Border.Lines="All" Text="容器&#13;&#10;本體" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="529.2" Top="37.8" Width="66.15" Height="56.7" Border.Lines="All" Text="附件" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="595.35" Width="151.2" Height="37.8" Border.Lines="All" Text="營業量(A1)&#13;&#10;(容器購入量/委託代工量)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="595.35" Top="37.8" Width="604.8" Height="18.9" Border.Lines="All" Text="重量應計算至小數下二位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="746.55" Width="151.2" Height="37.8" Border.Lines="All" Text="進口量(A2)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text30" Left="1048.95" Width="151.2" Height="37.8" Border.Lines="All" Text="應繳費量(C)&#13;&#10;(C=A1+A2-B)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text34" Left="1200.15" Width="113.4" Height="94.5" Border.Lines="All" Text="應繳金額(元)&#13;&#10;(E)&#13;&#10;(E=r*C)&#13;&#10;(四捨五入至整數)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text35" Left="463.05" Width="132.3" Height="37.8" Border.Lines="All" Text="容器空重&#13;&#10;(公克)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text36" Left="595.35" Top="56.7" Width="75.6" Height="37.8" Border.Lines="All" Text="數量(個)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text37" Left="670.95" Top="56.7" Width="75.6" Height="37.8" Border.Lines="All" Text="重量&#13;&#10;(公斤)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text38" Left="746.55" Top="56.7" Width="75.6" Height="37.8" Border.Lines="All" Text="數量(個)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text39" Left="822.15" Top="56.7" Width="75.6" Height="37.8" Border.Lines="All" Text="重量&#13;&#10;(公斤)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text40" Left="897.75" Width="151.2" Height="37.8" Border.Lines="All" Text="出口量(B)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text41" Left="897.75" Top="56.7" Width="75.6" Height="37.8" Border.Lines="All" Text="數量(個)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text42" Left="973.35" Top="56.7" Width="75.6" Height="37.8" Border.Lines="All" Text="重量&#13;&#10;(公斤)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text43" Left="1048.95" Top="56.7" Width="75.6" Height="37.8" Border.Lines="All" Text="數量(個)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text44" Left="1124.55" Top="56.7" Width="75.6" Height="37.8" Border.Lines="All" Text="重量&#13;&#10;(公斤)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text45" Left="1313.55" Width="122.85" Height="94.5" Border.Lines="All" Text="備註" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="179.3" Width="1436.4" Height="19.2" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Width="37.8" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Row#]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="37.8" Width="103.95" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.容器供應業者統一編號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="141.75" Width="122.85" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.受託代工廠統一編號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="264.6" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.材質細碼]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="330.75" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.費率]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="3" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="396.9" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.容積]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="463.05" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.容器本體]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="5" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="529.2" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.附件]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="5" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="595.35" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.進貨驗收數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="897.75" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.銷售數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="670.95" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.營業量重量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text29" Left="1048.95" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.應繳費量數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text31" Left="1124.55" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.應繳費量重量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text33" Left="1200.15" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.應繳金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="822.15" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="0" Format="Number" Format.UseLocale="false" Format.DecimalDigits="3" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text24" Left="746.55" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="0" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text27" Left="973.35" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.出口量重量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text46" Left="1313.55" Width="122.85" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="203.09" Width="1436.4" Height="75.6">
+      <TextObject Name="Text25" Left="1209.6" Width="226.8" Height="37.8" Border.Lines="All" Text="[Total應繳金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text51" Width="264.6" Height="37.8" Border.Lines="All" Text="本期合計金額&#13;&#10;(D=E欄加總)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text52" Left="264.6" Width="151.2" Height="37.8" Border.Lines="All" Text="[Total應繳金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text53" Left="415.8" Width="264.6" Height="37.8" Border.Lines="All" Text="累計補(抵)金額(X)&#13;&#10;(補繳為+，扣抵為-)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text54" Left="680.4" Width="264.6" Height="37.8" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text55" Left="945" Width="264.6" Height="37.8" Border.Lines="All" Text="本期申報應繳金額(S)&#13;&#10;(S=D+X)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text56" Top="37.8" Width="198.45" Height="37.8" Border.Lines="All" Text="補修正申報專用欄" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text57" Left="198.45" Top="37.8" Width="198.45" Height="37.8" Border.Lines="All" Text="原繳金額(元)(G)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text58" Left="396.9" Top="37.8" Width="198.45" Height="37.8" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text59" Left="595.35" Top="37.8" Width="198.45" Height="37.8" Border.Lines="All" Text="補修正申報後應繳之金額(H)&#13;&#10;(補繳為+，扣抵為-)" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text60" Left="793.8" Top="37.8" Width="198.45" Height="37.8" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text61" Left="992.25" Top="37.8" Width="198.45" Height="37.8" Border.Lines="All" Text="應補(抵)繳金額(F)&#13;&#10;(F=H-G)" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text62" Left="1190.7" Top="37.8" Width="245.7" Height="37.8" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="283.29" Width="1436.4" Height="18.9"/>
+  </ReportPage>
+</Report>

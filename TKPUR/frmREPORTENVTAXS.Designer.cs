@@ -103,10 +103,9 @@
             this.dateTimePicker4 = new System.Windows.Forms.DateTimePicker();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
             this.previewControl2 = new FastReport.Preview.PreviewControl();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
             this.previewControl3 = new FastReport.Preview.PreviewControl();
-            this.previewControl4 = new FastReport.Preview.PreviewControl();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -1090,18 +1089,6 @@
             this.tabPage5.Text = "明細表";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // tabPage6
-            // 
-            this.tabPage6.Controls.Add(this.previewControl4);
-            this.tabPage6.Controls.Add(this.previewControl3);
-            this.tabPage6.Location = new System.Drawing.Point(4, 26);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(964, 567);
-            this.tabPage6.TabIndex = 1;
-            this.tabPage6.Text = "總表";
-            this.tabPage6.UseVisualStyleBackColor = true;
-            // 
             // previewControl2
             // 
             this.previewControl2.BackColor = System.Drawing.SystemColors.AppWorkspace;
@@ -1114,6 +1101,17 @@
             this.previewControl2.Size = new System.Drawing.Size(958, 561);
             this.previewControl2.TabIndex = 4;
             // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.previewControl3);
+            this.tabPage6.Location = new System.Drawing.Point(4, 26);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(964, 567);
+            this.tabPage6.TabIndex = 1;
+            this.tabPage6.Text = "總表";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
             // previewControl3
             // 
             this.previewControl3.BackColor = System.Drawing.SystemColors.AppWorkspace;
@@ -1125,18 +1123,6 @@
             this.previewControl3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.previewControl3.Size = new System.Drawing.Size(958, 561);
             this.previewControl3.TabIndex = 4;
-            // 
-            // previewControl4
-            // 
-            this.previewControl4.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.previewControl4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewControl4.Font = new System.Drawing.Font("宋体", 9F);
-            this.previewControl4.Location = new System.Drawing.Point(3, 3);
-            this.previewControl4.Name = "previewControl4";
-            this.previewControl4.PageOffset = new System.Drawing.Point(10, 10);
-            this.previewControl4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl4.Size = new System.Drawing.Size(958, 561);
-            this.previewControl4.TabIndex = 5;
             // 
             // frmREPORTENVTAXS
             // 
@@ -1282,6 +1268,5 @@
         private FastReport.Preview.PreviewControl previewControl2;
         private System.Windows.Forms.TabPage tabPage6;
         private FastReport.Preview.PreviewControl previewControl3;
-        private FastReport.Preview.PreviewControl previewControl4;
     }
 }

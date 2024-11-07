@@ -1619,6 +1619,105 @@ namespace TKPUR
 
             return FASTSQL.ToString();
         }
+
+        public void SETFASTREPORT_TKTAXREPORTCOP_TKTAXREPORTPUR_ALL()
+        {
+
+            string SQL;
+            string SQL1;
+            report1 = new Report();
+            report1.Load(@"REPORT\環保稅總表.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+            SQL = SETFASETSQL_TKTAXREPORTCOP_TKTAXREPORTPUR_ALL();
+
+            Table.SelectCommand = SQL;
+            report1.Preview = previewControl3;
+            report1.Show();
+
+        }
+
+        public string SETFASETSQL_TKTAXREPORTCOP_TKTAXREPORTPUR_ALL()
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+
+
+            FASTSQL.AppendFormat(@"                                
+                                SELECT 
+                                容器供應業者統一編號
+                                ,受託代工廠統一編號
+                                ,材質細碼
+                                ,費率
+                                ,容積
+                                ,容器本體
+                                ,附件
+                                ,SUM(進貨驗收數量)  AS 進貨驗收數量
+                                ,SUM(銷售數量) AS 銷售數量
+                                ,SUM(進貨驗收數量)*(容積+容器本體)/1000 AS '營業量重量'
+                                ,SUM(銷售數量)*(容積+容器本體)/1000 AS '出口量重量'
+                                ,(SUM(進貨驗收數量)-SUM(銷售數量)) AS '應繳費量數量'
+                                ,(SUM(進貨驗收數量)-SUM(銷售數量)) *(容積+容器本體)/1000 AS '應繳費量重量'
+                                ,CONVERT(INT,(SUM(進貨驗收數量)-SUM(銷售數量)) *(容積+容器本體)*費率) AS '應繳金額'
+                                FROM 
+                                (
+                                SELECT
+                                統編 AS '容器供應業者統一編號'
+                                ,'' AS '受託代工廠統一編號'
+                                ,[進貨驗收數量]
+                                ,0 AS 銷售數量
+                                ,[材質細碼]
+                                ,[容積]
+                                ,[容器本體]
+                                ,[附件]
+                                ,[費率]
+                                FROM [TKPUR].[dbo].[TKTAXREPORTPUR]
+                                UNION ALL
+                                SELECT 
+                                '' AS '容器供應業者統一編號'
+                                ,統編 AS '受託代工廠統一編號'
+                                ,0 AS 進貨驗收數量
+                                ,[銷售數量]
+                                ,[材質細碼]
+                                ,[容積]
+                                ,[容器本體]
+                                ,[附件]
+                                ,[費率]
+                                FROM [TKPUR].[dbo].[TKTAXREPORTCOP]
+
+                                ) AS TEMP
+                                WHERE 1=1
+                                AND ISNULL([材質細碼],'')<>''
+                                GROUP BY 容器供應業者統一編號
+                                ,受託代工廠統一編號
+                                ,材質細碼
+                                ,容積
+                                ,容器本體
+                                ,附件
+                                ,費率
+                                ORDER BY 
+                                容器供應業者統一編號 DESC
+                                ,受託代工廠統一編號 DESC
+                                "
+                                );
+
+            return FASTSQL.ToString();
+        }
         public void SET_NULL()
         {
             textBox1.Text = "";
@@ -1797,6 +1896,7 @@ namespace TKPUR
             ADD_TKTAXREPORTCOP_TKTAXREPORTPUR(dateTimePicker4.Value.ToString("yyyyMM"), dateTimePicker5.Value.ToString("yyyyMM"));
 
             SETFASTREPORT_TKTAXREPORTCOP_TKTAXREPORTPUR();
+            SETFASTREPORT_TKTAXREPORTCOP_TKTAXREPORTPUR_ALL();
         }
 
 
