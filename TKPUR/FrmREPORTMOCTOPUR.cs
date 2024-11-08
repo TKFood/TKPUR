@@ -2458,7 +2458,7 @@ namespace TKPUR
                                         , TO003
                                         );
 
-                cmd.Connection = sqlConn;
+                cmd.Connection = sqlConn; 
                 cmd.CommandTimeout = 60;
                 cmd.CommandText = sbSql.ToString();
                 cmd.Transaction = tran;
