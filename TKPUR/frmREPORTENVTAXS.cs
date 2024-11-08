@@ -1713,7 +1713,7 @@ namespace TKPUR
                                 ,費率
                                 ORDER BY 
                                 容器供應業者統一編號 DESC
-                                ,受託代工廠統一編號 DESC
+                                ,受託代工廠統一編號 DESC 
                                 "
                                 );
 
