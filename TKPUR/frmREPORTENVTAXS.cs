@@ -1658,8 +1658,8 @@ namespace TKPUR
             StringBuilder FASTSQL = new StringBuilder();
 
 
-            FASTSQL.AppendFormat(@"                                
-                                SELECT 
+            FASTSQL.AppendFormat(@"      
+                                SELECT                           
                                 容器供應業者統一編號
                                 ,受託代工廠統一編號
                                 ,材質細碼
@@ -1669,11 +1669,12 @@ namespace TKPUR
                                 ,附件
                                 ,SUM(進貨驗收數量)  AS 進貨驗收數量
                                 ,SUM(銷售數量) AS 銷售數量
-                                ,SUM(進貨驗收數量)*(容積+容器本體)/1000 AS '營業量重量'
-                                ,SUM(銷售數量)*(容積+容器本體)/1000 AS '出口量重量'
+                                ,(容器本體+附件) AS '營業量重量'
+                                ,(容器本體+附件) AS '出口量重量'
                                 ,(SUM(進貨驗收數量)-SUM(銷售數量)) AS '應繳費量數量'
-                                ,(SUM(進貨驗收數量)-SUM(銷售數量)) *(容積+容器本體)/1000 AS '應繳費量重量'
-                                ,CONVERT(INT,(SUM(進貨驗收數量)-SUM(銷售數量)) *(容積+容器本體)*費率) AS '應繳金額'
+                                ,(SUM(進貨驗收數量)-SUM(銷售數量)) *(容器本體+附件)/1000 AS '應繳費量重量'
+                                ,CONVERT(INT,(SUM(進貨驗收數量)-SUM(銷售數量)) *(容器本體+附件)*費率) AS '應繳金額'
+
                                 FROM 
                                 (
                                 SELECT
