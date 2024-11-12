@@ -97,7 +97,7 @@ namespace TKPUR
 
             String connectionString;
             sqlConn = new SqlConnection(sqlsb.ConnectionString);
-
+           
             report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
 
 
@@ -108,7 +108,7 @@ namespace TKPUR
             Table.SelectCommand = SQL;
             TableDataSource Table1 = report1.GetDataSource("Table1") as TableDataSource;
             SQL1= SETFASETSQL1(YY, MM);
-            Table1.SelectCommand = SQL1;
+                        
             report1.Preview = previewControl1;
             report1.Show();
 
@@ -1672,7 +1672,7 @@ namespace TKPUR
                                 ,[統編]
                                 ,[品號]
                                 ,[品名]
-                                ,[銷售數量]
+                                ,[銷售數量國內]+[銷售數量國外]
                                 ,[單位]
                                 ,[材質細碼]
                                 ,[容積]
@@ -1738,12 +1738,13 @@ namespace TKPUR
                                 ,容器本體
                                 ,附件
                                 ,SUM(進貨驗收數量)  AS 進貨驗收數量
-                                ,SUM(銷售數量) AS 銷售數量
+                                ,SUM(銷售數量國內) AS 銷售數量國內
+                                ,SUM(銷售數量國外) AS 銷售數量國外
                                 ,(容器本體+附件) AS '營業量重量'
                                 ,(容器本體+附件) AS '出口量重量'
-                                ,(SUM(進貨驗收數量)-SUM(銷售數量)) AS '應繳費量數量'
-                                ,(SUM(進貨驗收數量)-SUM(銷售數量)) *(容器本體+附件)/1000 AS '應繳費量重量'
-                                ,CONVERT(INT,(SUM(進貨驗收數量)-SUM(銷售數量)) *(容器本體+附件)*費率) AS '應繳金額'
+                                ,(SUM(進貨驗收數量)-SUM(銷售數量國內)-SUM(銷售數量國外)) AS '應繳費量數量'
+                                ,(SUM(進貨驗收數量)-SUM(銷售數量國內)-SUM(銷售數量國外)) *(容器本體+附件)/1000 AS '應繳費量重量'
+                                ,CONVERT(INT,(SUM(進貨驗收數量)-SUM(銷售數量國內)-SUM(銷售數量國外)) *(容器本體+附件)*費率) AS '應繳金額'
 
                                 FROM 
                                 (
@@ -1751,7 +1752,8 @@ namespace TKPUR
                                 統編 AS '容器供應業者統一編號'
                                 ,'' AS '受託代工廠統一編號'
                                 ,[進貨驗收數量]
-                                ,0 AS 銷售數量
+                                ,0 AS 銷售數量國內
+                                ,0 AS 銷售數量國外
                                 ,[材質細碼]
                                 ,[容積]
                                 ,[容器本體]
@@ -1763,7 +1765,8 @@ namespace TKPUR
                                 '' AS '容器供應業者統一編號'
                                 ,統編 AS '受託代工廠統一編號'
                                 ,0 AS 進貨驗收數量
-                                ,[銷售數量]
+                                ,[銷售數量國內]
+                                ,[銷售數量國外]
                                 ,[材質細碼]
                                 ,[容積]
                                 ,[容器本體]
