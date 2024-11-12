@@ -45,6 +45,7 @@ namespace TKPUR
         DataGridViewRow row;
         string SALSESID = null;
         int result;
+        int CommandTimeout = 120;
 
         public Report report1 { get; private set; }
 
@@ -1206,7 +1207,7 @@ namespace TKPUR
             {
                 MessageBox.Show(ex.ToString());
             }
-
+             
             finally
             {
                 sqlConn.Close();
@@ -1508,7 +1509,7 @@ namespace TKPUR
 
 
                 cmd.Connection = sqlConn;
-                cmd.CommandTimeout = 60;
+                cmd.CommandTimeout = CommandTimeout;
                 cmd.CommandText = sbSql.ToString();
                 cmd.Transaction = tran;
                 result = cmd.ExecuteNonQuery();
