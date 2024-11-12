@@ -1493,9 +1493,7 @@ namespace TKPUR
                                     AND MC001=MD001
                                     AND MD003=MB2.MB001
                                     AND {3}
-                                    AND MD035 NOT LIKE '%蓋%'
-                                    AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
-                                    AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
+                                    AND MD035 NOT LIKE '%蓋%'                                   
                                     AND SUBSTRING(TG003,1,4)='{0}' 
                                     AND SUBSTRING(TG003,5,2)>='{1}'
                                     AND SUBSTRING(TG003,5,2)<='{2}'
