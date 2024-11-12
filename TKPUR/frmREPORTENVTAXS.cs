@@ -1369,10 +1369,10 @@ namespace TKPUR
                 sbSql.AppendFormat(@"  ");
 
                 sbSql.AppendFormat(@"  
-                                    DELETE  [TKPUR].[dbo].[TKTAXREPORTCOP]
+                                   DELETE  [TKPUR].[dbo].[TKTAXREPORTCOP]
                                     INSERT INTO [TKPUR].[dbo].[TKTAXREPORTCOP]
                                     (
-                                     [年]
+                                    [年]
                                     ,[月]
                                     ,[客戶代]
                                     ,[客戶]
@@ -1382,7 +1382,8 @@ namespace TKPUR
                                     ,[主銷售數量]
                                     ,[品號]
                                     ,[品名]
-                                    ,[銷售數量]
+                                    ,[銷售數量國內]
+                                    ,[銷售數量國外]
                                     ,[單位]
                                     ,[材質細碼]
                                     ,[容積]
@@ -1393,7 +1394,7 @@ namespace TKPUR
                                     ,[MB002]
                                     )
                                     SELECT 
-                                     [年]
+                                    [年]
                                     ,[月]
                                     ,[客戶代]
                                     ,[客戶]
@@ -1403,7 +1404,8 @@ namespace TKPUR
                                     ,[主銷售數量]
                                     ,[品號]
                                     ,[品名]
-                                    ,[數量]
+                                    ,[銷售數量國內]
+                                    ,0 AS '銷售數量國外'
                                     ,[單位]
                                     ,[CODES] AS '材質細碼'
                                     ,[VOLUMES] AS '容積'
@@ -1414,7 +1416,7 @@ namespace TKPUR
                                     ,[MB002]
                                     FROM 
                                     (
-                                    SELECT  SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG004 AS '客戶代',MA002 AS '客戶',MA010 AS '統編',TH004  AS '主品號',MB1.MB002 AS '主品名' ,SUM(LA011)  AS '主銷售數量',MB1.MB004,MC004,MD006,MD007,MD003 AS '品號',MB2.MB002 AS '品名',SUM(CONVERT(DECIMAL(16,0),(LA011/MD006*MD007*MC004)))  AS '數量',MB2.MB004 AS '單位'
+                                    SELECT  SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG004 AS '客戶代',MA002 AS '客戶',MA010 AS '統編',TH004  AS '主品號',MB1.MB002 AS '主品名' ,SUM(LA011)  AS '主銷售數量',MB1.MB004,MC004,MD006,MD007,MD003 AS '品號',MB2.MB002 AS '品名',SUM(CONVERT(DECIMAL(16,0),(LA011/MD006*MD007*MC004)))  AS '銷售數量國內',MB2.MB004 AS '單位'
                                     FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB MB1,[TK].dbo.COPMA,[TK].dbo.BOMMC,[TK].dbo.BOMMD,[TK].dbo.INVMB MB2
                                     WHERE TG001=TH001 AND TG002=TH002
                                     AND LA006=TH001 AND LA007=TH002 AND LA008=TH003
@@ -1431,6 +1433,75 @@ namespace TKPUR
                                     AND SUBSTRING(TG003,5,2)>='{1}'
                                     AND SUBSTRING(TG003,5,2)<='{2}'
                                     GROUP BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004,MB1.MB002,MB1.MB004,MC004,MD006,MD007,MD003,MB2.MB002,MB2.MB004
+                                    )  AS TEMP
+                                    LEFT JOIN [TKPUR].[dbo].[TKTAXCODESMB001] ON [TKTAXCODESMB001].MB001=TEMP.品號
+                                    ORDER BY  年,月,客戶代,客戶,統編,品號,品名,單位
+
+                                    INSERT INTO [TKPUR].[dbo].[TKTAXREPORTCOP]
+                                    (
+                                    [年]
+                                    ,[月]
+                                    ,[客戶代]
+                                    ,[客戶]
+                                    ,[統編]
+                                    ,[主品號]
+                                    ,[主品名]
+                                    ,[主銷售數量]
+                                    ,[品號]
+                                    ,[品名]
+                                    ,[銷售數量國內]
+                                    ,[銷售數量國外]
+                                    ,[單位]
+                                    ,[材質細碼]
+                                    ,[容積]
+                                    ,[容器本體]
+                                    ,[附件]
+                                    ,[費率]
+                                    ,[MB001]
+                                    ,[MB002]
+                                    )
+                                    SELECT 
+                                        [年]
+                                    ,[月]
+                                    ,[客戶代]
+                                    ,[客戶]
+                                    ,[統編]
+                                    ,[主品號]
+                                    ,[主品名]
+                                    ,[主銷售數量]
+                                    ,[品號]
+                                    ,[品名]
+                                    ,0 AS '銷售數量國內'
+                                    ,[銷售數量國外]
+                                    ,[單位]
+                                    ,[CODES] AS '材質細碼'
+                                    ,[VOLUMES] AS '容積'
+                                    ,[WEIGHTS] AS '容器本體'
+                                    ,[OTHERWEIGHTS] AS '附件'
+                                    ,[RATES] AS '費率'
+                                    ,[MB001]
+                                    ,[MB002]
+                                    FROM 
+                                    (
+                                    SELECT  SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG004 AS '客戶代',MA002 AS '客戶',MA010 AS '統編',TH004  AS '主品號',MB1.MB002 AS '主品名' ,SUM(LA011)  AS '主銷售數量',MB1.MB004,MC004,MD006,MD007,MD003 AS '品號',MB2.MB002 AS '品名',SUM(CONVERT(DECIMAL(16,0),(LA011/MD006*MD007*MC004)))  AS '銷售數量國外',MB2.MB004 AS '單位'
+                                    FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB MB1,[TK].dbo.COPMA,[TK].dbo.BOMMC,[TK].dbo.BOMMD,[TK].dbo.INVMB MB2
+                                    WHERE TG001=TH001 AND TG002=TH002
+                                    AND LA006=TH001 AND LA007=TH002 AND LA008=TH003
+                                    AND TH004=MB1.MB001
+                                    AND TG004=MA001
+                                    AND MC001=TH004
+                                    AND MC001=MD001
+                                    AND MD003=MB2.MB001
+                                    AND {3}
+                                    AND MD035 NOT LIKE '%蓋%'
+                                    AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
+                                    AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
+                                    AND SUBSTRING(TG003,1,4)='{0}' 
+                                    AND SUBSTRING(TG003,5,2)>='{1}'
+                                    AND SUBSTRING(TG003,5,2)<='{2}'
+                                    AND TG001 LIKE 'A232%'
+                                    GROUP BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004,MB1.MB002,MB1.MB004,MC004,MD006,MD007,MD003,MB2.MB002,MB2.MB004
+
                                     )  AS TEMP
                                     LEFT JOIN [TKPUR].[dbo].[TKTAXCODESMB001] ON [TKTAXCODESMB001].MB001=TEMP.品號
                                     ORDER BY  年,月,客戶代,客戶,統編,品號,品名,單位
@@ -1896,8 +1967,8 @@ namespace TKPUR
         {
             ADD_TKTAXREPORTCOP_TKTAXREPORTPUR(dateTimePicker4.Value.ToString("yyyyMM"), dateTimePicker5.Value.ToString("yyyyMM"));
 
-            SETFASTREPORT_TKTAXREPORTCOP_TKTAXREPORTPUR();
-            SETFASTREPORT_TKTAXREPORTCOP_TKTAXREPORTPUR_ALL();
+            //SETFASTREPORT_TKTAXREPORTCOP_TKTAXREPORTPUR();
+            //SETFASTREPORT_TKTAXREPORTCOP_TKTAXREPORTPUR_ALL();
         }
 
 
