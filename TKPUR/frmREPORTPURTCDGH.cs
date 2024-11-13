@@ -51,9 +51,16 @@ namespace TKPUR
         {
             InitializeComponent();
         }
-
+        private void frmREPORTPURTCDGH_Load(object sender, EventArgs e)
+        {
+            SET_DATE();
+        }
         #region FUNCTION
-
+        public void SET_DATE()
+        {
+            string YY = DateTime.Now.ToString("yyyy");
+            textBox1.Text = YY;
+        }
         public void Search_PURTCPURTD(string TC003,string TC004,string TH004)
         {
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -116,6 +123,7 @@ namespace TKPUR
                                     SELECT 
                                     TC004 AS '供應廠商'
                                     ,MA002 AS '廠商'
+                                    ,TC003 AS '採購日'
                                     ,TC001 AS '採購單別'
                                     ,TC002 AS '採購單號'
                                     ,TD003 AS '採購序號'
@@ -136,7 +144,7 @@ namespace TKPUR
                                     {2}
                                     ORDER BY TC004,TC001,TC002,TD003
 
-                                    ",QUERY1.ToString(), QUERY2.ToString(),QUERY3.ToString());
+                                    ", QUERY1.ToString(), QUERY2.ToString(),QUERY3.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -167,6 +175,28 @@ namespace TKPUR
             finally
             {
                 sqlConn.Close();
+            }
+        }
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // 確保目前的列是資料列
+            if (e.RowIndex >= 0 && dataGridView1.Columns["請購數量"] != null && dataGridView1.Columns["已交數量"] != null)
+            {
+                // 取得 Column1 和 Column2 的值
+                var value1 = dataGridView1.Rows[e.RowIndex].Cells["請購數量"].Value?.ToString();
+                var value2 = dataGridView1.Rows[e.RowIndex].Cells["已交數量"].Value?.ToString();
+
+                // 比較兩個欄位的值是否不同
+                if (value1 != value2)
+                {
+                    // 設定整列的背景顏色為紅色
+                    dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Pink;
+                }
+                else
+                {
+                    // 若相同則設為預設顏色
+                    //dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
+                }
             }
         }
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
@@ -218,7 +248,7 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"                                      
                                     SELECT 
-                                    TG005 AS '供應廠商'
+                                    (CASE WHEN TG013='N' THEN '未核單' ELSE '已核' END) AS '是否核單'
                                     ,MA002 AS '廠商'
                                     ,TG003 AS '進貨日期'
                                     ,TG001 AS '進貨單別'
@@ -236,7 +266,7 @@ namespace TKPUR
                                     ,TH012 AS '採購單號'
                                     ,TH013 AS '採購序號'
                                     FROM [TK].dbo.PURTG,[TK].dbo.PURTH,[TK].dbo.PURMA
-                                    WHERE TG001=TH001 AND TG002=TH002
+                                    WHERE  TG001=TH001 AND TG002=TH002
                                     AND TG005=MA001
                                     AND TH011='{0}'
                                     AND TH012='{1}'
@@ -286,8 +316,10 @@ namespace TKPUR
         {
             Search_PURTCPURTD(textBox1.Text.Trim(), textBox2.Text.Trim(), textBox3.Text.Trim());
         }
+
+
         #endregion
 
-       
+      
     }
 }
