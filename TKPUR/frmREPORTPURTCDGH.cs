@@ -54,13 +54,18 @@ namespace TKPUR
 
         #region FUNCTION
 
-        public void Search_PURTCPURTD()
+        public void Search_PURTCPURTD(string TC003,string TC004,string TH004)
         {
             SqlDataAdapter adapter = new SqlDataAdapter();
             SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
             SqlTransaction tran;
             SqlCommand cmd = new SqlCommand();
             DataSet ds = new DataSet();
+
+            StringBuilder QUERY1 = new StringBuilder();
+            StringBuilder QUERY2 = new StringBuilder();
+            StringBuilder QUERY3 = new StringBuilder();
+
 
             try
             {
@@ -77,6 +82,34 @@ namespace TKPUR
 
                 sbSql.Clear();
                 sbSqlQuery.Clear();
+
+                if(!string.IsNullOrEmpty(TC003))
+                {
+                    QUERY1.AppendFormat(@" AND TC003 LIKE '%{0}%'", TC003);
+                }
+                else
+                {
+                    QUERY1.AppendFormat(@"");
+                }
+
+                if (!string.IsNullOrEmpty(TC004))
+                {
+                    QUERY2.AppendFormat(@" AND (TC004 LIKE '%{0}%' OR MA002 LIKE '%{0}%')", TC004);
+                }
+                else
+                {
+                    QUERY2.AppendFormat(@"");
+                }
+
+                if (!string.IsNullOrEmpty(TH004))
+                {
+                    QUERY3.AppendFormat(@" AND  (TD004 LIKE '%{0}%' OR MB002 LIKE '%{0}%')", TH004);
+                }
+                else
+                {
+                    QUERY3.AppendFormat(@"");
+                }
+
 
 
                 sbSql.AppendFormat(@"  
@@ -98,10 +131,12 @@ namespace TKPUR
                                     WHERE TC001=TD001 AND TC002=TD002 
                                     AND TC004=MA001
                                     AND TD004=MB001
-                                    AND TC002 LIKE '20241112%'
+                                    {0}
+                                    {1}
+                                    {2}
                                     ORDER BY TC004,TC001,TC002,TD003
 
-                                    ");
+                                    ",QUERY1.ToString(), QUERY2.ToString(),QUERY3.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -249,7 +284,7 @@ namespace TKPUR
         #region BUTTON
         private void button3_Click(object sender, EventArgs e)
         {
-            Search_PURTCPURTD();
+            Search_PURTCPURTD(textBox1.Text.Trim(), textBox2.Text.Trim(), textBox3.Text.Trim());
         }
         #endregion
 
