@@ -221,6 +221,9 @@ namespace TKPUR
                 STRQUERY.AppendFormat(@" )");
             }
 
+            //AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
+            //AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
+             
             FASTSQL.AppendFormat(@"                                
                                 SELECT  SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG004 AS '客戶代',MA002 AS '客戶',MA010 AS '統編',TH004 ,MB1.MB002 ,SUM(LA011),MB1.MB004,MC004,MD006,MD007,MD003 AS '品號',MB2.MB002 AS '品名',SUM(CONVERT(DECIMAL(16,0),(LA011/MD006*MD007*MC004)))  AS '數量',MB2.MB004 AS '單位'
                                 FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB MB1,[TK].dbo.COPMA,[TK].dbo.BOMMC,[TK].dbo.BOMMD,[TK].dbo.INVMB MB2
@@ -233,8 +236,8 @@ namespace TKPUR
                                 AND MD003=MB2.MB001
                                 AND {2}
                                 AND MD035 NOT LIKE '%蓋%'
-                                AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
-                                AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
+                                AND (TG004 LIKE '2%' OR TG004 LIKE 'A%'  OR TG004 LIKE '3%'  OR TG004 LIKE 'B%')
+                              
                                 AND SUBSTRING(TG003,1,4)='{0}' 
                                 AND SUBSTRING(TG003,5,2)='{1}'
                                 GROUP BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004,MB1.MB002,MB1.MB004,MC004,MD006,MD007,MD003,MB2.MB002,MB2.MB004
@@ -391,6 +394,8 @@ namespace TKPUR
                 STRQUERY.AppendFormat(@" )");
             }
 
+            //AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
+            //AND TG004 IN(SELECT[MA001] FROM[TKPUR].[dbo].[TKCOPMATAXS])
             FASTSQL.AppendFormat(@"                                
                               
                                     SELECT 年, '{0}月' 月,客戶代,客戶,統編,品號,品名,SUM(數量) 數量,單位
@@ -407,8 +412,8 @@ namespace TKPUR
                                     AND MD003=MB2.MB001
                                     AND {4}
                                     AND MD035 NOT LIKE '%蓋%'
-                                    AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
-                                    AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
+                                    AND (TG004 LIKE '2%' OR TG004 LIKE 'A%'  OR TG004 LIKE '3%'  OR TG004 LIKE 'B%')
+
                                     AND SUBSTRING(TG003,1,4)='{1}' 
                                     AND SUBSTRING(TG003,5,2)>='{2}'
                                     AND SUBSTRING(TG003,5,2)>='{3}'
