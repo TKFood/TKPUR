@@ -43,6 +43,7 @@ namespace TKPUR
         #region BUTTON
         private void button2_Click(object sender, EventArgs e)
         {
+            //一定要先安裝 Acrobat  Reader DC
             string filePath = @"C:\採購單憑証-核準NAMEV2.pdf"; // 傳真的PDF文件路徑
             string printerName = "LAN-Fax Generic"; // LAN-Fax 驅動名稱
 
