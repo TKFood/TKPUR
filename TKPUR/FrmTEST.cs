@@ -66,11 +66,13 @@ namespace TKPUR
             {
                 process.Start();
                 process.WaitForExit(5000); // 等待最多 5 秒
-                Console.WriteLine("傳真發送完成！");
+                //Console.WriteLine("傳真發送完成！");
+                MessageBox.Show("傳真發送完成");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"傳真發送失敗: {ex.Message}");
+                //Console.WriteLine($"傳真發送失敗: {ex.Message}");
+                MessageBox.Show(ex.Message);
             }
             finally
             {
