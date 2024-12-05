@@ -21,6 +21,7 @@ using TKITDLL;
 using FastReport.Export.Pdf;
 using System.Net.Mail;
 using System.Net.Mime;
+using System.Diagnostics;
 
 namespace TKPUR
 {
@@ -314,6 +315,239 @@ namespace TKPUR
             return FASTSQL;
         }
 
+      
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            textBox1.Text = null;
+            textBox2.Text = null;
+            textBox3.Text = null;
+
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
+
+                    textBox1.Text = row.Cells["採購單別"].Value.ToString();
+                    textBox2.Text = row.Cells["採購單號"].Value.ToString(); 
+                    textBox3.Text = row.Cells["供應廠"].Value.ToString();
+                }
+                else
+                {
+                    textBox1.Text = null;
+                    textBox2.Text = null;
+                    textBox3.Text = null;
+                }
+            }
+        }
+
+        public void PREPRINTS_FAX(string statusReports, string TC001, string TC002,string MA002)
+        {
+            SETFASTREPORT_FAX(statusReports, TC001, TC002, MA002);
+            //MessageBox.Show(PRINTSPURTCPURTD);
+        }
+
+        public void SETFASTREPORT_FAX(string statusReports, string TC001, string TC002,string  MA002)
+        {
+            string DirectoryNAME = null;
+            string PDFFILES = null;
+            string DATES = DateTime.Now.ToString("yyyyMMdd");
+            PDFFILES = @"C:\PDFTEMP\" + DATES.ToString() + @"\" + TC001+ TC002+"-"+ MA002 + ".pdf";
+
+            DirectoryNAME = @"C:\PDFTEMP\" + DATES.ToString() + @"\";
+            //如果日期資料夾不存在就新增
+            if (!Directory.Exists(DirectoryNAME))
+            {
+                //新增資料夾
+                Directory.CreateDirectory(DirectoryNAME);
+            }
+            StringBuilder SQL = new StringBuilder();
+            report1 = new Report();
+
+            if (statusReports.Equals("憑証回傳202209"))
+            {
+                report1.Load(@"REPORT\採購單憑証V2.frx");
+            }
+            else if (statusReports.Equals("有簽名"))
+            {
+                report1.Load(@"REPORT\採購單憑証-核準NAMEV2.frx");
+            }
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+
+            SQL = SETFASETSQL_FAX(statusReports, TC001,TC002);
+
+            Table.SelectCommand = SQL.ToString(); ;
+
+            // prepare a report
+            report1.Prepare();
+            // create an instance of HTML export filter
+            FastReport.Export.Pdf.PDFExport export = new FastReport.Export.Pdf.PDFExport();
+            //FastReport.Export.Image.ImageExport ImageExport = new FastReport.Export.Image.ImageExport();
+            // show the export options dialog and do the export
+            report1.Export(export, PDFFILES);
+
+            //傳真
+            FAX(PDFFILES);
+        }
+
+        public StringBuilder SETFASETSQL_FAX(string statusReports, string TC001,string TC002)
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+            StringBuilder STRQUERY = new StringBuilder();
+
+            if (statusReports.Equals("有簽名"))
+            {
+                STRQUERY.AppendFormat(@"  
+                                        AND TC014 IN ('Y')
+                                        ");
+            }
+            else
+            {
+                STRQUERY.AppendFormat(@"
+                                        
+                                        ");
+            }
+
+            FASTSQL.AppendFormat(@"      
+                                SELECT *
+                                ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
+                                ,PURTC.UDF02 AS 'UOF單號'
+
+                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB
+                                WHERE TC001=TD001 AND TC002=TD002
+                                AND MQ001=TC001
+                                AND TC004=MA001
+                                AND TC011=MV001
+                                AND TC010=MB001
+                                AND TC001='{0}' AND TC002='{1}'
+                                {2}
+ 
+                                ORDER BY TC001,TC002,TD003
+                                ", TC001, TC002, STRQUERY.ToString());
+
+            return FASTSQL;
+        }
+
+        public void FAX(string PDFFILES)
+        {
+            //一定要先安裝 Acrobat  Reader DC
+            //string filePath = @"C:\採購單憑証-核準NAMEV2.pdf"; // 傳真的PDF文件路徑
+            DataTable DT = FIND_FAX();
+            string filePath = PDFFILES; // 傳真的PDF文件路徑
+            string printerName = "LAN-Fax Generic"; // LAN-Fax 驅動名稱
+            if(DT!=null && DT.Rows.Count>=1)
+            {
+                printerName = DT.Rows[0]["PRINTSNAMES"].ToString();
+            }
+
+
+            // 檢查文件是否存在
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("文件不存在：" + filePath);
+                return;
+            }
+
+            // 使用 Acrobat Reader 或默認 PDF 閱讀器進行打印
+            Process process = new Process();
+            process.StartInfo.FileName = filePath; // 文件路徑
+            process.StartInfo.Verb = "printto";   // 使用 "printto" 動詞直接打印到指定打印機
+            process.StartInfo.Arguments = $"\"{printerName}\""; // 指定目標打印機
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.UseShellExecute = true;
+
+            try
+            {
+                process.Start();
+                process.WaitForExit(5000); // 等待最多 5 秒
+                //Console.WriteLine("傳真發送完成！");
+                //MessageBox.Show("傳真發送完成");
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine($"傳真發送失敗: {ex.Message}");
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                process.Close();
+            }
+        }
+
+        public DataTable FIND_FAX()
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  
+                                   SELECT [PRINTSNAMES],[KINDS]
+                                    FROM [TKPUR].[dbo].[PRINTSNAMES]
+                                    WHERE [KINDS]='FAX'
+
+                                    ");
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    return ds.Tables["TEMPds1"];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -325,9 +559,14 @@ namespace TKPUR
         {
             PREPRINTS(comboBox1.Text.ToString());
         }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            PREPRINTS_FAX(comboBox1.Text.ToString(),textBox1.Text.Trim(), textBox2.Text.Trim(), textBox3.Text.Trim());
+        }
+
 
         #endregion
 
-
+     
     }
 }
