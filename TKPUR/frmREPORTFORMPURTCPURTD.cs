@@ -351,7 +351,7 @@ namespace TKPUR
 
         public void SETFASTREPORT_FAX(string statusReports, string TC001, string TC002,string  MA002)
         {
-            string DirectoryNAME = null;
+            string DirectoryNAME = null;  
             string PDFFILES = null;
             string DATES = DateTime.Now.ToString("yyyyMMdd");
             PDFFILES = @"C:\PDFTEMP\" + DATES.ToString() + @"\" + TC001+ TC002+"-"+ MA002 + ".pdf";
