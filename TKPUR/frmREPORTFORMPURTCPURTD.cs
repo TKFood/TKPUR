@@ -240,8 +240,8 @@ namespace TKPUR
         {
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
-             
-            if (statusReports.Equals("憑証回傳202209"))
+              
+            if (statusReports.Equals("憑証回傳202209")) 
             {
                 report1.Load(@"REPORT\採購單憑証V2.frx");
             }
