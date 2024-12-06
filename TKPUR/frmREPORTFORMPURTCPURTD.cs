@@ -56,6 +56,8 @@ namespace TKPUR
         string MAILATTACHPATH = null;
         DataSet DSMAIL = new DataSet();
 
+        string PDF_PATH = "";
+
         public frmREPORTFORMPURTCPURTD()
         {
             InitializeComponent();
@@ -67,6 +69,15 @@ namespace TKPUR
         private void frmREPORTFORMPURTCPURTD_Load(object sender, EventArgs e)
         {
             SETGRIDVIEW();
+
+            SET_PDF_PATH();
+        }
+
+        public string  SET_PDF_PATH()
+        {
+            PDF_PATH = @"\\192.168.1.109\部門檔案區\1300 資材部群組\傳真記錄區-待寄";
+
+            return PDF_PATH;
         }
         public void SETGRIDVIEW()
         {
@@ -354,9 +365,11 @@ namespace TKPUR
             string DirectoryNAME = null;  
             string PDFFILES = null;
             string DATES = DateTime.Now.ToString("yyyyMMdd");
-            PDFFILES = @"C:\PDFTEMP\" + DATES.ToString() + @"\" + TC001+ TC002+"-"+ MA002 + ".pdf";
 
-            DirectoryNAME = @"C:\PDFTEMP\" + DATES.ToString() + @"\";
+            PDF_PATH = SET_PDF_PATH();
+            PDFFILES = @""+ PDF_PATH+@"\" + DATES.ToString() + @"\" + TC001+ TC002+"-"+ MA002 + ".pdf";
+
+            DirectoryNAME = @"" + PDF_PATH + @"\" + DATES.ToString() + @"\";
             //如果日期資料夾不存在就新增
             if (!Directory.Exists(DirectoryNAME))
             {
