@@ -560,7 +560,70 @@ namespace TKPUR
 
             }
         }
+        public void ADD_TBPURCHECKFAX(string TC001, string TC002)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
 
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                   INSERT INTO [TKPUR].[dbo].[TBPURCHECKFAX] 
+                                    (
+                                    TC001,
+                                    TC002
+                                    )
+                                    VALUES
+                                    (
+                                    '{0}'
+                                    ,'{1}'
+                                    )
+                                   
+                                    ", TC001, TC002);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+                    MessageBox.Show("完成");
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -574,7 +637,12 @@ namespace TKPUR
         }
         private void button3_Click(object sender, EventArgs e)
         {
+            //將已產生過的pdf，當傳真已確認，在「Z:\1300 資材部群組\傳真記錄區-待寄」
+            ADD_TBPURCHECKFAX(textBox1.Text.Trim(), textBox2.Text.Trim());
+
+            //產生侇真用的pdf、並呼傳真程式，在「Z:\1300 資材部群組\傳真記錄區-待寄」
             PREPRINTS_FAX(comboBox1.Text.ToString(),textBox1.Text.Trim(), textBox2.Text.Trim(), textBox3.Text.Trim());
+     
         }
 
 
