@@ -611,7 +611,7 @@ namespace TKPUR
                 {
                     tran.Commit();      //執行交易  
 
-                    MessageBox.Show("完成");
+                    //MessageBox.Show("完成");
                 }
             }
             catch
