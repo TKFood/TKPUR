@@ -256,7 +256,7 @@ namespace TKPUR
             {
                 report1.Load(@"REPORT\採購單憑証V2.frx");
             }
-            else if (statusReports.Equals("有簽名"))
+            else if (statusReports.Equals("有簽名")) 
             {
                 report1.Load(@"REPORT\採購單憑証-核準NAMEV2.frx");
             }
