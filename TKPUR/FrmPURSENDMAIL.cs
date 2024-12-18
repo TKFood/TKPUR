@@ -272,6 +272,7 @@ namespace TKPUR
                                                         (SELECT [DEPNAMES] 
                                                          FROM [192.168.1.223].[UOF].[dbo].[Z_UOF_FORUM_ARTICLE_DEP] 
                                                          WHERE [DEPKINDS] IN ('資材'))
+                                                         AND REPLACE([TKPUR].dbo.udf_StripHTML([cleaned_img_content]), '&nbsp;', '') LIKE '%廠商%'
                                                     ORDER BY [View_SUB_TB_EIP_FORUM_ARTICLE].[FLOORS] DESC
                                                 ), ''
                                             ) AS '資材'
