@@ -254,11 +254,11 @@ namespace TKPUR
               
             if (statusReports.Equals("憑証回傳202209")) 
             {
-                report1.Load(@"REPORT\採購單憑証V2.frx");
+                report1.Load(@"REPORT\採購單憑証V3.frx");
             }
             else if (statusReports.Equals("有簽名")) 
             {
-                report1.Load(@"REPORT\採購單憑証-核準NAMEV2.frx");
+                report1.Load(@"REPORT\採購單憑証-核準NAMEV3.frx");
             }
 
             //20210902密
@@ -381,11 +381,11 @@ namespace TKPUR
 
             if (statusReports.Equals("憑証回傳202209"))
             {
-                report1.Load(@"REPORT\採購單憑証V2.frx");
+                report1.Load(@"REPORT\採購單憑証V3.frx");
             }
             else if (statusReports.Equals("有簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証-核準NAMEV2.frx");
+                report1.Load(@"REPORT\採購單憑証-核準NAMEV3.frx");
             }
 
             //20210902密
