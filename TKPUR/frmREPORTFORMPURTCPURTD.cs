@@ -259,7 +259,7 @@ namespace TKPUR
             else if (statusReports.Equals("有簽名")) 
             {
                 report1.Load(@"REPORT\採購單憑証-核準NAMEV3.frx");
-            }
+            } 
 
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
@@ -283,7 +283,7 @@ namespace TKPUR
 
             Table.SelectCommand = SQL.ToString(); ;
 
-            report1.Preview = previewControl1;
+            report1.Preview = previewControl1; 
             report1.Show();
 
         }
