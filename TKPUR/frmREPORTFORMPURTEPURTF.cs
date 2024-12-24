@@ -246,11 +246,11 @@ namespace TKPUR
 
             if (statusReports.Equals("憑証回傳202209"))
             {
-                report1.Load(@"REPORT\採購單變更憑証.frx");
+                report1.Load(@"REPORT\採購單變更憑証V2.frx");
             }
             else if (statusReports.Equals("有簽名"))
             {
-                report1.Load(@"REPORT\採購單變更憑証-核準NAME.frx");
+                report1.Load(@"REPORT\採購單變更憑証-核準NAMEV2.frx");
             }
 
             //20210902密
