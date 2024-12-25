@@ -22,7 +22,7 @@ using FastReport.Export.Pdf;
 using System.Net.Mail;
 using System.Net.Mime;
 
-namespace TKPUR
+namespace TKPUR 
 {
     public partial class frmREPORTFORMPURTEPURTF : Form
     {
