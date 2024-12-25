@@ -359,13 +359,13 @@ namespace TKPUR
             }
         }
 
-        public void PREPRINTS_FAX(string statusReports, string TC001, string TC002,string MA002)
+        public void PREPRINTS_FAX(string statusReports, string TC001, string TC002,string MA002,string COMMENT)
         {
-            SETFASTREPORT_FAX(statusReports, TC001, TC002, MA002);
+            SETFASTREPORT_FAX(statusReports, TC001, TC002, MA002, COMMENT);
             //MessageBox.Show(PRINTSPURTCPURTD);
         }
 
-        public void SETFASTREPORT_FAX(string statusReports, string TC001, string TC002,string  MA002)
+        public void SETFASTREPORT_FAX(string statusReports, string TC001, string TC002,string  MA002,string COMMENT)
         {
             string DirectoryNAME = null;  
             string PDFFILES = null;
@@ -412,6 +412,7 @@ namespace TKPUR
             TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
 
             SQL = SETFASETSQL_FAX(statusReports, TC001,TC002);
+            report1.SetParameterValue("P1", COMMENT);
 
             Table.SelectCommand = SQL.ToString(); ;
 
@@ -449,6 +450,7 @@ namespace TKPUR
                                 SELECT *
                                 ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
                                 ,PURTC.UDF02 AS 'UOF單號'
+                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
 
                                 FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB
                                 WHERE TC001=TD001 AND TC002=TD002
@@ -646,7 +648,7 @@ namespace TKPUR
             ADD_TBPURCHECKFAX(textBox1.Text.Trim(), textBox2.Text.Trim());
 
             //產生侇真用的pdf、並呼傳真程式，在「Z:\1300 資材部群組\傳真記錄區-待寄」
-            PREPRINTS_FAX(comboBox1.Text.ToString(),textBox1.Text.Trim(), textBox2.Text.Trim(), textBox3.Text.Trim());
+            PREPRINTS_FAX(comboBox1.Text.ToString(),textBox1.Text.Trim(), textBox2.Text.Trim(), textBox3.Text.Trim(), textBox5.Text.Trim());
      
         }
 
