@@ -173,6 +173,8 @@ namespace TKPUR
                                         FROM   [TK].dbo.PURTF WHERE TF001=TE001 AND TF002=TE002 AND TF003=TE003
                                         FOR XML PATH(''), TYPE  
                                         ).value('.','nvarchar(max)')  As '明細' 
+                                    ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTE.TE001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTE.TE002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+
                                     FROM[TK].dbo.PURMA, [TK].dbo.PURTE
 									LEFT JOIN [TK].dbo.PURTC ON TC001=TE001 AND TC002=TE002
 
@@ -220,7 +222,7 @@ namespace TKPUR
 
             }
         }
-        public void PREPRINTS(string statusReports)
+        public void PREPRINTS(string statusReports,string COMMENT)
         {
             string PRINTSPURTCPURTD = null;
             foreach (DataGridViewRow dr in dataGridView1.Rows)
@@ -235,11 +237,11 @@ namespace TKPUR
 
             PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'A'";
 
-            SETFASTREPORT(statusReports, PRINTSPURTCPURTD);
+            SETFASTREPORT(statusReports, PRINTSPURTCPURTD, COMMENT);
             //MessageBox.Show(PRINTSPURTCPURTD);
         }
 
-        public void SETFASTREPORT(string statusReports, string PRINTSPURTCPURTD)
+        public void SETFASTREPORT(string statusReports, string PRINTSPURTCPURTD,string COMMENT)
         {
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
@@ -274,6 +276,7 @@ namespace TKPUR
             SQL = SETFASETSQL(statusReports, PRINTSPURTCPURTD);
 
             Table.SelectCommand = SQL.ToString(); ;
+            report1.SetParameterValue("P1", COMMENT);
 
             report1.Preview = previewControl1;
             report1.Show();
@@ -309,6 +312,7 @@ namespace TKPUR
                                 ,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012
                                 ,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111
                                 ,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112
+                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTE.TE001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTE.TE002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
 
                                 FROM [TK].dbo.PURTF,[TK].dbo.PURTE
                                 LEFT JOIN [TK].dbo.CMSMQ ON MQ001=TE001
@@ -335,7 +339,7 @@ namespace TKPUR
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            PREPRINTS(comboBox1.Text.ToString());    
+            PREPRINTS(comboBox1.Text.ToString(),textBox5.Text);    
         }
          
         #endregion
