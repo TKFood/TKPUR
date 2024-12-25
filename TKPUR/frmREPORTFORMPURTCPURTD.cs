@@ -183,6 +183,8 @@ namespace TKPUR
                                             FROM   [TK].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002
                                             FOR XML PATH(''), TYPE  
                                             ).value('.','nvarchar(max)')  As '明細' 
+                                    ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+
                                     FROM [TK].dbo.PURTC,[TK].dbo.PURMA
                                     WHERE 1=1
                                     AND TC004=MA001
