@@ -230,7 +230,7 @@ namespace TKPUR
 
             }
         }
-        public void PREPRINTS(string statusReports)
+        public void PREPRINTS(string statusReports,string COMMENT)
         {
             string PRINTSPURTCPURTD = null;
             foreach (DataGridViewRow dr in dataGridView1.Rows)
@@ -245,11 +245,11 @@ namespace TKPUR
 
             PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'A'";
 
-            SETFASTREPORT(statusReports, PRINTSPURTCPURTD);
+            SETFASTREPORT(statusReports, PRINTSPURTCPURTD, COMMENT);
             //MessageBox.Show(PRINTSPURTCPURTD);
         }
 
-        public void SETFASTREPORT(string statusReports, string PRINTSPURTCPURTD)
+        public void SETFASTREPORT(string statusReports, string PRINTSPURTCPURTD,string COMMENT)
         {
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
@@ -285,6 +285,8 @@ namespace TKPUR
 
             Table.SelectCommand = SQL.ToString(); ;
 
+            report1.SetParameterValue("P1", COMMENT);
+
             report1.Preview = previewControl1; 
             report1.Show();
 
@@ -312,6 +314,7 @@ namespace TKPUR
                                 SELECT *
                                 ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
                                 ,PURTC.UDF02 AS 'UOF單號'
+                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
 
                                 FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB
                                 WHERE TC001=TD001 AND TC002=TD002
@@ -635,7 +638,7 @@ namespace TKPUR
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            PREPRINTS(comboBox1.Text.ToString());
+            PREPRINTS(comboBox1.Text.ToString(),textBox5.Text);
         }
         private void button3_Click(object sender, EventArgs e)
         {
