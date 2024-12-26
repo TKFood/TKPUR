@@ -155,6 +155,124 @@ namespace TKPUR
 
             }
         }
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            textBox1.Text = null;
+            textBox2.Text = null;
+           
+
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
+
+                    textBox1.Text = row.Cells["單別"].Value.ToString();
+                    textBox2.Text = row.Cells["單號"].Value.ToString();
+
+                    SEARCH_PURTH(row.Cells["單別"].Value.ToString(), row.Cells["單號"].Value.ToString());
+                }
+                else
+                {
+                    textBox1.Text = null;
+                    textBox2.Text = null;                   
+                }
+            }
+        }
+
+        public void SEARCH_PURTH(string TH001,string TH002)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"                                    
+                                   SELECT 
+                                    TH003 AS '序號'
+                                    ,TH004 AS '品號'
+                                    ,TH005 AS '品名'
+                                    ,TH006 AS '規格'
+                                    ,TH007 AS '進貨數量'
+                                    ,TH016 AS '計價數量'
+                                    ,TH008 AS '單位'
+                                    ,TH010 AS '批號'
+                                    ,TH018 AS '原幣單位進價'
+                                    ,TH047 AS '本幣未稅金額'
+                                    ,TH048 AS '本幣稅額'
+                                    FROM [TK].dbo.PURTH
+                                    WHERE TH001='{0}' AND TH002='{1}'
+
+
+                                    ", TH001, TH002);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count == 0)
+                {
+                    dataGridView2.DataSource = null;
+                }
+                else
+                {
+                    if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                    {
+                        dataGridView2.DataSource = ds.Tables["TEMPds1"];
+                        dataGridView2.AutoResizeColumns();
+
+                        dataGridView2.AutoResizeColumns();
+                        dataGridView2.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                        dataGridView2.DefaultCellStyle.Font = new Font("Tahoma", 10);
+                        // 設定數字格式
+                        // 或使用 "N2" 表示兩位小數點（例如：12,345.67）
+                        dataGridView2.Columns["進貨數量"].DefaultCellStyle.Format = "N2"; // 每三位一個逗號，無小數點
+                        dataGridView2.Columns["計價數量"].DefaultCellStyle.Format = "N2"; // 每三位一個逗號，無小數點
+                        dataGridView2.Columns["原幣單位進價"].DefaultCellStyle.Format = "N2"; // 每三位一個逗號，無小數點
+                        dataGridView2.Columns["本幣未稅金額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+                        dataGridView2.Columns["本幣稅額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+
+
+
+                    }
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -167,8 +285,9 @@ namespace TKPUR
         {
 
         }
+
         #endregion
 
-
+        
     }
 }
