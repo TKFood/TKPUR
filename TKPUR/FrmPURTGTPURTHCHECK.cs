@@ -273,6 +273,11 @@ namespace TKPUR
             }
         }
 
+        public void ADD_CHECK_PURTC(string TC001,string TC002)
+        {
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -283,7 +288,9 @@ namespace TKPUR
 
         private void button2_Click(object sender, EventArgs e)
         {
+            ADD_CHECK_PURTC(textBox1.Text.Trim(), textBox2.Text.Trim());
 
+            MessageBox.Show("完成");
         }
 
         #endregion
