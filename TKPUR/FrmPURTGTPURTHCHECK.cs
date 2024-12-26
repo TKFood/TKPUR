@@ -101,6 +101,8 @@ namespace TKPUR
                                     END) AS '課稅別'
                                     ,TG031 AS '本幣貨款金額'
                                     ,TG032 AS '本幣稅額'
+                                    ,(TG031+TG032) AS '本幣合計金額'
+                                    
                                     FROM [TK].dbo.PURTG
                                     WHERE TG003>='{0}' AND TG003<='{1}'
 
@@ -126,6 +128,16 @@ namespace TKPUR
                     {
                         dataGridView1.DataSource = ds.Tables["TEMPds1"];
                         dataGridView1.AutoResizeColumns();
+
+                        dataGridView1.AutoResizeColumns();
+                        dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                        dataGridView1.DefaultCellStyle.Font = new Font("Tahoma", 10);
+                        // 設定數字格式
+                        // 或使用 "N2" 表示兩位小數點（例如：12,345.67）
+                        dataGridView1.Columns["本幣貨款金額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+                        dataGridView1.Columns["本幣稅額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+                        dataGridView1.Columns["本幣合計金額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+
 
 
                     }
