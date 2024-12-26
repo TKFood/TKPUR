@@ -111,6 +111,12 @@
     <Compile Include="FrmPURTATBUOFCHANGE.Designer.cs">
       <DependentUpon>FrmPURTATBUOFCHANGE.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmPURTGTPURTHCHECK.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPURTGTPURTHCHECK.Designer.cs">
+      <DependentUpon>FrmPURTGTPURTHCHECK.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPURVERSIONSNUMS.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -319,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPURTATBUOFCHANGE.resx">
       <DependentUpon>FrmPURTATBUOFCHANGE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPURTGTPURTHCHECK.resx">
+      <DependentUpon>FrmPURTGTPURTHCHECK.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmPURVERSIONSNUMS.resx">
       <DependentUpon>frmPURVERSIONSNUMS.cs</DependentUpon>
