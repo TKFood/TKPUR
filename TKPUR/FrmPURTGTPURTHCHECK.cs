@@ -69,7 +69,7 @@ namespace TKPUR
             Class1 TKID = new Class1();//用new 建立類別實體
             SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
 
-            //資料庫使用者密碼解密
+            //資料庫使用者密碼解密 
             sqlsb.Password = TKID.Decryption(sqlsb.Password);
             sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
 
