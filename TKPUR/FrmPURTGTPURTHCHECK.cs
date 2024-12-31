@@ -892,7 +892,7 @@ namespace TKPUR
 
         public DataTable FIND_ACPTB(string TA001,string TA002)
         {
-            DataSet ds = new DataSet();
+            DataSet ds = new DataSet(); 
 
             try
             {
