@@ -684,6 +684,212 @@ namespace TKPUR
 
             }
         }
+
+        public void SETFASTREPORT(string TA001,string TA002)
+        {
+            StringBuilder SQL = new StringBuilder();
+            report1 = new Report();
+
+            report1.Load(@"REPORT\應付憑單憑証.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+
+            SQL = SETFASETSQL(TA001, TA002);
+
+            Table.SelectCommand = SQL.ToString(); ;
+
+            //report1.SetParameterValue("P1", COMMENT);
+
+            report1.Preview = previewControl1;
+            report1.Show();
+
+        }
+
+        public StringBuilder SETFASETSQL(string TA001, string TA002)
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+            StringBuilder STRQUERY = new StringBuilder();
+
+
+            FASTSQL.AppendFormat(@"      
+                                --20241224 查應付
+
+                                SELECT 
+                                TA001+' '+MQ002 AS '憑單單別',
+                                TA002 AS '憑單單號',
+                                SUBSTRING(TA003,1,4)+'/'+SUBSTRING(TA003,5,2)+'/'+SUBSTRING(TA003,7,2) AS '憑單日期',
+                                TA004+' '+PURMA.MA002 AS '供應廠商',
+                                TA005+' '+MB002 AS '廠別',
+                                TA006 AS '統一編號',
+                                TA008 AS '幣別',
+                                TA009 AS '匯率',
+                                --1.二聯式、2.三聯式、3.二聯式收銀機發票、4.三聯式收銀機發票、5.電子計算機發票、6.免用統一發票、A.農產品收購憑證、G.海關代徵完稅憑證、N.不可抵扣專用發票、S.可抵扣專用發票、T.運輸發票、W.廢舊物資收購憑證、Z.其他   //890623 ADD 'A,B,C' BY 349 FOR 大陸用  //90
+                                (CASE WHEN TA010='1' THEN '二聯式'  
+                                WHEN TA010='2' THEN '三聯式'   
+                                WHEN TA010='3' THEN '二聯式收銀機發票'   
+                                WHEN TA010='4' THEN '三聯式收銀機發票'   
+                                WHEN TA010='5' THEN '電子計算機發票'   
+                                WHEN TA010='6' THEN '免用統一發票'   
+                                WHEN TA010='7' THEN '電子發票'   
+                                WHEN TA010='A' THEN '農產品收購憑證'   
+                                WHEN TA010='G' THEN '海關代徵完稅憑證'   
+                                WHEN TA010='N' THEN '不可抵扣專用發票'   
+                                WHEN TA010='S' THEN '可抵扣專用發票'   
+                                WHEN TA010='T' THEN '運輸發票'
+                                WHEN TA010='W' THEN '廢舊物資收購憑證'
+                                WHEN TA010='Z' THEN '其他'
+                                END  
+                                 ) AS '發票聯數',
+                                --1.應稅內含、2.應稅外加、3.零稅率、4.免稅、9.不計稅
+                                (CASE WHEN TA011=1 THEN '應稅內含' 
+                                WHEN TA011=2 THEN '應稅外加' 
+                                WHEN TA011=3 THEN '零稅率' 
+                                WHEN TA011=4 THEN '免稅' 
+                                WHEN TA011=9 THEN '不計稅' 
+                                END) AS '課稅別',
+                                --1.可扣抵進貨及費用、2.可扣抵固定資產、3.不可扣抵進貨及費用、4.不可扣抵固定資產
+                                (CASE WHEN TA012=1 THEN '可扣抵進貨及費用'
+                                WHEN TA012=2 THEN '可扣抵固定資產'
+                                WHEN TA012=3 THEN '不可扣抵進貨及費用'
+                                WHEN TA012=4 THEN '不可扣抵固定資產'
+                                END)  AS '扣抵區分',
+                                TA013 AS '煙酒註記',
+                                TA014 AS '發票號碼',
+                                SUBSTRING(TA015,1,4)+'/'+SUBSTRING(TA015,5,2)+'/'+SUBSTRING(TA015,7,2)  AS '發票日期',
+                                TA016 AS '發票貨款',
+                                TA017 AS '發票稅額',
+                                TA018 AS '發票作廢',
+                                SUBSTRING(TA019,1,4)+'/'+SUBSTRING(TA019,5,2)+'/'+SUBSTRING(TA019,7,2)   AS '預計付款日',
+                                SUBSTRING(TA020,1,4)+'/'+SUBSTRING(TA020,5,2)+'/'+SUBSTRING(TA020,7,2)  AS '預計兌現日',
+                                TA021 AS '備註',
+                                TA022 AS '採購單別',
+                                TA023 AS '採購單號',
+                                TA024 AS '確認碼',
+                                TA025 AS '更新碼',
+                                TA026 AS '結案碼',
+                                TA027 AS '列印次數',
+                                TA028 AS '應付金額',
+                                TA029 AS '營業稅額',
+                                TA030 AS '已付金額',
+                                TA031 AS '產生分錄碼',
+                                TA032 AS '申報年月',
+                                TA033 AS '凍結付款碼',
+                                SUBSTRING(TA034,1,4)+'/'+SUBSTRING(TA034,5,2)+'/'+SUBSTRING(TA034,7,2)  AS '單據日期',
+                                TA035 AS '確認者',
+                                TA036 AS '營業稅率',
+                                TA037 AS '本幣應付金額',
+                                TA038 AS '本幣營業稅額',
+                                TA039+' '+NA003 AS '付款條件代號',
+                                SUBSTRING(TA040,1,4)+'/'+SUBSTRING(TA040,5,2)+'/'+SUBSTRING(TA040,7,2)  AS '取得折扣付款日',
+                                SUBSTRING(TA041,1,4)+'/'+SUBSTRING(TA041,5,2)+'/'+SUBSTRING(TA041,7,2)  AS '取得折扣兌現日',
+                                TA042 AS '折扣(%)',
+                                TA043 AS '已沖稅額',
+                                TA044 AS '簽核狀態碼',
+                                TA048 AS '本幣已付金額',
+                                TA049 AS '折讓單作廢時間',
+                                TA050 AS '專案代號',
+                                TA051 AS '結案日',
+                                TA052 AS '單據來源',
+                                TA056 AS '來源',
+                                TA057 AS '折讓證明單號碼',
+                                TA058 AS '折讓單作廢原因',
+                                TA060 AS '折讓單作廢日期',
+                                TA061 AS '已匯出開立發票/折讓單',
+                                TA065 AS '丁種發票匯出狀態',
+                                TA066 AS '店號',
+                                TA067 AS '旅行社代號',
+                                TA068 AS '導遊代號',
+                                TA069 AS '國別',
+                                TA070 AS 'ACH匯款',
+                                TA071 AS 'ACH備註',
+                                TA072 AS 'ACH匯款失敗',
+                                TA073 AS '折讓單簽回日期',
+                                TA074 AS '訂金序號',
+                                TA075 AS '預留欄位',
+                                TA076 AS '網購合約費用單號',
+                                TA077 AS '通路合約費用單號',
+                                TA078 AS '已匯出作廢發票/折讓單',
+                                TA084 AS '由應付憑單匯出折讓單',
+                                TB003 AS '憑單序號',
+                                --1.進貨、2.退貨、3.託外進貨、4.託外退貨、5.進口費用、6.出口費用、7.資產取得、8.資產改良、9.其他、
+                                --A.預付待抵、B.採購、C.維修、D.資產採購、E.資產進貨、F.預付購料、G.軍福品、H.進口稅額、I.預付購料費用、J.派車運費、K.通路費用   //990420 9.2 功能單: 99042000001
+                                (CASE WHEN TB004=1 THEN '進貨'  
+                                WHEN TB004=2 THEN '退貨'  
+                                WHEN TB004=3 THEN '託外進貨'  
+                                WHEN TB004=4 THEN '託外退貨'  
+                                WHEN TB004=5 THEN '進口費用'  
+                                WHEN TB004=6 THEN '出口費用'  
+                                WHEN TB004=7 THEN '資產取得進貨'  
+                                WHEN TB004=8 THEN '資產改良'  
+                                WHEN TB004=9 THEN '其他'  
+                                WHEN TB004='A' THEN '預付待抵'  
+                                WHEN TB004='B' THEN '採購'  
+                                WHEN TB004='C' THEN '維修'  
+                                WHEN TB004='D' THEN '資產採購'  
+                                WHEN TB004='E' THEN '資產進貨'  
+                                WHEN TB004='F' THEN '預付購料'  
+                                WHEN TB004='G' THEN '軍福品'  
+                                WHEN TB004='H' THEN '進口稅額'  
+                                WHEN TB004='I' THEN '預付購料費用'  
+                                WHEN TB004='J' THEN '派車運費'  
+                                WHEN TB004='K' THEN '通路費用'  
+                                END) AS '來源2',
+                                TB005 AS '憑證單別',
+                                TB006 AS '憑證單號',
+                                TB007 AS '憑證序號',
+                                TB008 AS '憑證日期2',
+                                TB009 AS '應付金額2',
+                                TB010 AS '差額',
+                                TB011 AS '備註2',
+                                TB012 AS '確認碼2',
+                                TB013 AS '科目編號',
+                                TB014 AS '費用部門',
+                                TB015 AS '原幣未稅金額2',
+                                TB016 AS '原幣稅額2',
+                                TB017 AS '本幣未稅金額2',
+                                TB018 AS '本幣稅額2',
+                                TB019 AS '專案代號2',
+                                TB020 AS '程序代號2',
+                                TB030 AS '訂金序號2',
+                                ACTMA.MA003 AS '科目名稱',
+                                ME002 AS '部門名稱'
+
+
+
+                                FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
+                                LEFT JOIN [TK].dbo.CMSME ON TB014=ME001
+                                ,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMB,[TK].dbo.CMSNA,[TK].dbo.ACTMA
+                                WHERE TA001=TB001 AND TA002=TB002
+                                AND MQ001=TA001
+                                AND TA004=PURMA.MA001
+                                AND TA005=MB001
+                                AND TA039=NA002 AND NA001=1
+                                AND TB013=ACTMA.MA001
+
+                                AND TA001='{0}' AND TA002='{1}'
+                                ORDER BY TA001,TA002,TB003 
+                               
+                                ", TA001, TA002);
+
+            return FASTSQL;
+        }
+
         #endregion
 
         #region BUTTON
@@ -701,7 +907,7 @@ namespace TKPUR
             //MessageBox.Show("完成");
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)  
         {
             //解除確認單號
             DELETE_CHECK_PURTG(textBox1.Text.Trim(), textBox2.Text.Trim());
@@ -714,9 +920,13 @@ namespace TKPUR
             Search_ACPTA(dateTimePicker3.Value.ToString("yyyyMMdd"), dateTimePicker4.Value.ToString("yyyyMMdd"));
         }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT(textBox3.Text, textBox4.Text);
+        }
 
         #endregion
 
-        
+
     }
 }
