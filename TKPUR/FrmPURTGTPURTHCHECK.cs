@@ -556,6 +556,134 @@ namespace TKPUR
 
             }
         }
+
+        private void dataGridView3_SelectionChanged(object sender, EventArgs e)
+        {
+            textBox3.Text = null;
+            textBox4.Text = null;
+
+
+            if (dataGridView3.CurrentRow != null)
+            {
+                int rowindex = dataGridView3.CurrentRow.Index;
+
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView3.Rows[rowindex];
+
+                    textBox3.Text = row.Cells["憑單單別"].Value.ToString();
+                    textBox4.Text = row.Cells["憑單單號"].Value.ToString();
+
+                    SEARCH_ACPTB(row.Cells["憑單單別"].Value.ToString(), row.Cells["憑單單號"].Value.ToString());
+                }
+                else
+                {
+                    textBox3.Text = null;
+                    textBox4.Text = null;
+                }
+            }
+        }
+
+        public void SEARCH_ACPTB(string TA001,string TA002)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+
+                sbSql.AppendFormat(@"  
+                                    SELECT 
+                                    (CASE WHEN TB004=1 THEN '進貨' 
+                                            WHEN TB004=2 THEN '退貨' 
+                                            WHEN TB004=3 THEN '託外進貨' 
+                                            WHEN TB004=4 THEN '託外退貨' 
+                                            WHEN TB004=5 THEN '進口費用' 
+		                                    WHEN TB004=6 THEN '出口費用' 
+		                                    WHEN TB004=7 THEN '資產取得' 
+		                                    WHEN TB004=8 THEN '資產改良' 
+		                                    WHEN TB004=9 THEN '其他' 
+		                                    WHEN TB004='A' THEN '預付待抵' 
+		                                    WHEN TB004='B' THEN '採購' 
+		                                    WHEN TB004='C' THEN '維修' 
+		                                    WHEN TB004='D' THEN '資產採購' 
+		                                    WHEN TB004='E' THEN '資產進貨' 
+		                                    WHEN TB004='F' THEN '預付購料' 
+		                                    WHEN TB004='G' THEN '軍福品' 
+		                                    WHEN TB004='H' THEN '進口稅額' 
+		                                    WHEN TB004='I' THEN '預付購料費用' 
+		                                    WHEN TB004='J' THEN '派車運費' 
+		                                    WHEN TB004='K' THEN '通路費用' 
+                                            END)  AS	'來源'
+                                    ,TB005 AS	'憑證單別'
+                                    ,TB006 AS	'憑證單號'
+                                    ,TB007 AS	'憑證序號'
+                                    ,TB008 AS	'憑證日期'
+                                    ,TB009 AS	'應付金額'
+                                    FROM [TK].dbo.ACPTB
+                                    WHERE TB001='{0}' AND TB002='{1}'
+                                    ORDER BY TB003
+
+                                    ", TA001, TA002);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count == 0)
+                {
+                    dataGridView4.DataSource = null;
+                }
+                else
+                {
+                    if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                    {
+                        dataGridView4.DataSource = ds.Tables["TEMPds1"];
+                        dataGridView4.AutoResizeColumns();
+
+                        dataGridView4.AutoResizeColumns();
+                        dataGridView4.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                        dataGridView4.DefaultCellStyle.Font = new Font("Tahoma", 10);
+                        // 設定數字格式
+                        // 或使用 "N2" 表示兩位小數點（例如：12,345.67）
+                        dataGridView4.Columns["應付金額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+                       
+                    }
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -586,8 +714,9 @@ namespace TKPUR
             Search_ACPTA(dateTimePicker3.Value.ToString("yyyyMMdd"), dateTimePicker4.Value.ToString("yyyyMMdd"));
         }
 
+
         #endregion
 
-
+        
     }
 }
