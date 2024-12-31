@@ -973,7 +973,7 @@ namespace TKPUR
             Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString());
             //MessageBox.Show("完成");
         }
-
+         
         private void button3_Click(object sender, EventArgs e)  
         {
             //解除確認單號
