@@ -890,6 +890,73 @@ namespace TKPUR
             return FASTSQL;
         }
 
+        public DataTable FIND_ACPTB(string TA001,string TA002)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                //檢查應付憑單的進貨單明細，是不是還沒有確認
+
+                sbSql.AppendFormat(@"  
+                                    SELECT *
+                                    FROM [TK].dbo.ACPTB
+                                    WHERE TB001='{0}' AND TB002='{1}'
+                                    AND REPLACE(TB005+TB006,' ','') NOT IN
+                                    (
+                                    SELECT 
+	                                    REPLACE([TG001]+[TG002],' ','')
+                                    FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                    )
+
+                                    ", TA001, TA002);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    return ds.Tables["TEMPds1"];
+
+                }
+                else
+                {
+                    return null;
+                }
+
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -922,7 +989,22 @@ namespace TKPUR
 
         private void button5_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT(textBox3.Text, textBox4.Text);
+            //檢查是否有未確認的進貨單
+            //如果有就不印出應付憑單
+            //確認的進貨單印出應付憑單
+
+            DataTable DS=FIND_ACPTB(textBox3.Text, textBox4.Text);
+
+            if(DS==null)
+            {
+                SETFASTREPORT(textBox3.Text, textBox4.Text);
+            }
+            else
+            {
+                MessageBox.Show("此應付憑單，有進貨單還未確認");
+            }
+
+           
         }
 
         #endregion
