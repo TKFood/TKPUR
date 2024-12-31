@@ -448,6 +448,114 @@ namespace TKPUR
             }
         }
 
+        public void Search_ACPTA(string SDAY, string EDAY)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+             
+
+                sbSql.AppendFormat(@"  
+                                    SELECT 
+                                    TA001 AS	'憑單單別'
+                                    ,TA002 AS	'憑單單號'
+                                    ,TA003 AS	'憑單日期'
+                                    ,TA004 AS	'供應廠商'
+                                    ,TA006 AS	'統一編號'
+                                    --1.二聯式、2.三聯式、3.二聯式收銀機發票、4.三聯式收銀機發票、5.電子計算機發票、6.免用統一發票、
+                                    --A.農產品收購憑證、G.海關代徵完稅憑證、N.不可抵扣專用發票、S.可抵扣專用發票、T.運輸發票、W.廢舊物資收購憑證、Z.其他   //890623 ADD 'A,B,C' BY 349 FOR 大陸用  //90
+                                    ,(CASE WHEN TA010=1 THEN '二聯式' 
+                                            WHEN TA010=2 THEN '三聯式' 
+                                            WHEN TA010=3 THEN '二聯式收銀機發票' 
+                                            WHEN TA010=4 THEN '三聯式收銀機發票' 
+                                            WHEN TA010=5 THEN '電子計算機發票' 
+		                                    WHEN TA010=6 THEN '免用統一發票' 
+		                                    WHEN TA010='A' THEN '農產品收購憑證' 
+		                                    WHEN TA010='G' THEN '海關代徵完稅憑證' 
+		                                    WHEN TA010='N' THEN '不可抵扣專用發票' 
+		                                    WHEN TA010='S' THEN '可抵扣專用發票' 
+		                                    WHEN TA010='T' THEN '運輸發票' 
+		                                    WHEN TA010='W' THEN '廢舊物資收購憑證' 
+		                                    WHEN TA010='Z' THEN '其他' 
+                                            END)  AS	'發票聯數'
+                                    ,(CASE WHEN TA011=1 THEN '應稅內含' 
+                                            WHEN TA011=2 THEN '應稅外加' 
+                                            WHEN TA011=3 THEN '零稅率' 
+                                            WHEN TA011=4 THEN '免稅' 
+                                            WHEN TA011=9 THEN '不計稅' 
+                                            END)   AS	'課稅別'
+                                    ,TA014 AS	'發票號碼'
+                                    ,TA015 AS	'發票日期'
+                                    ,TA016 AS	'發票貨款'
+                                    ,TA017 AS	'發票稅額'
+
+                                    FROM [TK].dbo.ACPTA
+                                    WHERE TA003>='{0}' AND TA003<='{1}'
+
+                                    ", SDAY, EDAY);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count == 0)
+                {
+                    dataGridView3.DataSource = null;
+                }
+                else
+                {
+                    if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                    {
+                        dataGridView3.DataSource = ds.Tables["TEMPds1"];
+                        dataGridView3.AutoResizeColumns();
+
+                        dataGridView3.AutoResizeColumns();
+                        dataGridView3.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                        dataGridView3.DefaultCellStyle.Font = new Font("Tahoma", 10);
+                        // 設定數字格式
+                        // 或使用 "N2" 表示兩位小數點（例如：12,345.67）
+                        dataGridView3.Columns["發票貨款"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+                        dataGridView3.Columns["發票稅額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點                       
+
+
+
+                    }
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -473,6 +581,11 @@ namespace TKPUR
             Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString());
             //MessageBox.Show("完成");
         }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Search_ACPTA(dateTimePicker3.Value.ToString("yyyyMMdd"), dateTimePicker4.Value.ToString("yyyyMMdd"));
+        }
+
         #endregion
 
 
