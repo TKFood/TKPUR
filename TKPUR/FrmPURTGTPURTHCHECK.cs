@@ -98,7 +98,7 @@ namespace TKPUR
 
 
         }
-        public void Search(string SDAY, string EDAY)
+        public void Search(string SDAY, string EDAY,string KINDS)
         {
             DataSet ds = new DataSet();
 
@@ -120,6 +120,32 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
+                if(KINDS.Equals("未確認"))
+                {
+                    sbSqlQuery.AppendFormat(@" 
+                                            AND REPLACE(TG001+TG002,' ','') NOT IN (
+                                            SELECT
+                                            REPLACE(TG001+TG002,' ','')
+                                            FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                            )
+                                            ");
+                }
+                else if (KINDS.Equals("已確認"))
+                {
+                    sbSqlQuery.AppendFormat(@" 
+                                            AND REPLACE(TG001+TG002,' ','') IN (
+                                            SELECT
+                                            REPLACE(TG001+TG002,' ','')
+                                            FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                            )
+                                            ");
+                }
+                if (KINDS.Equals("全部"))
+                {
+                    sbSqlQuery.AppendFormat(@" 
+                                           
+                                            ");
+                }
 
                 sbSql.AppendFormat(@"                                    
                                     SELECT 
@@ -143,9 +169,9 @@ namespace TKPUR
                                     
                                     FROM [TK].dbo.PURTG
                                     WHERE TG003>='{0}' AND TG003<='{1}'
+                                    {2}
 
-
-                                    ", SDAY, EDAY);
+                                    ", SDAY, EDAY, sbSqlQuery.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -311,9 +337,115 @@ namespace TKPUR
             }
         }
 
-        public void ADD_CHECK_PURTC(string TC001,string TC002)
+        public void ADD_CHECK_PURTG(string TG001,string TG002)
         {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
 
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                    INSERT INTO [TKPUR].[dbo].[TBPURTGCHECKS]
+                                    ([TG001]
+                                    ,[TG002])
+                                    VALUES
+                                    ('{0}','{1}')
+                                    ", TG001, TG002);
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public void DELETE_CHECK_PURTG(string TG001, string TG002)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                    DELETE [TKPUR].[dbo].[TBPURTGCHECKS]
+                                    WHERE TG001='{0}' AND TG002='{1}'
+                                    ", TG001, TG002);
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
         }
 
         #endregion
@@ -321,18 +453,28 @@ namespace TKPUR
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"),comboBox1.Text.ToString());
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ADD_CHECK_PURTC(textBox1.Text.Trim(), textBox2.Text.Trim());
+            //新增確認單號
+            ADD_CHECK_PURTG(textBox1.Text.Trim(), textBox2.Text.Trim());
 
-            MessageBox.Show("完成");
+            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString());
+            //MessageBox.Show("完成");
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //解除確認單號
+            DELETE_CHECK_PURTG(textBox1.Text.Trim(), textBox2.Text.Trim());
+
+            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString());
+            //MessageBox.Show("完成");
+        }
         #endregion
 
-        
+
     }
 }
