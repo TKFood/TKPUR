@@ -622,7 +622,7 @@
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(958, 334);
             this.tabPage3.TabIndex = 0;
-            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.Text = "報表";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // tabPage4
@@ -633,7 +633,7 @@
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage4.Size = new System.Drawing.Size(958, 334);
             this.tabPage4.TabIndex = 1;
-            this.tabPage4.Text = "tabPage4";
+            this.tabPage4.Text = "應付明細";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // dataGridView4
