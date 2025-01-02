@@ -1070,7 +1070,7 @@ namespace TKPUR
                                     FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
                                     WHERE TA001=TB001 AND TA002=TB002
                                     AND TA001='{0}' AND TA002='{1}'
-                                  
+                                    GROUP  BY TB005,TB006
                                     ", TA001, TA002);
 
 
@@ -1083,10 +1083,14 @@ namespace TKPUR
                 if (result == 0)
                 {
                     tran.Rollback();    //交易取消
+
+                    MessageBox.Show("失敗");
                 }
                 else
                 {
                     tran.Commit();      //執行交易  
+
+                    MessageBox.Show("完成");
                 }
             }
             catch (Exception ex)
