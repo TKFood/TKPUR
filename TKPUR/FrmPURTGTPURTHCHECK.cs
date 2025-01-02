@@ -1201,7 +1201,7 @@ namespace TKPUR
                                 TB020 AS '程序代號2',
                                 TB030 AS '訂金序號2',
                                 ACTMA.MA003 AS '科目名稱',
-                                ME002 AS '部門名稱'
+                                ME002 AS '部門名稱' 
 
 
 
