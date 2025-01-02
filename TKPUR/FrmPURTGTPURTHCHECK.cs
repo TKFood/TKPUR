@@ -180,10 +180,8 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"                                    
                                     SELECT 
-                                    TG001 AS '單別'
-                                    ,TG002 AS '單號'
-                                    ,TG003 AS '進貨日期'
-                                    ,TG005 AS '供應廠商'
+                                    TG002 AS '單號'
+                                    ,TG003 AS '進貨日期'                                    
                                     ,TG021 AS '廠商全名'
                                     ,TG011 AS '發票號碼'
                                     ,TG027 AS '發票日期'
@@ -197,7 +195,9 @@ namespace TKPUR
                                     ,TG031 AS '本幣貨款金額'
                                     ,TG032 AS '本幣稅額'
                                     ,(TG031+TG032) AS '本幣合計金額'
-                                    
+                                    , TG001 AS '單別'
+                                    ,TG005 AS '供應廠商'
+
                                     FROM [TK].dbo.PURTG
                                     WHERE 1=1
                                     {0}
