@@ -98,9 +98,12 @@ namespace TKPUR
 
 
         }
-        public void Search(string SDAY, string EDAY,string KINDS)
+        public void Search(string SDAY, string EDAY,string KINDS,string MA001,string TG002)
         {
             DataSet ds = new DataSet();
+
+            StringBuilder sbSqlQuery2 = new StringBuilder();
+            StringBuilder sbSqlQuery3 = new StringBuilder();
 
             try
             {
@@ -120,7 +123,35 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
-                if(KINDS.Equals("未確認"))
+                if(!string.IsNullOrEmpty(MA001))
+                {
+                    sbSqlQuery2.AppendFormat(@" 
+                                            AND (TG021 LIKE '%{0}%' OR TG005 LIKE '%{0}%')
+                                                ", MA001);
+                }
+                else
+                {
+                    sbSqlQuery2.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+                if (!string.IsNullOrEmpty(MA001))
+                {
+                    sbSqlQuery3.AppendFormat(@" 
+                                            AND TG002 LIKE '%{0}%'
+                                                ", TG002);
+                }
+                else
+                {
+                    sbSqlQuery3.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+
+
+                if (KINDS.Equals("未確認"))
                 {
                     sbSqlQuery.AppendFormat(@" 
                                             AND REPLACE(TG001+TG002,' ','') NOT IN (
@@ -152,7 +183,7 @@ namespace TKPUR
                                     TG001 AS '單別'
                                     ,TG002 AS '單號'
                                     ,TG003 AS '進貨日期'
-                                    --,TG005 AS '供應廠商'
+                                    ,TG005 AS '供應廠商'
                                     ,TG021 AS '廠商全名'
                                     ,TG011 AS '發票號碼'
                                     ,TG027 AS '發票日期'
@@ -170,8 +201,9 @@ namespace TKPUR
                                     FROM [TK].dbo.PURTG
                                     WHERE TG003>='{0}' AND TG003<='{1}'
                                     {2}
-
-                                    ", SDAY, EDAY, sbSqlQuery.ToString());
+                                    {3}
+                                    {4}
+                                    ", SDAY, EDAY, sbSqlQuery.ToString(),sbSqlQuery2.ToString(),sbSqlQuery3.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -962,7 +994,7 @@ namespace TKPUR
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"),comboBox1.Text.ToString());
+            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"),comboBox1.Text.ToString(),textBox5.Text.Trim(), textBox6.Text.Trim());
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -970,7 +1002,7 @@ namespace TKPUR
             //新增確認單號
             ADD_CHECK_PURTG(textBox1.Text.Trim(), textBox2.Text.Trim());
 
-            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString());
+            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString(), textBox5.Text.Trim(), textBox6.Text.Trim());
             //MessageBox.Show("完成");
         }
           
@@ -979,7 +1011,7 @@ namespace TKPUR
             //解除確認單號
             DELETE_CHECK_PURTG(textBox1.Text.Trim(), textBox2.Text.Trim());
 
-            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString());
+            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString(), textBox5.Text.Trim(), textBox6.Text.Trim());
             //MessageBox.Show("完成");
         }
         private void button4_Click(object sender, EventArgs e)
