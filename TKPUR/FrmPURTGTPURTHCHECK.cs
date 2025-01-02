@@ -1546,7 +1546,7 @@ namespace TKPUR
 
         private void dataGridView5_SelectionChanged(object sender, EventArgs e)
         {           
-           
+            
         }
 
         #endregion
