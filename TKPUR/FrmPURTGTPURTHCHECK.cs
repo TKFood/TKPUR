@@ -480,9 +480,11 @@ namespace TKPUR
             }
         }
 
-        public void Search_ACPTA(string SDAY, string EDAY)
+        public void Search_ACPTA(string MA001,string TA002,string TA014)
         {
             DataSet ds = new DataSet();
+            StringBuilder sbSqlQuery2 = new StringBuilder();
+            StringBuilder sbSqlQuery3 = new StringBuilder();
 
             try
             {
@@ -502,14 +504,52 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
-             
+                if (!string.IsNullOrEmpty(MA001))
+                {
+                    sbSqlQuery.AppendFormat(@" 
+                                            AND (TA004  LIKE '%{0}%' OR MA002 LIKE '%{0}%')
+                                                ", MA001);
+                }
+                else
+                {
+                    sbSqlQuery.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+                if (!string.IsNullOrEmpty(TA002))
+                {
+                    sbSqlQuery2.AppendFormat(@" 
+                                            AND TA002 LIKE '%{0}%'
+                                                ", TA002);
+                }
+                else
+                {
+                    sbSqlQuery2.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+                if (!string.IsNullOrEmpty(TA014))
+                {
+                    sbSqlQuery3.AppendFormat(@" 
+                                            AND TA014 LIKE '%{0}%' 
+                                                ", TA014);
+                }
+                else
+                {
+                    sbSqlQuery3.AppendFormat(@" 
+                                           
+                                                ");
+                }
 
                 sbSql.AppendFormat(@"  
                                     SELECT 
                                     TA001 AS	'憑單單別'
                                     ,TA002 AS	'憑單單號'
                                     ,TA003 AS	'憑單日期'
-                                    ,TA004 AS	'供應廠商'
+                                    ,TA004 AS	'供應商'
+                                    ,MA002 AS	'供應廠商'
                                     ,TA006 AS	'統一編號'
                                     --1.二聯式、2.三聯式、3.二聯式收銀機發票、4.三聯式收銀機發票、5.電子計算機發票、6.免用統一發票、
                                     --A.農產品收購憑證、G.海關代徵完稅憑證、N.不可抵扣專用發票、S.可抵扣專用發票、T.運輸發票、W.廢舊物資收購憑證、Z.其他   //890623 ADD 'A,B,C' BY 349 FOR 大陸用  //90
@@ -538,10 +578,13 @@ namespace TKPUR
                                     ,TA016 AS	'發票貨款'
                                     ,TA017 AS	'發票稅額'
 
-                                    FROM [TK].dbo.ACPTA
-                                    WHERE TA003>='{0}' AND TA003<='{1}'
+                                    FROM [TK].dbo.ACPTA,[TK].dbo.PURMA
+                                    WHERE TA004=MA001
+                                    {0}
+                                    {1}
+                                    {2}
 
-                                    ", SDAY, EDAY);
+                                    ", sbSqlQuery.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -593,6 +636,8 @@ namespace TKPUR
         {
             textBox3.Text = null;
             textBox4.Text = null;
+            textBox10.Text = null;
+            textBox11.Text = null;
 
 
             if (dataGridView3.CurrentRow != null)
@@ -605,6 +650,8 @@ namespace TKPUR
 
                     textBox3.Text = row.Cells["憑單單別"].Value.ToString();
                     textBox4.Text = row.Cells["憑單單號"].Value.ToString();
+                    textBox10.Text = row.Cells["憑單單別"].Value.ToString();
+                    textBox11.Text = row.Cells["憑單單號"].Value.ToString();
 
                     SEARCH_ACPTB(row.Cells["憑單單別"].Value.ToString(), row.Cells["憑單單號"].Value.ToString());
                 }
@@ -612,6 +659,8 @@ namespace TKPUR
                 {
                     textBox3.Text = null;
                     textBox4.Text = null;
+                    textBox10.Text = null;
+                    textBox11.Text = null;
                 }
             }
         }
@@ -989,6 +1038,68 @@ namespace TKPUR
 
             }
         }
+        public void ADD_CHECK_PURTG_BATCH(string TA001,string TA002)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                    INSERT INTO [TKPUR].[dbo].[TBPURTGCHECKS]
+                                    ([TG001]
+                                    ,[TG002])
+                                    SELECT 
+                                    TB005
+                                    ,TB006
+                                    FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
+                                    WHERE TA001=TB001 AND TA002=TB002
+                                    AND TA001='{0}' AND TA002='{1}'
+                                  
+                                    ", TA001, TA002);
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -1016,7 +1127,7 @@ namespace TKPUR
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            Search_ACPTA(dateTimePicker3.Value.ToString("yyyyMMdd"), dateTimePicker4.Value.ToString("yyyyMMdd"));
+            Search_ACPTA(textBox7.Text.Trim(), textBox8.Text.Trim(), textBox9.Text.Trim());
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -1037,6 +1148,10 @@ namespace TKPUR
             }
 
            
+        }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            ADD_CHECK_PURTG_BATCH(textBox10.Text.Trim(), textBox11.Text.Trim());
         }
 
         #endregion
