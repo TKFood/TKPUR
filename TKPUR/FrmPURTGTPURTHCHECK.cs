@@ -98,7 +98,7 @@ namespace TKPUR
 
 
         }
-        public void Search(string SDAY, string EDAY,string KINDS,string MA001,string TG002)
+        public void Search(string KINDS,string MA001,string TG002)
         {
             DataSet ds = new DataSet();
 
@@ -136,7 +136,7 @@ namespace TKPUR
                                                 ");
                 }
 
-                if (!string.IsNullOrEmpty(MA001))
+                if (!string.IsNullOrEmpty(TG002))
                 {
                     sbSqlQuery3.AppendFormat(@" 
                                             AND TG002 LIKE '%{0}%'
@@ -199,11 +199,11 @@ namespace TKPUR
                                     ,(TG031+TG032) AS '本幣合計金額'
                                     
                                     FROM [TK].dbo.PURTG
-                                    WHERE TG003>='{0}' AND TG003<='{1}'
+                                    WHERE 1=1
+                                    {0}
+                                    {1}
                                     {2}
-                                    {3}
-                                    {4}
-                                    ", SDAY, EDAY, sbSqlQuery.ToString(),sbSqlQuery2.ToString(),sbSqlQuery3.ToString());
+                                    ",  sbSqlQuery.ToString(),sbSqlQuery2.ToString(),sbSqlQuery3.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
@@ -994,7 +994,7 @@ namespace TKPUR
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"),comboBox1.Text.ToString(),textBox5.Text.Trim(), textBox6.Text.Trim());
+            Search(comboBox1.Text.ToString(),textBox5.Text.Trim(), textBox6.Text.Trim());
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -1002,7 +1002,7 @@ namespace TKPUR
             //新增確認單號
             ADD_CHECK_PURTG(textBox1.Text.Trim(), textBox2.Text.Trim());
 
-            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString(), textBox5.Text.Trim(), textBox6.Text.Trim());
+            Search(comboBox1.Text.ToString(), textBox5.Text.Trim(), textBox6.Text.Trim());
             //MessageBox.Show("完成");
         }
           
@@ -1011,7 +1011,7 @@ namespace TKPUR
             //解除確認單號
             DELETE_CHECK_PURTG(textBox1.Text.Trim(), textBox2.Text.Trim());
 
-            Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString(), textBox5.Text.Trim(), textBox6.Text.Trim());
+            Search(comboBox1.Text.ToString(), textBox5.Text.Trim(), textBox6.Text.Trim());
             //MessageBox.Show("完成");
         }
         private void button4_Click(object sender, EventArgs e)
