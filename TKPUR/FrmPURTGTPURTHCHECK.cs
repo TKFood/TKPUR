@@ -217,6 +217,7 @@ namespace TKPUR
                 if (ds.Tables["TEMPds1"].Rows.Count == 0)
                 {
                     dataGridView1.DataSource = null;
+                    dataGridView2.DataSource = null;
                 }
                 else
                 {
@@ -598,6 +599,7 @@ namespace TKPUR
                 if (ds.Tables["TEMPds1"].Rows.Count == 0)
                 {
                     dataGridView3.DataSource = null;
+                    dataGridView4.DataSource = null;
                 }
                 else
                 {
@@ -798,6 +800,42 @@ namespace TKPUR
             //report1.SetParameterValue("P1", COMMENT);
 
             report1.Preview = previewControl1;
+            report1.Show();
+
+        }
+
+        public void SETFASTREPORT_V2(string TA001, string TA002)
+        {
+            StringBuilder SQL = new StringBuilder();
+            report1 = new Report();
+
+            report1.Load(@"REPORT\應付憑單憑証.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+
+            SQL = SETFASETSQL(TA001, TA002);
+
+            Table.SelectCommand = SQL.ToString(); ;
+
+            //report1.SetParameterValue("P1", COMMENT);
+
+            report1.Preview = previewControl2;
             report1.Show();
 
         }
@@ -1104,6 +1142,184 @@ namespace TKPUR
             }
         }
 
+        public void Search_ACPTA_GV5(string MA001, string TA002, string TA014)
+        {
+            DataSet ds = new DataSet();
+            StringBuilder sbSqlQuery2 = new StringBuilder();
+            StringBuilder sbSqlQuery3 = new StringBuilder();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                if (!string.IsNullOrEmpty(MA001))
+                {
+                    sbSqlQuery.AppendFormat(@" 
+                                            AND (TA004  LIKE '%{0}%' OR MA002 LIKE '%{0}%')
+                                                ", MA001);
+                }
+                else
+                {
+                    sbSqlQuery.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+                if (!string.IsNullOrEmpty(TA002))
+                {
+                    sbSqlQuery2.AppendFormat(@" 
+                                            AND TA002 LIKE '%{0}%'
+                                                ", TA002);
+                }
+                else
+                {
+                    sbSqlQuery2.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+                if (!string.IsNullOrEmpty(TA014))
+                {
+                    sbSqlQuery3.AppendFormat(@" 
+                                            AND TA014 LIKE '%{0}%' 
+                                                ", TA014);
+                }
+                else
+                {
+                    sbSqlQuery3.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+                sbSql.AppendFormat(@"  
+                                    SELECT 
+                                    TA001 AS	'憑單單別'
+                                    ,TA002 AS	'憑單單號'
+                                    ,TA003 AS	'憑單日期'
+                                    ,TA004 AS	'供應商'
+                                    ,MA002 AS	'供應廠商'
+                                    ,TA006 AS	'統一編號'
+                                    --1.二聯式、2.三聯式、3.二聯式收銀機發票、4.三聯式收銀機發票、5.電子計算機發票、6.免用統一發票、
+                                    --A.農產品收購憑證、G.海關代徵完稅憑證、N.不可抵扣專用發票、S.可抵扣專用發票、T.運輸發票、W.廢舊物資收購憑證、Z.其他   //890623 ADD 'A,B,C' BY 349 FOR 大陸用  //90
+                                    ,(CASE WHEN TA010=1 THEN '二聯式' 
+                                            WHEN TA010=2 THEN '三聯式' 
+                                            WHEN TA010=3 THEN '二聯式收銀機發票' 
+                                            WHEN TA010=4 THEN '三聯式收銀機發票' 
+                                            WHEN TA010=5 THEN '電子計算機發票' 
+		                                    WHEN TA010=6 THEN '免用統一發票' 
+		                                    WHEN TA010='A' THEN '農產品收購憑證' 
+		                                    WHEN TA010='G' THEN '海關代徵完稅憑證' 
+		                                    WHEN TA010='N' THEN '不可抵扣專用發票' 
+		                                    WHEN TA010='S' THEN '可抵扣專用發票' 
+		                                    WHEN TA010='T' THEN '運輸發票' 
+		                                    WHEN TA010='W' THEN '廢舊物資收購憑證' 
+		                                    WHEN TA010='Z' THEN '其他' 
+                                            END)  AS	'發票聯數'
+                                    ,(CASE WHEN TA011=1 THEN '應稅內含' 
+                                            WHEN TA011=2 THEN '應稅外加' 
+                                            WHEN TA011=3 THEN '零稅率' 
+                                            WHEN TA011=4 THEN '免稅' 
+                                            WHEN TA011=9 THEN '不計稅' 
+                                            END)   AS	'課稅別'
+                                    ,TA014 AS	'發票號碼'
+                                    ,TA015 AS	'發票日期'
+                                    ,TA016 AS	'發票貨款'
+                                    ,TA017 AS	'發票稅額'
+
+                                    FROM [TK].dbo.ACPTA,[TK].dbo.PURMA
+                                    WHERE TA004=MA001
+                                    {0}
+                                    {1}
+                                    {2}
+
+                                    ", sbSqlQuery.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString());
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count == 0)
+                {
+                    dataGridView5.DataSource = null;
+                }
+                else
+                {
+                    if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                    {
+                        dataGridView5.DataSource = ds.Tables["TEMPds1"];
+                        dataGridView5.AutoResizeColumns();
+
+                        dataGridView5.AutoResizeColumns();
+                        dataGridView5.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                        dataGridView5.DefaultCellStyle.Font = new Font("Tahoma", 10);
+                        // 設定數字格式
+                        // 或使用 "N2" 表示兩位小數點（例如：12,345.67）
+                        dataGridView5.Columns["發票貨款"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+                        dataGridView5.Columns["發票稅額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點                       
+
+
+
+                    }
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+        private void dataGridView5_SelectionChanged(object sender, EventArgs e)
+        {           
+            textBox15.Text = null;
+            textBox16.Text = null;
+
+
+            if (dataGridView3.CurrentRow != null)
+            {
+                int rowindex = dataGridView3.CurrentRow.Index;
+
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView3.Rows[rowindex];
+
+                    textBox15.Text = row.Cells["憑單單別"].Value.ToString();
+                    textBox16.Text = row.Cells["憑單單號"].Value.ToString();
+                                      
+                }
+                else
+                {
+                    textBox15.Text = null;
+                    textBox16.Text = null;
+                }
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -1156,6 +1372,28 @@ namespace TKPUR
         private void button6_Click(object sender, EventArgs e)
         {
             ADD_CHECK_PURTG_BATCH(textBox10.Text.Trim(), textBox11.Text.Trim());
+        }
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Search_ACPTA_GV5(textBox12.Text.Trim(), textBox13.Text.Trim(), textBox14.Text.Trim());
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            //檢查是否有未確認的進貨單
+            //如果有就不印出應付憑單
+            //確認的進貨單印出應付憑單
+
+            DataTable DS = FIND_ACPTB(textBox15.Text, textBox16.Text);
+
+            if (DS == null)
+            {
+                SETFASTREPORT_V2(textBox15.Text, textBox16.Text);
+            }
+            else
+            {
+                MessageBox.Show("此應付憑單，有進貨單還未確認");
+            }
         }
 
         #endregion
