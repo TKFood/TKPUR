@@ -100,7 +100,7 @@ namespace TKPUR
         }
         public void Search(string KINDS,string MA001,string TG002)
         {
-            DataSet ds = new DataSet();
+            DataSet ds = new DataSet(); 
 
             StringBuilder sbSqlQuery2 = new StringBuilder();
             StringBuilder sbSqlQuery3 = new StringBuilder();
