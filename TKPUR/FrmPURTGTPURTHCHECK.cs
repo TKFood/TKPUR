@@ -315,8 +315,13 @@ namespace TKPUR
                                     ,TH018 AS '原幣單位進價'
                                     ,TH047 AS '本幣未稅金額'
                                     ,TH048 AS '本幣稅額'
-                                    FROM [TK].dbo.PURTH
-                                    WHERE TH001='{0}' AND TH002='{1}'
+                                    ,TH036 AS '有效日期'
+                                    ,TH117 AS '製造日期'
+                                    ,CONVERT(NVARCHAR,MB023)+' '+(CASE WHEN MB198='1' THEN '天' WHEN MB198='2' THEN '月' WHEN MB198='3' THEN '年' END )  AS '有效天數'
+
+                                    FROM [TK].dbo.PURTH,[TK].dbo.INVMB
+                                    WHERE TH004=MB001
+                                    AND TH001='{0}' AND TH002='{1}'
 
 
                                     ", TH001, TH002);
