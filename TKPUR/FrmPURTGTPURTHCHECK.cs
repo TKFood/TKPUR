@@ -104,7 +104,7 @@ namespace TKPUR
 
             StringBuilder sbSqlQuery2 = new StringBuilder();
             StringBuilder sbSqlQuery3 = new StringBuilder();
-
+             
             try
             {
                 //20210902密
