@@ -105,7 +105,7 @@ namespace TKPUR
             StringBuilder sbSqlQuery2 = new StringBuilder();
             StringBuilder sbSqlQuery3 = new StringBuilder();
              
-            try
+            try 
             {
                 //20210902密
                 Class1 TKID = new Class1();//用new 建立類別實體
