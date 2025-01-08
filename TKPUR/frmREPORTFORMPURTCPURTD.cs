@@ -260,7 +260,7 @@ namespace TKPUR
             }
             else if (statusReports.Equals("有簽名")) 
             {
-                report1.Load(@"REPORT\採購單憑証-核準NAMEV3.frx");
+                report1.Load(@"REPORT\採購單憑証-核準NAMEV4.frx");
             } 
 
             //20210902密
@@ -390,7 +390,7 @@ namespace TKPUR
             }
             else if (statusReports.Equals("有簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証-核準NAMEV3.frx");
+                report1.Load(@"REPORT\採購單憑証-核準NAMEV4.frx");
             }
 
             //20210902密
@@ -638,7 +638,7 @@ namespace TKPUR
         {
             Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)  
         {
             PREPRINTS(comboBox1.Text.ToString(),textBox5.Text);
         }
