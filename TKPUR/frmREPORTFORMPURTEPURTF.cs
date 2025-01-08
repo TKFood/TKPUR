@@ -168,7 +168,9 @@ namespace TKPUR
 
 
                 sbSql.AppendFormat(@"  
-                                    SELECT TE001 AS '採購變更單別',TE002 AS '採購變更單號',TE003 AS '版次',TC003 AS '單據日期',TE004 AS '變更日期',TE005 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
+                                    SELECT 
+                                    (SELECT COUNT(TF005) FROM [TK].dbo.PURTF WHERE TF001=TE001 AND TF002=TE002 AND TF003=TE003) AS '明細筆數'
+                                    ,TE001 AS '採購變更單別',TE002 AS '採購變更單號',TE003 AS '版次',TC003 AS '單據日期',TE004 AS '變更日期',TE005 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
                                     ,(      SELECT TF005+TF006+TF007+', '
                                         FROM   [TK].dbo.PURTF WHERE TF001=TE001 AND TF002=TE002 AND TF003=TE003
                                         FOR XML PATH(''), TYPE  
@@ -248,11 +250,11 @@ namespace TKPUR
 
             if (statusReports.Equals("憑証回傳202209"))
             {
-                report1.Load(@"REPORT\採購單變更憑証V2.frx");
+                report1.Load(@"REPORT\採購單變更憑証V3.frx");
             }
             else if (statusReports.Equals("有簽名"))
             {
-                report1.Load(@"REPORT\採購單變更憑証-核準NAMEV2.frx");
+                report1.Load(@"REPORT\採購單變更憑証-核準NAMEV3.frx");
             }
 
             //20210902密
@@ -330,7 +332,7 @@ namespace TKPUR
         }
 
 
-        #endregion
+        #endregion 
 
         #region BUTTON
         private void button2_Click(object sender, EventArgs e)
