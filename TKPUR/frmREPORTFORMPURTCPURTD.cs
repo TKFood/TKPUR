@@ -178,7 +178,9 @@ namespace TKPUR
 
 
                 sbSql.AppendFormat(@"  
-                                   SELECT TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
+                                   SELECT 
+                                    ISNULL((SELECT COUNT(TD004) FROM [TK].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002),0) AS '明細筆數'
+                                    ,TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
                                     ,(      SELECT TD004+TD005+TD006+', '
                                             FROM   [TK].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002
                                             FOR XML PATH(''), TYPE  
@@ -256,7 +258,7 @@ namespace TKPUR
               
             if (statusReports.Equals("憑証回傳202209")) 
             {
-                report1.Load(@"REPORT\採購單憑証V3.frx");
+                report1.Load(@"REPORT\採購單憑証V4.frx");
             }
             else if (statusReports.Equals("有簽名")) 
             {
@@ -630,7 +632,7 @@ namespace TKPUR
             {
                 sqlConn.Close();
             }
-        }
+        } 
         #endregion
 
         #region BUTTON
