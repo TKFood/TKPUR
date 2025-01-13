@@ -1579,8 +1579,173 @@ namespace TKPUR
         }
 
         private void dataGridView5_SelectionChanged(object sender, EventArgs e)
-        {           
-            
+        {
+           
+        }
+
+        public void ADD_DELETE_TBPURTGCHECKPRINTS(string MA001, string TA002, string TA014)
+        {
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                StringBuilder sbSqlQuery = new StringBuilder();
+                StringBuilder sbSqlQuery2 = new StringBuilder();
+                StringBuilder sbSqlQuery3 = new StringBuilder();
+
+                if (!string.IsNullOrEmpty(MA001))
+                {
+                    sbSqlQuery.AppendFormat(@" 
+                                            AND (TA004  LIKE '%{0}%' OR PURMA.MA002 LIKE '%{0}%')
+                                                ", MA001);
+                }
+                else
+                {
+                    sbSqlQuery.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+                if (!string.IsNullOrEmpty(TA002))
+                {
+                    sbSqlQuery2.AppendFormat(@" 
+                                            AND TA002 LIKE '%{0}%'
+                                                ", TA002);
+                }
+                else
+                {
+                    sbSqlQuery2.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+                if (!string.IsNullOrEmpty(TA014))
+                {
+                    sbSqlQuery3.AppendFormat(@" 
+                                            AND TA014 LIKE '%{0}%' 
+                                                ", TA014);
+                }
+                else
+                {
+                    sbSqlQuery3.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+                sbSql.AppendFormat(@"   
+                                    --DELETE                                 
+                                    DELETE  [TKPUR].[dbo].[TBPURTGCHECKPRINTS]
+                                    WHERE [TA001]+[TA002] IN 
+                                    (
+
+                                    SELECT 
+                                    TA001+TA002
+                                    FROM [TK].dbo.ACPTA,[TK].dbo.PURMA
+                                    WHERE  TA004=PURMA.MA001
+
+
+                                    --找出應付明細的進貨單，還未核的
+                                    --應付不可以出現
+                                    AND REPLACE(TA001+TA002,' ','')  NOT IN 
+                                    (
+                                        SELECT 
+                                        REPLACE(TA001+TA002,' ','') 
+                                        FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
+                                        WHERE TA001=TB001 AND TA002=TB002 
+                                        AND ISNULL(TB005,'')<>''
+                                        AND REPLACE(TB005+TB006,' ','') NOT IN 
+                                        (
+                                        SELECT REPLACE([TG001]+[TG002],' ','')
+                                            FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                        )
+                                        GROUP BY REPLACE(TA001+TA002,' ','') 
+
+                                    )
+
+                                    {0}
+                                    {1}
+                                    {2}
+                                    )
+
+                                    --INSERT
+                                    INSERT INTO [TKPUR].[dbo].[TBPURTGCHECKPRINTS]
+                                    ([TA001],[TA002])
+                                    SELECT 
+                                    TA001 AS '憑單單別',
+                                    TA002 AS '憑單單號'
+                                    FROM [TK].dbo.ACPTA,[TK].dbo.PURMA
+                                    WHERE  TA004=PURMA.MA001
+
+
+                                    --找出應付明細的進貨單，還未核的
+                                    --應付不可以出現
+                                    AND REPLACE(TA001+TA002,' ','')  NOT IN 
+                                    (
+                                        SELECT 
+                                        REPLACE(TA001+TA002,' ','') 
+                                        FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
+                                        WHERE TA001=TB001 AND TA002=TB002 
+                                        AND ISNULL(TB005,'')<>''
+                                        AND REPLACE(TB005+TB006,' ','') NOT IN 
+                                        (
+                                        SELECT REPLACE([TG001]+[TG002],' ','')
+                                            FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                        )
+                                        GROUP BY REPLACE(TA001+TA002,' ','') 
+
+                                    )
+
+                                    {0}
+                                    {1}
+                                    {2}
+
+                                    ", sbSqlQuery.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString());
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+
+                    //MessageBox.Show("失敗");
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+                    //MessageBox.Show("完成");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
         }
 
         #endregion
@@ -1642,8 +1807,13 @@ namespace TKPUR
         }
 
         private void button8_Click(object sender, EventArgs e)
-        {
+        {           
+            //列印
             SETFASTREPORT_V2(textBox12.Text.Trim(), textBox13.Text.Trim(), textBox14.Text.Trim());
+
+            //記錄已列印過的應付單號
+            ADD_DELETE_TBPURTGCHECKPRINTS(textBox12.Text.Trim(), textBox13.Text.Trim(), textBox14.Text.Trim());
+
         }
 
         #endregion
