@@ -1048,7 +1048,7 @@ namespace TKPUR
             return FASTSQL;
         }
 
-        public void SETFASTREPORT_V2(string MA001, string TA002, string TA014)
+        public void SETFASTREPORT_V2(string MA001, string TA002, string TA014,string ISPRINTED)
         {
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
@@ -1073,7 +1073,7 @@ namespace TKPUR
 
             TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
 
-            SQL = SETFASETSQL2(MA001, TA002, TA014);
+            SQL = SETFASETSQL2(MA001, TA002, TA014, ISPRINTED);
 
             Table.SelectCommand = SQL.ToString(); ;
 
@@ -1085,12 +1085,13 @@ namespace TKPUR
         }
 
 
-        public StringBuilder SETFASETSQL2(string MA001, string TA002, string TA014)
+        public StringBuilder SETFASETSQL2(string MA001, string TA002, string TA014,string ISPRINTED)
         {
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder sbSqlQuery = new StringBuilder();
             StringBuilder sbSqlQuery2 = new StringBuilder();
             StringBuilder sbSqlQuery3 = new StringBuilder();
+            StringBuilder sbSqlQuery4 = new StringBuilder();
 
             if (!string.IsNullOrEmpty(MA001))
             {
@@ -1129,6 +1130,41 @@ namespace TKPUR
                 sbSqlQuery3.AppendFormat(@" 
                                            
                                                 ");
+            }
+
+            if(!string.IsNullOrEmpty(ISPRINTED))
+            {
+                sbSqlQuery4.AppendFormat(@"   ");
+
+                if(ISPRINTED.Equals("N"))
+                {
+                    sbSqlQuery4.AppendFormat(@"   
+                                            AND TA001+TA002 NOT IN
+                                            (
+	                                            SELECT [TA001]+[TA002]
+	                                            FROM [TKPUR].[dbo].[TBPURTGCHECKPRINTS]
+                                            )
+
+                                            ");
+                }
+                else if(ISPRINTED.Equals("Y"))
+                {
+                    sbSqlQuery4.AppendFormat(@"   
+                                            AND TA001+TA002 IN
+                                            (
+	                                            SELECT [TA001]+[TA002]
+	                                            FROM [TKPUR].[dbo].[TBPURTGCHECKPRINTS]
+                                            )
+                                            ");
+                }
+                else if (ISPRINTED.Equals("全部"))
+                {
+                    sbSqlQuery4.AppendFormat(@"   ");
+                }
+            }
+            else
+            {
+                sbSqlQuery4.AppendFormat(@"   ");
             }
 
             FASTSQL.AppendFormat(@"      
@@ -1306,9 +1342,10 @@ namespace TKPUR
                                 {0}
                                 {1}
                                 {2}
+                                {3}
                                 ORDER BY TA001,TA002,TB003 
                                
-                                ", sbSqlQuery.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString());
+                                ", sbSqlQuery.ToString(), sbSqlQuery2.ToString(), sbSqlQuery3.ToString(), sbSqlQuery4.ToString());
 
             return FASTSQL;
         }
@@ -1846,7 +1883,7 @@ namespace TKPUR
         private void button8_Click(object sender, EventArgs e)
         {           
             //列印
-            SETFASTREPORT_V2(textBox12.Text.Trim(), textBox13.Text.Trim(), textBox14.Text.Trim());
+            SETFASTREPORT_V2(textBox12.Text.Trim(), textBox13.Text.Trim(), textBox14.Text.Trim(), comboBox2.Text.ToString());
 
             //記錄已列印過的應付單號
             ADD_DELETE_TBPURTGCHECKPRINTS(textBox12.Text.Trim(), textBox13.Text.Trim(), textBox14.Text.Trim());
