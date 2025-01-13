@@ -595,7 +595,7 @@ namespace TKPUR
                                             WHEN TA011=3 THEN '零稅率' 
                                             WHEN TA011=4 THEN '免稅' 
                                             WHEN TA011=9 THEN '不計稅' 
-                                            END)   AS	'課稅別'
+                                            END)   AS	'課稅別' 
                                     ,TA004 AS	'供應商'
                                      ,TA001 AS	'憑單單別'
                                     --1.二聯式、2.三聯式、3.二聯式收銀機發票、4.三聯式收銀機發票、5.電子計算機發票、6.免用統一發票、
@@ -1016,7 +1016,7 @@ namespace TKPUR
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
 
-            report1.Load(@"REPORT\應付憑單憑証.frx");
+            report1.Load(@"REPORT\應付憑單憑証-大潁國際.frx");
 
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
