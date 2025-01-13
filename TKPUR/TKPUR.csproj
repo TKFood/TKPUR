@@ -117,6 +117,12 @@
     <Compile Include="FrmPURTGTPURTHCHECK.Designer.cs">
       <DependentUpon>FrmPURTGTPURTHCHECK.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmPURTGTPURTHCHECKDY.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPURTGTPURTHCHECKDY.Designer.cs">
+      <DependentUpon>FrmPURTGTPURTHCHECKDY.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPURVERSIONSNUMS.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -311,6 +317,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TKMOC1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TKMOC1.Designer.cs">
+      <DependentUpon>TKMOC1.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="frmPURMODELSNUMS.resx">
       <DependentUpon>frmPURMODELSNUMS.cs</DependentUpon>
     </EmbeddedResource>
@@ -328,6 +340,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPURTGTPURTHCHECK.resx">
       <DependentUpon>FrmPURTGTPURTHCHECK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPURTGTPURTHCHECKDY.resx">
+      <DependentUpon>FrmPURTGTPURTHCHECKDY.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmPURVERSIONSNUMS.resx">
       <DependentUpon>frmPURVERSIONSNUMS.cs</DependentUpon>
@@ -434,6 +449,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TKMOC1.resx">
+      <DependentUpon>TKMOC1.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
