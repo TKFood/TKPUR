@@ -59,6 +59,7 @@ namespace TKPUR
             InitializeComponent();
 
             comboBox1load();
+            comboBox2load();
         }
 
         #region FUNCTION
@@ -94,6 +95,42 @@ namespace TKPUR
             comboBox1.DataSource = dt.DefaultView;
             comboBox1.ValueMember = "PARANAME";
             comboBox1.DisplayMember = "PARANAME";
+            sqlConn.Close();
+
+
+        }
+
+        public void comboBox2load()
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密 
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT 
+                                    [ID]
+                                    ,[KIND]
+                                    ,[PARAID]
+                                    ,[PARANAME]
+                                    FROM [TKPUR].[dbo].[TBPARA]
+                                    WHERE [KIND]='ISPRINTED' ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("PARANAME", typeof(string));
+
+            da.Fill(dt);
+            comboBox2.DataSource = dt.DefaultView;
+            comboBox2.ValueMember = "PARANAME";
+            comboBox2.DisplayMember = "PARANAME";
             sqlConn.Close();
 
 
