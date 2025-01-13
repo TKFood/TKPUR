@@ -317,12 +317,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TKMOC1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TKMOC1.Designer.cs">
-      <DependentUpon>TKMOC1.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="frmPURMODELSNUMS.resx">
       <DependentUpon>frmPURMODELSNUMS.cs</DependentUpon>
     </EmbeddedResource>
@@ -449,9 +443,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="TKMOC1.resx">
-      <DependentUpon>TKMOC1.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

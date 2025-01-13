@@ -83,7 +83,7 @@ namespace TKPUR
                                     ,[PARAID]
                                     ,[PARANAME]
                                     FROM [TKPUR].[dbo].[TBPARA]
-                                    WHERE [KIND]='FrmPURTGTPURTHCHECKDY' ");
+                                    WHERE [KIND]='FrmPURTGTPURTHCHECK' ");
             SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
             DataTable dt = new DataTable();
             sqlConn.Open();
@@ -202,7 +202,7 @@ namespace TKPUR
                                     , TG001 AS '單別'
                                     ,TG005 AS '供應廠商'
 
-                                    FROM [TK].dbo.PURTG
+                                    FROM [DY].dbo.PURTG
                                     WHERE 1=1
 
                                     UNION ALL
@@ -225,7 +225,7 @@ namespace TKPUR
                                     , TH001 AS '單別'
                                     ,TH005 AS '供應廠商'
 
-                                    FROM [TK].dbo.MOCTH,[TK].dbo.PURMA
+                                    FROM [DY].dbo.MOCTH,[DY].dbo.PURMA
                                     WHERE TH005=MA001
                                     ) AS TEMP
                                     WHERE 1=1
@@ -348,7 +348,7 @@ namespace TKPUR
                                     ,TH117 AS '製造日期'
                                     ,CONVERT(NVARCHAR,MB023)+' '+(CASE WHEN MB198='1' THEN '天' WHEN MB198='2' THEN '月' WHEN MB198='3' THEN '年' END )  AS '有效天數'
 
-                                    FROM [TK].dbo.PURTH,[TK].dbo.INVMB
+                                    FROM [DY].dbo.PURTH,[DY].dbo.INVMB
                                     WHERE TH004=MB001
                                     AND TH001='{0}' AND TH002='{1}'
 
@@ -615,7 +615,7 @@ namespace TKPUR
 		                                    WHEN TA010='Z' THEN '其他' 
                                             END)  AS	'發票聯數'
 
-                                    FROM [TK].dbo.ACPTA,[TK].dbo.PURMA
+                                    FROM [DY].dbo.ACPTA,[DY].dbo.PURMA
                                     WHERE TA004=MA001
                                     {0}
                                     {1}
@@ -755,7 +755,7 @@ namespace TKPUR
                                     ,TB007 AS	'憑證序號'
                                     ,TB008 AS	'憑證日期'
                                     ,TB009 AS	'應付金額'
-                                    FROM [TK].dbo.ACPTB
+                                    FROM [DY].dbo.ACPTB
                                     WHERE TB001='{0}' AND TB002='{1}'
                                     ORDER BY TB003
 
@@ -993,9 +993,9 @@ namespace TKPUR
 
 
 
-                                FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
-                                LEFT JOIN [TK].dbo.CMSME ON TB014=ME001
-                                ,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMB,[TK].dbo.CMSNA,[TK].dbo.ACTMA
+                                FROM [DY].dbo.ACPTA,[DY].dbo.ACPTB
+                                LEFT JOIN [DY].dbo.CMSME ON TB014=ME001
+                                ,[DY].dbo.CMSMQ,[DY].dbo.PURMA,[DY].dbo.CMSMB,[DY].dbo.CMSNA,[DY].dbo.ACTMA
                                 WHERE TA001=TB001 AND TA002=TB002
                                 AND MQ001=TA001
                                 AND TA004=PURMA.MA001
@@ -1239,9 +1239,9 @@ namespace TKPUR
 
 
 
-                                FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
-                                LEFT JOIN [TK].dbo.CMSME ON TB014=ME001
-                                ,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMB,[TK].dbo.CMSNA,[TK].dbo.ACTMA
+                                FROM [DY].dbo.ACPTA,[DY].dbo.ACPTB
+                                LEFT JOIN [DY].dbo.CMSME ON TB014=ME001
+                                ,[DY].dbo.CMSMQ,[DY].dbo.PURMA,[DY].dbo.CMSMB,[DY].dbo.CMSNA,[DY].dbo.ACTMA
                                 WHERE TA001=TB001 AND TA002=TB002
                                 AND MQ001=TA001
                                 AND TA004=PURMA.MA001
@@ -1254,7 +1254,7 @@ namespace TKPUR
                                 (
                                     SELECT 
                                     REPLACE(TA001+TA002,' ','') 
-                                    FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
+                                    FROM [DY].dbo.ACPTA,[DY].dbo.ACPTB
                                     WHERE TA001=TB001 AND TA002=TB002 
                                     AND ISNULL(TB005,'')<>''
                                     AND REPLACE(TB005+TB006,' ','') NOT IN 
@@ -1301,7 +1301,7 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  
                                     SELECT *
-                                    FROM [TK].dbo.ACPTB
+                                    FROM [DY].dbo.ACPTB
                                     WHERE TB001='{0}' AND TB002='{1}'
                                     AND REPLACE(TB005+TB006,' ','') NOT IN
                                     (
@@ -1371,7 +1371,7 @@ namespace TKPUR
                                     SELECT 
                                     TB005
                                     ,TB006
-                                    FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
+                                    FROM [DY].dbo.ACPTA,[DY].dbo.ACPTB
                                     WHERE TA001=TB001 AND TA002=TB002
                                     AND TA001='{0}' AND TA002='{1}'
                                     GROUP  BY TB005,TB006
@@ -1506,7 +1506,7 @@ namespace TKPUR
                                     ,TA016 AS	'發票貨款'
                                     ,TA017 AS	'發票稅額'
 
-                                    FROM [TK].dbo.ACPTA,[TK].dbo.PURMA
+                                    FROM [DY].dbo.ACPTA,[DY].dbo.PURMA
                                     WHERE TA004=MA001
                                     --找出應付明細的進貨單，還未核的
                                     --應付不可以出現
@@ -1514,7 +1514,7 @@ namespace TKPUR
                                     (
                                         SELECT 
                                         REPLACE(TA001+TA002,' ','') 
-                                        FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
+                                        FROM [DY].dbo.ACPTA,[DY].dbo.ACPTB
                                         WHERE TA001=TB001 AND TA002=TB002
                                         AND ISNULL(TB005,'')<>''
                                         AND REPLACE(TB005+TB006,' ','') NOT IN 
