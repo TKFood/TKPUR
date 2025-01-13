@@ -126,7 +126,7 @@ namespace TKPUR
                 if(!string.IsNullOrEmpty(MA001))
                 {
                     sbSqlQuery2.AppendFormat(@" 
-                                            AND (TG021 LIKE '%{0}%' OR TG005 LIKE '%{0}%')
+                                            AND (廠商全名 LIKE '%{0}%' OR 供應廠商 LIKE '%{0}%')
                                                 ", MA001);
                 }
                 else
@@ -139,7 +139,7 @@ namespace TKPUR
                 if (!string.IsNullOrEmpty(TG002))
                 {
                     sbSqlQuery3.AppendFormat(@" 
-                                            AND TG002 LIKE '%{0}%'
+                                            AND 單號 LIKE '%{0}%'
                                                 ", TG002);
                 }
                 else
@@ -154,7 +154,7 @@ namespace TKPUR
                 if (KINDS.Equals("未確認"))
                 {
                     sbSqlQuery.AppendFormat(@" 
-                                            AND REPLACE(TG001+TG002,' ','') NOT IN (
+                                            AND REPLACE(單別+單號,' ','') NOT IN (
                                             SELECT
                                             REPLACE(TG001+TG002,' ','')
                                             FROM [TKPUR].[dbo].[TBPURTGCHECKS]
@@ -164,7 +164,7 @@ namespace TKPUR
                 else if (KINDS.Equals("已確認"))
                 {
                     sbSqlQuery.AppendFormat(@" 
-                                            AND REPLACE(TG001+TG002,' ','') IN (
+                                            AND REPLACE(單別+單號,' ','') IN (
                                             SELECT
                                             REPLACE(TG001+TG002,' ','')
                                             FROM [TKPUR].[dbo].[TBPURTGCHECKS]
@@ -178,7 +178,11 @@ namespace TKPUR
                                             ");
                 }
 
+                //採購的進貨+製令的託外進貨
                 sbSql.AppendFormat(@"                                    
+                                   SELECT *
+                                    FROM 
+                                    (
                                     SELECT 
                                     TG002 AS '單號'
                                     ,TG003 AS '進貨日期'                                    
@@ -199,6 +203,31 @@ namespace TKPUR
                                     ,TG005 AS '供應廠商'
 
                                     FROM [TK].dbo.PURTG
+                                    WHERE 1=1
+
+                                    UNION ALL
+                                    SELECT 
+                                    TH002 AS '單號'
+                                    ,TH003 AS '進貨日期'                                    
+                                    ,MA003 AS '廠商全名'
+                                    ,TH014 AS '發票號碼'
+                                    ,TH013 AS '發票日期'
+                                    ,TH011 AS '統一編號'
+                                    ,(CASE WHEN TH015=1 THEN '應稅內含' 
+                                    WHEN TH015=2 THEN '應稅外加' 
+                                    WHEN TH015=3 THEN '零稅率' 
+                                    WHEN TH015=4 THEN '免稅' 
+                                    WHEN TH015=9 THEN '不計稅' 
+                                    END) AS '課稅別'
+                                    ,TH031 AS '本幣貨款金額'
+                                    ,TH032 AS '本幣稅額'
+                                    ,(TH031+TH032) AS '本幣合計金額'
+                                    , TH001 AS '單別'
+                                    ,TH005 AS '供應廠商'
+
+                                    FROM [TK].dbo.MOCTH,[TK].dbo.PURMA
+                                    WHERE TH005=MA001
+                                    ) AS TEMP
                                     WHERE 1=1
                                     {0}
                                     {1}
