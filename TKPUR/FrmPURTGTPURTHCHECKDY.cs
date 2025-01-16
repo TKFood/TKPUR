@@ -157,7 +157,7 @@ namespace TKPUR
                                             AND REPLACE(單別+單號,' ','') NOT IN (
                                             SELECT
                                             REPLACE(TG001+TG002,' ','')
-                                            FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                            FROM [TKPUR].[dbo].[TBPURTGCHECKSDY]
                                             )
                                             ");
                 }
@@ -167,7 +167,7 @@ namespace TKPUR
                                             AND REPLACE(單別+單號,' ','') IN (
                                             SELECT
                                             REPLACE(TG001+TG002,' ','')
-                                            FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                            FROM [TKPUR].[dbo].[TBPURTGCHECKSDY]
                                             )
                                             ");
                 }
@@ -427,7 +427,7 @@ namespace TKPUR
 
 
                 sbSql.AppendFormat(@" 
-                                    INSERT INTO [TKPUR].[dbo].[TBPURTGCHECKS]
+                                    INSERT INTO [TKPUR].[dbo].[TBPURTGCHECKSDY]
                                     ([TG001]
                                     ,[TG002])
                                     VALUES
@@ -484,7 +484,7 @@ namespace TKPUR
 
 
                 sbSql.AppendFormat(@" 
-                                    DELETE [TKPUR].[dbo].[TBPURTGCHECKS]
+                                    DELETE [TKPUR].[dbo].[TBPURTGCHECKSDY]
                                     WHERE TG001='{0}' AND TG002='{1}'
                                     ", TG001, TG002);
 
@@ -1260,7 +1260,7 @@ namespace TKPUR
                                     AND REPLACE(TB005+TB006,' ','') NOT IN 
                                     (
                                     SELECT REPLACE([TG001]+[TG002],' ','')
-                                        FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                        FROM [TKPUR].[dbo].[TBPURTGCHECKSDY]
                                     )
                                     GROUP BY REPLACE(TA001+TA002,' ','') 
 
@@ -1307,7 +1307,7 @@ namespace TKPUR
                                     (
                                     SELECT 
 	                                    REPLACE([TG001]+[TG002],' ','')
-                                    FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                    FROM [TKPUR].[dbo].[TBPURTGCHECKSDY]
                                     )
 
                                     ", TA001, TA002);
@@ -1365,7 +1365,7 @@ namespace TKPUR
 
 
                 sbSql.AppendFormat(@" 
-                                    INSERT INTO [TKPUR].[dbo].[TBPURTGCHECKS]
+                                    INSERT INTO [TKPUR].[dbo].[TBPURTGCHECKSDY]
                                     ([TG001]
                                     ,[TG002])
                                     SELECT 
@@ -1520,7 +1520,7 @@ namespace TKPUR
                                         AND REPLACE(TB005+TB006,' ','') NOT IN 
                                         (
                                         SELECT REPLACE([TG001]+[TG002],' ','')
-                                         FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                         FROM [TKPUR].[dbo].[TBPURTGCHECKSDY]
                                         )
                                         GROUP BY REPLACE(TA001+TA002,' ','') 
 
