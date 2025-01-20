@@ -332,7 +332,10 @@ namespace TKPUR
 
 
                 sbSql.AppendFormat(@"                                    
-                                   SELECT 
+                                    SELECT *
+                                    FROM 
+                                    (
+                                    SELECT 
                                     TH003 AS '序號'
                                     ,TH004 AS '品號'
                                     ,TH005 AS '品名'
@@ -351,6 +354,30 @@ namespace TKPUR
                                     FROM [DY].dbo.PURTH,[DY].dbo.INVMB
                                     WHERE TH004=MB001
                                     AND TH001='{0}' AND TH002='{1}'
+
+                                    UNION ALL 
+                                    SELECT 
+                                    TI003 AS '序號'
+                                    ,TI004 AS '品號'
+                                    ,TI005 AS '品名'
+                                    ,TI006 AS '規格'
+                                    ,TI007 AS '進貨數量'
+                                    ,TI020 AS '計價數量'
+                                    ,TI008 AS '單位'
+                                    ,TI010 AS '批號'
+                                    ,TI024 AS '原幣單位進價'
+                                    ,TI046 AS '本幣未稅金額'
+                                    ,TI047 AS '本幣稅額'
+                                    ,TI011 AS '有效日期'
+                                    ,TI061 AS '製造日期'
+                                    ,CONVERT(NVARCHAR,MB023)+' '+(CASE WHEN MB198='1' THEN '天' WHEN MB198='2' THEN '月' WHEN MB198='3' THEN '年' END )  AS '有效天數'
+
+                                    FROM [DY].dbo.MOCTI,[DY].dbo.INVMB
+                                    WHERE TI004=MB001
+                                    AND TI001='{0}' AND TI002='{1}'
+                                    ) AS TEMP
+                                    ORDER  BY 序號
+
 
 
                                     ", TH001, TH002);
