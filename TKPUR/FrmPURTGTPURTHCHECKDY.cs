@@ -1266,15 +1266,18 @@ namespace TKPUR
 
 
 
-                                FROM [DY].dbo.ACPTA,[DY].dbo.ACPTB
+                                FROM [DY].dbo.ACPTA
+                                LEFT JOIN [DY].dbo.CMSNA ON  TA039=NA002 AND NA001=1
+                                ,[DY].dbo.ACPTB
                                 LEFT JOIN [DY].dbo.CMSME ON TB014=ME001
-                                ,[DY].dbo.CMSMQ,[DY].dbo.PURMA,[DY].dbo.CMSMB,[DY].dbo.CMSNA,[DY].dbo.ACTMA
+                                LEFT JOIN [DY].dbo.ACTMA ON TB013=ACTMA.MA001
+                                ,[DY].dbo.CMSMQ,[DY].dbo.PURMA,[DY].dbo.CMSMB
+
                                 WHERE TA001=TB001 AND TA002=TB002
                                 AND MQ001=TA001
                                 AND TA004=PURMA.MA001
                                 AND TA005=MB001
-                                AND TA039=NA002 AND NA001=1
-                                AND TB013=ACTMA.MA001
+
                                 --找出應付明細的進貨單，還未核的
                                 --應付不可以出現
                                 AND REPLACE(TA001+TA002,' ','')  NOT IN 
