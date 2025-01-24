@@ -169,16 +169,16 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  
                                     SELECT 
-                                    (SELECT COUNT(TF005) FROM [TK].dbo.PURTF WHERE TF001=TE001 AND TF002=TE002 AND TF003=TE003) AS '明細筆數'
+                                    (SELECT COUNT(TF005) FROM [DY].dbo.PURTF WHERE TF001=TE001 AND TF002=TE002 AND TF003=TE003) AS '明細筆數'
                                     ,TE001 AS '採購變更單別',TE002 AS '採購變更單號',TE003 AS '版次',TC003 AS '單據日期',TE004 AS '變更日期',TE005 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
                                     ,(      SELECT TF005+TF006+TF007+', '
-                                        FROM   [TK].dbo.PURTF WHERE TF001=TE001 AND TF002=TE002 AND TF003=TE003
+                                        FROM   [DY].dbo.PURTF WHERE TF001=TE001 AND TF002=TE002 AND TF003=TE003
                                         FOR XML PATH(''), TYPE  
                                         ).value('.','nvarchar(max)')  As '明細' 
                                     ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTE.TE001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTE.TE002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
 
-                                    FROM[TK].dbo.PURMA, [TK].dbo.PURTE
-									LEFT JOIN [TK].dbo.PURTC ON TC001=TE001 AND TC002=TE002
+                                    FROM[DY].dbo.PURMA, [DY].dbo.PURTE
+									LEFT JOIN [DY].dbo.PURTC ON TC001=TE001 AND TC002=TE002
 
                                     WHERE 1=1
                                     AND TE005=MA001
@@ -316,11 +316,11 @@ namespace TKPUR
                                 ,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112
                                 ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTE.TE001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTE.TE002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
 
-                                FROM [TK].dbo.PURTF,[TK].dbo.PURTE
-                                LEFT JOIN [TK].dbo.CMSMQ ON MQ001=TE001
-                                LEFT JOIN [TK].dbo.PURMA ON MA001=TE005
-                                LEFT JOIN [TK].dbo.PURTC ON TC001=TE001 AND TC002=TE002
-                                LEFT JOIN [TK].dbo.CMSMB ON TC010=MB001
+                                FROM [DY].dbo.PURTF,[DY].dbo.PURTE
+                                LEFT JOIN [DY].dbo.CMSMQ ON MQ001=TE001
+                                LEFT JOIN [DY].dbo.PURMA ON MA001=TE005
+                                LEFT JOIN [DY].dbo.PURTC ON TC001=TE001 AND TC002=TE002
+                                LEFT JOIN [DY].dbo.CMSMB ON TC010=MB001
                                 WHERE TE001=TF001 AND TE002=TF002
                                 AND TE001+TE002+TE003 IN ({0})
                                 {1}

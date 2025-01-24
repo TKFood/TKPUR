@@ -179,15 +179,15 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  
                                    SELECT 
-                                    ISNULL((SELECT COUNT(TD004) FROM [TK].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002),0) AS '明細筆數'
+                                    ISNULL((SELECT COUNT(TD004) FROM [DY].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002),0) AS '明細筆數'
                                     ,TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
                                     ,(      SELECT TD004+TD005+TD006+', '
-                                            FROM   [TK].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002
+                                            FROM   [DY].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002
                                             FOR XML PATH(''), TYPE  
                                             ).value('.','nvarchar(max)')  As '明細' 
                                     ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
 
-                                    FROM [TK].dbo.PURTC,[TK].dbo.PURMA
+                                    FROM [DY].dbo.PURTC,[DY].dbo.PURMA
                                     WHERE 1=1
                                     AND TC004=MA001
                                     AND TC003>='{0}' AND TC003<='{1}'                                  
@@ -318,7 +318,7 @@ namespace TKPUR
                                 ,PURTC.UDF02 AS 'UOF單號'
                                 ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
 
-                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB
+                                FROM [DY].dbo.PURTC,[DY].dbo.PURTD,[DY].dbo.CMSMQ,[DY].dbo.PURMA,[DY].dbo.CMSMV,[DY].dbo.CMSMB
                                 WHERE TC001=TD001 AND TC002=TD002
                                 AND MQ001=TC001
                                 AND TC004=MA001
@@ -454,7 +454,7 @@ namespace TKPUR
                                 ,PURTC.UDF02 AS 'UOF單號'
                                 ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
 
-                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB
+                                FROM [DY].dbo.PURTC,[DY].dbo.PURTD,[DY].dbo.CMSMQ,[DY].dbo.PURMA,[DY].dbo.CMSMV,[DY].dbo.CMSMB
                                 WHERE TC001=TD001 AND TC002=TD002
                                 AND MQ001=TC001
                                 AND TC004=MA001
