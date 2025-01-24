@@ -258,11 +258,11 @@ namespace TKPUR
 
             if (statusReports.Equals("憑証回傳202209"))
             {
-                report1.Load(@"REPORT\採購單憑証V4.frx");
+                report1.Load(@"REPORT\採購單憑証V4-大潁.frx");
             }
             else if (statusReports.Equals("有簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証-核準NAMEV4.frx");
+                report1.Load(@"REPORT\採購單憑証-核準NAMEV4-大潁.frx");
             }
 
             //20210902密
@@ -377,7 +377,7 @@ namespace TKPUR
             PDFFILES = @"" + PDF_PATH + @"\" + DATES.ToString() + @"\" + TC001 + TC002 + "-" + MA002 + ".pdf";
 
             DirectoryNAME = @"" + PDF_PATH + @"\" + DATES.ToString() + @"\";
-            //如果日期資料夾不存在就新增
+            //如果日期資料夾不存在就新增 
             if (!Directory.Exists(DirectoryNAME))
             {
                 //新增資料夾
@@ -388,11 +388,11 @@ namespace TKPUR
 
             if (statusReports.Equals("憑証回傳202209"))
             {
-                report1.Load(@"REPORT\採購單憑証V3.frx");
+                report1.Load(@"REPORT\採購單憑証V3-大潁.frx");
             }
             else if (statusReports.Equals("有簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証-核準NAMEV4.frx");
+                report1.Load(@"REPORT\採購單憑証-核準NAMEV4-大潁.frx");
             }
 
             //20210902密
