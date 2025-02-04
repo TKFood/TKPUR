@@ -819,7 +819,15 @@ namespace TKPUR
                                     ,TB007 AS	'憑證序號'
                                     ,TB008 AS	'憑證日期'
                                     ,TB009 AS	'應付金額'
+                                    ,TH016 AS '進貨計價數量'
+                                    ,TH018 AS '進貨單位進價'
+                                    ,TD008 AS '採購計價數量'
+                                    ,TD010 AS '採購單位進價'
+
                                     FROM [TK].dbo.ACPTB
+                                    LEFT JOIN [TK].dbo.PURTH ON REPLACE(TH001+TH002+TH003,' ','')=REPLACE(TB005+TB006+TB007,' ','')
+                                    LEFT JOIN [TK].dbo.PURTD ON REPLACE(TD001+TD002+TD003,' ','')=REPLACE(TH011+TH012+TH013,' ','')
+                 
                                     WHERE TB001='{0}' AND TB002='{1}'
                                     ORDER BY TB003
 
@@ -851,7 +859,11 @@ namespace TKPUR
                         // 設定數字格式
                         // 或使用 "N2" 表示兩位小數點（例如：12,345.67）
                         dataGridView4.Columns["應付金額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
-                       
+                        dataGridView4.Columns["進貨計價數量"].DefaultCellStyle.Format = "N3"; // 每三位一個逗號，無小數點
+                        dataGridView4.Columns["進貨單位進價"].DefaultCellStyle.Format = "N3"; // 每三位一個逗號，無小數點
+                        dataGridView4.Columns["採購計價數量"].DefaultCellStyle.Format = "N3"; // 每三位一個逗號，無小數點
+                        dataGridView4.Columns["採購單位進價"].DefaultCellStyle.Format = "N3"; // 每三位一個逗號，無小數點
+
                     }
 
                 }
