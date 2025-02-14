@@ -181,7 +181,65 @@ namespace TKPUR
                 }
             }
         }
+        public void DELETE_PURTE_PURTF_PURTACHAGE(string TE001,string TE002,string TE003,string TA001,string TA002,string VERSIONS)
+        {
+            try
+            {
 
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+                               
+                sbSql.AppendFormat(@"  
+                                    DELETE [TK].dbo.PURTE
+                                    WHERE TE001='{0}' AND TE002='{1}' AND TE003='{2}'
+                                    DELETE [TK].dbo.PURTF
+                                    WHERE TF001='{0}' AND TF002='{1}' AND TF003='{2}'
+                                    DELETE [TKPUR].[dbo].[PURTATBCHAGE]
+                                    WHERE [TA001]='{3}' AND [TA002]='{4}' AND [VERSIONS]='{5}'
+                                    ", TE001, TE002, TE003, TA001, TA002, VERSIONS);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -193,7 +251,22 @@ namespace TKPUR
 
         private void button3_Click(object sender, EventArgs e)
         {
+            DialogResult dialogResult = MessageBox.Show("要刪除了?", "要刪除了?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                if (!string.IsNullOrEmpty(textBox2.Text)&& !string.IsNullOrEmpty(textBox3.Text) && !string.IsNullOrEmpty(textBox4.Text) && !string.IsNullOrEmpty(textBox5.Text) && !string.IsNullOrEmpty(textBox6.Text) && !string.IsNullOrEmpty(textBox7.Text))
+                {
+                    DELETE_PURTE_PURTF_PURTACHAGE(textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text);
 
+                    Search(textBox1.Text);
+                    MessageBox.Show("完成");
+                }
+
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //do something else
+            }
         }
         #endregion
 
