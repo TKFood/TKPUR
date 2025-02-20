@@ -1125,11 +1125,7 @@ namespace TKPUR
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();            
 
-            if (statusReports.Equals("憑証回傳202209"))
-            {
-                report1.Load(@"REPORT\採購單憑証V4.frx");
-            }
-            else if (statusReports.Equals("雅芳-簽名"))
+            if (statusReports.Equals("雅芳-簽名"))
             {
                 report1.Load(@"REPORT\應付憑單憑証-雅芳-V1.frx");
             }

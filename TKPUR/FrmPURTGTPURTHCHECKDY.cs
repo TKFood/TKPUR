@@ -58,9 +58,14 @@ namespace TKPUR
         {
             InitializeComponent();
 
-            comboBox1load();
+           
         }
-
+        private void FrmPURTGTPURTHCHECKDY_Load(object sender, EventArgs e)
+        {
+            comboBox1load();
+            
+            comboBox2load();
+        }
         #region FUNCTION
 
         public void comboBox1load()
@@ -94,6 +99,35 @@ namespace TKPUR
             comboBox1.DataSource = dt.DefaultView;
             comboBox1.ValueMember = "PARANAME";
             comboBox1.DisplayMember = "PARANAME";
+            sqlConn.Close();
+
+
+        }
+        public void comboBox2load()
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密 
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT FORM FROM [TKPUR].[dbo].[PURREPORTFORM] WHERE [REPORT]='應付' ORDER BY ID ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("FORM", typeof(string));
+
+            da.Fill(dt);
+            comboBox2.DataSource = dt.DefaultView;
+            comboBox2.ValueMember = "FORM";
+            comboBox2.DisplayMember = "FORM";
             sqlConn.Close();
 
 
@@ -1037,14 +1071,23 @@ namespace TKPUR
 
             return FASTSQL;
         }
-
-        public void SETFASTREPORT_V2(string MA001, string TA002, string TA014)
+         
+        public void SETFASTREPORT_V2(string statusReports, string MA001, string TA002, string TA014)
         {
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
 
             report1.Load(@"REPORT\應付憑單憑証-大潁國際.frx");
 
+
+            if (statusReports.Equals("雅芳-簽名"))
+            {
+                report1.Load(@"REPORT\應付憑單憑証-大潁國際-雅芳-V1.frx");
+            }
+            else if (statusReports.Equals("芳梅-簽名"))
+            {
+                report1.Load(@"REPORT\應付憑單憑証-大潁國際-芳梅-V1.frx");
+            }
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
             SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
@@ -1673,11 +1716,12 @@ namespace TKPUR
 
         private void button8_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT_V2(textBox12.Text.Trim(), textBox13.Text.Trim(), textBox14.Text.Trim());
+            SETFASTREPORT_V2(comboBox2.Text, textBox12.Text.Trim(), textBox13.Text.Trim(), textBox14.Text.Trim());
         }
+
 
         #endregion
 
-
+       
     }
 }
