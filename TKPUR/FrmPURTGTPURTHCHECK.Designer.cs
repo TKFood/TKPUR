@@ -96,6 +96,8 @@
             this.dataGridView5 = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.previewControl2 = new FastReport.Preview.PreviewControl();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -279,7 +281,7 @@
             // 
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(293, 10);
+            this.comboBox1.Location = new System.Drawing.Point(293, 8);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(138, 24);
             this.comboBox1.TabIndex = 10;
@@ -850,6 +852,8 @@
             this.tableLayoutPanel6.Controls.Add(this.button7, 3, 2);
             this.tableLayoutPanel6.Controls.Add(this.label13, 3, 0);
             this.tableLayoutPanel6.Controls.Add(this.comboBox2, 4, 0);
+            this.tableLayoutPanel6.Controls.Add(this.comboBox3, 4, 1);
+            this.tableLayoutPanel6.Controls.Add(this.label14, 3, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -949,7 +953,7 @@
             // 
             this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(412, 10);
+            this.comboBox2.Location = new System.Drawing.Point(412, 8);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(130, 24);
             this.comboBox2.TabIndex = 23;
@@ -1037,6 +1041,25 @@
             this.previewControl2.Size = new System.Drawing.Size(972, 338);
             this.previewControl2.TabIndex = 6;
             // 
+            // comboBox3
+            // 
+            this.comboBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(412, 48);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(130, 24);
+            this.comboBox3.TabIndex = 24;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(286, 52);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(120, 16);
+            this.label14.TabIndex = 25;
+            this.label14.Text = "憑証";
+            // 
             // FrmPURTGTPURTHCHECK
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -1047,6 +1070,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmPURTGTPURTHCHECK";
             this.Text = "FrmPURTGTPURTHCHECK";
+            this.Load += new System.EventHandler(this.FrmPURTGTPURTHCHECK_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1185,5 +1209,7 @@
         private FastReport.Preview.PreviewControl previewControl2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label label14;
     }
 }
