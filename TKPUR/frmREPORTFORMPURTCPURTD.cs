@@ -497,7 +497,8 @@ namespace TKPUR
                 return;
             }
 
-            // 使用 Acrobat Reader 或默認 PDF 閱讀器進行打印
+            //重要PDF檔一定要預設用 Acrobat Reader 才能呼叫出傳真機
+            //使用 Acrobat Reader 或默認 PDF 閱讀器進行打印
             Process process = new Process();
             process.StartInfo.FileName = filePath; // 文件路徑
             process.StartInfo.Verb = "printto";   // 使用 "printto" 動詞直接打印到指定打印機
