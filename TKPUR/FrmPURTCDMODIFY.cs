@@ -418,6 +418,107 @@ namespace TKPUR
 
             return FASTSQL.ToString();
         }
+
+
+        public void Search_PURTC(string TC002)
+        {
+            StringBuilder sbSqlQuery = new StringBuilder();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            DataSet ds = new DataSet();
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dberp"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+               
+                sbSql.AppendFormat(@" 
+                                    SELECT 
+                                    TC001 AS '採購單別'
+                                    ,TC002 AS '採購單號'
+                                    ,TC004 AS '供應廠商'
+                                    ,MA002 AS '廠商'
+                                    ,TA001 AS '製令單別'
+                                    ,TA002 AS '製令單號'
+                                    ,TA006 AS '品號'
+                                    ,MB002 AS '品名'
+                                    ,TA010 AS '預計完工'
+                                    ,TA015 AS '預計產量'
+                                    ,TA007 AS '單位'
+                                    ,TC045 AS '合約'
+                                    FROM [TK].dbo.PURTC
+                                    LEFT JOIN [TK].dbo.MOCTA ON TA001+TA002=PURTC.TC045
+                                    LEFT JOIN [TK].dbo.INVMB ON TA006=MB001
+                                    ,[TK].dbo.PURMA
+                                    WHERE TC004=MA001
+                                    AND ISNULL(TC045,'')<>''
+                                    AND TC001='A334'
+                                    AND TA015>0
+                                    AND TC002 LIKE '%{0}%'
+                                    ORDER BY TC001,TC002
+                                    ", TC002);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                dataGridView2.DataSource = null;
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    dataGridView2.DataSource = ds.Tables["TEMPds1"];
+                    dataGridView2.AutoResizeColumns();
+
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+        private void dataGridView2_SelectionChanged(object sender, EventArgs e)
+        {
+            textBox9.Text = "";
+            textBox10.Text = "";
+
+            if (dataGridView2.CurrentRow != null)
+            {
+                int rowindex = dataGridView2.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView2.Rows[rowindex];
+
+                    textBox9.Text = row.Cells["採購單別"].Value.ToString();
+                    textBox10.Text = row.Cells["採購單號"].Value.ToString();
+                    
+                }
+                else
+                {
+                }
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -443,9 +544,24 @@ namespace TKPUR
             SETFASTREPORT();
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Search_PURTC(textBox7.Text.Trim());
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
         #endregion
 
-
+       
     }
 }
