@@ -611,6 +611,52 @@ namespace TKPUR
             }
         }
 
+        public void UPDATE_PURTC(string TC001, string TC002, string TA001, string TA002)
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+            sqlConn.Close();
+            sqlConn.Open();
+            tran = sqlConn.BeginTransaction();
+
+            sbSql.Clear();
+
+
+            sbSql.AppendFormat(@"                            
+                                UPDATE [TK].dbo.PURTC
+                                SET TC045='{2}'
+                                WHERE TC001='{0}' AND TC002='{1}'
+                                ", TC001,TC002,TA001+TA002);
+
+            cmd.Connection = sqlConn;
+            cmd.CommandTimeout = 60;
+            cmd.CommandText = sbSql.ToString();
+            cmd.Transaction = tran;
+            result = cmd.ExecuteNonQuery();
+
+            if (result == 0)
+            {
+                tran.Rollback();    //交易取消
+            }
+            else
+            {
+                tran.Commit();      //執行交易  
+
+
+            }
+        }
+
 
         #endregion
 
@@ -649,6 +695,19 @@ namespace TKPUR
 
         private void button7_Click(object sender, EventArgs e)
         {
+            string TC001 = textBox9.Text.Trim();
+            string TC002 = textBox10.Text.Trim();
+            string TA001 = textBox11.Text.Trim();
+            string TA002 = textBox12.Text.Trim();
+
+            if(!string.IsNullOrEmpty(TC001)&& !string.IsNullOrEmpty(TC002) && !string.IsNullOrEmpty(TA001) && !string.IsNullOrEmpty(TA002))
+            {
+                UPDATE_PURTC(TC001, TC002, TA001, TA002);
+                Search_PURTC(textBox7.Text.Trim());
+
+                MessageBox.Show("完成");
+            }
+            
 
         }
 
