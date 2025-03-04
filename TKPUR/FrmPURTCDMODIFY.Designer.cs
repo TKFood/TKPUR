@@ -582,7 +582,7 @@
             // 
             this.splitContainer7.Panel2.Controls.Add(this.dataGridView3);
             this.splitContainer7.Size = new System.Drawing.Size(759, 314);
-            this.splitContainer7.SplitterDistance = 79;
+            this.splitContainer7.SplitterDistance = 89;
             this.splitContainer7.TabIndex = 0;
             // 
             // tableLayoutPanel4
@@ -644,7 +644,7 @@
             this.dataGridView2.Location = new System.Drawing.Point(0, 0);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowTemplate.Height = 24;
-            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridView2.Size = new System.Drawing.Size(972, 225);
             this.dataGridView2.TabIndex = 5;
             this.dataGridView2.SelectionChanged += new System.EventHandler(this.dataGridView2_SelectionChanged);
@@ -657,9 +657,10 @@
             this.dataGridView3.Location = new System.Drawing.Point(0, 0);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.RowTemplate.Height = 24;
-            this.dataGridView3.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView3.Size = new System.Drawing.Size(755, 227);
+            this.dataGridView3.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridView3.Size = new System.Drawing.Size(755, 217);
             this.dataGridView3.TabIndex = 5;
+            this.dataGridView3.SelectionChanged += new System.EventHandler(this.dataGridView3_SelectionChanged);
             // 
             // tableLayoutPanel5
             // 
@@ -681,7 +682,7 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(755, 75);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(755, 85);
             this.tableLayoutPanel5.TabIndex = 7;
             // 
             // label7
@@ -692,7 +693,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(114, 16);
             this.label7.TabIndex = 5;
-            this.label7.Text = "採購單號";
+            this.label7.Text = "託外單號";
             // 
             // textBox8
             // 

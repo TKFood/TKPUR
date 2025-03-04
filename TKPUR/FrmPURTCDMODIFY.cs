@@ -519,6 +519,99 @@ namespace TKPUR
             }
         }
 
+        public void Search_MOCTA(string TA002)
+        {
+
+            StringBuilder sbSqlQuery = new StringBuilder();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            DataSet ds = new DataSet();
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dberp"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"                                     
+                                    SELECT 
+                                    TA001 AS '製令單別'
+                                    ,TA002 AS '製令單號'
+                                    ,TA006 AS '品號'
+                                    ,MB002 AS '品名'
+                                    ,TA010 AS '預計完工'
+                                    ,TA015 AS '預計產量'
+                                    ,TA007 AS '單位'
+                                    FROM [TK].dbo.MOCTA
+                                    EFT JOIN [TK].dbo.INVMB ON TA006=MB001
+                                    WHERE TA001='A512'
+                                    AND TA015>0
+                                    AND TA002 LIKE '%{0}%'
+                                    ORDER BY TA001,TA002
+                                    ", TA002);
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                dataGridView3.DataSource = null;
+
+                if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    dataGridView3.DataSource = ds.Tables["TEMPds1"];
+                    dataGridView3.AutoResizeColumns();
+
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+        private void dataGridView3_SelectionChanged(object sender, EventArgs e)
+        {
+            textBox11.Text = "";
+            textBox12.Text = "";
+
+            if (dataGridView3.CurrentRow != null)
+            {
+                int rowindex = dataGridView3.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView3.Rows[rowindex];
+
+                    textBox11.Text = row.Cells["製令單別"].Value.ToString();
+                    textBox12.Text = row.Cells["製令單號"].Value.ToString();
+
+                }
+                else
+                {
+                }
+            }
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -551,13 +644,14 @@ namespace TKPUR
 
         private void button5_Click(object sender, EventArgs e)
         {
-
+            Search_MOCTA(textBox8.Text.Trim());
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
 
         }
+
 
 
         #endregion
