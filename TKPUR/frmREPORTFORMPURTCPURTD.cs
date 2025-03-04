@@ -27,6 +27,7 @@ namespace TKPUR
 {
     public partial class frmREPORTFORMPURTCPURTD : Form
     {
+        int TIMEOUT_LIMITS = 240;
         SqlConnection sqlConn = new SqlConnection();
         SqlCommand sqlComm = new SqlCommand();
         string connectionString;
@@ -198,9 +199,12 @@ namespace TKPUR
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
-                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);               
+                
                 sqlConn.Open();
                 ds.Clear();
+                // 設置查詢的超時時間，以秒為單位
+                adapter.SelectCommand.CommandTimeout = TIMEOUT_LIMITS;
                 adapter.Fill(ds, "TEMPds1");
                 sqlConn.Close();
 
