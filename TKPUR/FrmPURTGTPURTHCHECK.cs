@@ -856,10 +856,15 @@ namespace TKPUR
                                     ,TH018 AS '進貨單位進價'
                                     ,TD008 AS '採購計價數量'
                                     ,TD010 AS '採購單位進價'
-
+	                                ,TH004 AS '品號'
+	                                ,TH005 AS '品名'
+	                                ,TG003 AS '進貨日期'
+	                                ,TH036 AS '有效日期'
+	                                ,TH117 AS '製造日期'
                                     FROM [TK].dbo.ACPTB
-                                    LEFT JOIN [TK].dbo.PURTH ON REPLACE(TH001+TH002+TH003,' ','')=REPLACE(TB005+TB006+TB007,' ','')
-                                    LEFT JOIN [TK].dbo.PURTD ON REPLACE(TD001+TD002+TD003,' ','')=REPLACE(TH011+TH012+TH013,' ','')
+                                    LEFT JOIN [TK].dbo.PURTH ON TH001=TB005 AND TH002=TB006 AND TH003=TB007
+                                    LEFT JOIN [TK].dbo.PURTG ON TH001=TG001 AND TH002=TG002 
+                                    LEFT JOIN [TK].dbo.PURTD ON TD001=TH011 AND TD002=TH012 AND TD003=TH013 
                  
                                     WHERE TB001='{0}' AND TB002='{1}'
                                     ORDER BY TB003
