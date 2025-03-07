@@ -236,12 +236,12 @@
             this.tableLayoutPanel2.Controls.Add(this.textBox1, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.button5, 0, 13);
             this.tableLayoutPanel2.Controls.Add(this.button3, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.label2, 0, 4);
-            this.tableLayoutPanel2.Controls.Add(this.textBox2, 0, 5);
-            this.tableLayoutPanel2.Controls.Add(this.button4, 0, 7);
-            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 9);
-            this.tableLayoutPanel2.Controls.Add(this.textBox4, 0, 10);
-            this.tableLayoutPanel2.Controls.Add(this.button6, 0, 12);
+            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.textBox4, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.button4, 0, 11);
+            this.tableLayoutPanel2.Controls.Add(this.label2, 0, 8);
+            this.tableLayoutPanel2.Controls.Add(this.button6, 0, 7);
+            this.tableLayoutPanel2.Controls.Add(this.textBox2, 0, 9);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -301,7 +301,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 172);
+            this.label2.Location = new System.Drawing.Point(3, 332);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(179, 16);
             this.label2.TabIndex = 6;
@@ -311,7 +311,7 @@
             // 
             this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel2.SetColumnSpan(this.textBox2, 2);
-            this.textBox2.Location = new System.Drawing.Point(3, 203);
+            this.textBox2.Location = new System.Drawing.Point(3, 363);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.tableLayoutPanel2.SetRowSpan(this.textBox2, 2);
@@ -321,10 +321,10 @@
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(3, 284);
+            this.tableLayoutPanel2.SetColumnSpan(this.button4, 2);
+            this.button4.Location = new System.Drawing.Point(3, 443);
             this.button4.Name = "button4";
-            this.tableLayoutPanel2.SetRowSpan(this.button4, 2);
-            this.button4.Size = new System.Drawing.Size(179, 72);
+            this.button4.Size = new System.Drawing.Size(234, 34);
             this.button4.TabIndex = 8;
             this.button4.Text = "填寫發包廠商+發包-寄送MAIL";
             this.button4.UseVisualStyleBackColor = true;
@@ -357,7 +357,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 372);
+            this.label5.Location = new System.Drawing.Point(3, 172);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(179, 16);
             this.label5.TabIndex = 10;
@@ -367,7 +367,7 @@
             // 
             this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel2.SetColumnSpan(this.textBox4, 2);
-            this.textBox4.Location = new System.Drawing.Point(3, 403);
+            this.textBox4.Location = new System.Drawing.Point(3, 203);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
             this.tableLayoutPanel2.SetRowSpan(this.textBox4, 2);
@@ -377,7 +377,7 @@
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button6.Location = new System.Drawing.Point(3, 483);
+            this.button6.Location = new System.Drawing.Point(3, 283);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(179, 34);
             this.button6.TabIndex = 12;
