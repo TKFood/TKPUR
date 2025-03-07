@@ -158,8 +158,10 @@ namespace TKPUR
                                 ,[DESIGNER] AS '設計人'
                                 ,[CONTENTS]  AS '內容'
                                 ,[MANUFACTOR] AS '發包廠商'
+                                ,[REMARKS] AS '備註'
                                 ,[ISMAILS]  AS '是否通知'
                                 ,[MAILS_DATE] AS '通知日期'
+
                                 FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
                                 WHERE 1=1
                                 {0}
@@ -399,6 +401,10 @@ namespace TKPUR
         }
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
+            textBox1.Text = "";
+            textBox2.Text = "";
+            textBox4.Text = "";
+
             if (dataGridView1.CurrentRow != null)
             {
                 int rowindex = dataGridView1.CurrentRow.Index;
@@ -408,6 +414,7 @@ namespace TKPUR
 
                     textBox1.Text = row.Cells["校稿項目"].Value.ToString();
                     textBox2.Text = row.Cells["發包廠商"].Value.ToString();
+                    textBox4.Text = row.Cells["備註"].Value.ToString();
                 }
             }
                 
@@ -466,6 +473,8 @@ namespace TKPUR
                                         ,[MAILS_DATE]
                                         ,[NAME]
                                         ,[EMAIL]
+                                        ,[REMARKS] 
+
                                         FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
                                         LEFT JOIN [TKPUR].[dbo].[UOF_DESIGN_INFROM_EMAIL] ON [UOF_DESIGN_INFROM_EMAIL].NAME=[UOF_DESIGN_INFROM].[DESIGNER] 
                                         WHERE SUBJECT ='{0}'
@@ -890,6 +899,7 @@ namespace TKPUR
                         BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">發包廠商</th>");
                         BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">設計人</th>");
                         BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">內容</th>");
+                        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">備註</th>");
 
                         BODY.AppendFormat(@"</tr> ");
 
@@ -902,6 +912,7 @@ namespace TKPUR
                             BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["MANUFACTOR"].ToString() + "</td>");
                             BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["DESIGNER"].ToString() + "</td>");
                             BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["CONTENTS"].ToString() + "</td>");
+                            BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["REMARKS"].ToString() + "</td>");
 
 
                             BODY.AppendFormat(@"</tr> ");
@@ -984,6 +995,63 @@ namespace TKPUR
             }
         }
 
+        public void UPDATE_UOF_DESIGN_INFROM_REMARKS(string SUBJECT, string REMARKS)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                //當字串中包含單引號（'）時，SQL 語句會因單引號干擾而導致語法錯誤。在這種情況下，可以通過將字串中的單引號轉義來解決問題。對於 MSSQL 來說，轉義單引號的方式是將每個單引號重複兩次（即變成 ''）。
+                //在 C# 中，你可以使用 .Replace("'", "''") 
+                sbSql.AppendFormat(@"  
+                                    UPDATE [TKPUR].[dbo].[UOF_DESIGN_INFROM]
+                                    SET [REMARKS]='{1}'
+                                    WHERE [SUBJECT]='{0}'
+                                    ", SUBJECT.Replace("'", "''"), REMARKS.Replace("'", "''"));
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -1036,6 +1104,21 @@ namespace TKPUR
             else
             {
                 MessageBox.Show("沒有指定發包廠商，不能通知");
+            }
+        }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            string SUBJECT = textBox1.Text;
+            string REMARKS= textBox4.Text;
+
+            if(!string.IsNullOrEmpty(SUBJECT) && !string.IsNullOrEmpty(REMARKS))
+            {
+                UPDATE_UOF_DESIGN_INFROM_REMARKS(SUBJECT, REMARKS);
+                SEARCH_UOF_DESIGN_INFROM(comboBox1.Text.ToString().Trim(), textBox3.Text.ToString().Trim());
+            }
+            else
+            {
+                MessageBox.Show("沒有填寫備註");
             }
         }
 
