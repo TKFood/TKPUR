@@ -45,9 +45,18 @@ namespace TKPUR
         public FrmREPURPRICE()
         {
             InitializeComponent();
-        }
 
+        }
+        private void FrmREPURPRICE_Load(object sender, EventArgs e)
+        {
+            SETDATE();
+        }
         #region FUNCTION
+        public void SETDATE()
+        {
+            dateTimePicker1.Value = new DateTime(DateTime.Now.Year, 1, 1);
+            dateTimePicker2.Value = new DateTime(DateTime.Now.Year, 12, 31);
+        }
         public void SETFASTREPORT(string SDATES,string EDATES,string TH004)
         {
             StringBuilder SQL1 = new StringBuilder();
@@ -97,28 +106,45 @@ namespace TKPUR
                                         ");
             }
             
-            SB.AppendFormat(@"                            
+            SB.AppendFormat(@"       
+                            WITH MonthlyData AS (
                                 SELECT 
-                                SUBSTRING(TG003,1,6) AS 'YM'
-                                ,TH004 AS '品號'
-                                ,TH005 AS '品名'
-                                ,TH008 AS '單位'
-                                ,SUM(TH007) AS '進貨數量'
-                                ,SUM(TH016) AS '計價數量'
-                                ,SUM(TH047+TH048) AS '本幣金額'
-                                ,(CASE WHEN SUM(TH047+TH048)>0 AND SUM(TH016)>0 THEN SUM(TH047+TH048)/SUM(TH016) ELSE 0 END )  AS '進貨單價'
-                                ,(SELECT SUM(TH007) FROM [TK].dbo.PURTG TG ,[TK].dbo.PURTH TH WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND  TG.TG003>='20240101' AND TG.TG003<='20250228' AND TH.TH004=PURTH.TH004 AND TH.TH008=PURTH.TH008 ) AS '進貨總數量'
-
-                                FROM [TK].dbo.PURTG,[TK].dbo.PURTH
-                                WHERE TG001=TH001
-                                AND TG002=TH002
-                                AND TG013='Y'
+                                    SUBSTRING(TG003,1,6) AS YM,
+                                    TH004 AS 品號,
+                                    TH005 AS 品名,
+                                    TH008 AS 單位,
+                                    SUM(TH007) AS 進貨數量,
+                                    SUM(TH016) AS 計價數量,
+                                    SUM(TH047+TH048) AS 本幣金額,
+                                    (CASE 
+                                        WHEN SUM(TH047+TH048) > 0 AND SUM(TH016) > 0 
+                                        THEN SUM(TH047+TH048) / SUM(TH016) 
+                                        ELSE 0 
+                                    END) AS 進貨單價
+		                            ,(SELECT SUM(TH007) FROM [TK].dbo.PURTG TG ,[TK].dbo.PURTH TH WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND  TG.TG003>='20240101' AND TG.TG003<='20250228' AND TH.TH004=PURTH.TH004 AND TH.TH008=PURTH.TH008 ) AS '進貨總數量'
+                                FROM [TK].dbo.PURTG, [TK].dbo.PURTH
+                                WHERE TG001 = TH001
+                                AND TG002 = TH002
+                                AND TG013 = 'Y'
                                 AND TH004 NOT LIKE '199%'
                                 AND TH004 NOT LIKE '299%'
-                                AND TG003>='{0}' AND TG003<='{1}'
+                                AND TG003 >= '{0}' AND TG003 <= '{1}'
                                 {2}
+                                GROUP BY SUBSTRING(TG003,1,6), TH004, TH005, TH008
+                            )
+                            SELECT A.YM, A.品號, A.品名, A.單位,A.進貨總數量, A.進貨單價,A.進貨數量,A.計價數量,
+                                   B.進貨單價 AS 前月單價,
+                                   CASE 
+                                       WHEN A.進貨單價 > B.進貨單價 THEN '↑ 上漲'
+                                       WHEN A.進貨單價 < B.進貨單價 THEN '↓ 下跌'
+                                       ELSE '→ 相同'
+                                   END AS 單價變化
+                            FROM MonthlyData A
+                            LEFT JOIN MonthlyData B 
+                                ON A.品號 = B.品號 
+                                AND A.YM = SUBSTRING(CONVERT(VARCHAR(8), DATEADD(MONTH, 1, CAST(B.YM + '01' AS DATE)), 112), 1, 6)
+                            ORDER BY A.品號, A.YM;
 
-                                GROUP BY SUBSTRING(TG003,1,6) ,TH004,TH005,TH008
                             ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), SBQUERY1.ToString());
 
             return SB;
@@ -134,5 +160,7 @@ namespace TKPUR
             SETFASTREPORT(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"),textBox1.Text.Trim());
         }
         #endregion
+
+       
     }
 }

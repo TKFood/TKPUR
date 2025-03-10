@@ -240,6 +240,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmREPURPRICE";
             this.Text = "FrmREPURPRICE";
+            this.Load += new System.EventHandler(this.FrmREPURPRICE_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
