@@ -181,7 +181,7 @@ namespace TKPUR
                                     SUM(TH047+TH048) AS 本幣金額,
                                     (CASE 
                                         WHEN SUM(TH047+TH048) > 0 AND SUM(TH016) > 0 
-                                        THEN SUM(TH047+TH048) / SUM(TH016) 
+                                        THEN CONVERT(decimal(16,3),SUM(TH047+TH048) / SUM(TH016) )
                                         ELSE 0 
                                     END) AS 進貨單價
 		                            ,(SELECT SUM(TH007) FROM [TK].dbo.PURTG TG ,[TK].dbo.PURTH TH WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND  TG.TG003>='20240101' AND TG.TG003<='20250228' AND TH.TH004=PURTH.TH004 AND TH.TH008=PURTH.TH008 ) AS '進貨總數量'
