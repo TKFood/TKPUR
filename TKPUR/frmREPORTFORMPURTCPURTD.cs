@@ -63,12 +63,14 @@ namespace TKPUR
         {
             InitializeComponent();
 
-            comboBox1load();
+           
         }
 
         #region FUNCTION
         private void frmREPORTFORMPURTCPURTD_Load(object sender, EventArgs e)
         {
+            comboBox1load();
+
             SETGRIDVIEW();
 
             SET_PDF_PATH();
