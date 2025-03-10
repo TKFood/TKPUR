@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="09/25/2019 10:24:13" ReportInfo.Modified="03/10/2025 15:31:59" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/25/2019 10:24:13" ReportInfo.Modified="03/10/2025 16:17:53" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9KzppW/chAuLwIP/vjjPue0">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9LjaYRtm2cI68XO9HbqPXBw">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;WITH MonthlyData AS (&#13;&#10;    SELECT &#13;&#10;        SUBSTRING(TG003,1,6) AS YM,&#13;&#10;        TH004 AS 品號,&#13;&#10;        TH005 AS 品名,&#13;&#10;        TH008 AS 單位,&#13;&#10;        SUM(TH007) AS 進貨數量,&#13;&#10;        SUM(TH016) AS 計價數量,&#13;&#10;        SUM(TH047+TH048) AS 本幣金額,&#13;&#10;        (CASE &#13;&#10;            WHEN SUM(TH047+TH048) &gt; 0 AND SUM(TH016) &gt; 0 &#13;&#10;            THEN SUM(TH047+TH048) / SUM(TH016) &#13;&#10;            ELSE 0 &#13;&#10;        END) AS 進貨單價&#13;&#10;		,(SELECT SUM(TH007) FROM [TK].dbo.PURTG TG ,[TK].dbo.PURTH TH WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND  TG.TG003&gt;='20240101' AND TG.TG003&lt;='20250228' AND TH.TH004=PURTH.TH004 AND TH.TH008=PURTH.TH008 ) AS '進貨總數量'&#13;&#10;    FROM [TK].dbo.PURTG, [TK].dbo.PURTH&#13;&#10;    WHERE TG001 = TH001&#13;&#10;    AND TG002 = TH002&#13;&#10;    AND TG013 = 'Y'&#13;&#10;    AND TH004 NOT LIKE '199%'&#13;&#10;    AND TH004 NOT LIKE '299%'&#13;&#10;    AND TG003 &gt;= '20240101' AND TG003 &lt;= '20241231'&#13;&#10;    AND (TH004 LIKE '%106062001%' OR TH005 LIKE '%106062001%')&#13;&#10;    GROUP BY SUBSTRING(TG003,1,6), TH004, TH005, TH008&#13;&#10;)&#13;&#10;SELECT A.YM, A.品號, A.品名, A.單位,A.進貨總數量, A.進貨單價,A.進貨數量,A.計價數量,&#13;&#10;       B.進貨單價 AS 前月單價,&#13;&#10;       CASE &#13;&#10;           WHEN A.進貨單價 &gt; B.進貨單價 THEN '↑ 上漲'&#13;&#10;           WHEN A.進貨單價 &lt; B.進貨單價 THEN '↓ 下跌'&#13;&#10;           ELSE '→ 相同'&#13;&#10;       END AS 單價變化&#13;&#10;FROM MonthlyData A&#13;&#10;LEFT JOIN MonthlyData B &#13;&#10;    ON A.品號 = B.品號 &#13;&#10;    AND A.YM = SUBSTRING(CONVERT(VARCHAR(8), DATEADD(MONTH, 1, CAST(B.YM + '01' AS DATE)), 112), 1, 6)&#13;&#10;ORDER BY A.品號, A.YM;&#13;&#10;">
         <Column Name="YM" DataType="System.String"/>
         <Column Name="品號" DataType="System.String"/>
@@ -21,7 +21,7 @@
       <TextObject Name="Text1" Width="595.35" Height="18.9" Text="原物料漲跌表" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
     <DataBand Name="Data1" Top="23.5" Width="3704.4" Height="61.35">
-      <MatrixObject Name="Matrix1" Width="362.94" Height="36.38" FixedRows="1" FixedColumns="5" CellsSideBySide="true" DataSource="Table">
+      <MatrixObject Name="Matrix1" Width="412.37" Height="36.38" FixedRows="1" FixedColumns="5" CellsSideBySide="true" DataSource="Table">
         <MatrixColumns>
           <Header Expression="[Table.YM]" Totals="false"/>
         </MatrixColumns>
@@ -39,14 +39,14 @@
         <TableColumn Name="Column2" Width="46.07" AutoSize="true"/>
         <TableColumn Name="Column3" Width="46.07" AutoSize="true"/>
         <TableColumn Name="Column4" Width="83.15" AutoSize="true"/>
-        <TableColumn Name="Column5" Width="70.79" AutoSize="true"/>
+        <TableColumn Name="Column5" Width="120.22" AutoSize="true"/>
         <TableColumn Name="Column6" Width="70.79" AutoSize="true"/>
         <TableRow Name="Row1" Height="18.19" AutoSize="true">
           <TableCell Name="Cell1" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell2" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell7" Border.Lines="All" Text="單位" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell9" Border.Lines="All" Text="進貨總數量" HorzAlign="Center" VertAlign="Center"/>
-          <TableCell Name="Cell11" Border.Lines="All" Text="單價變化" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell11" Border.Lines="All" Text="單價變化(跟前月比)" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell13" Border.Lines="All" Text="[YM]" HorzAlign="Center" VertAlign="Center"/>
         </TableRow>
         <TableRow Name="Row2" Height="18.19" AutoSize="true">
@@ -55,7 +55,7 @@
           <TableCell Name="Cell8" Border.Lines="All" Text="[單位]" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell10" Border.Lines="All" Text="[進貨總數量]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center"/>
           <TableCell Name="Cell12" Border.Lines="All" Text="[單價變化]" HorzAlign="Center" VertAlign="Center"/>
-          <TableCell Name="Cell14" Border.Lines="All" Text="[進貨單價]" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell14" Border.Lines="All" Text="[進貨單價]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center"/>
         </TableRow>
       </MatrixObject>
     </DataBand>

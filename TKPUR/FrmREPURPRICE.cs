@@ -46,7 +46,7 @@ namespace TKPUR
         {
             InitializeComponent();
 
-        }
+        } 
         private void FrmREPURPRICE_Load(object sender, EventArgs e)
         {
             SETDATE();
