@@ -161,6 +161,10 @@ namespace TKPUR
                     SBQUERY99.AppendFormat(@"  AND TH004 NOT LIKE '1%' 
                                                 AND TH004 NOT LIKE '2%'  ");
                 }
+                else if (KIND.Equals("全部"))
+                {
+                    SBQUERY99.AppendFormat(@"   ");
+                }
             }
             else
             {
