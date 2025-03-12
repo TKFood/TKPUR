@@ -216,7 +216,7 @@ namespace TKPUR
                             ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), SBQUERY1.ToString(), SBQUERY99.ToString());
 
             return SB;
-
+             
         }
 
         #endregion
