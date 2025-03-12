@@ -262,7 +262,7 @@ namespace TKPUR
             StringBuilder SQL = new StringBuilder(); 
             report1 = new Report();
                
-            if (statusReports.Equals("憑証回傳202209"))  
+            if (statusReports.Equals("憑証回傳"))  
             {
                 report1.Load(@"REPORT\採購單憑証V4.frx");
             }
@@ -363,7 +363,7 @@ namespace TKPUR
                     textBox3.Text = row.Cells["供應廠"].Value.ToString();
                 }
                 else
-                {
+                { 
                     textBox1.Text = null;
                     textBox2.Text = null;
                     textBox3.Text = null;
@@ -396,7 +396,7 @@ namespace TKPUR
             StringBuilder SQL = new StringBuilder();
             report1 = new Report(); 
             
-            if (statusReports.Equals("憑証回傳202209"))
+            if (statusReports.Equals("憑証回傳"))
             {
                 report1.Load(@"REPORT\採購單憑証V4.frx");
             }
