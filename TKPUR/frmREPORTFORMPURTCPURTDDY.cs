@@ -254,7 +254,7 @@ namespace TKPUR
         public void SETFASTREPORT(string statusReports, string PRINTSPURTCPURTD, string COMMENT)
         {
             StringBuilder SQL = new StringBuilder();
-            report1 = new Report();
+            report1 = new Report(); 
 
             if (statusReports.Equals("憑証回傳"))
             {
