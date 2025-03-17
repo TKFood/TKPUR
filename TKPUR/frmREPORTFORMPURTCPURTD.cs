@@ -650,11 +650,11 @@ namespace TKPUR
         } 
         #endregion
          
-        #region BUTTON
+        #region BUTTON 
         private void button2_Click(object sender, EventArgs e)
         {
             Search(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-        }
+        } 
         private void button1_Click(object sender, EventArgs e)  
         {
             PREPRINTS(comboBox1.Text.ToString(),textBox5.Text);
