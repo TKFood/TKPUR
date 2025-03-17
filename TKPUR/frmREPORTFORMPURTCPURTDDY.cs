@@ -258,15 +258,15 @@ namespace TKPUR
 
             if (statusReports.Equals("憑証回傳202209"))
             {
-                report1.Load(@"REPORT\採購單憑証V4-大潁.frx"); 
+                report1.Load(@"REPORT\採購單憑証V5-大潁.frx"); 
             }           
             else if (statusReports.Equals("雅芳-簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証-雅芳-核準V1-大潁.frx");
+                report1.Load(@"REPORT\採購單憑証-雅芳-核準V2-大潁.frx");
             }
             else if (statusReports.Equals("芳梅-簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証-芳梅-核準V1-大潁.frx");
+                report1.Load(@"REPORT\採購單憑証-芳梅-核準V2-大潁.frx");
             }
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
@@ -391,15 +391,15 @@ namespace TKPUR
 
             if (statusReports.Equals("憑証回傳202209"))
             {
-                report1.Load(@"REPORT\採購單憑証V4-大潁.frx");
+                report1.Load(@"REPORT\採購單憑証V2-大潁.frx");
             }
             else if (statusReports.Equals("雅芳-簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証-雅芳-核準V1-大潁.frx");
+                report1.Load(@"REPORT\採購單憑証-雅芳-核準V2-大潁.frx");
             }
             else if (statusReports.Equals("芳梅-簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証-芳梅-核準V1-大潁.frx");
+                report1.Load(@"REPORT\採購單憑証-芳梅-核準V2-大潁.frx");
             }
 
             //20210902密
