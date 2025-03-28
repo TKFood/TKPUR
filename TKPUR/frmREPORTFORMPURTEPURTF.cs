@@ -26,6 +26,8 @@ namespace TKPUR
 {
     public partial class frmREPORTFORMPURTEPURTF : Form
     {
+        int TIMEOUT_LIMITS = 240;
+
         SqlConnection sqlConn = new SqlConnection();
         SqlCommand sqlComm = new SqlCommand();
         string connectionString;
@@ -55,6 +57,7 @@ namespace TKPUR
         string MAILATTACHPATH = null;
         DataSet DSMAIL = new DataSet();
 
+       
         public frmREPORTFORMPURTEPURTF()
         {
             InitializeComponent();
@@ -193,6 +196,7 @@ namespace TKPUR
                 sqlCmdBuilder = new SqlCommandBuilder(adapter);
                 sqlConn.Open();
                 ds.Clear();
+                adapter.SelectCommand.CommandTimeout = TIMEOUT_LIMITS;
                 adapter.Fill(ds, "TEMPds1");
                 sqlConn.Close();
 

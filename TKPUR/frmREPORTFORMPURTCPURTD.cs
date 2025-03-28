@@ -586,7 +586,7 @@ namespace TKPUR
         }
         public void ADD_TBPURCHECKFAX(string TC001, string TC002)
         {
-            try
+            try 
             {
                 //20210902密
                 Class1 TKID = new Class1();//用new 建立類別實體
