@@ -25,7 +25,7 @@ using System.Diagnostics;
 
 namespace TKPUR
 {
-    public partial class frmREPORTFORMPURTCPURTD : Form
+    public partial class frmREPORTFORMPURTCPURTD : Form 
     {
         int TIMEOUT_LIMITS = 240;
         SqlConnection sqlConn = new SqlConnection();
