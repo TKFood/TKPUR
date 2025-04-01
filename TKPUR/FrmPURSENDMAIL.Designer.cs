@@ -43,15 +43,15 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -139,7 +139,7 @@
             // 
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(123, 8);
+            this.comboBox1.Location = new System.Drawing.Point(123, 10);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(114, 24);
             this.comboBox1.TabIndex = 91;
@@ -229,9 +229,9 @@
             // 
             this.tableLayoutPanel2.BackColor = System.Drawing.Color.LightGreen;
             this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 185F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 232F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 22F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.textBox1, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.button5, 0, 13);
@@ -270,7 +270,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(179, 16);
+            this.label1.Size = new System.Drawing.Size(226, 16);
             this.label1.TabIndex = 4;
             this.label1.Text = "校稿項目";
             // 
@@ -283,52 +283,8 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.tableLayoutPanel2.SetRowSpan(this.textBox1, 2);
-            this.textBox1.Size = new System.Drawing.Size(234, 74);
+            this.textBox1.Size = new System.Drawing.Size(248, 74);
             this.textBox1.TabIndex = 5;
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(3, 123);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(179, 34);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "校稿-寄送MAIL";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 332);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(179, 16);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "發包廠商";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel2.SetColumnSpan(this.textBox2, 2);
-            this.textBox2.Location = new System.Drawing.Point(3, 363);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.tableLayoutPanel2.SetRowSpan(this.textBox2, 2);
-            this.textBox2.Size = new System.Drawing.Size(234, 74);
-            this.textBox2.TabIndex = 7;
-            // 
-            // button4
-            // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel2.SetColumnSpan(this.button4, 2);
-            this.button4.Location = new System.Drawing.Point(3, 443);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(234, 34);
-            this.button4.TabIndex = 8;
-            this.button4.Text = "填寫發包廠商+發包-寄送MAIL";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
@@ -337,21 +293,22 @@
             this.button5.ForeColor = System.Drawing.Color.Blue;
             this.button5.Location = new System.Drawing.Point(3, 533);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(179, 34);
+            this.button5.Size = new System.Drawing.Size(226, 34);
             this.button5.TabIndex = 9;
             this.button5.Text = "發包-寄送MAIL";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // tabPage2
+            // button3
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 26);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(976, 731);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.button3.Location = new System.Drawing.Point(3, 123);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(226, 34);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "寄送MAIL-校稿";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // label5
             // 
@@ -359,7 +316,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(3, 172);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(179, 16);
+            this.label5.Size = new System.Drawing.Size(226, 16);
             this.label5.TabIndex = 10;
             this.label5.Text = "填寫備註";
             // 
@@ -371,19 +328,62 @@
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
             this.tableLayoutPanel2.SetRowSpan(this.textBox4, 2);
-            this.textBox4.Size = new System.Drawing.Size(234, 74);
+            this.textBox4.Size = new System.Drawing.Size(248, 74);
             this.textBox4.TabIndex = 11;
+            // 
+            // button4
+            // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.SetColumnSpan(this.button4, 2);
+            this.button4.Location = new System.Drawing.Point(3, 443);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(248, 34);
+            this.button4.TabIndex = 8;
+            this.button4.Text = "需填寫發包廠商+發包-寄送MAIL";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 332);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(226, 16);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "發包廠商";
             // 
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.Location = new System.Drawing.Point(3, 283);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(179, 34);
+            this.button6.Size = new System.Drawing.Size(226, 34);
             this.button6.TabIndex = 12;
-            this.button6.Text = "填寫備註";
+            this.button6.Text = "要先儲存備註，才能寄MAIL";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.SetColumnSpan(this.textBox2, 2);
+            this.textBox2.Location = new System.Drawing.Point(3, 363);
+            this.textBox2.Multiline = true;
+            this.textBox2.Name = "textBox2";
+            this.tableLayoutPanel2.SetRowSpan(this.textBox2, 2);
+            this.textBox2.Size = new System.Drawing.Size(248, 74);
+            this.textBox2.TabIndex = 7;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 26);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(976, 731);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // FrmPURSENDMAIL
             // 
