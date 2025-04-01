@@ -321,6 +321,8 @@ namespace TKPUR
                 {
                     dataGridView1.DataSource = null;
                     dataGridView2.DataSource = null;
+
+                    MessageBox.Show("查無資料");
                 }
                 else
                 {
