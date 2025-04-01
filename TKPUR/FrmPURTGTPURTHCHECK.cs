@@ -299,6 +299,10 @@ namespace TKPUR
                                     WHERE TH005=MA001
                                     ) AS TEMP
                                     WHERE 1=1
+                                    AND 單別+單號 IN (
+                                        SELECT TB005+TB006 FROM [TK].dbo.ACPTB
+                                        WHERE ISNULL(TB006,'')<>''
+                                    )
                                     {0}
                                     {1}
                                     {2}
