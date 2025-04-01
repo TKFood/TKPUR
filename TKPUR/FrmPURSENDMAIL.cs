@@ -1094,7 +1094,19 @@ namespace TKPUR
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(textBox2.Text.ToString()))
+            string SUBJECT = textBox1.Text;
+            string REMARKS = textBox4.Text;
+
+            if (!string.IsNullOrEmpty(SUBJECT) && !string.IsNullOrEmpty(REMARKS))
+            {
+                UPDATE_UOF_DESIGN_INFROM_REMARKS(SUBJECT, REMARKS);                
+            }
+            else
+            {
+              
+            }
+
+            if (!string.IsNullOrEmpty(textBox2.Text.ToString()))
             {
                 SEND_MAIL_MANUFACTOR(textBox1.Text.Trim());
                 UPDATE_UOF_DESIGN_INFROM_ISMAILS(textBox1.Text.Trim());
