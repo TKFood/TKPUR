@@ -935,7 +935,7 @@ namespace TKPUR
         }
 
 
-        public void ADD_PURTC_PURTD(string TA001,string TA002,string TC001,string TC002,string TC003)
+        public void ADD_PURTC_PURTD(string TA001,string TA002,string TC001,string TC002,string TC003,string TC024)
         {
             DATA_SET ERPDATA = new DATA_SET();
             ERPDATA.COMPANY = "TK";
@@ -1112,7 +1112,7 @@ namespace TKPUR
                                     ,'{16}' DataGroup
                                     ,'{17}' TC001
                                     ,'{18}' TC002
-                                    ,TA003 TC003
+                                    ,{22} TC003
                                     ,TA032 TC004
                                     ,TA042 TC005
                                     ,TA043 TC006
@@ -1133,7 +1133,7 @@ namespace TKPUR
                                     ,'嘉義縣大林鎮大埔美園區五路3號' TC021
                                     ,'' TC022
                                     ,TA015 TC023
-                                    ,TA003 TC024
+                                    ,{22} TC024
                                     ,'' TC025
                                     ,'0.0500' TC026
                                     ,MA055 TC027
@@ -1227,6 +1227,7 @@ namespace TKPUR
                                         ,TA001
                                         ,TA002
                                         ,TC045
+                                        ,TC024
                                         );
 
                 sbSql.AppendFormat(@" 
@@ -2607,9 +2608,10 @@ namespace TKPUR
             string TC002;
             //string TC003 = textBox19.Text;
             string TC003 = dateTimePicker9.Value.ToString("yyyyMMdd");
+            string TC024= dateTimePicker9.Value.ToString("yyyyMMdd");
             TC002 = GETMAXTC002(TC001, TC003);
 
-            ADD_PURTC_PURTD(TA001,TA002,TC001, TC002, TC003);
+            ADD_PURTC_PURTD(TA001,TA002,TC001, TC002, TC003, TC024);
 
             string TC045 = textBox17.Text.Trim() + textBox18.Text.Trim();
             //是否已產生託外採購單
