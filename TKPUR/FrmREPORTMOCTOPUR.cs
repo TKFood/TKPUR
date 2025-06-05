@@ -951,7 +951,7 @@ namespace TKPUR
             ERPDATA.TRANS_NAME = "PURMI07";
             ERPDATA.sync_date = "";
             ERPDATA.sync_time = "";
-            ERPDATA.sync_mark = "";
+            ERPDATA.sync_mark = ""; 
             ERPDATA.sync_count = "0"; 
             ERPDATA.DataUser = "";
             ERPDATA.DataGroup = "112000";
