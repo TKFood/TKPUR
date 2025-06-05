@@ -952,7 +952,7 @@ namespace TKPUR
             ERPDATA.sync_date = "";
             ERPDATA.sync_time = "";
             ERPDATA.sync_mark = "";
-            ERPDATA.sync_count = "0";
+            ERPDATA.sync_count = "0"; 
             ERPDATA.DataUser = "";
             ERPDATA.DataGroup = "112000";
 
