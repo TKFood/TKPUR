@@ -857,7 +857,8 @@ namespace TKPUR
             DataTable DS_EMAIL_TO_EMAIL = new DataTable();
             DataTable DT_DATAS = new DataTable();
 
-            StringBuilder SUBJEST = new StringBuilder();
+            StringBuilder SUBJEST_ALL = new StringBuilder();
+            string SUBJEST = "";
             StringBuilder BODY = new StringBuilder();
             //指定設計人的email
             string DESIGNER_EAMIL = "";
@@ -871,12 +872,16 @@ namespace TKPUR
 
                 if (DT_DATAS != null && DT_DATAS.Rows.Count >= 1)
                 {
-                    SUBJEST.Clear();
+                    SUBJEST_ALL.Clear();
                     BODY.Clear();
 
 
-                    SUBJEST.AppendFormat(@"系統通知-請查收-採購通知-" + SUBJETCS + "，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                    SUBJEST_ALL.AppendFormat(@"系統通知-請查收-採購通知-" + SUBJETCS + "，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
                     //BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為老楊食品-採購單" + Environment.NewLine + "請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
+                    // 清除換行符
+                    SUBJEST_ALL.Replace("\r", "").Replace("\n", "");
+                    // 最後轉為字串並 Trim
+                    SUBJEST = SUBJEST_ALL.ToString().Trim();
 
                     //ERP 採購相關單別、單號未核準的明細
                     //
@@ -938,6 +943,7 @@ namespace TKPUR
                         //MyMail.Bcc.Add("密件副本的收件者Mail"); //加入密件副本的Mail          
                         //MyMail.Subject = "每日訂單-製令追踨表"+DateTime.Now.ToString("yyyy/MM/dd");
                         MyMail.Subject = SUBJEST.ToString();
+                        //MyMail.Subject = "系統通知-請查收-採購通知-[20250519-02 盒-清酒粕胡椒薄餅55g8入 202003514/袋-清酒粕胡椒薄餅內袋 203021301]，發包廠商[盒-清酒粕胡椒薄餅---昱慶";
                         //MyMail.Body = "<h1>Dear SIR</h1>" + Environment.NewLine + "<h1>附件為每日訂單-製令追踨表，請查收</h1>" + Environment.NewLine + "<h1>若訂單沒有相對的製令則需通知製造生管開立</h1>"; //設定信件內容
                         MyMail.Body = BODY.ToString();
                         MyMail.IsBodyHtml = true; //是否使用html格式
@@ -972,7 +978,7 @@ namespace TKPUR
                             //ex.ToString();
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
 
                     }
