@@ -477,7 +477,7 @@ namespace TKPUR
 
                                         FROM [TKPUR].[dbo].[UOF_DESIGN_INFROM]
                                         LEFT JOIN [TKPUR].[dbo].[UOF_DESIGN_INFROM_EMAIL] ON [UOF_DESIGN_INFROM_EMAIL].NAME=[UOF_DESIGN_INFROM].[DESIGNER] 
-                                        WHERE SUBJECT ='{0}'
+                                        WHERE SUBJECT LIKE'%{0}%'
 
                                 ", SUBJECTS.Replace("'", "''"));
                 }
@@ -503,13 +503,12 @@ namespace TKPUR
             }
             catch
             {
-
+                return null;
             }
             finally
             {
 
-            }
-                    return DT;
+            }                  
         }
 
         public void SEND_MAIL_TO(DataTable DT)
@@ -803,7 +802,7 @@ namespace TKPUR
                 sbSql.AppendFormat(@"  
                                     UPDATE [TKPUR].[dbo].[UOF_DESIGN_INFROM]
                                     SET [MANUFACTOR]='{1}'
-                                    WHERE [SUBJECT]='{0}'
+                                    WHERE [SUBJECT] LIKE '%{0}%'
                                     ", SUBJECT.Replace("'", "''"), MANUFACTOR.Replace("'", "''"));
 
                 cmd.Connection = sqlConn;
