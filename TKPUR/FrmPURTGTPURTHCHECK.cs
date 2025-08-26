@@ -1541,6 +1541,13 @@ namespace TKPUR
                                     FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
                                     WHERE TA001=TB001 AND TA002=TB002
                                     AND TA001='{0}' AND TA002='{1}'
+                                    AND TB005+TB006 NOT IN
+                                    (
+                                    SELECT 
+                                    [TG001]+[TG002]
+                                    FROM [TKPUR].[dbo].[TBPURTGCHECKS]
+                                    )
+
                                     GROUP  BY TB005,TB006
                                     ", TA001, TA002);
 
