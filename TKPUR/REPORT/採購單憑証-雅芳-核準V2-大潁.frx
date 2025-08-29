@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="06/06/2025 16:42:55" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="08/29/2025 15:04:36" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFcYAJrOZ4965QOeb5Zgavy">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGS0k60/hW3LYCdmYIGprp7">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME&#13;&#10;,PURTC.UDF02 AS 'UOF單號'&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB&#13;&#10;WHERE TC001=TD001 AND TC002=TD002&#13;&#10;AND MQ001=TC001&#13;&#10;AND TC004=MA001&#13;&#10;AND TC011=MV001&#13;&#10;AND TC010=MB001&#13;&#10;AND TC001+TC002 IN ('A33120250107002','A')">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
@@ -747,16 +747,16 @@
       <TextObject Name="Text7" Top="66.15" Width="189" Height="18.9" Text="採購單別:[Table.TC001] [Table.MQ002]" VertAlign="Center"/>
       <TextObject Name="Text8" Top="85.05" Width="189" Height="18.9" Text="採購單號:[Table.TC002]" VertAlign="Center"/>
       <TextObject Name="Text11" Top="103.95" Width="189" Height="18.9" Text="單據日期:[Table.TC003]" VertAlign="Center"/>
-      <TextObject Name="Text12" Top="120.4" Width="189" Height="18.9" Text="廠商代號:[Table.TC004] [Table.MA002]" VertAlign="Center"/>
-      <TextObject Name="Text16" Left="189" Top="66.15" Width="160.65" Height="18.9" Text="交易幣別:[Table.TC005]" VertAlign="Center"/>
-      <TextObject Name="Text17" Left="189" Top="85.05" Width="160.65" Height="18.9" Text="課稅別:[Table.TC018NAME]" VertAlign="Center"/>
-      <TextObject Name="Text18" Left="189" Top="103.95" Width="189" Height="18.9" Text="採購人員:[Table.TC011] [Table.MV002]" VertAlign="Center"/>
-      <TextObject Name="Text19" Left="189" Top="122.85" Width="189" Height="18.9" Text="付款條件:[Table.TC027] [Table.TC008]" VertAlign="Center"/>
-      <TextObject Name="Text22" Left="395.78" Top="66.15" Width="113.4" Height="18.9" Text="匯率:[Table.TC006]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text23" Left="395.78" Top="85.05" Width="113.4" Height="18.9" Text="營業稅率:[Table.TC026]" Format="Percent" Format.UseLocale="true" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text24" Left="510.3" Top="66.15" Width="160.65" Height="18.9" Text="運輸方式:[Table.TC017]" VertAlign="Center"/>
-      <TextObject Name="Text25" Left="510.3" Top="85.05" Width="160.65" Height="18.9" Text="價格條件:[Table.TC007]" VertAlign="Center"/>
-      <TextObject Name="Text26" Left="510.3" Top="103.95" Width="160.65" Height="18.9" Text="廠別:[Table.TC010] [Table.MB002]" VertAlign="Center"/>
+      <TextObject Name="Text12" Top="120.4" Width="274.05" Height="18.9" Text="廠商代號:[Table.TC004] [Table.MA002]" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="274.05" Top="66.15" Width="160.65" Height="18.9" Text="交易幣別:[Table.TC005]" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="274.05" Top="85.05" Width="160.65" Height="18.9" Text="課稅別:[Table.TC018NAME]" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="274.05" Top="103.95" Width="189" Height="18.9" Text="採購人員:[Table.TC011] [Table.MV002]" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="274.05" Top="122.85" Width="236.25" Height="18.9" Text="付款條件:[Table.TC027] [Table.TC008]" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="433.58" Top="66.15" Width="113.4" Height="18.9" Text="匯率:[Table.TC006]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="433.58" Top="85.05" Width="113.4" Height="18.9" Text="營業稅率:[Table.TC026]" Format="Percent" Format.UseLocale="true" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text24" Left="548.1" Top="66.15" Width="160.65" Height="18.9" Text="運輸方式:[Table.TC017]" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="548.1" Top="85.05" Width="160.65" Height="18.9" Text="價格條件:[Table.TC007]" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="548.1" Top="103.95" Width="160.65" Height="18.9" Text="廠別:[Table.TC010] [Table.MB002]" VertAlign="Center"/>
       <TextObject Name="Text73" Top="61.7" Width="718.2" Height="160.65" Border.Lines="Left, Right, Top" HorzAlign="Right"/>
       <TextObject Name="Text49" Left="47.25" Top="257.05" Width="170.1" Height="18.9" Text="規格" VertAlign="Center"/>
       <TextObject Name="Text52" Left="228.65" Top="257.05" Width="75.6" Height="18.9" Text="結案碼" VertAlign="Center"/>
