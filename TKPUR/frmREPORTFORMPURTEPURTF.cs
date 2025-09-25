@@ -254,11 +254,11 @@ namespace TKPUR
              
             if (statusReports.Equals("憑証回傳"))
             {
-                report1.Load(@"REPORT\採購單變更憑証V4.frx");
+                report1.Load(@"REPORT\採購單變更憑証V6-無核準.frx");
             }           
             else if (statusReports.Equals("雅芳-簽名"))
             {
-                report1.Load(@"REPORT\採購單變更憑証-雅芳-核準V2.frx");
+                report1.Load(@"REPORT\採購單變更憑証V6-核準-雅芳.frx");
             }
             //else if (statusReports.Equals("芳梅-簽名"))
             //{
@@ -321,13 +321,20 @@ namespace TKPUR
                                 ,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012
                                 ,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111
                                 ,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112
-                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTE.TE001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTE.TE002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH(NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                ,[PACKAGE_SPEC] AS '外包裝及驗收標準'
+                                ,[PRODUCT_APPEARANCE] AS '產品外觀'
+                                ,[COLOR] AS '色澤'
+                                ,[FLAVOR] AS '風味'
+                                ,[BATCHNO] AS '產品批號'
 
-                                FROM [TK].dbo.PURTF,[TK].dbo.PURTE
-                                LEFT JOIN [TK].dbo.CMSMQ ON MQ001=TE001
-                                LEFT JOIN [TK].dbo.PURMA ON MA001=TE005
-                                LEFT JOIN [TK].dbo.PURTC ON TC001=TE001 AND TC002=TE002
-                                LEFT JOIN [TK].dbo.CMSMB ON TC010=MB001
+                                FROM [TK].dbo.PURTF WITH(NOLOCK)
+                                LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005
+                                ,[TK].dbo.PURTE WITH(NOLOCK)
+                                LEFT JOIN [TK].dbo.CMSMQ WITH(NOLOCK) ON MQ001=TE001
+                                LEFT JOIN [TK].dbo.PURMA WITH(NOLOCK) ON MA001=TE005
+                                LEFT JOIN [TK].dbo.PURTC WITH(NOLOCK) ON TC001=TE001 AND TC002=TE002
+                                LEFT JOIN [TK].dbo.CMSMB WITH(NOLOCK) ON TC010=MB001
                                 WHERE TE001=TF001 AND TE002=TF002
                                 AND TE001+TE002+TE003 IN ({0})
                                 {1}
