@@ -251,7 +251,7 @@ namespace TKPUR
                 }
             }
 
-            PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'A'";
+            PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'A'"; 
 
             SETFASTREPORT(statusReports, PRINTSPURTCPURTD, COMMENT);
             //MessageBox.Show(PRINTSPURTCPURTD);
