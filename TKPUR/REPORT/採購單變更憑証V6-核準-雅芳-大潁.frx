@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="09/25/2025 14:34:34" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="09/25/2025 14:53:11" ReportInfo.CreatorVersion="2016.4.4.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUH5t+ys8KdafJ8HzA2RXL4o">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFtGJwRJ3JlAu2upH5pROTM">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME&#13;&#10;,CASE WHEN TE118='1' THEN '應稅內含' WHEN TE118='2' THEN '應稅外加' WHEN TE118='3' THEN '零稅率' WHEN TE118='4' THEN '免稅 'WHEN TE118='9' THEN '不計稅' END AS TE118NAME&#13;&#10;,PURTE.UDF02 AS 'UOF單號'&#13;&#10;,CONVERT(DECIMAL(16,3),TE008) AS NEWTE008&#13;&#10;,CONVERT(DECIMAL(16,3),TE108) AS NEWTE108&#13;&#10;,CONVERT(DECIMAL(16,3),TF011) AS NEWTF011&#13;&#10;,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012&#13;&#10;,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111&#13;&#10;,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH(NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTF WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005&#13;&#10;,[TK].dbo.PURTE WITH(NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.CMSMQ WITH(NOLOCK) ON MQ001=TE001&#13;&#10;LEFT JOIN [TK].dbo.PURMA WITH(NOLOCK) ON MA001=TE005&#13;&#10;LEFT JOIN [TK].dbo.PURTC WITH(NOLOCK) ON TC001=TE001 AND TC002=TE002&#13;&#10;LEFT JOIN [TK].dbo.CMSMB WITH(NOLOCK) ON TC010=MB001&#13;&#10;WHERE TE001=TF001 AND TE002=TF002&#13;&#10;AND TE002='20221028014'&#13;&#10;&#13;&#10;ORDER BY TE001,TE002,TE003,TF004">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
@@ -803,7 +803,7 @@ namespace FastReport
         <TextObject Name="Text108" Left="246.85" Top="0.45" Width="75.6" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF008]&#13;&#10;[Table.TF013]&#13;&#10;[Table.TF014]"/>
         <TextObject Name="Text116" Left="322.45" Top="0.45" Width="75.6" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF009]&#13;&#10;[Table.TF015]&#13;&#10;[Table.TF010]"/>
         <TextObject Name="Text122" Left="398.05" Top="0.45" Width="75.6" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.NEWTF011]&#13;&#10;[Table.NEWTF012]" HorzAlign="Right"/>
-        <TextObject Name="Text129" Left="473.65" Top="0.45" Width="236.25" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF017]&#13;&#10;[Table.外包裝及驗收標準]&#13;&#10;[Table.產品外觀]&#13;&#10;[Table.色澤]&#13;&#10;[Table.風味]"/>
+        <TextObject Name="Text129" Left="473.65" Top="0.45" Width="236.25" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF017]&#13;&#10;[Table.外包裝及驗收標準]&#13;&#10;[Table.產品外觀]&#13;&#10;[Table.色澤]&#13;&#10;[Table.風味]&#13;&#10;[Table.產品批號]"/>
         <ChildBand Name="Child1" Top="375.75" Width="718.2" Height="18.9" CompleteToNRows="4">
           <TextObject Name="Text151" Left="1.15" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
           <TextObject Name="Text152" Left="398.05" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>

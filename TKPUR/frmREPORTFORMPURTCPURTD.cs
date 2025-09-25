@@ -431,7 +431,7 @@ namespace TKPUR
 
             String connectionString; 
             sqlConn = new SqlConnection(sqlsb.ConnectionString);
-
+             
             report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
 
 
