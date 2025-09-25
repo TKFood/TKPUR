@@ -417,7 +417,7 @@ namespace TKPUR
                 report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
             }
             //else if (statusReports.Equals("芳梅-簽名"))
-            //{
+            //{ 
             //    report1.Load(@"REPORT\採購單憑証-芳梅-核準V2.frx");
             //}
 
@@ -429,7 +429,7 @@ namespace TKPUR
             sqlsb.Password = TKID.Decryption(sqlsb.Password);
             sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
 
-            String connectionString;
+            String connectionString; 
             sqlConn = new SqlConnection(sqlsb.ConnectionString);
 
             report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
