@@ -653,7 +653,7 @@ namespace TKPUR
 
                 if (result == 0)
                 {
-                    tran.Rollback();    //交易取消
+                    tran.Rollback();    //交易取消 
                 }
                 else
                 {

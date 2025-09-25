@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="09/25/2025 10:49:44" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="09/25/2025 14:37:59" ReportInfo.CreatorVersion="2016.4.4.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGCR2S/OmCLTnCN+BA/2+lB">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUE42+hSrgJ92A4HWF1dApPs">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME&#13;&#10;,CASE WHEN TE118='1' THEN '應稅內含' WHEN TE118='2' THEN '應稅外加' WHEN TE118='3' THEN '零稅率' WHEN TE118='4' THEN '免稅 'WHEN TE118='9' THEN '不計稅' END AS TE118NAME&#13;&#10;,PURTE.UDF02 AS 'UOF單號'&#13;&#10;,CONVERT(DECIMAL(16,3),TE008) AS NEWTE008&#13;&#10;,CONVERT(DECIMAL(16,3),TE108) AS NEWTE108&#13;&#10;,CONVERT(DECIMAL(16,3),TF011) AS NEWTF011&#13;&#10;,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012&#13;&#10;,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111&#13;&#10;,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH(NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTF WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005&#13;&#10;,[TK].dbo.PURTE WITH(NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.CMSMQ WITH(NOLOCK) ON MQ001=TE001&#13;&#10;LEFT JOIN [TK].dbo.PURMA WITH(NOLOCK) ON MA001=TE005&#13;&#10;LEFT JOIN [TK].dbo.PURTC WITH(NOLOCK) ON TC001=TE001 AND TC002=TE002&#13;&#10;LEFT JOIN [TK].dbo.CMSMB WITH(NOLOCK) ON TC010=MB001&#13;&#10;WHERE TE001=TF001 AND TE002=TF002&#13;&#10;AND TE002='20221028014'&#13;&#10;&#13;&#10;ORDER BY TE001,TE002,TE003,TF004">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
@@ -797,30 +797,23 @@ namespace FastReport
       <TextObject Name="Text134" Left="398.05" Top="203.8" Width="75.6" Height="66.15" Border.Lines="Left, Right, Top"/>
       <TextObject Name="Text135" Left="473.65" Top="203.8" Width="236.25" Height="66.15" Border.Lines="Left, Right, Top"/>
       <TextObject Name="Text148" Left="519.75" Top="138.1" Width="198.45" Height="18.9" Text="採購變更簽核單:[Table.UOF單號]" VertAlign="Center"/>
-      <DataBand Name="Data1" Top="275.7" Width="718.2" Height="85.05" CanGrow="true" Guides="28.35,28.35,37.8,37.8,28.35,28.35,28.35,0,28.35,37.8,37.8,37.8,37.8,37.8" DataSource="Table">
-        <TextObject Name="Text9" Left="2.35" Top="12.45" Width="66.15" Height="18.9" CanGrow="true" GrowToBottom="true" Text="[Table.TF004]"/>
-        <TextObject Name="Text12" Left="75.7" Top="11.45" Width="170.1" Height="61.25" CanGrow="true" GrowToBottom="true" Text="[Table.TF005]&#13;&#10;[Table.TF006]&#13;&#10;[Table.TF007]"/>
-        <TextObject Name="Text108" Left="248.15" Top="9" Width="66.15" Height="60.15" CanGrow="true" GrowToBottom="true" Text="[Table.TF008]&#13;&#10;[Table.TF013]&#13;&#10;[Table.TF014]"/>
-        <TextObject Name="Text116" Left="321.2" Top="9" Width="75.6" Height="59.7" CanGrow="true" GrowToBottom="true" Text="[Table.TF009]&#13;&#10;[Table.TF015]&#13;&#10;[Table.TF010]"/>
-        <TextObject Name="Text122" Left="396.9" Top="9" Width="75.6" Height="56.7" CanGrow="true" GrowToBottom="true" Text="[Table.NEWTF011]&#13;&#10;[Table.NEWTF012]" HorzAlign="Right"/>
-        <TextObject Name="Text129" Left="472.5" Top="9" Width="236.25" Height="57.8" CanGrow="true" GrowToBottom="true" Text="[Table.TF017]&#13;&#10;[Table.外包裝及驗收標準]&#13;&#10;[Table.產品外觀]&#13;&#10;[Table.色澤]&#13;&#10;[Table.風味]"/>
-        <TextObject Name="Text130" Left="179.55" Top="9.45" Width="66.15" Height="18.9" Text="(變更後)" VertAlign="Center"/>
-        <TextObject Name="Text136" Width="75.6" Height="85.05" Border.Lines="All"/>
-        <TextObject Name="Text138" Left="245.7" Width="75.6" Height="85.05" Border.Lines="All"/>
-        <TextObject Name="Text139" Left="321.3" Width="75.6" Height="85.05" Border.Lines="All"/>
-        <TextObject Name="Text140" Left="396.9" Width="75.6" Height="85.05" Border.Lines="All"/>
-        <TextObject Name="Text137" Left="75.6" Width="170.1" Height="85.05" Border.Lines="All"/>
-        <TextObject Name="Text141" Left="472.5" Width="236.25" Height="85.05" Border.Lines="All"/>
-        <ChildBand Name="Child1" Top="365.35" Width="718.2" Height="18.9" CompleteToNRows="4">
-          <TextObject Name="Text151" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
-          <TextObject Name="Text152" Left="396.9" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
-          <TextObject Name="Text153" Left="75.6" Width="170.1" Height="18.9" Border.Lines="Left, Right, Bottom" Text="//以下空白" VertAlign="Center"/>
-          <TextObject Name="Text154" Left="245.7" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
-          <TextObject Name="Text155" Left="321.3" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
-          <TextObject Name="Text156" Left="472.5" Width="236.25" Height="18.9" Border.Lines="Left, Right, Bottom"/>
+      <DataBand Name="Data1" Top="275.7" Width="718.2" Height="84" CanGrow="true" Guides="28.35,28.35,37.8,37.8,28.35,28.35,28.35,0,28.35,37.8,37.8,37.8,37.8,37.8" DataSource="Table">
+        <TextObject Name="Text9" Left="1.15" Width="75.6" Height="84" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF004]"/>
+        <TextObject Name="Text12" Left="76.75" Width="170.1" Height="84" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF005]  (變更後)&#13;&#10;[Table.TF006]&#13;&#10;[Table.TF007]"/>
+        <TextObject Name="Text108" Left="246.85" Width="75.6" Height="84" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF008]&#13;&#10;[Table.TF013]&#13;&#10;[Table.TF014]"/>
+        <TextObject Name="Text116" Left="322.45" Width="75.6" Height="84" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF009]&#13;&#10;[Table.TF015]&#13;&#10;[Table.TF010]"/>
+        <TextObject Name="Text122" Left="398.05" Width="75.6" Height="84" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.NEWTF011]&#13;&#10;[Table.NEWTF012]" HorzAlign="Right"/>
+        <TextObject Name="Text129" Left="473.65" Width="236.25" Height="84" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF017]&#13;&#10;[Table.外包裝及驗收標準]&#13;&#10;[Table.產品外觀]&#13;&#10;[Table.色澤]&#13;&#10;[Table.風味]"/>
+        <ChildBand Name="Child1" Top="364.3" Width="718.2" Height="18.9" CompleteToNRows="4">
+          <TextObject Name="Text151" Left="1.15" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
+          <TextObject Name="Text152" Left="398.05" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
+          <TextObject Name="Text153" Left="76.75" Width="170.1" Height="18.9" Border.Lines="Left, Right, Bottom" Text="//以下空白" VertAlign="Center"/>
+          <TextObject Name="Text154" Left="246.85" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
+          <TextObject Name="Text155" Left="322.45" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
+          <TextObject Name="Text156" Left="473.65" Width="236.25" Height="18.9" Border.Lines="Left, Right, Bottom"/>
         </ChildBand>
       </DataBand>
-      <GroupFooterBand Name="GroupFooter1" Top="388.84" Width="718.2" Height="264.6">
+      <GroupFooterBand Name="GroupFooter1" Top="387.79" Width="718.2" Height="264.6">
         <TextObject Name="Text160" Width="661.5" Height="18.9" Text="採購簽核意見:[Table.採購簽核意見]" Font="宋体, 10pt"/>
         <TextObject Name="Text161" Top="28.35" Width="661.5" Height="18.9" Text="手動填寫意見:[P1]" Font="宋体, 10pt"/>
         <TextObject Name="Text162" Left="28.35" Top="56.7" Width="652.05" Height="75.6" Text="確認後請蓋章或簽名回傳      隨貨附發票    COA    &#13;&#10;進貨時間週一至週五 AM8:30-12:00 PM 13:00-16:00&#13;&#10;產品外包裝需標示公司名稱、地址、電話、原產地、主要成份或材料、數量、有效日期或製造日期&#13;&#10;" Font="宋体, 12pt, style=Bold"/>
