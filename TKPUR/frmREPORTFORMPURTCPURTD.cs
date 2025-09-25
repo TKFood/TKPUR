@@ -264,11 +264,11 @@ namespace TKPUR
                 
             if (statusReports.Equals("憑証回傳"))  
             {
-                report1.Load(@"REPORT\採購單憑証V5.frx"); 
+                report1.Load(@"REPORT\採購單憑証V6-無核準.frx"); 
             }
             else if (statusReports.Equals("雅芳-簽名")) 
             {
-                report1.Load(@"REPORT\採購單憑証-雅芳-核準V2.frx");
+                report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
             } 
             //else if (statusReports.Equals("芳梅-簽名"))
             //{
@@ -323,17 +323,29 @@ namespace TKPUR
             }
 
             FASTSQL.AppendFormat(@"      
-                                SELECT *
+                               SELECT *
                                 ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
                                 ,PURTC.UDF02 AS 'UOF單號'
-                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH (NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                ,[PACKAGE_SPEC] AS '外包裝及驗收標準'
+                                ,[PRODUCT_APPEARANCE] AS '產品外觀'
+                                ,[COLOR] AS '色澤'
+                                ,[FLAVOR] AS '風味'
+                                ,[BATCHNO] AS '產品批號'
 
-                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB
+                                FROM [TK].dbo.PURTC WITH(NOLOCK)
+                                ,[TK].dbo.PURTD WITH(NOLOCK)
+                                LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004
+                                ,[TK].dbo.CMSMQ WITH(NOLOCK)
+                                ,[TK].dbo.PURMA WITH(NOLOCK)
+                                ,[TK].dbo.CMSMV WITH(NOLOCK)
+                                ,[TK].dbo.CMSMB WITH(NOLOCK)
+
                                 WHERE TC001=TD001 AND TC002=TD002
                                 AND MQ001=TC001
                                 AND TC004=MA001
                                 AND TC011=MV001
-                                AND TC010=MB001
+                                AND TC010=CMSMB.MB001
                                 AND TC001+TC002 IN ({0})
                                 {1}
  
@@ -398,11 +410,11 @@ namespace TKPUR
             
             if (statusReports.Equals("憑証回傳"))
             {
-                report1.Load(@"REPORT\採購單憑証V5.frx");
+                report1.Load(@"REPORT\採購單憑証V6-無核準.frx");
             }
             else if (statusReports.Equals("雅芳-簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証-雅芳-核準V2.frx");
+                report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
             }
             //else if (statusReports.Equals("芳梅-簽名"))
             //{
@@ -463,17 +475,29 @@ namespace TKPUR
             }
 
             FASTSQL.AppendFormat(@"      
-                                SELECT *
+                                 SELECT *
                                 ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
                                 ,PURTC.UDF02 AS 'UOF單號'
-                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH (NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                ,[PACKAGE_SPEC] AS '外包裝及驗收標準'
+                                ,[PRODUCT_APPEARANCE] AS '產品外觀'
+                                ,[COLOR] AS '色澤'
+                                ,[FLAVOR] AS '風味'
+                                ,[BATCHNO] AS '產品批號'
 
-                                FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.CMSMQ,[TK].dbo.PURMA,[TK].dbo.CMSMV,[TK].dbo.CMSMB
+                                FROM [TK].dbo.PURTC WITH(NOLOCK)
+                                ,[TK].dbo.PURTD WITH(NOLOCK)
+                                LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004
+                                ,[TK].dbo.CMSMQ WITH(NOLOCK)
+                                ,[TK].dbo.PURMA WITH(NOLOCK)
+                                ,[TK].dbo.CMSMV WITH(NOLOCK)
+                                ,[TK].dbo.CMSMB WITH(NOLOCK)
+
                                 WHERE TC001=TD001 AND TC002=TD002
                                 AND MQ001=TC001
                                 AND TC004=MA001
                                 AND TC011=MV001
-                                AND TC010=MB001
+                                AND TC010=CMSMB.MB001
                                 AND TC001='{0}' AND TC002='{1}'
                                 {2}
  
