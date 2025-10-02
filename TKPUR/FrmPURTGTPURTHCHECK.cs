@@ -873,6 +873,7 @@ namespace TKPUR
 	                                ,TG003 AS '進貨日期'
 	                                ,TH036 AS '有效日期'
 	                                ,TH117 AS '製造日期'
+                                    ,DATEDIFF(day,  TG003,TH036) AS '進貨後的有效天數'
                                     FROM [TK].dbo.ACPTB
                                     LEFT JOIN [TK].dbo.PURTH ON TH001=TB005 AND TH002=TB006 AND TH003=TB007
                                     LEFT JOIN [TK].dbo.PURTG ON TH001=TG001 AND TH002=TG002 
