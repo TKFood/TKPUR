@@ -63,6 +63,7 @@ namespace TKPUR
         {
             DataSet ds = new DataSet();
 
+            StringBuilder sbSqlQuery1 = new StringBuilder();
             StringBuilder sbSqlQuery2 = new StringBuilder();
             StringBuilder sbSqlQuery3 = new StringBuilder();
 
@@ -84,6 +85,20 @@ namespace TKPUR
                 sbSql.Clear();
                 sbSqlQuery.Clear();
 
+                if (!string.IsNullOrEmpty(TG002))
+                {
+                    sbSqlQuery1.AppendFormat(@" 
+                                            AND 單號 LIKE '%{0}%'
+                                                ", TG002);
+                }
+                else
+                {
+                    sbSqlQuery1.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+
                 if (!string.IsNullOrEmpty(MA001))
                 {
                     sbSqlQuery2.AppendFormat(@" 
@@ -97,19 +112,7 @@ namespace TKPUR
                                                 ");
                 }
 
-                if (!string.IsNullOrEmpty(TG002))
-                {
-                    sbSqlQuery3.AppendFormat(@" 
-                                            AND 單號 LIKE '%{0}%'
-                                                ", TG002);
-                }
-                else
-                {
-                    sbSqlQuery3.AppendFormat(@" 
-                                           
-                                                ");
-                }
-                                
+                             
 
                 //採購的進貨+製令的託外進貨
                 sbSql.AppendFormat(@"                                    
@@ -161,15 +164,11 @@ namespace TKPUR
                                     FROM [TK].dbo.MOCTH,[TK].dbo.PURMA
                                     WHERE TH005=MA001
                                     ) AS TEMP
-                                    WHERE 1=1
-                                    AND 單別+單號 IN (
-                                        SELECT TB005+TB006 FROM [TK].dbo.ACPTB
-                                        WHERE ISNULL(TB006,'')<>''
-                                    )
+                                    WHERE 1=1                                   
                                     {0}
                                     {1}
                                
-                                    ", sbSqlQuery.ToString(), sbSqlQuery2.ToString());
+                                    ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
