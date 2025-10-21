@@ -58,7 +58,31 @@ namespace TKPUR
             InitializeComponent();
         }
 
+        private void frmREPORTPAYS_Load(object sender, EventArgs e)
+        {
+            AddCheckBoxColumn();
+        }
+
+        private void AddCheckBoxColumn()
+        {
+            // 1. 建立 DataGridViewCheckBoxColumn 實例
+            DataGridViewCheckBoxColumn checkBoxColumn = new DataGridViewCheckBoxColumn();
+
+            // 2. 設定欄位屬性
+            checkBoxColumn.HeaderText = "選取"; // 欄位標題
+            checkBoxColumn.Name = "SelectedCheckbox"; // 欄位名稱 (建議設定，方便後續程式碼存取)
+            checkBoxColumn.ValueType = typeof(bool); // 設定儲存的值的型別為 bool
+                                                     // 可選：設定寬度或自動調整模式
+            checkBoxColumn.Width = 50;
+            checkBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+            // 3. 將欄位新增到 DataGridView 的 Columns 集合中
+            // 預設是加在最後一欄，如果您想放在第一欄，可以使用 Insert(0, checkBoxColumn)
+            this.dataGridView1.Columns.Insert(0, checkBoxColumn);
+            // 或者 this.dataGridView1.Columns.Add(checkBoxColumn); // 加到最後
+        }
         #region FUNCTION
+
         public void Search( string TG002, string MA001)
         {
             DataSet ds = new DataSet();
@@ -227,5 +251,7 @@ namespace TKPUR
             Search( textBox5.Text.Trim(), textBox6.Text.Trim());
         }
         #endregion
+
+     
     }
 }

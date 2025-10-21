@@ -234,6 +234,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmREPORTPAYS";
             this.Text = "frmREPORTPAYS";
+            this.Load += new System.EventHandler(this.frmREPORTPAYS_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
