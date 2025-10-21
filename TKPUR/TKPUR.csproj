@@ -189,6 +189,12 @@
     <Compile Include="frmREPORTKPI.Designer.cs">
       <DependentUpon>frmREPORTKPI.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTPAYS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTPAYS.Designer.cs">
+      <DependentUpon>frmREPORTPAYS.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmReportPURALL.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -388,6 +394,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTKPI.resx">
       <DependentUpon>frmREPORTKPI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTPAYS.resx">
+      <DependentUpon>frmREPORTPAYS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmReportPURALL.resx">
       <DependentUpon>FrmReportPURALL.cs</DependentUpon>
