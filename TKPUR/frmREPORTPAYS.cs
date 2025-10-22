@@ -144,7 +144,8 @@ namespace TKPUR
                                     FROM 
                                     (
                                     SELECT 
-                                    TG002 AS '單號'
+                                    TG001 AS '單別'
+                                    ,TG002 AS '單號'
                                     ,TG003 AS '進貨日期'                                    
                                     ,TG021 AS '廠商全名'
                                     ,TG011 AS '發票號碼'
@@ -159,7 +160,7 @@ namespace TKPUR
                                     ,TG031 AS '本幣貨款金額'
                                     ,TG032 AS '本幣稅額'
                                     ,(TG031+TG032) AS '本幣合計金額'
-                                    , TG001 AS '單別'
+
                                     ,TG005 AS '供應廠商'
 
                                     FROM [TK].dbo.PURTG
@@ -167,7 +168,8 @@ namespace TKPUR
 
                                     UNION ALL
                                     SELECT 
-                                    TH002 AS '單號'
+                                    TH001 AS '單別'
+                                    ,TH002 AS '單號'
                                     ,TH003 AS '進貨日期'                                    
                                     ,MA003 AS '廠商全名'
                                     ,TH014 AS '發票號碼'
@@ -182,7 +184,6 @@ namespace TKPUR
                                     ,TH031 AS '本幣貨款金額'
                                     ,TH032 AS '本幣稅額'
                                     ,(TH031+TH032) AS '本幣合計金額'
-                                    , TH001 AS '單別'
                                     ,TH005 AS '供應廠商'
 
                                     FROM [TK].dbo.MOCTH,[TK].dbo.PURMA
@@ -191,6 +192,7 @@ namespace TKPUR
                                     WHERE 1=1                                   
                                     {0}
                                     {1}
+                                    ORDER BY 單別,單號
                                
                                     ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString());
 
@@ -243,6 +245,70 @@ namespace TKPUR
             }
         }
 
+        /// <summary>
+        /// 找出 DataGridView 中被勾選的行的名稱。
+        /// </summary>
+        /// <param name="dataGridView">要操作的 DataGridView 控制項。</param>
+        /// <param name="checkBoxColumnName">CheckBox 欄位的 Name 屬性值 (例如: "SelectedCheckbox")。</param>
+        /// <param name="nameColumnName">包含名稱資料的欄位 Name 屬性值 (例如: "Name")。</param>
+        /// <returns>一個包含所有被勾選名稱的 List<string>。</returns>
+        public List<string> GetSelectedNamesFromDGV(DataGridView dataGridView, string checkBoxColumnName)
+        {
+            List<string> selectedNames = new List<string>();
+
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+                // 忽略新增行 (New Row)
+                if (row.IsNewRow)
+                {
+                    continue;
+                }
+
+                // 確保兩個目標欄位都存在
+                if (row.Cells[checkBoxColumnName] != null && row.Cells["單號"] != null)
+                {
+                    // 獲取 CheckBox 欄位的值
+                    object checkBoxValue = row.Cells[checkBoxColumnName].Value;
+                    bool isChecked = false;
+
+                    // 嘗試將值轉換為 bool。需要處理 null 或 DBNull 的情況。
+                    if (checkBoxValue != null && checkBoxValue != DBNull.Value)
+                    {
+                        try
+                        {
+                            // 2. 使用 Convert.ToBoolean 進行轉換
+                            // 它能處理 bool, 1/0 (int), "True"/"False" (string) 等情況
+                            isChecked = Convert.ToBoolean(checkBoxValue);
+                        }
+                        catch (InvalidCastException)
+                        {
+                            // 處理轉換失敗的情況 (例如欄位包含非 1/0 的文字)
+                            // 您可以記錄錯誤或設定預設值
+                            isChecked = false;
+                        }
+                        catch (FormatException)
+                        {
+                            // 處理格式錯誤 (例如欄位是無效字串)
+                            isChecked = false;
+                        }
+                    }
+
+                    // 如果 CheckBox 被勾選，則獲取對應的名稱
+                    if (isChecked)
+                    {
+                        // 獲取名稱欄位的值 (通常是 string)
+                        object TG001 = row.Cells["單別"].Value;
+                        object TG002 = row.Cells["單號"].Value;
+                        if (TG002 != null && TG002 != DBNull.Value)
+                        {
+                            selectedNames.Add(TG001.ToString().Trim()+TG002.ToString().Trim());
+                        }
+                    }
+                }
+            }
+
+            return selectedNames;
+        }
         #endregion
 
         #region BUTTON
@@ -250,8 +316,24 @@ namespace TKPUR
         {
             Search( textBox5.Text.Trim(), textBox6.Text.Trim());
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // 假設您的 DataGridView 叫 dataGridView1
+            // 假設 CheckBox 欄位的 Name 是 "SelectedCheckbox"
+            // 假設名稱欄位的 Name 是 "Name"
+            List<string> names = GetSelectedNamesFromDGV(dataGridView1, "SelectedCheckbox");
+
+            if (names.Count > 0)
+            {
+                MessageBox.Show($"被勾選的名稱有：\n{string.Join(", ", names)}");
+            }
+            else
+            {
+                MessageBox.Show("沒有任何項目被勾選。");
+            }
+        }
         #endregion
 
-     
+
     }
 }
