@@ -162,34 +162,15 @@ namespace TKPUR
                                     ,(TG031+TG032) AS '本幣合計金額'
 
                                     ,TG005 AS '供應廠商'
-
+                                    ,TG033
                                     FROM [TK].dbo.PURTG
                                     WHERE 1=1
-
-                                    UNION ALL
-                                    SELECT 
-                                    TH001 AS '單別'
-                                    ,TH002 AS '單號'
-                                    ,TH003 AS '進貨日期'                                    
-                                    ,MA003 AS '廠商全名'
-                                    ,TH014 AS '發票號碼'
-                                    ,TH013 AS '發票日期'
-                                    ,TH011 AS '統一編號'
-                                    ,(CASE WHEN TH015=1 THEN '應稅內含' 
-                                    WHEN TH015=2 THEN '應稅外加' 
-                                    WHEN TH015=3 THEN '零稅率' 
-                                    WHEN TH015=4 THEN '免稅' 
-                                    WHEN TH015=9 THEN '不計稅' 
-                                    END) AS '課稅別'
-                                    ,TH031 AS '本幣貨款金額'
-                                    ,TH032 AS '本幣稅額'
-                                    ,(TH031+TH032) AS '本幣合計金額'
-                                    ,TH005 AS '供應廠商'
-
-                                    FROM [TK].dbo.MOCTH,[TK].dbo.PURMA
-                                    WHERE TH005=MA001
                                     ) AS TEMP
-                                    WHERE 1=1                                   
+                                    WHERE 1=1   
+                                    AND TG033 IN (
+	                                    SELECT  [TG033]
+	                                    FROM [TKPUR].[dbo].[TKPURTGTG033]
+                                    )                                
                                     {0}
                                     {1}
                                     ORDER BY 單別,單號
@@ -309,6 +290,75 @@ namespace TKPUR
 
             return selectedNames;
         }
+
+        public void SETFASTREPORT(string sqlInCondition)
+        {
+            StringBuilder SQL = new StringBuilder();
+            report1 = new Report();
+            report1.Load(@"REPORT\請款憑單.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+
+            SQL = SETFASETSQL1(sqlInCondition);
+
+            Table.SelectCommand = SQL.ToString(); ;
+
+            //report1.SetParameterValue("P1", COMMENT);
+
+            report1.Preview = previewControl1;
+            report1.Show();
+
+        }
+
+
+        public StringBuilder SETFASETSQL1(string QUERYS)
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+            StringBuilder sbSqlQuery = new StringBuilder();        
+
+            FASTSQL.AppendFormat(@"      
+                                SELECT 
+                                TG001 AS '進貨單別'
+                                ,TG002 AS '進貨單號'
+                                ,TG003 AS '進貨日'
+                                ,TG021 AS '廠商'
+                                ,TH004 AS '品號'
+                                ,TH005 AS '品名'
+                                ,TH006 AS '規格'
+                                ,TH007 AS '數量'
+                                ,TH008 AS '單位'
+                                ,TG031+TG032 AS '總金額'
+                                ,TH047+TH048 AS '明細金額'
+                                FROM [TK].dbo.PURTG,[TK].dbo.PURTH
+                                WHERE TG001=TH001 AND TG002=TH002 
+                                AND TG013 IN ('Y')
+                                AND TG033 IN (
+	                                SELECT  [TG033]
+	                                FROM [TKPUR].[dbo].[TKPURTGTG033]
+                                )
+                                AND TG001+TG002 IN ({0})
+                                ORDER BY TG001,TG002,TG003
+                               
+                                ", QUERYS.ToString());
+
+            return FASTSQL;
+        }
         #endregion
 
         #region BUTTON
@@ -318,6 +368,7 @@ namespace TKPUR
         }
         private void button2_Click(object sender, EventArgs e)
         {
+            string sqlInCondition = "";
             // 假設您的 DataGridView 叫 dataGridView1
             // 假設 CheckBox 欄位的 Name 是 "SelectedCheckbox"
             // 假設名稱欄位的 Name 是 "Name"
@@ -325,12 +376,22 @@ namespace TKPUR
 
             if (names.Count > 0)
             {
-                MessageBox.Show($"被勾選的名稱有：\n{string.Join(", ", names)}");
+                // 關鍵步驟：為每個名稱加上單引號，同時處理名稱中可能包含的單引號
+                // 將每個單引號 ' 替換成兩個單引號 '' (這是 SQL 轉義字元)
+                var escapedNames = names.Select(name =>
+                    $"'{name.Replace("'", "''")}'"
+                );
+
+                // 使用逗號將所有格式化後的字串連接起來
+                sqlInCondition = string.Join(", ", escapedNames);
             }
             else
             {
-                MessageBox.Show("沒有任何項目被勾選。");
+                
             }
+
+            SETFASTREPORT(sqlInCondition);
+            //MessageBox.Show(sqlInCondition.ToString());
         }
         #endregion
 
