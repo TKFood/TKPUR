@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/21/2025 11:51:06" ReportInfo.Modified="10/23/2025 09:43:24" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/21/2025 11:51:06" ReportInfo.Modified="10/23/2025 09:55:51" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGDn9UcdN93Ov5c1ziksB59">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHiFsC+07cTGkRPWzHnUHnn">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT &#13;&#10;TC001 AS '採購單別'&#13;&#10;,TC002 AS '採購單號'&#13;&#10;,TC003 AS '採購日'&#13;&#10;,MA002 AS '廠商'&#13;&#10;,TD004 AS '品號'&#13;&#10;,TD005 AS '品名'&#13;&#10;,TD006 AS '規格'&#13;&#10;,TD008 AS '數量'&#13;&#10;,TD009 AS '單位'&#13;&#10;,TC019+TC020 AS '總金額'&#13;&#10;,CASE WHEN TC018='2' THEN ROUND(TD011*(1+TC026),0) ELSE TD011 END AS '明細金額'&#13;&#10;,TC027&#13;&#10;FROM [TK].dbo.PURTC&#13;&#10;LEFT JOIN [TK].dbo.PURMA ON MA001=TC004&#13;&#10;,[TK].dbo.PURTD&#13;&#10;WHERE TC001=TD001 AND TC002=TD002 &#13;&#10;AND TC014 IN ('Y')&#13;&#10;AND TC027 IN (&#13;&#10;	SELECT  [TG033]&#13;&#10;	FROM [TKPUR].[dbo].[TKPURTGTG033]&#13;&#10;)&#13;&#10;AND TC002 LIKE '2025%'&#13;&#10;ORDER BY TC001,TC002,TC003">
         <Column Name="廠商" DataType="System.String"/>
         <Column Name="品號" DataType="System.String"/>

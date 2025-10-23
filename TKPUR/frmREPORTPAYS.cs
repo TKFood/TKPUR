@@ -518,7 +518,142 @@ namespace TKPUR
 
             }
         }
+        /// <summary>
+        /// 找出 DataGridView 中被勾選的行的名稱。
+        /// </summary>
+        /// <param name="dataGridView">要操作的 DataGridView 控制項。</param>
+        /// <param name="checkBoxColumnName">CheckBox 欄位的 Name 屬性值 (例如: "SelectedCheckbox")。</param>
+        /// <param name="nameColumnName">包含名稱資料的欄位 Name 屬性值 (例如: "Name")。</param>
+        /// <returns>一個包含所有被勾選名稱的 List<string>。</returns>
+        public List<string> GetSelectedNamesFromDGV2(DataGridView dataGridView, string checkBoxColumnName)
+        {
+            List<string> selectedNames = new List<string>();
 
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+                // 忽略新增行 (New Row)
+                if (row.IsNewRow)
+                {
+                    continue;
+                }
+
+                // 確保兩個目標欄位都存在
+                if (row.Cells[checkBoxColumnName] != null && row.Cells["單號"] != null)
+                {
+                    // 獲取 CheckBox 欄位的值
+                    object checkBoxValue = row.Cells[checkBoxColumnName].Value;
+                    bool isChecked = false;
+
+                    // 嘗試將值轉換為 bool。需要處理 null 或 DBNull 的情況。
+                    if (checkBoxValue != null && checkBoxValue != DBNull.Value)
+                    {
+                        try
+                        {
+                            // 2. 使用 Convert.ToBoolean 進行轉換
+                            // 它能處理 bool, 1/0 (int), "True"/"False" (string) 等情況
+                            isChecked = Convert.ToBoolean(checkBoxValue);
+                        }
+                        catch (InvalidCastException)
+                        {
+                            // 處理轉換失敗的情況 (例如欄位包含非 1/0 的文字)
+                            // 您可以記錄錯誤或設定預設值
+                            isChecked = false;
+                        }
+                        catch (FormatException)
+                        {
+                            // 處理格式錯誤 (例如欄位是無效字串)
+                            isChecked = false;
+                        }
+                    }
+
+                    // 如果 CheckBox 被勾選，則獲取對應的名稱
+                    if (isChecked)
+                    {
+                        // 獲取名稱欄位的值 (通常是 string)
+                        object TC001 = row.Cells["單別"].Value;
+                        object TC002 = row.Cells["單號"].Value;
+                        if (TC002 != null && TC002 != DBNull.Value)
+                        {
+                            selectedNames.Add(TC001.ToString().Trim() + TC002.ToString().Trim());
+                        }
+                    }
+                }
+            }
+
+            return selectedNames;
+        }
+
+        public void SETFASTREPORT2(string sqlInCondition)
+        {
+            StringBuilder SQL = new StringBuilder();
+            report1 = new Report();
+            report1.Load(@"REPORT\請款憑單BY採購單.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+
+            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+
+            SQL = SETFASETSQL2(sqlInCondition);
+
+            Table.SelectCommand = SQL.ToString(); ;
+
+            //report1.SetParameterValue("P1", COMMENT);
+
+            report1.Preview = previewControl2;
+            report1.Show();
+
+        }
+
+
+        public StringBuilder SETFASETSQL2(string QUERYS)
+        {
+            StringBuilder FASTSQL = new StringBuilder();
+            StringBuilder sbSqlQuery = new StringBuilder();
+
+            FASTSQL.AppendFormat(@"  
+                                SELECT 
+                                TC001 AS '採購單別'
+                                ,TC002 AS '採購單號'
+                                ,TC003 AS '採購日'
+                                ,MA002 AS '廠商'
+                                ,TD004 AS '品號'
+                                ,TD005 AS '品名'
+                                ,TD006 AS '規格'
+                                ,TD008 AS '數量'
+                                ,TD009 AS '單位'
+                                ,TC019+TC020 AS '總金額'
+                                ,CASE WHEN TC018='2' THEN ROUND(TD011*(1+TC026),0) ELSE TD011 END AS '明細金額'
+                                ,TC027
+                                FROM [TK].dbo.PURTC
+                                LEFT JOIN [TK].dbo.PURMA ON MA001=TC004
+                                ,[TK].dbo.PURTD
+                                WHERE TC001=TD001 AND TC002=TD002 
+                                AND TC014 IN ('Y')
+                                AND TC027 IN (
+	                                SELECT  [TG033]
+	                                FROM [TKPUR].[dbo].[TKPURTGTG033]
+                                )
+                                AND TC001+TC002 IN ({0})
+                                ORDER BY TC001,TC002,TC003
+                               
+                                ", QUERYS.ToString());
+
+            return FASTSQL;
+        }
         #endregion
 
         #region BUTTON
@@ -560,7 +695,30 @@ namespace TKPUR
 
         private void button4_Click(object sender, EventArgs e)
         {
+            string sqlInCondition = "";
+            // 假設您的 DataGridView 叫 dataGridView1
+            // 假設 CheckBox 欄位的 Name 是 "SelectedCheckbox"
+            // 假設名稱欄位的 Name 是 "Name"
+            List<string> names = GetSelectedNamesFromDGV2(dataGridView2, "SelectedCheckbox");
 
+            if (names.Count > 0)
+            {
+                // 關鍵步驟：為每個名稱加上單引號，同時處理名稱中可能包含的單引號
+                // 將每個單引號 ' 替換成兩個單引號 '' (這是 SQL 轉義字元)
+                var escapedNames = names.Select(name =>
+                    $"'{name.Replace("'", "''")}'"
+                );
+
+                // 使用逗號將所有格式化後的字串連接起來
+                sqlInCondition = string.Join(", ", escapedNames);
+            }
+            else
+            {
+
+            }
+
+            SETFASTREPORT2(sqlInCondition);
+            //MessageBox.Show(sqlInCondition.ToString());
         }
 
         #endregion
