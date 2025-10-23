@@ -61,6 +61,7 @@ namespace TKPUR
         private void frmREPORTPAYS_Load(object sender, EventArgs e)
         {
             AddCheckBoxColumn();
+            AddCheckBoxColumn2();
         }
 
         private void AddCheckBoxColumn()
@@ -79,6 +80,24 @@ namespace TKPUR
             // 3. 將欄位新增到 DataGridView 的 Columns 集合中
             // 預設是加在最後一欄，如果您想放在第一欄，可以使用 Insert(0, checkBoxColumn)
             this.dataGridView1.Columns.Insert(0, checkBoxColumn);
+            // 或者 this.dataGridView1.Columns.Add(checkBoxColumn); // 加到最後
+        }
+        private void AddCheckBoxColumn2()
+        {
+            // 1. 建立 DataGridViewCheckBoxColumn 實例
+            DataGridViewCheckBoxColumn checkBoxColumn = new DataGridViewCheckBoxColumn();
+
+            // 2. 設定欄位屬性
+            checkBoxColumn.HeaderText = "選取"; // 欄位標題
+            checkBoxColumn.Name = "SelectedCheckbox"; // 欄位名稱 (建議設定，方便後續程式碼存取)
+            checkBoxColumn.ValueType = typeof(bool); // 設定儲存的值的型別為 bool
+                                                     // 可選：設定寬度或自動調整模式
+            checkBoxColumn.Width = 50;
+            checkBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+            // 3. 將欄位新增到 DataGridView 的 Columns 集合中
+            // 預設是加在最後一欄，如果您想放在第一欄，可以使用 Insert(0, checkBoxColumn)
+            this.dataGridView2.Columns.Insert(0, checkBoxColumn);
             // 或者 this.dataGridView1.Columns.Add(checkBoxColumn); // 加到最後
         }
         #region FUNCTION
@@ -359,12 +378,153 @@ namespace TKPUR
 
             return FASTSQL;
         }
+
+        public void Search2(string TC002, string MA001)
+        {
+            DataSet ds = new DataSet();
+
+            StringBuilder sbSqlQuery1 = new StringBuilder();
+            StringBuilder sbSqlQuery2 = new StringBuilder();
+            StringBuilder sbSqlQuery3 = new StringBuilder();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                if (!string.IsNullOrEmpty(TC002))
+                {
+                    sbSqlQuery1.AppendFormat(@" 
+                                            AND 單號 LIKE '%{0}%'
+                                                ", TC002);
+                }
+                else
+                {
+                    sbSqlQuery1.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+
+                if (!string.IsNullOrEmpty(MA001))
+                {
+                    sbSqlQuery2.AppendFormat(@" 
+                                            AND (廠商全名 LIKE '%{0}%' OR 供應廠商 LIKE '%{0}%')
+                                                ", MA001);
+                }
+                else
+                {
+                    sbSqlQuery2.AppendFormat(@" 
+                                           
+                                                ");
+                }
+
+
+
+                //採購的進貨+製令的託外進貨
+                sbSql.AppendFormat(@"                                    
+                                   SELECT *
+                                    FROM 
+                                    (
+                                    SELECT 
+                                    TC001 AS '單別'
+                                    ,TC002 AS '單號'
+                                    ,TC003 AS '採購日期'                                    
+                                    ,MA002 AS '廠商全名'
+                                    ,(CASE WHEN TC018=1 THEN '應稅內含' 
+                                    WHEN TC018=2 THEN '應稅外加' 
+                                    WHEN TC018=3 THEN '零稅率' 
+                                    WHEN TC018=4 THEN '免稅' 
+                                    WHEN TC018=9 THEN '不計稅' 
+                                    END) AS '課稅別'
+                                    ,TC019 AS '本幣貨款金額'
+                                    ,TC020 AS '本幣稅額'
+                                    ,(TC019+TC020) AS '本幣合計金額'
+                                    ,TC004 AS '供應廠商'
+                                    ,TC027
+                                    FROM [TK].dbo.PURTC
+                                    LEFT JOIN [TK].dbo.PURMA ON MA001=TC004
+                                    WHERE 1=1
+                                    ) AS TEMP
+                                    WHERE 1=1   
+                                    AND TC027 IN (
+	                                    SELECT  [TG033]
+	                                    FROM [TKPUR].[dbo].[TKPURTGTG033]
+                                    )                                
+                                    {0}
+                                    {1}
+                                    ORDER BY 單別,單號
+                               
+                                    ", sbSqlQuery1.ToString(), sbSqlQuery2.ToString());
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds.Tables["TEMPds1"].Rows.Count == 0)
+                {
+                    dataGridView2.DataSource = null;
+
+                    MessageBox.Show("查無資料");
+                }
+                else
+                {
+                    if (ds.Tables["TEMPds1"].Rows.Count >= 1)
+                    {
+                        dataGridView2.DataSource = ds.Tables["TEMPds1"];
+                        dataGridView2.AutoResizeColumns();
+
+                        dataGridView2.AutoResizeColumns();
+                        dataGridView2.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                        dataGridView2.DefaultCellStyle.Font = new Font("Tahoma", 10);
+                        // 設定數字格式
+                        // 或使用 "N2" 表示兩位小數點（例如：12,345.67）
+                        dataGridView2.Columns["本幣貨款金額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+                        dataGridView2.Columns["本幣稅額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+                        dataGridView2.Columns["本幣合計金額"].DefaultCellStyle.Format = "N0"; // 每三位一個逗號，無小數點
+
+
+
+                    }
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
         #endregion
 
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            Search( textBox5.Text.Trim(), textBox6.Text.Trim());
+            Search(textBox5.Text.Trim(), textBox6.Text.Trim());
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -393,6 +553,16 @@ namespace TKPUR
             SETFASTREPORT(sqlInCondition);
             //MessageBox.Show(sqlInCondition.ToString());
         }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Search2(textBox1.Text.Trim(), textBox2.Text.Trim());
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
 
