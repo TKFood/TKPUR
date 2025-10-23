@@ -295,7 +295,7 @@ namespace TKPUR
         {
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
-            report1.Load(@"REPORT\請款憑單.frx");
+            report1.Load(@"REPORT\請款憑單BY進貨單.frx");
 
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
