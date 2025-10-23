@@ -1567,16 +1567,13 @@ namespace TKPUR
 
                 if (result == 0)
                 {
-                    tran.Rollback();    //交易取消
-
-                    MessageBox.Show("失敗");
+                    tran.Rollback();    //交易取消                 
                 }
                 else
                 {
-                    tran.Commit();      //執行交易  
-
-                    MessageBox.Show("完成");
+                    tran.Commit();      //執行交易                      
                 }
+                MessageBox.Show("完成");
             }
             catch (Exception ex)
             {
