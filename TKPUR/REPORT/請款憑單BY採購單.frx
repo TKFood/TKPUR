@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/21/2025 11:51:06" ReportInfo.Modified="10/23/2025 09:55:51" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/21/2025 11:51:06" ReportInfo.Modified="10/28/2025 15:33:08" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHiFsC+07cTGkRPWzHnUHnn">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT &#13;&#10;TC001 AS '採購單別'&#13;&#10;,TC002 AS '採購單號'&#13;&#10;,TC003 AS '採購日'&#13;&#10;,MA002 AS '廠商'&#13;&#10;,TD004 AS '品號'&#13;&#10;,TD005 AS '品名'&#13;&#10;,TD006 AS '規格'&#13;&#10;,TD008 AS '數量'&#13;&#10;,TD009 AS '單位'&#13;&#10;,TC019+TC020 AS '總金額'&#13;&#10;,CASE WHEN TC018='2' THEN ROUND(TD011*(1+TC026),0) ELSE TD011 END AS '明細金額'&#13;&#10;,TC027&#13;&#10;FROM [TK].dbo.PURTC&#13;&#10;LEFT JOIN [TK].dbo.PURMA ON MA001=TC004&#13;&#10;,[TK].dbo.PURTD&#13;&#10;WHERE TC001=TD001 AND TC002=TD002 &#13;&#10;AND TC014 IN ('Y')&#13;&#10;AND TC027 IN (&#13;&#10;	SELECT  [TG033]&#13;&#10;	FROM [TKPUR].[dbo].[TKPURTGTG033]&#13;&#10;)&#13;&#10;AND TC002 LIKE '2025%'&#13;&#10;ORDER BY TC001,TC002,TC003">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEni41tIjbsjyrjYtapTY08">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT &#13;&#10;TC001 AS '採購單別'&#13;&#10;,TC002 AS '採購單號'&#13;&#10;,TC003 AS '採購日'&#13;&#10;,MA002 AS '廠商'&#13;&#10;,TD004 AS '品號'&#13;&#10;,TD005 AS '品名'&#13;&#10;,TD006 AS '規格'&#13;&#10;,TD008 AS '數量'&#13;&#10;,TD009 AS '單位'&#13;&#10;,TC019+TC020 AS '總金額'&#13;&#10;,CASE WHEN TC018='2' THEN ROUND(TD011*(1+TC026),0) ELSE TD011 END AS '明細金額'&#13;&#10;,TC027&#13;&#10;FROM [TK].dbo.PURTC&#13;&#10;LEFT JOIN [TK].dbo.PURMA ON MA001=TC004&#13;&#10;,[TK].dbo.PURTD&#13;&#10;WHERE TC001=TD001 AND TC002=TD002 &#13;&#10;AND TC014 IN ('Y')&#13;&#10;AND TC027 IN (&#13;&#10;	SELECT  [TG033]&#13;&#10;	FROM [TKPUR].[dbo].[TKPURTGTG033]&#13;&#10;)&#13;&#10;AND TC002 LIKE '2025102%'&#13;&#10;ORDER BY TC001,TC002,TC003">
         <Column Name="廠商" DataType="System.String"/>
         <Column Name="品號" DataType="System.String"/>
         <Column Name="品名" DataType="System.String"/>
@@ -18,8 +18,8 @@
       </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
-  <ReportPage Name="Page1" PaperHeight="150">
-    <GroupHeaderBand Name="GroupHeader1" Width="718.2" Height="141.75" StartNewPage="true" Condition="[Table.採購單別]+[Table.採購單號]">
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="210.1" PaperHeight="148.1" RawPaperSize="11">
+    <GroupHeaderBand Name="GroupHeader1" Width="718.58" Height="141.75" StartNewPage="true" Condition="[Table.採購單別]+[Table.採購單號]">
       <TextObject Name="Text2" Left="47.25" Top="113.4" Width="160.65" Height="28.35" Border.Lines="All" Text="費用/廠商/客戶名稱" HorzAlign="Center" VertAlign="Center" Font="標楷體, 10pt"/>
       <TextObject Name="Text4" Left="207.9" Top="113.4" Width="255.15" Height="28.35" Border.Lines="All" Text="明細" HorzAlign="Center" VertAlign="Center" Font="標楷體, 10pt"/>
       <TextObject Name="Text6" Left="463.05" Top="113.4" Width="94.5" Height="28.35" Border.Lines="All" Text="金額" HorzAlign="Center" VertAlign="Center" Font="標楷體, 10pt"/>
@@ -30,13 +30,13 @@
       <TextObject Name="Text11" Top="113.4" Width="47.25" Height="28.35" Border.Lines="All" Text="NO" VertAlign="Center" Font="標楷體, 10pt"/>
       <TextObject Name="Text12" Left="557.55" Top="113.4" Width="160.65" Height="28.35" Border.Lines="All" Text="費用所屬部門名稱及代碼" HorzAlign="Center" VertAlign="Center" Font="標楷體, 10pt"/>
       <TextObject Name="Text31" Left="264.6" Top="70.15" Width="94.5" Height="18.9" Text="請款憑單" VertAlign="Center" Font="標楷體, 12pt"/>
-      <DataBand Name="Data1" Top="146.35" Width="718.2" Height="18.9" CanGrow="true" DataSource="Table">
+      <DataBand Name="Data1" Top="146.57" Width="718.58" Height="18.9" CanGrow="true" DataSource="Table">
         <TextObject Name="Text1" Left="47.25" Width="160.65" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商]" VertAlign="Center" Font="標楷體, 10pt"/>
         <TextObject Name="Text3" Left="207.9" Width="255.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center" Font="標楷體, 10pt"/>
         <TextObject Name="Text5" Left="463.05" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.明細金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Font="標楷體, 10pt" Trimming="EllipsisCharacter"/>
         <TextObject Name="Text10" Width="47.25" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Row#]" VertAlign="Center" Font="標楷體, 10pt"/>
         <TextObject Name="Text13" Left="557.55" Width="160.65" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="部門:     代碼:" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Font="標楷體, 10pt" Trimming="EllipsisCharacter"/>
-        <ChildBand Name="Child1" Top="169.85" Width="718.2" Height="18.9" CompleteToNRows="6">
+        <ChildBand Name="Child1" Top="170.29" Width="718.58" Height="18.9" CompleteToNRows="6">
           <TextObject Name="Text32" Left="47.25" Width="160.65" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" VertAlign="Center" Font="標楷體, 10pt"/>
           <TextObject Name="Text33" Left="207.9" Width="255.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" VertAlign="Center" Font="標楷體, 10pt"/>
           <TextObject Name="Text34" Left="463.05" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Font="標楷體, 10pt" Trimming="EllipsisCharacter"/>
@@ -44,7 +44,7 @@
           <TextObject Name="Text36" Left="557.55" Width="160.65" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Font="標楷體, 10pt" Trimming="EllipsisCharacter"/>
         </ChildBand>
       </DataBand>
-      <GroupFooterBand Name="GroupFooter1" Top="193.34" Width="718.2" Height="179.55">
+      <GroupFooterBand Name="GroupFooter1" Top="194.01" Width="718.58" Height="179.55">
         <TextObject Name="Text14" Width="463.05" Height="28.35" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center" Font="標楷體, 10pt"/>
         <TextObject Name="Text15" Left="463.05" Width="94.5" Height="28.35" Border.Lines="All" Text="[Table.總金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Font="標楷體, 10pt" Trimming="EllipsisCharacter"/>
         <TextObject Name="Text16" Left="557.55" Width="160.65" Height="56.7" Border.Lines="All" Text="簽收人:" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Font="標楷體, 10pt" Trimming="EllipsisCharacter"/>

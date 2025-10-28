@@ -581,7 +581,7 @@ namespace TKPUR
             }
 
             return selectedNames;
-        }
+        } 
 
         public void SETFASTREPORT2(string sqlInCondition)
         {
