@@ -238,8 +238,8 @@ namespace TKPUR
                     //MessageBox.Show(dr.Cells["採購單別"].Value.ToString()+ dr.Cells["採購單號"].Value.ToString());
 
                     PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'" + dr.Cells["採購變更單別"].Value.ToString().Trim() + dr.Cells["採購變更單號"].Value.ToString().Trim() + dr.Cells["版次"].Value.ToString().Trim() + "',";
-                }
-            }
+                } 
+            } 
 
             PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'A'";
 
@@ -251,14 +251,14 @@ namespace TKPUR
         {
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
-             
+              
             if (statusReports.Equals("憑証回傳"))
             {
                 report1.Load(@"REPORT\採購單變更憑証V6-無核準.frx");
             }           
             else if (statusReports.Equals("雅芳-簽名"))
             {
-                report1.Load(@"REPORT\採購單變更憑証V6-核準-雅芳.frx");
+                report1.Load(@"REPORT\採購單變更憑証V7-核準-雅芳.frx");
             }
             //else if (statusReports.Equals("芳梅-簽名"))
             //{
