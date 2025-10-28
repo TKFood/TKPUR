@@ -250,11 +250,11 @@ namespace TKPUR
 
             if (statusReports.Equals("憑証回傳"))
             {
-                report1.Load(@"REPORT\採購單變更憑証V6-無核準-大潁.frx");
+                report1.Load(@"REPORT\採購單變更憑証V7-無核準-大潁.frx");
             }            
             else if (statusReports.Equals("雅芳-簽名"))
             {
-                report1.Load(@"REPORT\採購單變更憑証V6-核準-雅芳-大潁.frx");
+                report1.Load(@"REPORT\採購單變更憑証V7-核準-雅芳-大潁.frx");
             }
             //else if (statusReports.Equals("芳梅-簽名"))
             //{

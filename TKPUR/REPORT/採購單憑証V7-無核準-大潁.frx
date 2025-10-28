@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="10/28/2025 11:22:59" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="10/28/2025 11:56:23" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFtcZJ+ShqntwVMwWOjBWtA">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFb/QlvyzGCiH2XYkX6ebhk">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME&#13;&#10;,PURTC.UDF02 AS 'UOF單號'&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH (NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTC WITH(NOLOCK)&#13;&#10;,[TK].dbo.PURTD WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004&#13;&#10;,[TK].dbo.CMSMQ WITH(NOLOCK)&#13;&#10;,[TK].dbo.PURMA WITH(NOLOCK)&#13;&#10;,[TK].dbo.CMSMV WITH(NOLOCK)&#13;&#10;,[TK].dbo.CMSMB WITH(NOLOCK)&#13;&#10;&#13;&#10;WHERE TC001=TD001 AND TC002=TD002&#13;&#10;AND MQ001=TC001&#13;&#10;AND TC004=MA001&#13;&#10;AND TC011=MV001&#13;&#10;AND TC010=CMSMB.MB001&#13;&#10;AND TC001+TC002 IN ('A33120250919001','A')">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
@@ -780,7 +780,7 @@
       <TextObject Name="Text26" Left="727.65" Top="103.95" Width="264.6" Height="18.9" Text="廠別:[Table.TC010] [Table.MB002]" VertAlign="Center"/>
       <TextObject Name="Text73" Left="0.45" Top="62.15" Width="992.25" Height="160.65" Border.Lines="Left, Right, Top" HorzAlign="Right"/>
       <TextObject Name="Text2" Top="18.9" Width="992.25" Height="18.9" Text="採購單" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text1" Width="992.25" Height="18.9" Text="老楊食品股份有限公司" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text1" Width="992.25" Height="18.9" Text="大潁食品股份有限公司" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text3" Top="18.9" Width="255.15" Height="18.9" Text="公司電話:05-2956520" VertAlign="Center"/>
       <TextObject Name="Text4" Top="37.8" Width="255.15" Height="18.9" Text="製表日期:[Year([Date])]/[Month([Date])]/[Day([Date])]" VertAlign="Center"/>
       <TextObject Name="Text5" Left="737.1" Top="18.9" Width="255.15" Height="18.9" Text="公司傳真:05-2956519" HorzAlign="Right" VertAlign="Center"/>
@@ -788,7 +788,7 @@
       <TextObject Name="Text91" Left="727.65" Top="151.2" Width="198.45" Height="18.9" Text="UOF單號:[Table.UOF單號]"/>
       <TextObject Name="Text117" Left="680.85" Top="217.8" Width="226.8" Height="75.6" Border.Lines="All" Text="驗收標準&#13;&#10;" VertAlign="Center"/>
       <TextObject Name="Text118" Left="907.2" Top="217.8" Width="85.05" Height="75.6" Border.Lines="All" Text="備註" VertAlign="Center"/>
-      <DataBand Name="Data1" Top="298.59" Width="1001.7" Height="66.15" CanGrow="true" Guides="28.35,28.35,37.8,37.8" DataSource="Table">
+      <DataBand Name="Data1" Top="298.22" Width="1001.7" Height="66.15" CanGrow="true" Guides="28.35,28.35,37.8,37.8" DataSource="Table">
         <TextObject Name="Text10" Left="47.25" Width="255.15" Height="66.15" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD004]&#13;&#10;[Table.TD005]&#13;&#10;[Table.TD006]"/>
         <TextObject Name="Text33" Left="302.25" Width="75.6" Height="66.15" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="  [Table.TD008]&#13;&#10;  [Table.TD015]&#13;&#10;[Table.TD016]"/>
         <TextObject Name="Text35" Left="510.4" Width="170.1" Height="66.15" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD012]&#13;&#10;[Table.TD026]-[Table.TD027]-[Table.TD028]"/>
@@ -798,7 +798,7 @@
         <TextObject Name="Text44" Left="425.35" Width="85.05" Height="66.15" Border.Lines="Left, Top, Bottom" CanGrow="true" GrowToBottom="true" Text="[Table.TD007]&#13;&#10;[Table.TD010]&#13;&#10;[Table.TD011]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Trimming="EllipsisCharacter"/>
         <TextObject Name="Text119" Left="907.2" Width="85.05" Height="66.15" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD014]"/>
       </DataBand>
-      <GroupFooterBand Name="GroupFooter1" Top="369.94" Width="1001.7" Height="274.05">
+      <GroupFooterBand Name="GroupFooter1" Top="369.19" Width="1001.7" Height="274.05">
         <TextObject Name="Text90" Left="0.45" Width="992.25" Height="18.9" Border.Lines="All" HorzAlign="Right"/>
         <TextObject Name="Text65" Width="170.1" Height="18.9" Text="數量合計:[Table.TC023]" Format="Number" Format.UseLocale="true" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
         <TextObject Name="Text66" Left="160.65" Width="122.85" Height="18.9" Text="採購金額:[Table.TC019]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>

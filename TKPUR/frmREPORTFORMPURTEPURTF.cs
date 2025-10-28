@@ -254,7 +254,7 @@ namespace TKPUR
               
             if (statusReports.Equals("憑証回傳"))
             {
-                report1.Load(@"REPORT\採購單變更憑証V6-無核準.frx");
+                report1.Load(@"REPORT\採購單變更憑証V7-無核準.frx");
             }           
             else if (statusReports.Equals("雅芳-簽名"))
             {
