@@ -177,8 +177,8 @@ namespace TKPUR
                                     ,(      SELECT TF005+TF006+TF007+', '
                                         FROM   [TK].dbo.PURTF WHERE TF001=TE001 AND TF002=TE002 AND TF003=TE003
                                         FOR XML PATH(''), TYPE  
-                                        ).value('.','nvarchar(max)')  As '明細' 
-                                    ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTE.TE001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTE.TE002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                        ).value('.','nvarchar(max)')  As '明細'                                     
+                                    ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[DOC_NBR]=PURTE.UDF02 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
 
                                     FROM[TK].dbo.PURMA, [TK].dbo.PURTE
 									LEFT JOIN [TK].dbo.PURTC ON TC001=TE001 AND TC002=TE002
@@ -321,7 +321,7 @@ namespace TKPUR
                                 ,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012
                                 ,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111
                                 ,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112
-                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH(NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[DOC_NBR]=PURTE.UDF02 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
                                 ,[PACKAGE_SPEC] AS '外包裝及驗收標準'
                                 ,[PRODUCT_APPEARANCE] AS '產品外觀'
                                 ,[COLOR] AS '色澤'
