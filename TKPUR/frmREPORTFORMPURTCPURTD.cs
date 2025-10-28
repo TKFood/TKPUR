@@ -249,7 +249,7 @@ namespace TKPUR
 
                     PRINTSPURTCPURTD = PRINTSPURTCPURTD+"'"+ dr.Cells["採購單別"].Value.ToString().Trim() + dr.Cells["採購單號"].Value.ToString().Trim()+ "',";
                 }
-            }
+            } 
 
             PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'A'"; 
 
@@ -268,7 +268,7 @@ namespace TKPUR
             }
             else if (statusReports.Equals("雅芳-簽名")) 
             {
-                report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
+                report1.Load(@"REPORT\採購單憑証V7-核準-雅芳.frx");
             } 
             //else if (statusReports.Equals("芳梅-簽名"))
             //{
