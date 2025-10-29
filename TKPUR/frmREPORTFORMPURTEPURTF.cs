@@ -254,11 +254,11 @@ namespace TKPUR
               
             if (statusReports.Equals("憑証回傳"))
             {
-                report1.Load(@"REPORT\採購單變更憑証V7-無核準.frx");
+                report1.Load(@"REPORT\採購單變更憑証V6-無核準.frx");
             }           
             else if (statusReports.Equals("雅芳-簽名"))
             {
-                report1.Load(@"REPORT\採購單變更憑証V7-核準-雅芳.frx");
+                report1.Load(@"REPORT\採購單變更憑証V6-核準-雅芳.frx");
             }
             //else if (statusReports.Equals("芳梅-簽名"))
             //{
@@ -327,9 +327,12 @@ namespace TKPUR
                                 ,[COLOR] AS '色澤'
                                 ,[FLAVOR] AS '風味'
                                 ,[BATCHNO] AS '產品批號'
+                                ,[TB012] AS '請購單身備註'
 
                                 FROM [TK].dbo.PURTF WITH(NOLOCK)
                                 LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005
+                                LEFT JOIN [TK].dbo.PURTD ON TD001=TF001 AND TD002=TF002 AND TD003=TF004
+                                LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028
                                 ,[TK].dbo.PURTE WITH(NOLOCK)
                                 LEFT JOIN [TK].dbo.CMSMQ WITH(NOLOCK) ON MQ001=TE001
                                 LEFT JOIN [TK].dbo.PURMA WITH(NOLOCK) ON MA001=TE005
