@@ -306,7 +306,7 @@ namespace TKPUR
                                         
                                         ");
             }
-
+             
             FASTSQL.AppendFormat(@"      
                                 SELECT *
                                 ,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME
@@ -324,9 +324,12 @@ namespace TKPUR
                                 ,[COLOR] AS '色澤'
                                 ,[FLAVOR] AS '風味'
                                 ,[BATCHNO] AS '產品批號'
+                                ,[TB012] AS '請購單身備註'
 
                                 FROM [DY].dbo.PURTF
                                 LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005
+                                LEFT JOIN [DY].dbo.PURTD ON TD001=TF001 AND TD002=TF002 AND TD003=TF004
+                                LEFT JOIN [DY].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028
                                 ,[DY].dbo.PURTE
                                 LEFT JOIN [DY].dbo.CMSMQ ON MQ001=TE001
                                 LEFT JOIN [DY].dbo.PURMA ON MA001=TE005

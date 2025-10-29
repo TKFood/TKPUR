@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="10/29/2025 10:25:03" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="10/29/2025 10:36:47" ReportInfo.CreatorVersion="2016.4.4.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,8 +24,8 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFd/aMWrTO5L3v7hck9J3fE">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME&#13;&#10;,CASE WHEN TE118='1' THEN '應稅內含' WHEN TE118='2' THEN '應稅外加' WHEN TE118='3' THEN '零稅率' WHEN TE118='4' THEN '免稅 'WHEN TE118='9' THEN '不計稅' END AS TE118NAME&#13;&#10;,PURTE.UDF02 AS 'UOF單號'&#13;&#10;,CONVERT(DECIMAL(16,3),TE008) AS NEWTE008&#13;&#10;,CONVERT(DECIMAL(16,3),TE108) AS NEWTE108&#13;&#10;,CONVERT(DECIMAL(16,3),TF011) AS NEWTF011&#13;&#10;,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012&#13;&#10;,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111&#13;&#10;,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH(NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTF WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005&#13;&#10;,[TK].dbo.PURTE WITH(NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.CMSMQ WITH(NOLOCK) ON MQ001=TE001&#13;&#10;LEFT JOIN [TK].dbo.PURMA WITH(NOLOCK) ON MA001=TE005&#13;&#10;LEFT JOIN [TK].dbo.PURTC WITH(NOLOCK) ON TC001=TE001 AND TC002=TE002&#13;&#10;LEFT JOIN [TK].dbo.CMSMB WITH(NOLOCK) ON TC010=MB001&#13;&#10;WHERE TE001=TF001 AND TE002=TF002&#13;&#10;AND TE002='20221028014'&#13;&#10;&#13;&#10;ORDER BY TE001,TE002,TE003,TF004">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHKnIB8fWbg86K+dtbbjmGe">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME&#13;&#10;,CASE WHEN TE118='1' THEN '應稅內含' WHEN TE118='2' THEN '應稅外加' WHEN TE118='3' THEN '零稅率' WHEN TE118='4' THEN '免稅 'WHEN TE118='9' THEN '不計稅' END AS TE118NAME&#13;&#10;,PURTE.UDF02 AS 'UOF單號'&#13;&#10;,CONVERT(DECIMAL(16,3),TE008) AS NEWTE008&#13;&#10;,CONVERT(DECIMAL(16,3),TE108) AS NEWTE108&#13;&#10;,CONVERT(DECIMAL(16,3),TF011) AS NEWTF011&#13;&#10;,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012&#13;&#10;,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111&#13;&#10;,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH(NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;,[TB012] AS '請購單身備註'&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTF WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005&#13;&#10;LEFT JOIN [TK].dbo.PURTD ON TD001=TF001 AND TD002=TF002 AND TD003=TF004&#13;&#10;LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028&#13;&#10;,[TK].dbo.PURTE WITH(NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.CMSMQ WITH(NOLOCK) ON MQ001=TE001&#13;&#10;LEFT JOIN [TK].dbo.PURMA WITH(NOLOCK) ON MA001=TE005&#13;&#10;LEFT JOIN [TK].dbo.PURTC WITH(NOLOCK) ON TC001=TE001 AND TC002=TE002&#13;&#10;LEFT JOIN [TK].dbo.CMSMB WITH(NOLOCK) ON TC010=MB001&#13;&#10;WHERE TE001=TF001 AND TE002=TF002&#13;&#10;AND TE002='20221028014'&#13;&#10;&#13;&#10;ORDER BY TE001,TE002,TE003,TF004">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
         <Column Name="USR_GROUP" DataType="System.String"/>
@@ -751,6 +751,255 @@ namespace FastReport
         <Column Name="色澤" DataType="System.String"/>
         <Column Name="風味" DataType="System.String"/>
         <Column Name="產品批號" DataType="System.String"/>
+        <Column Name="TD001" DataType="System.String"/>
+        <Column Name="TD002" DataType="System.String"/>
+        <Column Name="TD003" DataType="System.String"/>
+        <Column Name="TD004" DataType="System.String"/>
+        <Column Name="TD005" DataType="System.String"/>
+        <Column Name="TD006" DataType="System.String"/>
+        <Column Name="TD007" DataType="System.String"/>
+        <Column Name="TD008" DataType="System.Decimal"/>
+        <Column Name="TD009" DataType="System.String"/>
+        <Column Name="TD010" DataType="System.Decimal"/>
+        <Column Name="TD011" DataType="System.Decimal"/>
+        <Column Name="TD012" DataType="System.String"/>
+        <Column Name="TD013" DataType="System.String"/>
+        <Column Name="TD014" DataType="System.String"/>
+        <Column Name="TD015" DataType="System.Decimal"/>
+        <Column Name="TD016" DataType="System.String"/>
+        <Column Name="TD017" DataType="System.String"/>
+        <Column Name="TD018" DataType="System.String"/>
+        <Column Name="TD019" DataType="System.Decimal"/>
+        <Column Name="TD020" DataType="System.String"/>
+        <Column Name="TD021" DataType="System.String"/>
+        <Column Name="TD022" DataType="System.String"/>
+        <Column Name="TD023" DataType="System.String"/>
+        <Column Name="TD024" DataType="System.String"/>
+        <Column Name="TD025" DataType="System.String"/>
+        <Column Name="TD026" DataType="System.String"/>
+        <Column Name="TD027" DataType="System.String"/>
+        <Column Name="TD028" DataType="System.String"/>
+        <Column Name="TD029" DataType="System.String"/>
+        <Column Name="TD030" DataType="System.Decimal"/>
+        <Column Name="TD031" DataType="System.Decimal"/>
+        <Column Name="TD032" DataType="System.String"/>
+        <Column Name="TD033" DataType="System.String"/>
+        <Column Name="TD034" DataType="System.Decimal"/>
+        <Column Name="TD035" DataType="System.Decimal"/>
+        <Column Name="TD036" DataType="System.String"/>
+        <Column Name="TD037" DataType="System.String"/>
+        <Column Name="TD038" DataType="System.String"/>
+        <Column Name="TD039" DataType="System.String"/>
+        <Column Name="TD040" DataType="System.String"/>
+        <Column Name="TD041" DataType="System.String"/>
+        <Column Name="TD042" DataType="System.String"/>
+        <Column Name="TD043" DataType="System.String"/>
+        <Column Name="TD044" DataType="System.String"/>
+        <Column Name="TD045" DataType="System.String"/>
+        <Column Name="TD046" DataType="System.String"/>
+        <Column Name="TD047" DataType="System.String"/>
+        <Column Name="TD048" DataType="System.Decimal"/>
+        <Column Name="TD049" DataType="System.Decimal"/>
+        <Column Name="TD050" DataType="System.String"/>
+        <Column Name="TD051" DataType="System.String"/>
+        <Column Name="TD052" DataType="System.String"/>
+        <Column Name="TD053" DataType="System.String"/>
+        <Column Name="TD054" DataType="System.String"/>
+        <Column Name="TD055" DataType="System.String"/>
+        <Column Name="TD056" DataType="System.String"/>
+        <Column Name="TD057" DataType="System.Decimal"/>
+        <Column Name="TD058" DataType="System.String"/>
+        <Column Name="TD059" DataType="System.String"/>
+        <Column Name="TD060" DataType="System.String"/>
+        <Column Name="TD061" DataType="System.String"/>
+        <Column Name="TD062" DataType="System.String"/>
+        <Column Name="TD063" DataType="System.String"/>
+        <Column Name="TD064" DataType="System.String"/>
+        <Column Name="TD065" DataType="System.String"/>
+        <Column Name="TD066" DataType="System.String"/>
+        <Column Name="TD067" DataType="System.String"/>
+        <Column Name="TD068" DataType="System.String"/>
+        <Column Name="TD069" DataType="System.Decimal"/>
+        <Column Name="TD070" DataType="System.String"/>
+        <Column Name="TD071" DataType="System.String"/>
+        <Column Name="TD072" DataType="System.String"/>
+        <Column Name="TD073" DataType="System.String"/>
+        <Column Name="TD074" DataType="System.String"/>
+        <Column Name="TD075" DataType="System.Decimal"/>
+        <Column Name="TD076" DataType="System.String"/>
+        <Column Name="TD077" DataType="System.String"/>
+        <Column Name="TD078" DataType="System.String"/>
+        <Column Name="TD079" DataType="System.Decimal"/>
+        <Column Name="TD080" DataType="System.Decimal"/>
+        <Column Name="TD081" DataType="System.String"/>
+        <Column Name="TD082" DataType="System.Decimal"/>
+        <Column Name="TD083" DataType="System.String"/>
+        <Column Name="TD084" DataType="System.Decimal"/>
+        <Column Name="TD085" DataType="System.String"/>
+        <Column Name="TD086" DataType="System.Decimal"/>
+        <Column Name="TD087" DataType="System.Decimal"/>
+        <Column Name="TD088" DataType="System.Decimal"/>
+        <Column Name="TD089" DataType="System.Decimal"/>
+        <Column Name="TD090" DataType="System.String"/>
+        <Column Name="TD091" DataType="System.String"/>
+        <Column Name="TD092" DataType="System.String"/>
+        <Column Name="TD093" DataType="System.String"/>
+        <Column Name="TD094" DataType="System.String"/>
+        <Column Name="TD095" DataType="System.String"/>
+        <Column Name="TB001" DataType="System.String"/>
+        <Column Name="TB002" DataType="System.String"/>
+        <Column Name="TB003" DataType="System.String"/>
+        <Column Name="TB004" DataType="System.String"/>
+        <Column Name="TB005" DataType="System.String"/>
+        <Column Name="TB006" DataType="System.String"/>
+        <Column Name="TB007" DataType="System.String"/>
+        <Column Name="TB008" DataType="System.String"/>
+        <Column Name="TB009" DataType="System.Decimal"/>
+        <Column Name="TB010" DataType="System.String"/>
+        <Column Name="TB011" DataType="System.String"/>
+        <Column Name="TB012" DataType="System.String"/>
+        <Column Name="TB013" DataType="System.String"/>
+        <Column Name="TB014" DataType="System.Decimal"/>
+        <Column Name="TB015" DataType="System.String"/>
+        <Column Name="TB016" DataType="System.String"/>
+        <Column Name="TB017" DataType="System.Decimal"/>
+        <Column Name="TB018" DataType="System.Decimal"/>
+        <Column Name="TB019" DataType="System.String"/>
+        <Column Name="TB020" DataType="System.String"/>
+        <Column Name="TB021" DataType="System.String"/>
+        <Column Name="TB022" DataType="System.String"/>
+        <Column Name="TB023" DataType="System.String"/>
+        <Column Name="TB024" DataType="System.String"/>
+        <Column Name="TB025" DataType="System.String"/>
+        <Column Name="TB026" DataType="System.String"/>
+        <Column Name="TB027" DataType="System.String"/>
+        <Column Name="TB028" DataType="System.String"/>
+        <Column Name="TB029" DataType="System.String"/>
+        <Column Name="TB030" DataType="System.String"/>
+        <Column Name="TB031" DataType="System.String"/>
+        <Column Name="TB032" DataType="System.String"/>
+        <Column Name="TB033" DataType="System.String"/>
+        <Column Name="TB034" DataType="System.Decimal"/>
+        <Column Name="TB035" DataType="System.Decimal"/>
+        <Column Name="TB036" DataType="System.String"/>
+        <Column Name="TB037" DataType="System.String"/>
+        <Column Name="TB038" DataType="System.String"/>
+        <Column Name="TB039" DataType="System.String"/>
+        <Column Name="TB040" DataType="System.Decimal"/>
+        <Column Name="TB041" DataType="System.Decimal"/>
+        <Column Name="TB042" DataType="System.String"/>
+        <Column Name="TB043" DataType="System.String"/>
+        <Column Name="TB044" DataType="System.String"/>
+        <Column Name="TB045" DataType="System.String"/>
+        <Column Name="TB046" DataType="System.String"/>
+        <Column Name="TB047" DataType="System.String"/>
+        <Column Name="TB048" DataType="System.String"/>
+        <Column Name="TB049" DataType="System.Decimal"/>
+        <Column Name="TB050" DataType="System.String"/>
+        <Column Name="TB051" DataType="System.Decimal"/>
+        <Column Name="TB052" DataType="System.Decimal"/>
+        <Column Name="TB053" DataType="System.Decimal"/>
+        <Column Name="TB054" DataType="System.String"/>
+        <Column Name="TB055" DataType="System.String"/>
+        <Column Name="TB056" DataType="System.String"/>
+        <Column Name="TB057" DataType="System.String"/>
+        <Column Name="TB058" DataType="System.String"/>
+        <Column Name="TB059" DataType="System.String"/>
+        <Column Name="TB060" DataType="System.String"/>
+        <Column Name="TB061" DataType="System.String"/>
+        <Column Name="TB062" DataType="System.String"/>
+        <Column Name="TB063" DataType="System.Decimal"/>
+        <Column Name="TB064" DataType="System.String"/>
+        <Column Name="TB065" DataType="System.String"/>
+        <Column Name="TB066" DataType="System.String"/>
+        <Column Name="TB067" DataType="System.String"/>
+        <Column Name="TB068" DataType="System.Decimal"/>
+        <Column Name="TB069" DataType="System.Decimal"/>
+        <Column Name="TB070" DataType="System.String"/>
+        <Column Name="TB071" DataType="System.String"/>
+        <Column Name="TB072" DataType="System.String"/>
+        <Column Name="TB073" DataType="System.String"/>
+        <Column Name="TB074" DataType="System.String"/>
+        <Column Name="TB075" DataType="System.Decimal"/>
+        <Column Name="TB076" DataType="System.String"/>
+        <Column Name="TB077" DataType="System.Decimal"/>
+        <Column Name="TB078" DataType="System.String"/>
+        <Column Name="TB079" DataType="System.String"/>
+        <Column Name="TB080" DataType="System.String"/>
+        <Column Name="TB081" DataType="System.Decimal"/>
+        <Column Name="TB082" DataType="System.Decimal"/>
+        <Column Name="TB083" DataType="System.Decimal"/>
+        <Column Name="TB084" DataType="System.Decimal"/>
+        <Column Name="TB085" DataType="System.Decimal"/>
+        <Column Name="TB086" DataType="System.String"/>
+        <Column Name="TB087" DataType="System.String"/>
+        <Column Name="TB088" DataType="System.Decimal"/>
+        <Column Name="TB089" DataType="System.String"/>
+        <Column Name="TB090" DataType="System.Decimal"/>
+        <Column Name="TB091" DataType="System.Decimal"/>
+        <Column Name="TB092" DataType="System.Decimal"/>
+        <Column Name="TB093" DataType="System.Decimal"/>
+        <Column Name="TB094" DataType="System.String"/>
+        <Column Name="TB095" DataType="System.String"/>
+        <Column Name="TB096" DataType="System.String"/>
+        <Column Name="TB097" DataType="System.String"/>
+        <Column Name="TB098" DataType="System.String"/>
+        <Column Name="TB099" DataType="System.String"/>
+        <Column Name="COMPANY6" DataType="System.String"/>
+        <Column Name="CREATOR6" DataType="System.String"/>
+        <Column Name="USR_GROUP6" DataType="System.String"/>
+        <Column Name="CREATE_DATE6" DataType="System.String"/>
+        <Column Name="MODIFIER6" DataType="System.String"/>
+        <Column Name="MODI_DATE6" DataType="System.String"/>
+        <Column Name="FLAG6" DataType="System.Decimal"/>
+        <Column Name="CREATE_TIME6" DataType="System.String"/>
+        <Column Name="MODI_TIME6" DataType="System.String"/>
+        <Column Name="TRANS_TYPE6" DataType="System.String"/>
+        <Column Name="TRANS_NAME6" DataType="System.String"/>
+        <Column Name="sync_date6" DataType="System.String"/>
+        <Column Name="sync_time6" DataType="System.String"/>
+        <Column Name="sync_mark6" DataType="System.String"/>
+        <Column Name="sync_count6" DataType="System.Decimal"/>
+        <Column Name="DataUser6" DataType="System.String"/>
+        <Column Name="DataGroup6" DataType="System.String"/>
+        <Column Name="UDF016" DataType="System.String"/>
+        <Column Name="UDF026" DataType="System.String"/>
+        <Column Name="UDF036" DataType="System.String"/>
+        <Column Name="UDF046" DataType="System.String"/>
+        <Column Name="UDF056" DataType="System.String"/>
+        <Column Name="UDF066" DataType="System.Decimal"/>
+        <Column Name="UDF076" DataType="System.Decimal"/>
+        <Column Name="UDF086" DataType="System.Decimal"/>
+        <Column Name="UDF096" DataType="System.Decimal"/>
+        <Column Name="UDF106" DataType="System.Decimal"/>
+        <Column Name="COMPANY7" DataType="System.String"/>
+        <Column Name="CREATOR7" DataType="System.String"/>
+        <Column Name="USR_GROUP7" DataType="System.String"/>
+        <Column Name="CREATE_DATE7" DataType="System.String"/>
+        <Column Name="MODIFIER7" DataType="System.String"/>
+        <Column Name="MODI_DATE7" DataType="System.String"/>
+        <Column Name="FLAG7" DataType="System.Decimal"/>
+        <Column Name="CREATE_TIME7" DataType="System.String"/>
+        <Column Name="MODI_TIME7" DataType="System.String"/>
+        <Column Name="TRANS_TYPE7" DataType="System.String"/>
+        <Column Name="TRANS_NAME7" DataType="System.String"/>
+        <Column Name="sync_date7" DataType="System.String"/>
+        <Column Name="sync_time7" DataType="System.String"/>
+        <Column Name="sync_mark7" DataType="System.String"/>
+        <Column Name="sync_count7" DataType="System.Decimal"/>
+        <Column Name="DataUser7" DataType="System.String"/>
+        <Column Name="DataGroup7" DataType="System.String"/>
+        <Column Name="UDF017" DataType="System.String"/>
+        <Column Name="UDF027" DataType="System.String"/>
+        <Column Name="UDF037" DataType="System.String"/>
+        <Column Name="UDF047" DataType="System.String"/>
+        <Column Name="UDF057" DataType="System.String"/>
+        <Column Name="UDF067" DataType="System.Decimal"/>
+        <Column Name="UDF077" DataType="System.Decimal"/>
+        <Column Name="UDF087" DataType="System.Decimal"/>
+        <Column Name="UDF097" DataType="System.Decimal"/>
+        <Column Name="UDF107" DataType="System.Decimal"/>
+        <Column Name="請購單身備註" DataType="System.String"/>
       </TableDataSource>
     </MsSqlDataConnection>
     <Parameter Name="P1" DataType="System.String"/>
@@ -786,7 +1035,7 @@ namespace FastReport
       <TextObject Name="Text97" Left="463.05" Top="107.75" Width="245.7" Height="18.9" Text="營業稅率:[Table.TE121]=&gt;[Table.TE022]" VertAlign="Center"/>
       <TextObject Name="Text50" Left="321.3" Top="203.9" Width="66.15" Height="66.15" Text="採購數量&#13;&#10;已交數量&#13;&#10;單位"/>
       <TextObject Name="Text100" Left="406.35" Top="203.8" Width="66.15" Height="66.15" Text="採購單價&#13;&#10;採購金額" HorzAlign="Right"/>
-      <TextObject Name="Text102" Left="472.5" Top="204.35" Width="236.25" Height="56.7" Text="變更原因&#13;&#10;驗收條件"/>
+      <TextObject Name="Text102" Left="472.5" Top="204.35" Width="236.25" Height="56.7" Text="請購單身備註&#13;&#10;變更原因&#13;&#10;驗收條件"/>
       <TextObject Name="Text15" Top="52.6" Width="708.75" Height="151.2" Border.Lines="All"/>
       <TextObject Name="Text16" Left="1.15" Top="203.8" Width="75.6" Height="66.15" Border.Lines="Left, Right, Top"/>
       <TextObject Name="Text131" Left="76.75" Top="203.8" Width="170.1" Height="66.15" Border.Lines="Left, Right, Top"/>
@@ -795,14 +1044,14 @@ namespace FastReport
       <TextObject Name="Text134" Left="398.05" Top="203.8" Width="75.6" Height="66.15" Border.Lines="Left, Right, Top"/>
       <TextObject Name="Text135" Left="473.65" Top="203.8" Width="236.25" Height="66.15" Border.Lines="Left, Right, Top"/>
       <TextObject Name="Text148" Left="463.05" Top="123.65" Width="198.45" Height="18.9" Text="採購變更簽核單:[Table.UOF單號]" VertAlign="Center"/>
-      <DataBand Name="Data1" Top="276" Width="718.2" Height="95.15" CanGrow="true" Guides="28.35,28.35,37.8,37.8,28.35,28.35,28.35,0,28.35,37.8,37.8,37.8,37.8,37.8" DataSource="Table">
-        <TextObject Name="Text9" Left="1.15" Top="0.45" Width="75.6" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF004]"/>
-        <TextObject Name="Text12" Left="76.75" Top="0.45" Width="170.1" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF005]  (變更後)&#13;&#10;[Table.TF006]&#13;&#10;[Table.TF007]"/>
-        <TextObject Name="Text108" Left="246.85" Top="0.45" Width="75.6" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF008]&#13;&#10;[Table.TF013]&#13;&#10;[Table.TF014]"/>
-        <TextObject Name="Text116" Left="322.45" Top="0.45" Width="75.6" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF009]&#13;&#10;[Table.TF015]&#13;&#10;[Table.TF010]"/>
-        <TextObject Name="Text122" Left="398.05" Top="0.45" Width="75.6" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.NEWTF011]&#13;&#10;[Table.NEWTF012]" HorzAlign="Right"/>
-        <TextObject Name="Text129" Left="473.65" Top="0.45" Width="236.25" Height="92.25" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF017]&#13;&#10;[Table.外包裝及驗收標準]&#13;&#10;[Table.產品外觀]&#13;&#10;[Table.色澤]&#13;&#10;[Table.風味]&#13;&#10;[Table.產品批號]"/>
-        <ChildBand Name="Child1" Top="375.75" Width="718.2" Height="18.9" CompleteToNRows="4">
+      <DataBand Name="Data1" Top="276" Width="718.2" Height="94.95" CanGrow="true" Guides="28.35,28.35,37.8,37.8,28.35,28.35,28.35,0,28.35,37.8,37.8,37.8,37.8,37.8" DataSource="Table">
+        <TextObject Name="Text9" Left="1.15" Top="0.45" Width="75.6" Height="94.5" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF004]"/>
+        <TextObject Name="Text12" Left="76.75" Top="0.45" Width="170.1" Height="94.5" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF005]  (變更後)&#13;&#10;[Table.TF006]&#13;&#10;[Table.TF007]"/>
+        <TextObject Name="Text108" Left="246.85" Top="0.45" Width="75.6" Height="94.5" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF008]&#13;&#10;[Table.TF013]&#13;&#10;[Table.TF014]"/>
+        <TextObject Name="Text116" Left="322.45" Top="0.45" Width="75.6" Height="94.5" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF009]&#13;&#10;[Table.TF015]&#13;&#10;[Table.TF010]"/>
+        <TextObject Name="Text122" Left="398.05" Top="0.45" Width="75.6" Height="94.5" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.NEWTF011]&#13;&#10;[Table.NEWTF012]" HorzAlign="Right"/>
+        <TextObject Name="Text129" Left="473.65" Top="0.45" Width="236.25" Height="94.5" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.請購單身備註]&#13;&#10;[Table.TF017]&#13;&#10;[Table.外包裝及驗收標準]&#13;&#10;[Table.產品外觀]&#13;&#10;[Table.色澤]&#13;&#10;[Table.風味]&#13;&#10;[Table.產品批號]"/>
+        <ChildBand Name="Child1" Top="375.55" Width="718.2" Height="18.9" CompleteToNRows="4">
           <TextObject Name="Text151" Left="1.15" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
           <TextObject Name="Text152" Left="398.05" Width="75.6" Height="18.9" Border.Lines="Left, Right, Bottom"/>
           <TextObject Name="Text153" Left="76.75" Width="170.1" Height="18.9" Border.Lines="Left, Right, Bottom" Text="//以下空白" VertAlign="Center"/>
@@ -811,8 +1060,8 @@ namespace FastReport
           <TextObject Name="Text156" Left="473.65" Width="236.25" Height="18.9" Border.Lines="Left, Right, Bottom"/>
         </ChildBand>
       </DataBand>
-      <GroupFooterBand Name="GroupFooter1" Top="399.24" Width="718.2" Height="259.6">
-        <TextObject Name="Text160" Width="661.5" Height="18.9" Text="採購簽核意見:[Table.採購簽核意見]" Font="宋体, 10pt"/>
+      <GroupFooterBand Name="GroupFooter1" Top="399.04" Width="718.2" Height="259.6">
+        <TextObject Name="Text160" Top="3" Width="661.5" Height="18.9" Text="採購簽核意見:[Table.採購簽核意見]" Font="宋体, 10pt"/>
         <TextObject Name="Text161" Top="22.35" Width="661.5" Height="18.9" Text="手動填寫意見:[P1]" Font="宋体, 10pt"/>
         <TextObject Name="Text162" Left="28.35" Top="51.7" Width="652.05" Height="75.6" Text="確認後請蓋章或簽名回傳       隨貨附發票     COA      老楊採購單  &#13;&#10;進貨時間週一至週五 AM8:30-12:00 PM 13:00-16:00&#13;&#10;產品外包裝需標示公司名稱、地址、電話、原產地、主要成份或材料、數量、有效日期或製造日期&#13;&#10;" Font="宋体, 12pt, style=Bold"/>
         <PictureObject Name="Picture3" Left="9.45" Top="70.05" Width="18.9" Height="28.35" Image="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"/>
