@@ -258,11 +258,11 @@ namespace TKPUR
              
             if (statusReports.Equals("憑証回傳"))
             {
-                report1.Load(@"REPORT\採購單憑証V7-無核準-大潁.frx"); 
+                report1.Load(@"REPORT\採購單憑証V6-無核準-大潁.frx"); 
             }           
             else if (statusReports.Equals("雅芳-簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証V7-核準-雅芳-大潁.frx");
+                report1.Load(@"REPORT\採購單憑証V6-核準-雅芳-大潁.frx");
             }
            
             //20210902密
@@ -322,8 +322,11 @@ namespace TKPUR
                                 ,[COLOR] AS '色澤'
                                 ,[FLAVOR] AS '風味'
                                 ,[BATCHNO] AS '產品批號'
+                                ,[TB012] AS '請購單身備註'
+
                                 FROM [DY].dbo.PURTC,[DY].dbo.PURTD
                                 LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004
+                                LEFT JOIN [DY].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028
                                 ,[DY].dbo.CMSMQ,[DY].dbo.PURMA,[DY].dbo.CMSMV,[DY].dbo.CMSMB
                                 WHERE TC001=TD001 AND TC002=TD002
                                 AND MQ001=TC001
@@ -394,11 +397,11 @@ namespace TKPUR
 
             if (statusReports.Equals("憑証回傳"))
             {
-                report1.Load(@"REPORT\採購單憑証V7-無核準-大潁.frx");
+                report1.Load(@"REPORT\採購單憑証V6-無核準-大潁.frx");
             }
             else if (statusReports.Equals("雅芳-簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証V7-核準-雅芳-大潁.frx");
+                report1.Load(@"REPORT\採購單憑証V6-核準-雅芳-大潁.frx");
             }
             //else if (statusReports.Equals("芳梅-簽名"))
             //{
@@ -468,8 +471,11 @@ namespace TKPUR
                                 ,[COLOR] AS '色澤'
                                 ,[FLAVOR] AS '風味'
                                 ,[BATCHNO] AS '產品批號'
+                                ,[TB012] AS '請購單身備註'
+
                                 FROM [DY].dbo.PURTC,[DY].dbo.PURTD
                                 LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004
+                                LEFT JOIN [DY].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028
                                 ,[DY].dbo.CMSMQ,[DY].dbo.PURMA,[DY].dbo.CMSMV,[DY].dbo.CMSMB
                                 WHERE TC001=TD001 AND TC002=TD002
                                 AND MQ001=TC001

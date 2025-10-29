@@ -472,11 +472,11 @@ namespace TKPUR
             else
             {
                 STRQUERY.AppendFormat(@"
-                                        
+                                         
                                         ");
-            }
-
-            FASTSQL.AppendFormat(@"      
+            }  
+             
+            FASTSQL.AppendFormat(@"       
                                  SELECT *
                                 ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
                                 ,PURTC.UDF02 AS 'UOF單號'
@@ -486,10 +486,12 @@ namespace TKPUR
                                 ,[COLOR] AS '色澤'
                                 ,[FLAVOR] AS '風味'
                                 ,[BATCHNO] AS '產品批號'
+                                ,[TB012] AS '請購單身備註'
 
                                 FROM [TK].dbo.PURTC WITH(NOLOCK)
                                 ,[TK].dbo.PURTD WITH(NOLOCK)
                                 LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004
+                                LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028
                                 ,[TK].dbo.CMSMQ WITH(NOLOCK)
                                 ,[TK].dbo.PURMA WITH(NOLOCK)
                                 ,[TK].dbo.CMSMV WITH(NOLOCK)
