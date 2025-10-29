@@ -156,7 +156,7 @@ namespace TKPUR
 
 
         }
-      
+       
         public void Search(string SDAY, string EDAY)
         {
             DataSet ds = new DataSet();
@@ -412,11 +412,11 @@ namespace TKPUR
             
             if (statusReports.Equals("憑証回傳"))
             {
-                report1.Load(@"REPORT\採購單憑証V7-無核準.frx");
+                report1.Load(@"REPORT\採購單憑証V6-無核準.frx");
             }
             else if (statusReports.Equals("雅芳-簽名"))
             {
-                report1.Load(@"REPORT\採購單憑証V7-核準-雅芳.frx");
+                report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
             }
             //else if (statusReports.Equals("芳梅-簽名"))
             //{ 
