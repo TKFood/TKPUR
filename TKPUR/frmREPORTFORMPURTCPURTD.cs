@@ -189,7 +189,7 @@ namespace TKPUR
                                             FOR XML PATH(''), TYPE  
                                             ).value('.','nvarchar(max)')  As '明細' 
                                     ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[DOC_NBR]=PURTC.UDF02 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
-
+    
                                     FROM [TK].dbo.PURTC,[TK].dbo.PURMA
                                     WHERE 1=1
                                     AND TC004=MA001
@@ -264,11 +264,11 @@ namespace TKPUR
                 
             if (statusReports.Equals("憑証回傳"))  
             {
-                report1.Load(@"REPORT\採購單憑証V7-無核準.frx"); 
+                report1.Load(@"REPORT\採購單憑証V6-無核準.frx"); 
             }
             else if (statusReports.Equals("雅芳-簽名")) 
             {
-                report1.Load(@"REPORT\採購單憑証V7-核準-雅芳.frx");
+                report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
             } 
             //else if (statusReports.Equals("芳梅-簽名"))
             //{
@@ -332,10 +332,12 @@ namespace TKPUR
                                 ,[COLOR] AS '色澤'
                                 ,[FLAVOR] AS '風味'
                                 ,[BATCHNO] AS '產品批號'
+                                ,[TB012] AS '請購單身備註'
 
                                 FROM [TK].dbo.PURTC WITH(NOLOCK)
                                 ,[TK].dbo.PURTD WITH(NOLOCK)
                                 LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004
+                                LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028
                                 ,[TK].dbo.CMSMQ WITH(NOLOCK)
                                 ,[TK].dbo.PURMA WITH(NOLOCK)
                                 ,[TK].dbo.CMSMV WITH(NOLOCK)

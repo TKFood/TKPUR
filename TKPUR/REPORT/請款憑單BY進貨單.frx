@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/21/2025 11:51:06" ReportInfo.Modified="10/28/2025 15:45:18" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/21/2025 11:51:06" ReportInfo.Modified="10/28/2025 16:57:49" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUH5z/R6sf7kZ7MtdJrD6KGW">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHfxNFegRiN/qM3GctQISTk">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20251021 e化請款憑單&#13;&#10;&#13;&#10;SELECT &#13;&#10;TG001 AS '進貨單別'&#13;&#10;,TG002 AS '進貨單號'&#13;&#10;,TG003 AS '進貨日'&#13;&#10;,TG021 AS '廠商'&#13;&#10;,TH004 AS '品號'&#13;&#10;,TH005 AS '品名'&#13;&#10;,TH006 AS '規格'&#13;&#10;,TH007 AS '數量'&#13;&#10;,TH008 AS '單位'&#13;&#10;,TG031+TG032 AS '總金額'&#13;&#10;,TH047+TH048 AS '明細金額'&#13;&#10;FROM [TK].dbo.PURTG,[TK].dbo.PURTH&#13;&#10;WHERE TG001=TH001 AND TG002=TH002 &#13;&#10;AND TG013 IN ('Y')&#13;&#10;AND TG033 IN (&#13;&#10;	SELECT  [TG033]&#13;&#10;	FROM [TKPUR].[dbo].[TKPURTGTG033]&#13;&#10;)&#13;&#10;AND TG003&gt;='20251001' AND TG003&lt;='20251031'&#13;&#10;ORDER BY TG001,TG002,TG003">
         <Column Name="進貨單別" DataType="System.String"/>
         <Column Name="進貨單號" DataType="System.String"/>
