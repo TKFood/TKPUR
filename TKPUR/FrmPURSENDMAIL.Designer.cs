@@ -43,14 +43,13 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -209,7 +208,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanel2);
             this.splitContainer2.Size = new System.Drawing.Size(970, 584);
-            this.splitContainer2.SplitterDistance = 687;
+            this.splitContainer2.SplitterDistance = 670;
             this.splitContainer2.TabIndex = 0;
             // 
             // dataGridView1
@@ -221,7 +220,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(683, 580);
+            this.dataGridView1.Size = new System.Drawing.Size(666, 580);
             this.dataGridView1.TabIndex = 6;
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
@@ -231,17 +230,16 @@
             this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 232F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 22F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 38F));
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.textBox1, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.button5, 0, 13);
-            this.tableLayoutPanel2.Controls.Add(this.button3, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.textBox4, 0, 5);
             this.tableLayoutPanel2.Controls.Add(this.button4, 0, 11);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 8);
             this.tableLayoutPanel2.Controls.Add(this.button6, 0, 7);
             this.tableLayoutPanel2.Controls.Add(this.textBox2, 0, 9);
+            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.button5, 0, 12);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -261,7 +259,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(275, 580);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(292, 580);
             this.tableLayoutPanel2.TabIndex = 9;
             // 
             // label1
@@ -286,40 +284,6 @@
             this.textBox1.Size = new System.Drawing.Size(248, 74);
             this.textBox1.TabIndex = 5;
             // 
-            // button5
-            // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button5.ForeColor = System.Drawing.Color.Blue;
-            this.button5.Location = new System.Drawing.Point(3, 533);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(226, 34);
-            this.button5.TabIndex = 9;
-            this.button5.Text = "發包-寄送MAIL";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(3, 123);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(226, 34);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "寄送MAIL-校稿";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // label5
-            // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 172);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(226, 16);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "填寫備註";
-            // 
             // textBox4
             // 
             this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -339,7 +303,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(248, 34);
             this.button4.TabIndex = 8;
-            this.button4.Text = "需填寫發包廠商+發包-寄送MAIL";
+            this.button4.Text = "只儲存發包廠商，但不寄送MAIL";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -360,7 +324,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(226, 34);
             this.button6.TabIndex = 12;
-            this.button6.Text = "要先儲存備註，才能寄MAIL";
+            this.button6.Text = "只儲存備註，但不寄送MAIL";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
@@ -374,6 +338,29 @@
             this.tableLayoutPanel2.SetRowSpan(this.textBox2, 2);
             this.textBox2.Size = new System.Drawing.Size(248, 74);
             this.textBox2.TabIndex = 7;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 172);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(226, 16);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "填寫備註";
+            // 
+            // button5
+            // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.button5.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button5.ForeColor = System.Drawing.Color.Blue;
+            this.button5.Location = new System.Drawing.Point(3, 483);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(226, 34);
+            this.button5.TabIndex = 9;
+            this.button5.Text = "發包-寄送MAIL";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // tabPage2
             // 
@@ -430,7 +417,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox2;
