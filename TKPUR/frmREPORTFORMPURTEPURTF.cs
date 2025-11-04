@@ -328,10 +328,14 @@ namespace TKPUR
                                 ,[FLAVOR] AS '風味'
                                 ,[BATCHNO] AS '產品批號'
                                 ,[TB012] AS '請購單身備註'
+                                ,INVMB.MB113
+                                ,INVMA.[MA003] AS '產地'
 
                                 FROM [TK].dbo.PURTF WITH(NOLOCK)
                                 LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005
                                 LEFT JOIN [TK].dbo.PURTD ON TD001=TF001 AND TD002=TF002 AND TD003=TF004
+                                LEFT JOIN  [TK].dbo.INVMB ON INVMB.MB001=TD004
+                                LEFT JOIN [TK].dbo.INVMA ON INVMA.MA001='7' AND INVMA.MA002=MB113
                                 LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028
                                 ,[TK].dbo.PURTE WITH(NOLOCK)
                                 LEFT JOIN [TK].dbo.CMSMQ WITH(NOLOCK) ON MQ001=TE001
