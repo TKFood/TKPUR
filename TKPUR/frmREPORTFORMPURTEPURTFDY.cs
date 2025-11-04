@@ -327,6 +327,8 @@ namespace TKPUR
                                 ,[TB012] AS '請購單身備註'
                                 ,INVMB.MB113
                                 ,INVMA.[MA003] AS '產地'
+                                ,PURMA.MA003 AS '公司全名'
+                                ,PURMA.MA013 AS '聯絡人'
 
                                 FROM [DY].dbo.PURTF
                                 LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005

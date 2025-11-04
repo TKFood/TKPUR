@@ -335,6 +335,8 @@ namespace TKPUR
                                 ,[TB012] AS '請購單身備註'
                                 ,INVMB.MB113
                                 ,INVMA.[MA003] AS '產地'
+                                ,PURMA.MA003 AS '公司全名'
+                                ,PURMA.MA013 AS '聯絡人'
 
                                 FROM [TK].dbo.PURTC WITH(NOLOCK)
                                 ,[TK].dbo.PURTD WITH(NOLOCK)
@@ -475,7 +477,7 @@ namespace TKPUR
             }
             else
             {
-                STRQUERY.AppendFormat(@"
+                STRQUERY.AppendFormat(@" 
                                          
                                         ");
             }  
@@ -493,6 +495,8 @@ namespace TKPUR
                                 ,[TB012] AS '請購單身備註'
                                 ,INVMB.MB113
                                 ,INVMA.[MA003] AS '產地'
+                                ,PURMA.MA003 AS '公司全名'
+                                ,PURMA.MA013 AS '聯絡人'
 
                                 FROM [TK].dbo.PURTC WITH(NOLOCK)
                                 ,[TK].dbo.PURTD WITH(NOLOCK)
