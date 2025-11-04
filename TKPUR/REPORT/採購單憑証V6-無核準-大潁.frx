@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="10/29/2025 10:14:03" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="11/04/2025 10:38:22" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUG7/SzWScqFDLKlFON3gnnu">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME&#13;&#10;,PURTC.UDF02 AS 'UOF單號'&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH (NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;,[TB012] AS '請購單身備註'&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTC WITH(NOLOCK)&#13;&#10;,[TK].dbo.PURTD WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004&#13;&#10;LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028&#13;&#10;,[TK].dbo.CMSMQ WITH(NOLOCK)&#13;&#10;,[TK].dbo.PURMA WITH(NOLOCK)&#13;&#10;,[TK].dbo.CMSMV WITH(NOLOCK)&#13;&#10;,[TK].dbo.CMSMB WITH(NOLOCK)&#13;&#10;&#13;&#10;WHERE TC001=TD001 AND TC002=TD002&#13;&#10;AND MQ001=TC001&#13;&#10;AND TC004=MA001&#13;&#10;AND TC011=MV001&#13;&#10;AND TC010=CMSMB.MB001&#13;&#10;AND TC001+TC002 IN ('A33120250919001','A')">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUF6ER2UJYBX9B9yT+Gr3V0k">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME&#13;&#10;,PURTC.UDF02 AS 'UOF單號'&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH (NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;,[TB012] AS '請購單身備註'&#13;&#10;,INVMB.MB113&#13;&#10;,INVMA.[MA003] AS '產地'&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTC WITH(NOLOCK)&#13;&#10;,[TK].dbo.PURTD WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004&#13;&#10;LEFT JOIN  [TK].dbo.INVMB ON INVMB.MB001=TD004&#13;&#10;LEFT JOIN [TK].dbo.INVMA ON INVMA.MA001='7' AND INVMA.MA002=MB113&#13;&#10;LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028&#13;&#10;,[TK].dbo.CMSMQ WITH(NOLOCK)&#13;&#10;,[TK].dbo.PURMA WITH(NOLOCK)&#13;&#10;,[TK].dbo.CMSMV WITH(NOLOCK)&#13;&#10;,[TK].dbo.CMSMB WITH(NOLOCK)&#13;&#10;&#13;&#10;WHERE TC001=TD001 AND TC002=TD002&#13;&#10;AND MQ001=TC001&#13;&#10;AND TC004=PURMA.MA001&#13;&#10;AND TC011=MV001&#13;&#10;AND TC010=CMSMB.MB001&#13;&#10;AND TC001+TC002 IN ('A33120250919001','A')">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
         <Column Name="USR_GROUP" DataType="System.String"/>
@@ -873,6 +873,305 @@
         <Column Name="UDF096" DataType="System.Decimal"/>
         <Column Name="UDF106" DataType="System.Decimal"/>
         <Column Name="請購單身備註" DataType="System.String"/>
+        <Column Name="MB022" DataType="System.String"/>
+        <Column Name="MB023" DataType="System.Decimal"/>
+        <Column Name="MB024" DataType="System.Decimal"/>
+        <Column Name="MB025" DataType="System.String"/>
+        <Column Name="MB026" DataType="System.String"/>
+        <Column Name="MB027" DataType="System.String"/>
+        <Column Name="MB028" DataType="System.String"/>
+        <Column Name="MB029" DataType="System.String"/>
+        <Column Name="MB030" DataType="System.String"/>
+        <Column Name="MB031" DataType="System.String"/>
+        <Column Name="MB032" DataType="System.String"/>
+        <Column Name="MB033" DataType="System.String"/>
+        <Column Name="MB034" DataType="System.String"/>
+        <Column Name="MB035" DataType="System.String"/>
+        <Column Name="MB036" DataType="System.Decimal"/>
+        <Column Name="MB037" DataType="System.Decimal"/>
+        <Column Name="MB038" DataType="System.Decimal"/>
+        <Column Name="MB039" DataType="System.Decimal"/>
+        <Column Name="MB040" DataType="System.Decimal"/>
+        <Column Name="MB041" DataType="System.Decimal"/>
+        <Column Name="MB042" DataType="System.String"/>
+        <Column Name="MB043" DataType="System.String"/>
+        <Column Name="MB044" DataType="System.String"/>
+        <Column Name="MB045" DataType="System.Decimal"/>
+        <Column Name="MB046" DataType="System.Decimal"/>
+        <Column Name="MB047" DataType="System.Decimal"/>
+        <Column Name="MB048" DataType="System.String"/>
+        <Column Name="MB049" DataType="System.Decimal"/>
+        <Column Name="MB050" DataType="System.Decimal"/>
+        <Column Name="MB051" DataType="System.Decimal"/>
+        <Column Name="MB052" DataType="System.String"/>
+        <Column Name="MB053" DataType="System.Decimal"/>
+        <Column Name="MB054" DataType="System.Decimal"/>
+        <Column Name="MB055" DataType="System.Decimal"/>
+        <Column Name="MB056" DataType="System.Decimal"/>
+        <Column Name="MB057" DataType="System.Decimal"/>
+        <Column Name="MB058" DataType="System.Decimal"/>
+        <Column Name="MB059" DataType="System.Decimal"/>
+        <Column Name="MB060" DataType="System.Decimal"/>
+        <Column Name="MB061" DataType="System.Decimal"/>
+        <Column Name="MB062" DataType="System.Decimal"/>
+        <Column Name="MB063" DataType="System.Decimal"/>
+        <Column Name="MB064" DataType="System.Decimal"/>
+        <Column Name="MB065" DataType="System.Decimal"/>
+        <Column Name="MB066" DataType="System.String"/>
+        <Column Name="MB067" DataType="System.String"/>
+        <Column Name="MB068" DataType="System.String"/>
+        <Column Name="MB069" DataType="System.Decimal"/>
+        <Column Name="MB070" DataType="System.Decimal"/>
+        <Column Name="MB071" DataType="System.Decimal"/>
+        <Column Name="MB072" DataType="System.String"/>
+        <Column Name="MB073" DataType="System.Decimal"/>
+        <Column Name="MB074" DataType="System.Decimal"/>
+        <Column Name="MB075" DataType="System.Decimal"/>
+        <Column Name="MB076" DataType="System.Decimal"/>
+        <Column Name="MB077" DataType="System.String"/>
+        <Column Name="MB078" DataType="System.Decimal"/>
+        <Column Name="MB079" DataType="System.Decimal"/>
+        <Column Name="MB080" DataType="System.String"/>
+        <Column Name="MB081" DataType="System.String"/>
+        <Column Name="MB082" DataType="System.Decimal"/>
+        <Column Name="MB083" DataType="System.String"/>
+        <Column Name="MB084" DataType="System.Decimal"/>
+        <Column Name="MB085" DataType="System.String"/>
+        <Column Name="MB086" DataType="System.Decimal"/>
+        <Column Name="MB087" DataType="System.String"/>
+        <Column Name="MB088" DataType="System.Decimal"/>
+        <Column Name="MB089" DataType="System.Decimal"/>
+        <Column Name="MB090" DataType="System.String"/>
+        <Column Name="MB091" DataType="System.String"/>
+        <Column Name="MB092" DataType="System.String"/>
+        <Column Name="MB093" DataType="System.Decimal"/>
+        <Column Name="MB094" DataType="System.Decimal"/>
+        <Column Name="MB095" DataType="System.Decimal"/>
+        <Column Name="MB096" DataType="System.Decimal"/>
+        <Column Name="MB097" DataType="System.Decimal"/>
+        <Column Name="MB098" DataType="System.String"/>
+        <Column Name="MB099" DataType="System.Decimal"/>
+        <Column Name="MB100" DataType="System.String"/>
+        <Column Name="MB101" DataType="System.String"/>
+        <Column Name="MB102" DataType="System.String"/>
+        <Column Name="MB103" DataType="System.String"/>
+        <Column Name="MB104" DataType="System.String"/>
+        <Column Name="MB105" DataType="System.String"/>
+        <Column Name="MB106" DataType="System.String"/>
+        <Column Name="MB107" DataType="System.String"/>
+        <Column Name="MB108" DataType="System.String"/>
+        <Column Name="MB109" DataType="System.String"/>
+        <Column Name="MB110" DataType="System.String"/>
+        <Column Name="MB111" DataType="System.String"/>
+        <Column Name="MB112" DataType="System.String"/>
+        <Column Name="MB113" DataType="System.String"/>
+        <Column Name="MB114" DataType="System.String"/>
+        <Column Name="MB115" DataType="System.String"/>
+        <Column Name="MB116" DataType="System.String"/>
+        <Column Name="MB117" DataType="System.String"/>
+        <Column Name="MB118" DataType="System.String"/>
+        <Column Name="MB119" DataType="System.Decimal"/>
+        <Column Name="MB120" DataType="System.Decimal"/>
+        <Column Name="MB121" DataType="System.String"/>
+        <Column Name="MB122" DataType="System.String"/>
+        <Column Name="MB123" DataType="System.Decimal"/>
+        <Column Name="MB124" DataType="System.String"/>
+        <Column Name="MB125" DataType="System.Decimal"/>
+        <Column Name="MB126" DataType="System.String"/>
+        <Column Name="MB127" DataType="System.String"/>
+        <Column Name="MB128" DataType="System.String"/>
+        <Column Name="MB129" DataType="System.String"/>
+        <Column Name="MB130" DataType="System.String"/>
+        <Column Name="MB131" DataType="System.Decimal"/>
+        <Column Name="MB132" DataType="System.Decimal"/>
+        <Column Name="MB133" DataType="System.String"/>
+        <Column Name="MB134" DataType="System.Decimal"/>
+        <Column Name="MB135" DataType="System.String"/>
+        <Column Name="MB136" DataType="System.String"/>
+        <Column Name="MB137" DataType="System.String"/>
+        <Column Name="MB138" DataType="System.String"/>
+        <Column Name="MB139" DataType="System.String"/>
+        <Column Name="MB140" DataType="System.String"/>
+        <Column Name="MB141" DataType="System.String"/>
+        <Column Name="MB142" DataType="System.String"/>
+        <Column Name="MB143" DataType="System.String"/>
+        <Column Name="MB144" DataType="System.String"/>
+        <Column Name="MB145" DataType="System.String"/>
+        <Column Name="MB146" DataType="System.String"/>
+        <Column Name="MB147" DataType="System.String"/>
+        <Column Name="MB148" DataType="System.String"/>
+        <Column Name="MB149" DataType="System.String"/>
+        <Column Name="MB150" DataType="System.String"/>
+        <Column Name="MB151" DataType="System.String"/>
+        <Column Name="MB152" DataType="System.String"/>
+        <Column Name="MB153" DataType="System.String"/>
+        <Column Name="MB154" DataType="System.String"/>
+        <Column Name="MB155" DataType="System.String"/>
+        <Column Name="MB156" DataType="System.String"/>
+        <Column Name="MB157" DataType="System.String"/>
+        <Column Name="MB158" DataType="System.String"/>
+        <Column Name="MB159" DataType="System.Decimal"/>
+        <Column Name="MB160" DataType="System.Decimal"/>
+        <Column Name="MB161" DataType="System.Decimal"/>
+        <Column Name="MB162" DataType="System.String"/>
+        <Column Name="MB163" DataType="System.String"/>
+        <Column Name="MB164" DataType="System.String"/>
+        <Column Name="MB165" DataType="System.String"/>
+        <Column Name="MB166" DataType="System.Decimal"/>
+        <Column Name="MB167" DataType="System.Decimal"/>
+        <Column Name="MB168" DataType="System.String"/>
+        <Column Name="MB169" DataType="System.String"/>
+        <Column Name="MB170" DataType="System.String"/>
+        <Column Name="MB171" DataType="System.Decimal"/>
+        <Column Name="MB172" DataType="System.Decimal"/>
+        <Column Name="MB173" DataType="System.Decimal"/>
+        <Column Name="MB174" DataType="System.String"/>
+        <Column Name="MB175" DataType="System.String"/>
+        <Column Name="MB176" DataType="System.String"/>
+        <Column Name="MB177" DataType="System.String"/>
+        <Column Name="MB178" DataType="System.String"/>
+        <Column Name="MB179" DataType="System.String"/>
+        <Column Name="MB180" DataType="System.Decimal"/>
+        <Column Name="MB181" DataType="System.Decimal"/>
+        <Column Name="MB182" DataType="System.Decimal"/>
+        <Column Name="MB183" DataType="System.String"/>
+        <Column Name="MB184" DataType="System.Decimal"/>
+        <Column Name="MB185" DataType="System.String"/>
+        <Column Name="MB186" DataType="System.String"/>
+        <Column Name="MB187" DataType="System.String"/>
+        <Column Name="MB188" DataType="System.String"/>
+        <Column Name="MB189" DataType="System.String"/>
+        <Column Name="MB190" DataType="System.String"/>
+        <Column Name="MB191" DataType="System.Decimal"/>
+        <Column Name="MB192" DataType="System.Decimal"/>
+        <Column Name="MB193" DataType="System.Decimal"/>
+        <Column Name="MB194" DataType="System.String"/>
+        <Column Name="MB195" DataType="System.String"/>
+        <Column Name="MB196" DataType="System.Decimal"/>
+        <Column Name="MB197" DataType="System.String"/>
+        <Column Name="MB198" DataType="System.String"/>
+        <Column Name="MB199" DataType="System.String"/>
+        <Column Name="MA0011" DataType="System.String"/>
+        <Column Name="MA0021" DataType="System.String"/>
+        <Column Name="MA0031" DataType="System.String"/>
+        <Column Name="MA0041" DataType="System.String"/>
+        <Column Name="MA0051" DataType="System.String"/>
+        <Column Name="MA0061" DataType="System.String"/>
+        <Column Name="MA0071" DataType="System.String"/>
+        <Column Name="MA0081" DataType="System.String"/>
+        <Column Name="MA0091" DataType="System.String"/>
+        <Column Name="MA0101" DataType="System.String"/>
+        <Column Name="MA0111" DataType="System.String"/>
+        <Column Name="MA0121" DataType="System.String"/>
+        <Column Name="MA0131" DataType="System.String"/>
+        <Column Name="MA0141" DataType="System.String"/>
+        <Column Name="MA0151" DataType="System.String"/>
+        <Column Name="MA0161" DataType="System.String"/>
+        <Column Name="MA0171" DataType="System.String"/>
+        <Column Name="MA0181" DataType="System.Decimal"/>
+        <Column Name="MA0191" DataType="System.Decimal"/>
+        <Column Name="MA0201" DataType="System.String"/>
+        <Column Name="MA0211" DataType="System.String"/>
+        <Column Name="MA0221" DataType="System.String"/>
+        <Column Name="MA0231" DataType="System.String"/>
+        <Column Name="MA0241" DataType="System.String"/>
+        <Column Name="MA0251" DataType="System.String"/>
+        <Column Name="MA0261" DataType="System.String"/>
+        <Column Name="MA0271" DataType="System.String"/>
+        <Column Name="MA0281" DataType="System.String"/>
+        <Column Name="MA0291" DataType="System.String"/>
+        <Column Name="MA0301" DataType="System.String"/>
+        <Column Name="MA0311" DataType="System.String"/>
+        <Column Name="MA0321" DataType="System.String"/>
+        <Column Name="MA0331" DataType="System.String"/>
+        <Column Name="MA0341" DataType="System.String"/>
+        <Column Name="MA0351" DataType="System.String"/>
+        <Column Name="MA0361" DataType="System.String"/>
+        <Column Name="MA0371" DataType="System.String"/>
+        <Column Name="MA0381" DataType="System.String"/>
+        <Column Name="MA0391" DataType="System.String"/>
+        <Column Name="MA0401" DataType="System.String"/>
+        <Column Name="MA0411" DataType="System.String"/>
+        <Column Name="MA0421" DataType="System.String"/>
+        <Column Name="MA0431" DataType="System.String"/>
+        <Column Name="MA0441" DataType="System.String"/>
+        <Column Name="COMPANY7" DataType="System.String"/>
+        <Column Name="CREATOR7" DataType="System.String"/>
+        <Column Name="USR_GROUP7" DataType="System.String"/>
+        <Column Name="CREATE_DATE7" DataType="System.String"/>
+        <Column Name="MODIFIER7" DataType="System.String"/>
+        <Column Name="MODI_DATE7" DataType="System.String"/>
+        <Column Name="FLAG7" DataType="System.Decimal"/>
+        <Column Name="CREATE_TIME7" DataType="System.String"/>
+        <Column Name="MODI_TIME7" DataType="System.String"/>
+        <Column Name="TRANS_TYPE7" DataType="System.String"/>
+        <Column Name="TRANS_NAME7" DataType="System.String"/>
+        <Column Name="sync_date7" DataType="System.String"/>
+        <Column Name="sync_time7" DataType="System.String"/>
+        <Column Name="sync_mark7" DataType="System.String"/>
+        <Column Name="sync_count7" DataType="System.Decimal"/>
+        <Column Name="DataUser7" DataType="System.String"/>
+        <Column Name="DataGroup7" DataType="System.String"/>
+        <Column Name="UDF017" DataType="System.String"/>
+        <Column Name="UDF027" DataType="System.String"/>
+        <Column Name="UDF037" DataType="System.String"/>
+        <Column Name="UDF047" DataType="System.String"/>
+        <Column Name="UDF057" DataType="System.String"/>
+        <Column Name="UDF067" DataType="System.Decimal"/>
+        <Column Name="UDF077" DataType="System.Decimal"/>
+        <Column Name="UDF087" DataType="System.Decimal"/>
+        <Column Name="UDF097" DataType="System.Decimal"/>
+        <Column Name="UDF107" DataType="System.Decimal"/>
+        <Column Name="COMPANY8" DataType="System.String"/>
+        <Column Name="CREATOR8" DataType="System.String"/>
+        <Column Name="USR_GROUP8" DataType="System.String"/>
+        <Column Name="CREATE_DATE8" DataType="System.String"/>
+        <Column Name="MODIFIER8" DataType="System.String"/>
+        <Column Name="MODI_DATE8" DataType="System.String"/>
+        <Column Name="FLAG8" DataType="System.Decimal"/>
+        <Column Name="CREATE_TIME8" DataType="System.String"/>
+        <Column Name="MODI_TIME8" DataType="System.String"/>
+        <Column Name="TRANS_TYPE8" DataType="System.String"/>
+        <Column Name="TRANS_NAME8" DataType="System.String"/>
+        <Column Name="sync_date8" DataType="System.String"/>
+        <Column Name="sync_time8" DataType="System.String"/>
+        <Column Name="sync_mark8" DataType="System.String"/>
+        <Column Name="sync_count8" DataType="System.Decimal"/>
+        <Column Name="DataUser8" DataType="System.String"/>
+        <Column Name="DataGroup8" DataType="System.String"/>
+        <Column Name="MB0012" DataType="System.String"/>
+        <Column Name="MB0021" DataType="System.String"/>
+        <Column Name="MB0031" DataType="System.String"/>
+        <Column Name="MB0041" DataType="System.String"/>
+        <Column Name="MB0051" DataType="System.String"/>
+        <Column Name="MB0061" DataType="System.String"/>
+        <Column Name="MB0071" DataType="System.String"/>
+        <Column Name="MB0081" DataType="System.String"/>
+        <Column Name="MB0091" DataType="System.String"/>
+        <Column Name="MB0101" DataType="System.String"/>
+        <Column Name="MB0111" DataType="System.Decimal"/>
+        <Column Name="MB0121" DataType="System.Decimal"/>
+        <Column Name="MB0131" DataType="System.String"/>
+        <Column Name="MB0141" DataType="System.String"/>
+        <Column Name="MB0151" DataType="System.String"/>
+        <Column Name="MB0161" DataType="System.String"/>
+        <Column Name="MB0171" DataType="System.Decimal"/>
+        <Column Name="MB0181" DataType="System.String"/>
+        <Column Name="MB0191" DataType="System.String"/>
+        <Column Name="MB0201" DataType="System.String"/>
+        <Column Name="MB0211" DataType="System.Decimal"/>
+        <Column Name="UDF018" DataType="System.String"/>
+        <Column Name="UDF028" DataType="System.String"/>
+        <Column Name="UDF038" DataType="System.String"/>
+        <Column Name="UDF048" DataType="System.String"/>
+        <Column Name="UDF058" DataType="System.String"/>
+        <Column Name="UDF068" DataType="System.Decimal"/>
+        <Column Name="UDF078" DataType="System.Decimal"/>
+        <Column Name="UDF088" DataType="System.Decimal"/>
+        <Column Name="UDF098" DataType="System.Decimal"/>
+        <Column Name="UDF108" DataType="System.Decimal"/>
+        <Column Name="MB1131" DataType="System.String"/>
+        <Column Name="產地" DataType="System.String"/>
       </TableDataSource>
     </MsSqlDataConnection>
     <Parameter Name="P1" DataType="System.String"/>
@@ -903,7 +1202,7 @@
       <TextObject Name="Text23" Left="424.13" Top="85.05" Width="113.4" Height="18.9" Text="營業稅率:[Table.TC026]" Format="Percent" Format.UseLocale="true" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text24" Left="538.65" Top="66.15" Width="179.55" Height="18.9" Text="運輸方式:[Table.TC017]" VertAlign="Center"/>
       <TextObject Name="Text25" Left="538.65" Top="85.05" Width="179.55" Height="18.9" Text="價格條件:[Table.TC007]" VertAlign="Center"/>
-      <TextObject Name="Text26" Left="538.65" Top="103.95" Width="179.55" Height="18.9" Text="廠別:[Table.TC010] [Table.MB002]" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="538.65" Top="103.95" Width="179.55" Height="18.9" Text="廠別:[Table.TC010] " VertAlign="Center"/>
       <TextObject Name="Text73" Left="0.45" Top="62.15" Width="718.2" Height="151.2" Border.Lines="Left, Right, Top" HorzAlign="Right"/>
       <TextObject Name="Text2" Top="18.9" Width="718.2" Height="18.9" Text="採購單" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text1" Width="718.2" Height="18.9" Text="大潁食品股份有限公司" HorzAlign="Center" VertAlign="Center"/>
@@ -912,16 +1211,16 @@
       <TextObject Name="Text5" Left="463.05" Top="18.9" Width="255.15" Height="18.9" Text="公司傳真:05-2956519" HorzAlign="Right" VertAlign="Center"/>
       <TextObject Name="Text6" Left="464.2" Top="37.8" Width="255.15" Height="18.9" Text="頁次:[Page]/[TotalPages]&#13;&#10;" HorzAlign="Right" VertAlign="Center"/>
       <TextObject Name="Text91" Left="538.65" Top="122.85" Width="179.55" Height="18.9" Text="UOF單號:[Table.UOF單號]" VertAlign="Center"/>
-      <TextObject Name="Text117" Left="558" Top="217.8" Width="160.65" Height="75.6" Border.Lines="All" Text="驗收標準&#13;&#10;" VertAlign="Center"/>
-      <DataBand Name="Data1" Top="298" Width="737.1" Height="66.15" CanGrow="true" Guides="28.35,28.35,37.8,37.8" DataSource="Table">
-        <TextObject Name="Text10" Left="47.25" Width="170.1" Height="66.15" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD004]&#13;&#10;[Table.TD005]&#13;&#10;[Table.TD006]"/>
-        <TextObject Name="Text33" Left="217.2" Width="75.6" Height="66.15" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="  [Table.TD008]&#13;&#10;  [Table.TD015]&#13;&#10;[Table.TD016]" HorzAlign="Right"/>
-        <TextObject Name="Text35" Left="425.35" Width="132.3" Height="66.15" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD012]&#13;&#10;[Table.TD026]-[Table.TD027]-[Table.TD028]&#13;&#10;[Table.請購單身備註]" VertAlign="Center"/>
-        <TextObject Name="Text38" Left="558" Width="160.65" Height="66.15" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.外包裝及驗收標準]&#13;&#10;[Table.產品外觀]&#13;&#10;[Table.色澤]&#13;&#10;[Table.風味]&#13;&#10;[Table.產品批號]" Font="宋体, 8pt"/>
-        <TextObject Name="Text9" Width="47.25" Height="66.15" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD003]" VertAlign="Center"/>
-        <TextObject Name="Text34" Left="292.95" Width="47.25" Height="66.15" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD009]" VertAlign="Center"/>
-        <TextObject Name="Text44" Left="340.3" Width="85.05" Height="66.15" Border.Lines="Left, Top, Bottom" CanGrow="true" GrowToBottom="true" Text="[Table.TD007]&#13;&#10;[Table.TD010]&#13;&#10;[Table.TD011]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" Trimming="EllipsisCharacter"/>
-        <ChildBand Name="Child1" Top="368.75" Width="737.1" Height="18.9" CompleteToNRows="4">
+      <TextObject Name="Text117" Left="558" Top="217.8" Width="160.65" Height="75.6" Border.Lines="All" Text="驗收標準&#13;&#10;原產地" VertAlign="Center"/>
+      <DataBand Name="Data1" Top="298" Width="737.1" Height="75.6" CanGrow="true" Guides="28.35,28.35,37.8,37.8" DataSource="Table">
+        <TextObject Name="Text10" Left="47.25" Width="170.1" Height="75.6" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD004]&#13;&#10;[Table.TD005]&#13;&#10;[Table.TD006]"/>
+        <TextObject Name="Text33" Left="217.2" Width="75.6" Height="75.6" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="  [Table.TD008]&#13;&#10;  [Table.TD015]&#13;&#10;[Table.TD016]" HorzAlign="Right"/>
+        <TextObject Name="Text35" Left="425.35" Width="132.3" Height="75.6" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD012]&#13;&#10;[Table.TD026]-[Table.TD027]-[Table.TD028]&#13;&#10;[Table.請購單身備註]" VertAlign="Center"/>
+        <TextObject Name="Text38" Left="558" Width="160.65" Height="75.6" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.外包裝及驗收標準]&#13;&#10;[Table.產品外觀]&#13;&#10;[Table.色澤]&#13;&#10;[Table.風味]&#13;&#10;[Table.產品批號]&#13;&#10;[Table.產地]" Font="宋体, 8pt"/>
+        <TextObject Name="Text9" Width="47.25" Height="75.6" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD003]" VertAlign="Center"/>
+        <TextObject Name="Text34" Left="292.95" Width="47.25" Height="75.6" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TD009]" VertAlign="Center"/>
+        <TextObject Name="Text44" Left="340.3" Width="85.05" Height="75.6" Border.Lines="Left, Top, Bottom" CanGrow="true" GrowToBottom="true" Text="[Table.TD007]&#13;&#10;[Table.TD010]&#13;&#10;[Table.TD011]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" Trimming="EllipsisCharacter"/>
+        <ChildBand Name="Child1" Top="378.2" Width="737.1" Height="18.9" CompleteToNRows="4">
           <TextObject Name="Text96" Width="47.25" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" HorzAlign="Right"/>
           <TextObject Name="Text97" Left="47.25" Width="170.1" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="//以下空白" VertAlign="Center"/>
           <TextObject Name="Text118" Left="217.2" Width="75.6" Height="18.9" Border.Lines="All" HorzAlign="Right" VertAlign="Center"/>
@@ -931,7 +1230,7 @@
           <TextObject Name="Text122" Left="558" Width="160.65" Height="18.9" Border.Lines="All" VertAlign="Center"/>
         </ChildBand>
       </DataBand>
-      <GroupFooterBand Name="GroupFooter1" Top="392.24" Width="737.1" Height="277.5">
+      <GroupFooterBand Name="GroupFooter1" Top="401.69" Width="737.1" Height="277.5">
         <TextObject Name="Text90" Width="718.2" Height="18.9" Border.Lines="All" HorzAlign="Right"/>
         <TextObject Name="Text65" Width="170.1" Height="18.9" Text="數量合計:[Table.TC023]" Format="Number" Format.UseLocale="true" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
         <TextObject Name="Text66" Left="160.65" Width="122.85" Height="18.9" Text="採購金額:[Table.TC019]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
