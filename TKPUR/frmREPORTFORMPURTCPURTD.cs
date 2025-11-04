@@ -321,7 +321,7 @@ namespace TKPUR
                                         
                                         ");
             }
-
+             
             FASTSQL.AppendFormat(@"      
                                SELECT *
                                 ,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME
@@ -331,12 +331,16 @@ namespace TKPUR
                                 ,[PRODUCT_APPEARANCE] AS '產品外觀'
                                 ,[COLOR] AS '色澤'
                                 ,[FLAVOR] AS '風味'
-                                ,[BATCHNO] AS '產品批號'
+                                ,[BATCHNO] AS '產品批號' 
                                 ,[TB012] AS '請購單身備註'
+                                ,INVMB.MB113
+                                ,INVMA.[MA003] AS '產地'
 
                                 FROM [TK].dbo.PURTC WITH(NOLOCK)
                                 ,[TK].dbo.PURTD WITH(NOLOCK)
                                 LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004
+                                LEFT JOIN  [TK].dbo.INVMB ON INVMB.MB001=TD004
+                                LEFT JOIN [TK].dbo.INVMA ON INVMA.MA001='7' AND INVMA.MA002=MB113
                                 LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028
                                 ,[TK].dbo.CMSMQ WITH(NOLOCK)
                                 ,[TK].dbo.PURMA WITH(NOLOCK)
@@ -345,7 +349,7 @@ namespace TKPUR
 
                                 WHERE TC001=TD001 AND TC002=TD002
                                 AND MQ001=TC001
-                                AND TC004=MA001
+                                AND TC004=PURMA.MA001
                                 AND TC011=MV001
                                 AND TC010=CMSMB.MB001
                                 AND TC001+TC002 IN ({0})
