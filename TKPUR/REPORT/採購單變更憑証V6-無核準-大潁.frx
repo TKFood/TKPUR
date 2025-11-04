@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="11/04/2025 10:47:20" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="11/04/2025 14:53:40" ReportInfo.CreatorVersion="2016.4.4.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,8 +24,8 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEHXsEQwP28M4LlAGVf1bb0">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT *&#13;&#10;,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME&#13;&#10;,CASE WHEN TE118='1' THEN '應稅內含' WHEN TE118='2' THEN '應稅外加' WHEN TE118='3' THEN '零稅率' WHEN TE118='4' THEN '免稅 'WHEN TE118='9' THEN '不計稅' END AS TE118NAME&#13;&#10;,PURTE.UDF02 AS 'UOF單號'&#13;&#10;,CONVERT(DECIMAL(16,3),TE008) AS NEWTE008&#13;&#10;,CONVERT(DECIMAL(16,3),TE108) AS NEWTE108&#13;&#10;,CONVERT(DECIMAL(16,3),TF011) AS NEWTF011&#13;&#10;,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012&#13;&#10;,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111&#13;&#10;,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[DOC_NBR]=PURTE.UDF02 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;,[TB012] AS '請購單身備註'&#13;&#10;,INVMB.MB113&#13;&#10;,INVMA.[MA003] AS '產地'&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTF WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005&#13;&#10;LEFT JOIN [TK].dbo.PURTD ON TD001=TF001 AND TD002=TF002 AND TD003=TF004&#13;&#10;LEFT JOIN  [TK].dbo.INVMB ON INVMB.MB001=TD004&#13;&#10;LEFT JOIN [TK].dbo.INVMA ON INVMA.MA001='7' AND INVMA.MA002=MB113&#13;&#10;LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028&#13;&#10;,[TK].dbo.PURTE WITH(NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.CMSMQ WITH(NOLOCK) ON MQ001=TE001&#13;&#10;LEFT JOIN [TK].dbo.PURMA WITH(NOLOCK) ON MA001=TE005&#13;&#10;LEFT JOIN [TK].dbo.PURTC WITH(NOLOCK) ON TC001=TE001 AND TC002=TE002&#13;&#10;LEFT JOIN [TK].dbo.CMSMB WITH(NOLOCK) ON TC010=MB001&#13;&#10;WHERE TE001=TF001 AND TE002=TF002&#13;&#10;AND TE002 LIKE  '20251009017%'&#13;&#10;&#13;&#10; ORDER BY TE001,TE002,TE003,TF004">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUH+rx3ClQ9tTxp5fqiyEvn3">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT *&#13;&#10;,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME&#13;&#10;,CASE WHEN TE118='1' THEN '應稅內含' WHEN TE118='2' THEN '應稅外加' WHEN TE118='3' THEN '零稅率' WHEN TE118='4' THEN '免稅 'WHEN TE118='9' THEN '不計稅' END AS TE118NAME&#13;&#10;,PURTE.UDF02 AS 'UOF單號'&#13;&#10;,CONVERT(DECIMAL(16,3),TE008) AS NEWTE008&#13;&#10;,CONVERT(DECIMAL(16,3),TE108) AS NEWTE108&#13;&#10;,CONVERT(DECIMAL(16,3),TF011) AS NEWTF011&#13;&#10;,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012&#13;&#10;,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111&#13;&#10;,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[DOC_NBR]=PURTE.UDF02 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;,[TB012] AS '請購單身備註'&#13;&#10;,INVMB.MB113&#13;&#10;,INVMA.[MA003] AS '產地'&#13;&#10;,PURMA.MA003 AS '公司全名'&#13;&#10;,PURMA.MA013 AS '聯絡人'&#13;&#10;&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTF WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005&#13;&#10;LEFT JOIN [TK].dbo.PURTD ON TD001=TF001 AND TD002=TF002 AND TD003=TF004&#13;&#10;LEFT JOIN  [TK].dbo.INVMB ON INVMB.MB001=TD004&#13;&#10;LEFT JOIN [TK].dbo.INVMA ON INVMA.MA001='7' AND INVMA.MA002=MB113&#13;&#10;LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028&#13;&#10;,[TK].dbo.PURTE WITH(NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.CMSMQ WITH(NOLOCK) ON MQ001=TE001&#13;&#10;LEFT JOIN [TK].dbo.PURMA WITH(NOLOCK) ON MA001=TE005&#13;&#10;LEFT JOIN [TK].dbo.PURTC WITH(NOLOCK) ON TC001=TE001 AND TC002=TE002&#13;&#10;LEFT JOIN [TK].dbo.CMSMB WITH(NOLOCK) ON TC010=MB001&#13;&#10;WHERE TE001=TF001 AND TE002=TF002&#13;&#10;AND TE002 LIKE  '20251009017%'&#13;&#10;&#13;&#10; ORDER BY TE001,TE002,TE003,TF004">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
         <Column Name="USR_GROUP" DataType="System.String"/>
@@ -1299,6 +1299,8 @@ namespace FastReport
         <Column Name="UDF109" DataType="System.Decimal"/>
         <Column Name="MB1131" DataType="System.String"/>
         <Column Name="產地" DataType="System.String"/>
+        <Column Name="公司全名" DataType="System.String"/>
+        <Column Name="聯絡人" DataType="System.String"/>
       </TableDataSource>
     </MsSqlDataConnection>
     <Parameter Name="P1" DataType="System.String"/>
@@ -1320,14 +1322,14 @@ namespace FastReport
       <TextObject Name="Text82" Top="107.75" Width="189" Height="18.9" Text="單據日期:[Table.TE011]" VertAlign="Center"/>
       <TextObject Name="Text83" Top="123.65" Width="189" Height="18.9" Text="採購日期:[Table.TE004]" VertAlign="Center"/>
       <TextObject Name="Text84" Top="138.55" Width="189" Height="18.9" Text="整張結案:[Table.TE012]" VertAlign="Center"/>
-      <TextObject Name="Text85" Top="154.45" Width="387.45" Height="18.9" Text="廠商全名:[Table.MA003]" VertAlign="Center"/>
+      <TextObject Name="Text85" Top="154.45" Width="387.45" Height="18.9" Text="廠商全名:[Table.公司全名]" VertAlign="Center"/>
       <TextObject Name="Text86" Top="170.35" Width="708.75" Height="18.9" Text="新送貨地址:[Table.TE019]" VertAlign="Center"/>
       <TextObject Name="Text88" Left="198.45" Top="60.05" Width="255.15" Height="18.9" Text="供應廠商:[Table.TE005] [Table.MA002]" VertAlign="Center"/>
       <TextObject Name="Text89" Left="198.45" Top="75.95" Width="255.15" Height="18.9" Text="廠別代號:[Table.TC010] [Table.MB002]" VertAlign="Center"/>
       <TextObject Name="Text90" Top="186.35" Width="708.75" Height="18.9" Text="變更原因:[Table.TE006]" VertAlign="Center"/>
       <TextObject Name="Text91" Left="198.45" Top="91.85" Width="255.15" Height="18.9" Text="交易幣別:[Table.TE107]=&gt;[Table.TE007]" VertAlign="Center"/>
       <TextObject Name="Text92" Left="198.45" Top="107.75" Width="255.15" Height="18.9" Text="匯率:[Table.NEWTE108]=&gt;[Table.NEWTE008]" VertAlign="Center"/>
-      <TextObject Name="Text93" Left="198.45" Top="138.55" Width="500.85" Height="18.9" Text="付款條件:[Table.TE123] [Table.TE110]=&gt;[Table.TE023] [Table.TE010]" VertAlign="Center"/>
+      <TextObject Name="Text93" Left="198.45" Top="125.1" Width="264.6" Height="28.35" Text="付款條件:[Table.TE123] [Table.TE110]=&gt;[Table.TE023] [Table.TE010]"/>
       <TextObject Name="Text94" Left="463.05" Top="60.05" Width="245.7" Height="18.9" Text="價格條件:[Table.TE109]=&gt;[Table.TE009]" VertAlign="Center"/>
       <TextObject Name="Text95" Left="463.05" Top="75.95" Width="245.7" Height="18.9" Text="課 稅 別: [Table.TE118NAME]=&gt;[Table.TE018NAME]" VertAlign="Center"/>
       <TextObject Name="Text96" Left="463.05" Top="91.85" Width="245.7" Height="18.9" Text="運輸方式:[Table.TE115]=&gt;[Table.TE015]" VertAlign="Center"/>
@@ -1343,6 +1345,7 @@ namespace FastReport
       <TextObject Name="Text134" Left="398.05" Top="203.8" Width="75.6" Height="66.15" Border.Lines="Left, Right, Top"/>
       <TextObject Name="Text135" Left="473.65" Top="203.8" Width="236.25" Height="66.15" Border.Lines="Left, Right, Top"/>
       <TextObject Name="Text148" Left="463.05" Top="123.65" Width="198.45" Height="18.9" Text="採購變更簽核單:[Table.UOF單號]" VertAlign="Center"/>
+      <TextObject Name="Text163" Left="463.05" Top="141.75" Width="198.45" Height="18.9" Text="聯絡人:[Table.聯絡人]" VertAlign="Center"/>
       <DataBand Name="Data1" Top="276" Width="718.2" Height="113.85" CanGrow="true" Guides="28.35,28.35,37.8,37.8,28.35,28.35,28.35,0,28.35,37.8,37.8,37.8,37.8,37.8" DataSource="Table">
         <TextObject Name="Text9" Left="1.15" Top="0.45" Width="75.6" Height="113.4" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF004]"/>
         <TextObject Name="Text12" Left="76.75" Top="0.45" Width="170.1" Height="113.4" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TF005]  (變更後)&#13;&#10;[Table.TF006]&#13;&#10;[Table.TF007]"/>
