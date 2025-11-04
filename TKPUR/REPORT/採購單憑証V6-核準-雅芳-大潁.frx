@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="11/04/2025 14:50:11" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="11/04/2025 15:29:47" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUESkcTMJp+4DepkyyhI1G/4">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME&#13;&#10;,PURTC.UDF02 AS 'UOF單號'&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH (NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;,[TB012] AS '請購單身備註'&#13;&#10;,INVMB.MB113&#13;&#10;,INVMA.[MA003] AS '產地'&#13;&#10;,PURMA.MA003 AS '公司全名'&#13;&#10;,PURMA.MA013 AS '聯絡人'&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTC WITH(NOLOCK)&#13;&#10;,[TK].dbo.PURTD WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004&#13;&#10;LEFT JOIN  [TK].dbo.INVMB ON INVMB.MB001=TD004&#13;&#10;LEFT JOIN [TK].dbo.INVMA ON INVMA.MA001='7' AND INVMA.MA002=MB113&#13;&#10;LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028&#13;&#10;,[TK].dbo.CMSMQ WITH(NOLOCK)&#13;&#10;,[TK].dbo.PURMA WITH(NOLOCK)&#13;&#10;,[TK].dbo.CMSMV WITH(NOLOCK)&#13;&#10;,[TK].dbo.CMSMB WITH(NOLOCK)&#13;&#10;&#13;&#10;WHERE TC001=TD001 AND TC002=TD002&#13;&#10;AND MQ001=TC001&#13;&#10;AND TC004=PURMA.MA001&#13;&#10;AND TC011=MV001&#13;&#10;AND TC010=CMSMB.MB001&#13;&#10;AND TC001+TC002 IN ('A33120250919001','A')">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUERSykiiaDrNlkX546Kecg3">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;,CASE WHEN TC018='1' THEN '應稅內含' WHEN TC018='2' THEN '應稅外加' WHEN TC018='3' THEN '零稅率' WHEN TC018='4' THEN '免稅 'WHEN TC018='9' THEN '不計稅' END AS TC018NAME&#13;&#10;,PURTC.UDF02 AS 'UOF單號'&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WITH (NOLOCK) WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;,[TB012] AS '請購單身備註'&#13;&#10;,INVMB.MB113&#13;&#10;,INVMA.[MA003] AS '產地'&#13;&#10;,PURMA.MA003 AS '公司全名'&#13;&#10;,PURMA.MA013 AS '聯絡人'&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTC WITH(NOLOCK)&#13;&#10;,[TK].dbo.PURTD WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TD004&#13;&#10;LEFT JOIN  [TK].dbo.INVMB ON INVMB.MB001=TD004&#13;&#10;LEFT JOIN (SELECT MA001,MA002,MA003 FROM [TK].dbo.INVMA ) INVMA ON INVMA.MA001='7' AND INVMA.MA002=MB113&#13;&#10;LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028&#13;&#10;,[TK].dbo.CMSMQ WITH(NOLOCK)&#13;&#10;,[TK].dbo.PURMA WITH(NOLOCK)&#13;&#10;,[TK].dbo.CMSMV WITH(NOLOCK)&#13;&#10;,[TK].dbo.CMSMB WITH(NOLOCK)&#13;&#10;&#13;&#10;WHERE TC001=TD001 AND TC002=TD002&#13;&#10;AND MQ001=TC001&#13;&#10;AND TC004=PURMA.MA001&#13;&#10;AND TC011=MV001&#13;&#10;AND TC010=CMSMB.MB001&#13;&#10;AND TC001+TC002 IN ('A33120250919001','A')">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
         <Column Name="USR_GROUP" DataType="System.String"/>
@@ -1054,47 +1054,6 @@
         <Column Name="MA0011" DataType="System.String"/>
         <Column Name="MA0021" DataType="System.String"/>
         <Column Name="MA0031" DataType="System.String"/>
-        <Column Name="MA0041" DataType="System.String"/>
-        <Column Name="MA0051" DataType="System.String"/>
-        <Column Name="MA0061" DataType="System.String"/>
-        <Column Name="MA0071" DataType="System.String"/>
-        <Column Name="MA0081" DataType="System.String"/>
-        <Column Name="MA0091" DataType="System.String"/>
-        <Column Name="MA0101" DataType="System.String"/>
-        <Column Name="MA0111" DataType="System.String"/>
-        <Column Name="MA0121" DataType="System.String"/>
-        <Column Name="MA0131" DataType="System.String"/>
-        <Column Name="MA0141" DataType="System.String"/>
-        <Column Name="MA0151" DataType="System.String"/>
-        <Column Name="MA0161" DataType="System.String"/>
-        <Column Name="MA0171" DataType="System.String"/>
-        <Column Name="MA0181" DataType="System.Decimal"/>
-        <Column Name="MA0191" DataType="System.Decimal"/>
-        <Column Name="MA0201" DataType="System.String"/>
-        <Column Name="MA0211" DataType="System.String"/>
-        <Column Name="MA0221" DataType="System.String"/>
-        <Column Name="MA0231" DataType="System.String"/>
-        <Column Name="MA0241" DataType="System.String"/>
-        <Column Name="MA0251" DataType="System.String"/>
-        <Column Name="MA0261" DataType="System.String"/>
-        <Column Name="MA0271" DataType="System.String"/>
-        <Column Name="MA0281" DataType="System.String"/>
-        <Column Name="MA0291" DataType="System.String"/>
-        <Column Name="MA0301" DataType="System.String"/>
-        <Column Name="MA0311" DataType="System.String"/>
-        <Column Name="MA0321" DataType="System.String"/>
-        <Column Name="MA0331" DataType="System.String"/>
-        <Column Name="MA0341" DataType="System.String"/>
-        <Column Name="MA0351" DataType="System.String"/>
-        <Column Name="MA0361" DataType="System.String"/>
-        <Column Name="MA0371" DataType="System.String"/>
-        <Column Name="MA0381" DataType="System.String"/>
-        <Column Name="MA0391" DataType="System.String"/>
-        <Column Name="MA0401" DataType="System.String"/>
-        <Column Name="MA0411" DataType="System.String"/>
-        <Column Name="MA0421" DataType="System.String"/>
-        <Column Name="MA0431" DataType="System.String"/>
-        <Column Name="MA0441" DataType="System.String"/>
         <Column Name="COMPANY7" DataType="System.String"/>
         <Column Name="CREATOR7" DataType="System.String"/>
         <Column Name="USR_GROUP7" DataType="System.String"/>
@@ -1122,23 +1081,6 @@
         <Column Name="UDF087" DataType="System.Decimal"/>
         <Column Name="UDF097" DataType="System.Decimal"/>
         <Column Name="UDF107" DataType="System.Decimal"/>
-        <Column Name="COMPANY8" DataType="System.String"/>
-        <Column Name="CREATOR8" DataType="System.String"/>
-        <Column Name="USR_GROUP8" DataType="System.String"/>
-        <Column Name="CREATE_DATE8" DataType="System.String"/>
-        <Column Name="MODIFIER8" DataType="System.String"/>
-        <Column Name="MODI_DATE8" DataType="System.String"/>
-        <Column Name="FLAG8" DataType="System.Decimal"/>
-        <Column Name="CREATE_TIME8" DataType="System.String"/>
-        <Column Name="MODI_TIME8" DataType="System.String"/>
-        <Column Name="TRANS_TYPE8" DataType="System.String"/>
-        <Column Name="TRANS_NAME8" DataType="System.String"/>
-        <Column Name="sync_date8" DataType="System.String"/>
-        <Column Name="sync_time8" DataType="System.String"/>
-        <Column Name="sync_mark8" DataType="System.String"/>
-        <Column Name="sync_count8" DataType="System.Decimal"/>
-        <Column Name="DataUser8" DataType="System.String"/>
-        <Column Name="DataGroup8" DataType="System.String"/>
         <Column Name="MB0012" DataType="System.String"/>
         <Column Name="MB0021" DataType="System.String"/>
         <Column Name="MB0031" DataType="System.String"/>
@@ -1160,16 +1102,6 @@
         <Column Name="MB0191" DataType="System.String"/>
         <Column Name="MB0201" DataType="System.String"/>
         <Column Name="MB0211" DataType="System.Decimal"/>
-        <Column Name="UDF018" DataType="System.String"/>
-        <Column Name="UDF028" DataType="System.String"/>
-        <Column Name="UDF038" DataType="System.String"/>
-        <Column Name="UDF048" DataType="System.String"/>
-        <Column Name="UDF058" DataType="System.String"/>
-        <Column Name="UDF068" DataType="System.Decimal"/>
-        <Column Name="UDF078" DataType="System.Decimal"/>
-        <Column Name="UDF088" DataType="System.Decimal"/>
-        <Column Name="UDF098" DataType="System.Decimal"/>
-        <Column Name="UDF108" DataType="System.Decimal"/>
         <Column Name="MB1131" DataType="System.String"/>
         <Column Name="產地" DataType="System.String"/>
         <Column Name="公司全名" DataType="System.String"/>
@@ -1195,7 +1127,7 @@
       <TextObject Name="Text7" Top="66.15" Width="236.25" Height="18.9" Text="採購單別:[Table.TC001] [Table.MQ002]" VertAlign="Center"/>
       <TextObject Name="Text8" Top="85.05" Width="236.25" Height="18.9" Text="採購單號:[Table.TC002]" VertAlign="Center"/>
       <TextObject Name="Text11" Top="103.95" Width="236.25" Height="18.9" Text="單據日期:[Table.TC003]" VertAlign="Center"/>
-      <TextObject Name="Text12" Top="122.4" Width="264.6" Height="18.9" Text="廠商代號:[Table.TC004] [Table.MA002]" VertAlign="Center"/>
+      <TextObject Name="Text12" Top="122.4" Width="264.6" Height="18.9" Text="廠商代號:[Table.TC004]" VertAlign="Center"/>
       <TextObject Name="Text16" Left="283.5" Top="66.15" Width="160.65" Height="18.9" Text="交易幣別:[Table.TC005]" VertAlign="Center"/>
       <TextObject Name="Text17" Left="283.5" Top="85.05" Width="160.65" Height="18.9" Text="課稅別:[Table.TC018NAME]" VertAlign="Center"/>
       <TextObject Name="Text18" Left="283.5" Top="103.95" Width="255.15" Height="18.9" Text="採購人員:[Table.TC011] [Table.MV002]" VertAlign="Center"/>

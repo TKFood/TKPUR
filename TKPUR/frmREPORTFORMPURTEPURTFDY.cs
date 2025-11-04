@@ -336,8 +336,8 @@ namespace TKPUR
                                 FROM [DY].dbo.PURTF
                                 LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005
                                 LEFT JOIN [DY].dbo.PURTD ON TD001=TF001 AND TD002=TF002 AND TD003=TF004
-                                LEFT JOIN  [TK].dbo.INVMB ON INVMB.MB001=TD004
-                                LEFT JOIN [TK].dbo.INVMA ON INVMA.MA001='7' AND INVMA.MA002=MB113
+                                LEFT JOIN  [DY].dbo.INVMB ON INVMB.MB001=TD004
+                                LEFT JOIN (SELECT MA001,MA002,MA003 FROM [DY].dbo.INVMA ) INVMA ON INVMA.MA001='7' AND INVMA.MA002=MB113
                                 LEFT JOIN [DY].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028
                                 ,[DY].dbo.PURTE
                                 LEFT JOIN [DY].dbo.CMSMQ ON MQ001=TE001
