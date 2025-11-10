@@ -971,7 +971,7 @@ namespace TKPUR
                         }
                         catch (Exception ex)
                         {
-                            //MessageBox.Show("有錯誤");
+                            MessageBox.Show("有錯誤-"+ ex.ToString());
 
                             //ADDLOG(DateTime.Now, Subject.ToString(), ex.ToString());
                             //ex.ToString();
