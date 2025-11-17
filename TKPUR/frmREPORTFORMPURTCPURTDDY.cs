@@ -254,16 +254,20 @@ namespace TKPUR
         public void SETFASTREPORT(string statusReports, string PRINTSPURTCPURTD, string COMMENT)
         {
             StringBuilder SQL = new StringBuilder();
-            report1 = new Report(); 
-             
-            if (statusReports.Equals("憑証回傳"))
-            {
-                report1.Load(@"REPORT\採購單憑証V6-無核準-大潁.frx"); 
-            }           
-            else if (statusReports.Equals("雅芳-簽名"))
-            {
-                report1.Load(@"REPORT\採購單憑証V6-核準-雅芳-大潁.frx");
-            }
+            report1 = new Report();
+
+            report1.Load(@"REPORT\採購單憑証V6-核準-雅芳-大潁.frx");
+            //傳入SIGNS，當簽名檔的判斷
+            report1.SetParameterValue("SIGNS", statusReports);
+
+            //if (statusReports.Equals("憑証回傳"))
+            //{
+            //    report1.Load(@"REPORT\採購單憑証V6-無核準-大潁.frx"); 
+            //}           
+            //else if (statusReports.Equals("雅芳-簽名"))
+            //{
+            //    report1.Load(@"REPORT\採購單憑証V6-核準-雅芳-大潁.frx");
+            //}
            
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
@@ -399,16 +403,20 @@ namespace TKPUR
                 Directory.CreateDirectory(DirectoryNAME);
             }
             StringBuilder SQL = new StringBuilder();
-            report1 = new Report(); 
+            report1 = new Report();
 
-            if (statusReports.Equals("憑証回傳"))
-            {
-                report1.Load(@"REPORT\採購單憑証V6-無核準-大潁.frx");
-            }
-            else if (statusReports.Equals("雅芳-簽名"))
-            {
-                report1.Load(@"REPORT\採購單憑証V6-核準-雅芳-大潁.frx");
-            }
+            report1.Load(@"REPORT\採購單憑証V6-核準-雅芳-大潁.frx");
+            //傳入SIGNS，當簽名檔的判斷
+            report1.SetParameterValue("SIGNS", statusReports);
+
+            //if (statusReports.Equals("憑証回傳"))
+            //{
+            //    report1.Load(@"REPORT\採購單憑証V6-無核準-大潁.frx");
+            //}
+            //else if (statusReports.Equals("雅芳-簽名"))
+            //{
+            //    report1.Load(@"REPORT\採購單憑証V6-核準-雅芳-大潁.frx");
+            //}
             //else if (statusReports.Equals("芳梅-簽名"))
             //{
             //    report1.Load(@"REPORT\採購單憑証-芳梅-核準V2-大潁.frx");

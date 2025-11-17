@@ -251,15 +251,19 @@ namespace TKPUR
         {
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
-              
-            if (statusReports.Equals("憑証回傳"))
-            {
-                report1.Load(@"REPORT\採購單變更憑証V6-無核準.frx");
-            }           
-            else if (statusReports.Equals("雅芳-簽名"))
-            {
-                report1.Load(@"REPORT\採購單變更憑証V6-核準-雅芳.frx");
-            }
+
+            report1.Load(@"REPORT\採購單變更憑証V6-核準-雅芳.frx");
+            //傳入SIGNS，當簽名檔的判斷
+            report1.SetParameterValue("SIGNS", statusReports);
+
+            //if (statusReports.Equals("憑証回傳"))
+            //{
+            //    report1.Load(@"REPORT\採購單變更憑証V6-無核準.frx");
+            //}           
+            //else if (statusReports.Equals("雅芳-簽名"))
+            //{
+            //    report1.Load(@"REPORT\採購單變更憑証V6-核準-雅芳.frx");
+            //}
             //else if (statusReports.Equals("芳梅-簽名"))
             //{
             //    report1.Load(@"REPORT\採購單變更憑証-芳梅-核準V2.frx");
