@@ -1077,17 +1077,18 @@ namespace TKPUR
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
 
-            report1.Load(@"REPORT\應付憑單憑証-大潁國際.frx");
+            report1.Load(@"REPORT\應付憑單憑証-大潁國際-雅芳-V1.frx");
+            //傳入SIGNS，當簽名檔的判斷
+            report1.SetParameterValue("SIGNS", statusReports);
 
-
-            if (statusReports.Equals("雅芳-簽名"))
-            {
-                report1.Load(@"REPORT\應付憑單憑証-大潁國際-雅芳-V1.frx");
-            }
-            else if (statusReports.Equals("芳梅-簽名"))
-            {
-                report1.Load(@"REPORT\應付憑單憑証-大潁國際-芳梅-V1.frx");
-            }
+            //if (statusReports.Equals("雅芳-簽名"))
+            //{
+            //    report1.Load(@"REPORT\應付憑單憑証-大潁國際-雅芳-V1.frx");
+            //}
+            //else if (statusReports.Equals("芳梅-簽名"))
+            //{
+            //    report1.Load(@"REPORT\應付憑單憑証-大潁國際-芳梅-V1.frx");
+            //}
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
             SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
