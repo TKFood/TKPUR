@@ -1151,7 +1151,7 @@ namespace TKPUR
             {
                 report1.Load(@"REPORT\應付憑單憑証-芳梅-V1.frx");
             }
-
+           
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
             SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
