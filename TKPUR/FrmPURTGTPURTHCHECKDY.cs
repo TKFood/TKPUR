@@ -1085,7 +1085,7 @@ namespace TKPUR
             //{
             //    report1.Load(@"REPORT\應付憑單憑証-大潁國際-雅芳-V1.frx");
             //}
-            //else if (statusReports.Equals("芳梅-簽名"))
+            //else if (statusReports.Equals("芳梅-簽名")) 
             //{
             //    report1.Load(@"REPORT\應付憑單憑証-大潁國際-芳梅-V1.frx");
             //}
