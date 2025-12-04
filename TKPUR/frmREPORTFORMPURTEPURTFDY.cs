@@ -348,7 +348,8 @@ namespace TKPUR
                                 LEFT JOIN [DY].dbo.PURMA ON MA001=TE005
                                 LEFT JOIN [DY].dbo.PURTC ON TC001=TE001 AND TC002=TE002
                                 LEFT JOIN [DY].dbo.CMSMB ON TC010=MB001
-                                WHERE TE001=TF001 AND TE002=TF002
+                                WHERE 1=1
+                                AND TE001=TF001 AND TE002=TF002 AND TE003=TF003
                                 AND TE001+TE002+TE003 IN ({0})
                                 {1}
 
