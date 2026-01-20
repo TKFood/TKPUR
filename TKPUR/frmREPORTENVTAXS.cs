@@ -108,7 +108,8 @@ namespace TKPUR
             Table.SelectCommand = SQL;
             TableDataSource Table1 = report1.GetDataSource("Table1") as TableDataSource;
             SQL1= SETFASETSQL1(YY, MM);
-                        
+            Table1.SelectCommand = SQL1;
+
             report1.Preview = previewControl1;
             report1.Show();
 
@@ -243,7 +244,7 @@ namespace TKPUR
                                 GROUP BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004,MB1.MB002,MB1.MB004,MC004,MD006,MD007,MD003,MB2.MB002,MB2.MB004
                                 ORDER BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG004,MA002,MA010,TH004
 
-                                    ", YY, MM, STRQUERY.ToString());
+                                    ", YY, MM);
 
             return FASTSQL.ToString();
         }
