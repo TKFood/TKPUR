@@ -120,44 +120,44 @@ namespace TKPUR
             StringBuilder STRQUERY = new StringBuilder();
             StringBuilder STRQUERY2 = new StringBuilder();
 
-            DataTable DT = FIND_TKCOPMATAXSMB001PUR();
-            if(DT!=null&& DT.Rows.Count>=1)
-            {
-                STRQUERY.AppendFormat(@" (");
-                int rowCount = DT.Rows.Count;
+            //DataTable DT = FIND_TKCOPMATAXSMB001PUR();
+            //if(DT!=null&& DT.Rows.Count>=1)
+            //{
+            //    STRQUERY.AppendFormat(@" (");
+            //    int rowCount = DT.Rows.Count;
 
-                for (int i = 0; i < rowCount; i++)
-                {
-                    STRQUERY.AppendFormat(@" TH004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+            //    for (int i = 0; i < rowCount; i++)
+            //    {
+            //        STRQUERY.AppendFormat(@" TH004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
 
-                    // 在最後一個元素之後不添加 "OR"
-                    if (i < rowCount - 1)
-                    {
-                        STRQUERY.AppendFormat(@" OR");
-                    }
-                }
+            //        // 在最後一個元素之後不添加 "OR"
+            //        if (i < rowCount - 1)
+            //        {
+            //            STRQUERY.AppendFormat(@" OR");
+            //        }
+            //    }
 
-                STRQUERY.AppendFormat(@" )");
-            }
+            //    STRQUERY.AppendFormat(@" )");
+            //}
 
-            if (DT != null && DT.Rows.Count >= 1)
-            {
-                STRQUERY2.AppendFormat(@" (");
-                int rowCount = DT.Rows.Count;
+            //if (DT != null && DT.Rows.Count >= 1)
+            //{
+            //    STRQUERY2.AppendFormat(@" (");
+            //    int rowCount = DT.Rows.Count;
 
-                for (int i = 0; i < rowCount; i++)
-                {
-                    STRQUERY2.AppendFormat(@" TI004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+            //    for (int i = 0; i < rowCount; i++)
+            //    {
+            //        STRQUERY2.AppendFormat(@" TI004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
 
-                    // 在最後一個元素之後不添加 "OR"
-                    if (i < rowCount - 1)
-                    {
-                        STRQUERY2.AppendFormat(@" OR");
-                    }
-                }
+            //        // 在最後一個元素之後不添加 "OR"
+            //        if (i < rowCount - 1)
+            //        {
+            //            STRQUERY2.AppendFormat(@" OR");
+            //        }
+            //    }
 
-                STRQUERY2.AppendFormat(@" )");
-            }
+            //    STRQUERY2.AppendFormat(@" )");
+            //}
 
 
             FASTSQL.AppendFormat(@"  
@@ -170,7 +170,7 @@ namespace TKPUR
                                 AND MA001=TG005
                                 AND MB001=TH004
                                 AND TG013='Y'
-                                AND  {2} 
+                                AND TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
                                 AND SUBSTRING(TG003,1,4)='{0}'
                                 AND SUBSTRING(TG003,5,2)='{1}'
                                 GROUP BY  SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TG005,MA002,MA005,TH004,MB002,MB003,TH008
@@ -183,7 +183,7 @@ namespace TKPUR
                                 AND MA001=TH005
                                 AND MB001=TI004
                                 AND TH023='Y'
-                                AND  {3} 
+                                AND TI004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
                                 AND SUBSTRING(TH003,1,4)='{0}'
                                 AND SUBSTRING(TH003,5,2)='{1}'
                                 GROUP BY  SUBSTRING(TH003,1,4),SUBSTRING(TH003,5,2),TH005,MA002,MA005,TI004,MB002,MB003,TI008
@@ -191,7 +191,7 @@ namespace TKPUR
                                 )  AS TEMP
                                 WHERE 1=1
                                 ORDER BY 年,月,廠商代,廠商,統編,品號,品名,單位
-                                    ", YY,MM, STRQUERY.ToString(), STRQUERY2.ToString());
+                                    ", YY,MM);
 
             return FASTSQL.ToString();
         }
@@ -201,25 +201,25 @@ namespace TKPUR
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
 
-            DataTable DT = FIND_TKCOPMATAXSMB001COP();
-            if (DT != null && DT.Rows.Count >= 1)
-            {
-                STRQUERY.AppendFormat(@" (");
-                int rowCount = DT.Rows.Count;
+            //DataTable DT = FIND_TKCOPMATAXSMB001COP();
+            //if (DT != null && DT.Rows.Count >= 1)
+            //{
+            //    STRQUERY.AppendFormat(@" (");
+            //    int rowCount = DT.Rows.Count;
 
-                for (int i = 0; i < rowCount; i++)
-                {
-                    STRQUERY.AppendFormat(@" MD003 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+            //    for (int i = 0; i < rowCount; i++)
+            //    {
+            //        STRQUERY.AppendFormat(@" MD003 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
 
-                    // 在最後一個元素之後不添加 "OR"
-                    if (i < rowCount - 1)
-                    {
-                        STRQUERY.AppendFormat(@" OR");
-                    }
-                }
+            //        // 在最後一個元素之後不添加 "OR"
+            //        if (i < rowCount - 1)
+            //        {
+            //            STRQUERY.AppendFormat(@" OR");
+            //        }
+            //    }
 
-                STRQUERY.AppendFormat(@" )");
-            }
+            //    STRQUERY.AppendFormat(@" )");
+            //}
 
             //AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
             //AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
@@ -234,7 +234,7 @@ namespace TKPUR
                                 AND MC001=TH004
                                 AND MC001=MD001
                                 AND MD003=MB2.MB001
-                                AND {2}
+                                AND TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
                                 AND MD035 NOT LIKE '%蓋%'
                                 AND (TG004 LIKE '2%' OR TG004 LIKE 'A%'  OR TG004 LIKE '3%'  OR TG004 LIKE 'B%')
                               
@@ -292,44 +292,44 @@ namespace TKPUR
             StringBuilder STRQUERY = new StringBuilder();
             StringBuilder STRQUERY2 = new StringBuilder();
 
-            DataTable DT = FIND_TKCOPMATAXSMB001PUR();
-            if (DT != null && DT.Rows.Count >= 1)
-            {
-                STRQUERY.AppendFormat(@" (");
-                int rowCount = DT.Rows.Count;
+            //DataTable DT = FIND_TKCOPMATAXSMB001PUR();
+            //if (DT != null && DT.Rows.Count >= 1)
+            //{
+            //    STRQUERY.AppendFormat(@" (");
+            //    int rowCount = DT.Rows.Count;
 
-                for (int i = 0; i < rowCount; i++)
-                {
-                    STRQUERY.AppendFormat(@" TH004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+            //    for (int i = 0; i < rowCount; i++)
+            //    {
+            //        STRQUERY.AppendFormat(@" TH004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
 
-                    // 在最後一個元素之後不添加 "OR"
-                    if (i < rowCount - 1)
-                    {
-                        STRQUERY.AppendFormat(@" OR");
-                    }
-                }
+            //        // 在最後一個元素之後不添加 "OR"
+            //        if (i < rowCount - 1)
+            //        {
+            //            STRQUERY.AppendFormat(@" OR");
+            //        }
+            //    }
 
-                STRQUERY.AppendFormat(@" )");
-            }
+            //    STRQUERY.AppendFormat(@" )");
+            //}
 
-            if (DT != null && DT.Rows.Count >= 1)
-            {
-                STRQUERY2.AppendFormat(@" (");
-                int rowCount = DT.Rows.Count;
+            //if (DT != null && DT.Rows.Count >= 1)
+            //{
+            //    STRQUERY2.AppendFormat(@" (");
+            //    int rowCount = DT.Rows.Count;
 
-                for (int i = 0; i < rowCount; i++)
-                {
-                    STRQUERY2.AppendFormat(@" TI004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+            //    for (int i = 0; i < rowCount; i++)
+            //    {
+            //        STRQUERY2.AppendFormat(@" TI004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
 
-                    // 在最後一個元素之後不添加 "OR"
-                    if (i < rowCount - 1)
-                    {
-                        STRQUERY2.AppendFormat(@" OR");
-                    }
-                }
+            //        // 在最後一個元素之後不添加 "OR"
+            //        if (i < rowCount - 1)
+            //        {
+            //            STRQUERY2.AppendFormat(@" OR");
+            //        }
+            //    }
 
-                STRQUERY2.AppendFormat(@" )");
-            }
+            //    STRQUERY2.AppendFormat(@" )");
+            //}
 
             FASTSQL.AppendFormat(@"  
                                 
@@ -342,7 +342,7 @@ namespace TKPUR
                                 AND MA001=TG005
                                 AND MB001=TH004
                                 AND TG013='Y'
-                                AND  {4}
+                                AND TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
                                 AND SUBSTRING(TG003,1,4)='{1}'
                                 AND SUBSTRING(TG003,5,2)>='{2}'
                                 AND SUBSTRING(TG003,5,2)<='{3}'
@@ -355,7 +355,7 @@ namespace TKPUR
                                 AND MA001=TH005
                                 AND MB001=TI004
                                 AND TH023='Y'
-                                AND  {5} 
+                                AND TI004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
                                 AND SUBSTRING(TH003,1,4)='{1}'
                                 AND SUBSTRING(TH003,5,2)>='{2}'
                                 AND SUBSTRING(TH003,5,2)<='{3}'
@@ -365,7 +365,7 @@ namespace TKPUR
                                 GROUP BY 年, 廠商代,廠商,統編,品號,品名,單位
                                 ORDER BY 年, 廠商代,廠商,統編,品號,品名,單位
      
-                                    ", STARTMM+"-"+ ENDMM, STARTYY, STARTMM, ENDMM, STRQUERY.ToString(), STRQUERY2.ToString());
+                                    ", STARTMM+"-"+ ENDMM, STARTYY, STARTMM, ENDMM);
 
             return FASTSQL.ToString();
         }
@@ -374,25 +374,25 @@ namespace TKPUR
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
 
-            DataTable DT = FIND_TKCOPMATAXSMB001COP();
-            if (DT != null && DT.Rows.Count >= 1)
-            {
-                STRQUERY.AppendFormat(@" (");
-                int rowCount = DT.Rows.Count;
+            //DataTable DT = FIND_TKCOPMATAXSMB001COP();
+            //if (DT != null && DT.Rows.Count >= 1)
+            //{
+            //    STRQUERY.AppendFormat(@" (");
+            //    int rowCount = DT.Rows.Count;
 
-                for (int i = 0; i < rowCount; i++)
-                {
-                    STRQUERY.AppendFormat(@" MD003 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+            //    for (int i = 0; i < rowCount; i++)
+            //    {
+            //        STRQUERY.AppendFormat(@" MD003 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
 
-                    // 在最後一個元素之後不添加 "OR"
-                    if (i < rowCount - 1)
-                    {
-                        STRQUERY.AppendFormat(@" OR");
-                    }
-                }
+            //        // 在最後一個元素之後不添加 "OR"
+            //        if (i < rowCount - 1)
+            //        {
+            //            STRQUERY.AppendFormat(@" OR");
+            //        }
+            //    }
 
-                STRQUERY.AppendFormat(@" )");
-            }
+            //    STRQUERY.AppendFormat(@" )");
+            //}
 
             //AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
             //AND TG004 IN(SELECT[MA001] FROM[TKPUR].[dbo].[TKCOPMATAXS])
@@ -410,7 +410,7 @@ namespace TKPUR
                                     AND MC001=TH004
                                     AND MC001=MD001
                                     AND MD003=MB2.MB001
-                                    AND {4}
+                                    AND TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
                                     AND MD035 NOT LIKE '%蓋%'
                                     AND (TG004 LIKE '2%' OR TG004 LIKE 'A%'  OR TG004 LIKE '3%'  OR TG004 LIKE 'B%')
 
@@ -1230,64 +1230,64 @@ namespace TKPUR
             StringBuilder STRQUERY2 = new StringBuilder();
             StringBuilder STRQUERY3 = new StringBuilder();
 
-            DataTable DT = FIND_TKCOPMATAXSMB001PUR();
-            if (DT != null && DT.Rows.Count >= 1)
-            {
-                STRQUERY1.AppendFormat(@" (");
-                int rowCount = DT.Rows.Count;
+            //DataTable DT = FIND_TKCOPMATAXSMB001PUR();
+            //if (DT != null && DT.Rows.Count >= 1)
+            //{
+            //    STRQUERY1.AppendFormat(@" (");
+            //    int rowCount = DT.Rows.Count;
 
-                for (int i = 0; i < rowCount; i++)
-                {
-                    STRQUERY1.AppendFormat(@" TH004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+            //    for (int i = 0; i < rowCount; i++)
+            //    {
+            //        STRQUERY1.AppendFormat(@" TH004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
 
-                    // 在最後一個元素之後不添加 "OR"
-                    if (i < rowCount - 1)
-                    {
-                        STRQUERY1.AppendFormat(@" OR");
-                    }
-                }
+            //        // 在最後一個元素之後不添加 "OR"
+            //        if (i < rowCount - 1)
+            //        {
+            //            STRQUERY1.AppendFormat(@" OR");
+            //        }
+            //    }
 
-                STRQUERY1.AppendFormat(@" )");
-            }
+            //    STRQUERY1.AppendFormat(@" )");
+            //}
 
-            if (DT != null && DT.Rows.Count >= 1)
-            {
-                STRQUERY3.AppendFormat(@" (");
-                int rowCount = DT.Rows.Count;
+            //if (DT != null && DT.Rows.Count >= 1)
+            //{
+            //    STRQUERY3.AppendFormat(@" (");
+            //    int rowCount = DT.Rows.Count;
 
-                for (int i = 0; i < rowCount; i++)
-                {
-                    STRQUERY3.AppendFormat(@" TI004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
+            //    for (int i = 0; i < rowCount; i++)
+            //    {
+            //        STRQUERY3.AppendFormat(@" TI004 LIKE '{0}%'", DT.Rows[i]["MB001"].ToString());
 
-                    // 在最後一個元素之後不添加 "OR"
-                    if (i < rowCount - 1)
-                    {
-                        STRQUERY3.AppendFormat(@" OR");
-                    }
-                }
+            //        // 在最後一個元素之後不添加 "OR"
+            //        if (i < rowCount - 1)
+            //        {
+            //            STRQUERY3.AppendFormat(@" OR");
+            //        }
+            //    }
 
-                STRQUERY3.AppendFormat(@" )");
-            }
+            //    STRQUERY3.AppendFormat(@" )");
+            //}
 
-            DataTable DT2 = FIND_TKCOPMATAXSMB001COP();
-            if (DT2 != null && DT2.Rows.Count >= 1)
-            {
-                STRQUERY2.AppendFormat(@" (");
-                int rowCount = DT2.Rows.Count;
+            //DataTable DT2 = FIND_TKCOPMATAXSMB001COP();
+            //if (DT2 != null && DT2.Rows.Count >= 1)
+            //{
+            //    STRQUERY2.AppendFormat(@" (");
+            //    int rowCount = DT2.Rows.Count;
 
-                for (int i = 0; i < rowCount; i++)
-                {
-                    STRQUERY2.AppendFormat(@" MD003 LIKE '{0}%'", DT2.Rows[i]["MB001"].ToString());
+            //    for (int i = 0; i < rowCount; i++)
+            //    {
+            //        STRQUERY2.AppendFormat(@" MD003 LIKE '{0}%'", DT2.Rows[i]["MB001"].ToString());
 
-                    // 在最後一個元素之後不添加 "OR"
-                    if (i < rowCount - 1)
-                    {
-                        STRQUERY2.AppendFormat(@" OR");
-                    }
-                }
+            //        // 在最後一個元素之後不添加 "OR"
+            //        if (i < rowCount - 1)
+            //        {
+            //            STRQUERY2.AppendFormat(@" OR");
+            //        }
+            //    }
 
-                STRQUERY2.AppendFormat(@" )");
-            }
+            //    STRQUERY2.AppendFormat(@" )");
+            //}
             try
             {
                 //20210902密
@@ -1347,7 +1347,7 @@ namespace TKPUR
                                     AND MA001=TG005
                                     AND MB001=TH004
                                     AND TG013='Y'
-                                    AND {3}
+                                    AND TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
                                     AND SUBSTRING(TG003,1,4)='{0}'
                                     AND SUBSTRING(TG003,5,2)>='{1}'
                                     AND SUBSTRING(TG003,5,2)<='{2}'
@@ -1360,7 +1360,7 @@ namespace TKPUR
                                     AND MA001=TH005
                                     AND MB001=TI004
                                     AND TH023='Y'
-                                    AND  {4} 
+                                    AND TI004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
                                     AND SUBSTRING(TH003,1,4)='{0}'
                                     AND SUBSTRING(TH003,5,2)>='{1}'
                                     AND SUBSTRING(TH003,5,2)<='{2}'
@@ -1370,7 +1370,7 @@ namespace TKPUR
                                     LEFT JOIN [TKPUR].[dbo].[TKTAXCODESMB001] ON [TKTAXCODESMB001].MB001=TEMP.品號
                                     ORDER BY  年,月,廠商代,廠商,統編,品號,品名,單位
                                    
-                                    ", STARTYY, STARTMM, ENDMM, STRQUERY1.ToString(), STRQUERY3.ToString());
+                                    ", STARTYY, STARTMM, ENDMM);
 
                 sbSql.AppendFormat(@"  ");
 
@@ -1431,7 +1431,7 @@ namespace TKPUR
                                     AND MC001=TH004
                                     AND MC001=MD001
                                     AND MD003=MB2.MB001
-                                    AND {3}
+                                    AND TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
                                     AND MD035 NOT LIKE '%蓋%'
                                     AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
                                     AND TG004 IN (SELECT  [MA001] FROM [TKPUR].[dbo].[TKCOPMATAXS])
@@ -1467,7 +1467,7 @@ namespace TKPUR
                                     ,[MB002]
                                     )
                                     SELECT 
-                                        [年]
+                                     [年]
                                     ,[月]
                                     ,[客戶代]
                                     ,[客戶]
@@ -1498,7 +1498,7 @@ namespace TKPUR
                                     AND MC001=TH004
                                     AND MC001=MD001
                                     AND MD003=MB2.MB001
-                                    AND {3}
+                                    AND TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
                                     AND MD035 NOT LIKE '%蓋%'                                   
                                     AND SUBSTRING(TG003,1,4)='{0}' 
                                     AND SUBSTRING(TG003,5,2)>='{1}'
