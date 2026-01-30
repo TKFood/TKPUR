@@ -248,7 +248,7 @@ namespace TKPUR
             StringBuilder SQL = new StringBuilder();
             report1 = new Report();
 
-            report1.Load(@"REPORT\採購單變更憑証V7-核準-雅芳-大潁.frx");
+            report1.Load(@"REPORT\採購單變更憑証V6-核準-雅芳-大潁.frx");
             //傳入SIGNS，當簽名檔的判斷
             report1.SetParameterValue("SIGNS", statusReports);
 

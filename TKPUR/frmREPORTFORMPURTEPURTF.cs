@@ -351,7 +351,7 @@ namespace TKPUR
                                 WHERE 1=1
                                 AND TE001=TF001 AND TE002=TF002 AND TE003=TF003
                                 AND TE001+TE002+TE003 IN ({0})
-                                {1}
+                                {1} 
 
                                 ORDER BY TE001,TE002,TE003,TF004
                                 ", PRINTSPURTCPURTD, STRQUERY.ToString());
