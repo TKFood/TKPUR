@@ -1512,7 +1512,7 @@ namespace TKPUR
 
                 }
             }
-            catch
+            catch (Exception EX)
             {
 
             }

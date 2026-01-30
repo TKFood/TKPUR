@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="11/17/2025 16:11:12" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="06/23/2022 11:41:00" ReportInfo.Modified="01/30/2026 10:22:01" ReportInfo.CreatorVersion="2016.4.4.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEq6ykHQT/1BHZfRsnhoLdJ">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHdQe90fGbL4uQ2E/Ftrubf">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT *&#13;&#10;,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME&#13;&#10;,CASE WHEN TE118='1' THEN '應稅內含' WHEN TE118='2' THEN '應稅外加' WHEN TE118='3' THEN '零稅率' WHEN TE118='4' THEN '免稅 'WHEN TE118='9' THEN '不計稅' END AS TE118NAME&#13;&#10;,PURTE.UDF02 AS 'UOF單號'&#13;&#10;,CONVERT(DECIMAL(16,3),TE008) AS NEWTE008&#13;&#10;,CONVERT(DECIMAL(16,3),TE108) AS NEWTE108&#13;&#10;,CONVERT(DECIMAL(16,3),TF011) AS NEWTF011&#13;&#10;,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012&#13;&#10;,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111&#13;&#10;,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112&#13;&#10;,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[DOC_NBR]=PURTE.UDF02 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'&#13;&#10;,[PACKAGE_SPEC] AS '外包裝及驗收標準'&#13;&#10;,[PRODUCT_APPEARANCE] AS '產品外觀'&#13;&#10;,[COLOR] AS '色澤'&#13;&#10;,[FLAVOR] AS '風味'&#13;&#10;,[BATCHNO] AS '產品批號'&#13;&#10;,[TB012] AS '請購單身備註'&#13;&#10;,INVMB.MB113&#13;&#10;,INVMA.[MA003] AS '產地'&#13;&#10;,PURMA.MA003 AS '公司全名'&#13;&#10;,PURMA.MA013 AS '聯絡人'&#13;&#10;&#13;&#10;&#13;&#10;FROM [TK].dbo.PURTF WITH(NOLOCK)&#13;&#10;LEFT JOIN  [TKRESEARCH].[dbo].[TB_ORIENTS_CHECKLISTS] ON [TB_ORIENTS_CHECKLISTS].MB001=TF005&#13;&#10;LEFT JOIN [TK].dbo.PURTD ON TD001=TF001 AND TD002=TF002 AND TD003=TF004&#13;&#10;LEFT JOIN  [TK].dbo.INVMB ON INVMB.MB001=TD004&#13;&#10;LEFT JOIN (SELECT MA001,MA002,MA003 FROM [TK].dbo.INVMA ) INVMA ON INVMA.MA001='7' AND INVMA.MA002=MB113&#13;&#10;LEFT JOIN [TK].dbo.PURTB ON TB001=TD026 AND TB002=TD027 AND TB003=TD028&#13;&#10;,[TK].dbo.PURTE WITH(NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.CMSMQ WITH(NOLOCK) ON MQ001=TE001&#13;&#10;LEFT JOIN [TK].dbo.PURMA WITH(NOLOCK) ON MA001=TE005&#13;&#10;LEFT JOIN [TK].dbo.PURTC WITH(NOLOCK) ON TC001=TE001 AND TC002=TE002&#13;&#10;LEFT JOIN [TK].dbo.CMSMB WITH(NOLOCK) ON TC010=MB001&#13;&#10;WHERE TE001=TF001 AND TE002=TF002&#13;&#10;AND TE002 LIKE  '20251009017%'&#13;&#10;&#13;&#10; ORDER BY TE001,TE002,TE003,TF004">
         <Column Name="COMPANY" DataType="System.String"/>
         <Column Name="CREATOR" DataType="System.String"/>
@@ -1275,7 +1275,7 @@ namespace FastReport
       <TextObject Name="Text2" Top="18.9" Width="718.2" Height="18.9" Text="採購變更單" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text1" Width="718.2" Height="18.9" Text="大潁股份有限公司" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text3" Top="14.8" Width="255.15" Height="18.9" Text="公司電話:05-2956520" VertAlign="Center"/>
-      <TextObject Name="Text4" Top="32.7" Width="387.45" Height="18.9" Text="製表日期:[Year([Date])]/[Month([Date])]/[Day([Date])]" VertAlign="Center"/>
+      <TextObject Name="Text4" Top="32.7" Width="387.45" Height="18.9" Text="製表日期:[Substring([Table.TE011],0,4)]/[Substring([Table.TE011],4,2)]/[Substring([Table.TE011],6,2)]" VertAlign="Center"/>
       <TextObject Name="Text5" Left="463.05" Top="14.8" Width="255.15" Height="18.9" Text="公司傳真:05-2956519" HorzAlign="Right" VertAlign="Center"/>
       <TextObject Name="Text6" Left="463.05" Top="32.7" Width="255.15" Height="18.9" Text="頁次:[Page]/[TotalPages]&#13;&#10;" HorzAlign="Right" VertAlign="Center"/>
       <TextObject Name="Text82" Top="107.75" Width="189" Height="18.9" Text="單據日期:[Table.TE011]" VertAlign="Center"/>
@@ -1332,8 +1332,8 @@ namespace FastReport
         <TextObject Name="Text37" Top="40.25" Width="718.2" Height="85.05" Border.Lines="All" Border.Width="4"/>
         <TextObject Name="Text69" Top="136.75" Width="708.75" Height="66.15" Text="注意事項：&#13;&#10;1.延遲交貨或未依規定期限調換合格品者，每逾一日，按貨款總金額扣罰百分之五，若有事先書面通知者除外。&#13;&#10;2.販售/生產之原物料/商品，均符合政府相關法令規範，且無任何摻假，若有不實願負一切法律責任，並賠償老楊食品 (股)公司所受損害及利益。" Font="宋体, 10pt"/>
         <TextObject Name="Text70" Top="202.9" Width="708.75" Height="18.9" Text="核准:                                     審核:X                                  採購人員:" VertAlign="Center"/>
-        <TextObject Name="Text158" Left="642.6" Top="221.8" Width="94.5" Height="18.9" Text="[Year([Date])]/[Month([Date])]/[Day([Date])]" VertAlign="Center"/>
-        <TextObject Name="Text159" Left="113.4" Top="221.8" Width="94.5" Height="18.9" Text="[Year([Date])]/[Month([Date])]/[Day([Date])]" VertAlign="Center"/>
+        <TextObject Name="Text158" Left="642.6" Top="221.8" Width="94.5" Height="18.9" Text="[Substring([Table.TE011],0,4)]/[Substring([Table.TE011],4,2)]/[Substring([Table.TE011],6,2)]" VertAlign="Center"/>
+        <TextObject Name="Text159" Left="113.4" Top="221.8" Width="94.5" Height="18.9" Text="[Substring([Table.TE011],0,4)]/[Substring([Table.TE011],4,2)]/[Substring([Table.TE011],6,2)]" VertAlign="Center"/>
         <TextObject Name="Text72" Left="548.1" Top="240.7" Width="170.1" Height="18.9" Text="A05-01-001-02-A" HorzAlign="Right"/>
         <TextObject Name="Text71" Top="240.7" Width="170.1" Height="18.9" Text="本文件不得擅自塗改或影印"/>
         <TextObject Name="Text17" Left="444.15" Width="274.05" Height="37.8" Text="☆☆☆ 採購單交貨日請勿自行提前&#13;&#10;若提前請提早二日前協調！ ☆☆☆ " Font="宋体, 12pt, style=Bold"/>
