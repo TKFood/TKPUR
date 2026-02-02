@@ -235,7 +235,7 @@ namespace TKPUR
                                 AND MC001=TH004
                                 AND MC001=MD001
                                 AND MD003=MB2.MB001
-                                AND TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
+                                AND (TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001]) OR MD003 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001]) )
                                 AND MD035 NOT LIKE '%蓋%'
                                 AND (TG004 LIKE '2%' OR TG004 LIKE 'A%'  OR TG004 LIKE '3%'  OR TG004 LIKE 'B%')
                               
@@ -411,7 +411,7 @@ namespace TKPUR
                                     AND MC001=TH004
                                     AND MC001=MD001
                                     AND MD003=MB2.MB001
-                                    AND TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001])
+                                    AND (TH004 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001]) OR MD003 IN (SELECT [MB001] FROM [TKPUR].[dbo].[TKTAXCODESMB001]) )
                                     AND MD035 NOT LIKE '%蓋%'
                                     AND (TG004 LIKE '2%' OR TG004 LIKE 'A%'  OR TG004 LIKE '3%'  OR TG004 LIKE 'B%')
 
