@@ -249,9 +249,15 @@ namespace TKPUR
 
                     PRINTSPURTCPURTD = PRINTSPURTCPURTD+"'"+ dr.Cells["採購單別"].Value.ToString().Trim() + dr.Cells["採購單號"].Value.ToString().Trim()+ "',";
                 }
-            } 
+            }
 
-            PRINTSPURTCPURTD = PRINTSPURTCPURTD + "'A'"; 
+            if (string.IsNullOrEmpty(PRINTSPURTCPURTD))
+            {
+                MessageBox.Show("請選擇要列印的採購單", "提示");
+                return;
+            }
+
+            PRINTSPURTCPURTD = PRINTSPURTCPURTD.TrimEnd(',');
 
             SETFASTREPORT(statusReports, PRINTSPURTCPURTD, COMMENT);
             //MessageBox.Show(PRINTSPURTCPURTD);
@@ -259,54 +265,59 @@ namespace TKPUR
          
         public void SETFASTREPORT(string statusReports, string PRINTSPURTCPURTD,string COMMENT)
         {
-            StringBuilder SQL = new StringBuilder(); 
-            report1 = new Report(); 
+            StringBuilder SQL = new StringBuilder();
+            try
+            {
+                report1 = new Report();
 
-            report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
-            //傳入SIGNS，當簽名檔的判斷
-            report1.SetParameterValue("SIGNS", statusReports);
+                report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
+                //傳入SIGNS，當簽名檔的判斷
+                report1.SetParameterValue("SIGNS", statusReports);
 
-            //if (statusReports.Equals("憑証回傳"))  
-            //{
-            //    report1.Load(@"REPORT\採購單憑証V6-無核準.frx"); 
-            //}
-            //else if (statusReports.Equals("雅芳-簽名")) 
-            //{
-            //    report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
-            //} 
-            //else if (statusReports.Equals("芳梅-簽名"))
-            //{
-            //    report1.Load(@"REPORT\採購單憑証-芳梅-核準V2.frx");
-            //}
+                //if (statusReports.Equals("憑証回傳"))  
+                //{
+                //    report1.Load(@"REPORT\採購單憑証V6-無核準.frx"); 
+                //}
+                //else if (statusReports.Equals("雅芳-簽名")) 
+                //{
+                //    report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
+                //} 
+                //else if (statusReports.Equals("芳梅-簽名"))
+                //{
+                //    report1.Load(@"REPORT\採購單憑証-芳梅-核準V2.frx");
+                //}
 
-            //20210902密
-            Class1 TKID = new Class1();//用new 建立類別實體
-            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
 
-            //資料庫使用者密碼解密
-            sqlsb.Password = TKID.Decryption(sqlsb.Password);
-            sqlsb.UserID = TKID.Decryption(sqlsb.UserID); 
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
 
-            String connectionString;
-            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
 
-            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+                report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
 
 
-            //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
+                //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
 
-            TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
+                TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
 
-            SQL = SETFASETSQL(statusReports,PRINTSPURTCPURTD);
+                SQL = SETFASETSQL(statusReports, PRINTSPURTCPURTD);
 
-            Table.SelectCommand = SQL.ToString(); ;
+                Table.SelectCommand = SQL.ToString(); ;
 
-            report1.SetParameterValue("P1", COMMENT);
-            
+                report1.SetParameterValue("P1", COMMENT);
 
-            report1.Preview = previewControl1; 
-            report1.Show();
-
+                report1.Preview = previewControl1;
+                report1.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"列印報告出錯: {ex.Message}", "錯誤");
+            }
         }
 
         public StringBuilder SETFASETSQL(string statusReports,string PRINTSPURTCPURTD)
