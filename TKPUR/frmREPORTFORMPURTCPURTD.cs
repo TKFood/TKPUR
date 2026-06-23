@@ -262,7 +262,7 @@ namespace TKPUR
             SETFASTREPORT(statusReports, PRINTSPURTCPURTD, COMMENT);
             //MessageBox.Show(PRINTSPURTCPURTD);
         }
-         
+           
         public void SETFASTREPORT(string statusReports, string PRINTSPURTCPURTD,string COMMENT)
         {
             StringBuilder SQL = new StringBuilder();
