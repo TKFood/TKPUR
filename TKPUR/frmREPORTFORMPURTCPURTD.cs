@@ -541,7 +541,7 @@ namespace TKPUR
  
                                 ORDER BY TC001,TC002,TD003
                                 ", TC001, TC002, STRQUERY.ToString());
-
+             
             return FASTSQL;
         }
 
