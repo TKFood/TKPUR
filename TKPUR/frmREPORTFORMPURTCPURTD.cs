@@ -428,8 +428,8 @@ namespace TKPUR
             {
                 //新增資料夾
                 Directory.CreateDirectory(DirectoryNAME);
-            }
-            StringBuilder SQL = new StringBuilder();
+            } 
+            StringBuilder SQL = new StringBuilder();   
             report1 = new Report();
 
             report1.Load(@"REPORT\採購單憑証V6-核準-雅芳.frx");
@@ -481,10 +481,10 @@ namespace TKPUR
             //FastReport.Export.Image.ImageExport ImageExport = new FastReport.Export.Image.ImageExport();
             // show the export options dialog and do the export
             report1.Export(export, PDFFILES);
-
-            //傳真
+             
+            //傳真 
             FAX(PDFFILES);
-        }
+        } 
 
         public StringBuilder SETFASETSQL_FAX(string statusReports, string TC001,string TC002)
         {
