@@ -383,7 +383,7 @@ namespace TKPUR
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             textBox1.Text = null;
-            textBox2.Text = null;
+            textBox2.Text = null; 
             textBox3.Text = null;
 
             if (dataGridView1.CurrentRow != null)
