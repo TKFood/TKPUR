@@ -399,8 +399,8 @@ namespace TKPUR
                     textBox3.Text = row.Cells["供應廠"].Value.ToString();
                 }
                 else
-                { 
-                    textBox1.Text = null;
+                {  
+                    textBox1.Text = null;  
                     textBox2.Text = null;
                     textBox3.Text = null;
                 }
