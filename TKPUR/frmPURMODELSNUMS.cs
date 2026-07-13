@@ -303,7 +303,8 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"
                                     SELECT 
-                                     [NAMES] AS '版型' 
+                                    [SUPPLYS] AS '供應商'
+                                    ,[NAMES] AS '版型' 
                                     ,[MB001] AS '品號' 
                                     ,[MB002] AS '品名' 
                                     ,[BACKMONEYS] AS '可退還的模具費' 
@@ -380,6 +381,7 @@ namespace TKPUR
                     textBox7.Text = row.Cells["目標進貨量"].Value.ToString().Trim();
                     textBox8.Text = row.Cells["已進貨量"].Value.ToString().Trim();
                     textBox10.Text = row.Cells["備註"].Value.ToString().Trim();
+                    textBox12.Text = row.Cells["供應商"].Value.ToString().Trim();
 
                     textBoxID.Text = row.Cells["ID"].Value.ToString().Trim();
 
@@ -405,7 +407,7 @@ namespace TKPUR
             }
         }
 
-        public void ADD_PURMODELSNUMS(string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS, string TOTALNUMS, string ISCLOSE, string PAYKINDS, string CREATEDATES, string COMMENTS)
+        public void ADD_PURMODELSNUMS(string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS, string TOTALNUMS, string ISCLOSE, string PAYKINDS, string CREATEDATES, string COMMENTS,string SUPPLYS)
         {
             try
             {
@@ -432,10 +434,10 @@ namespace TKPUR
                 CREATEDATES = DateTime.Now.ToString("yyyy/MM/dd");
                 sbSql.AppendFormat(@"  
                                    INSERT INTO [TKPUR].[dbo].[PURMODELSNUMS]
-                                    (NAMES,MB001,MB002,BACKMONEYS,TARGETNUMS,TOTALNUMS,ISCLOSE,PAYKINDS,CREATEDATES,COMMENTS)
+                                    (NAMES,MB001,MB002,BACKMONEYS,TARGETNUMS,TOTALNUMS,ISCLOSE,PAYKINDS,CREATEDATES,COMMENTS,SUPPLYS)
                                     VALUES
-                                    ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')
-                                    ", NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE, PAYKINDS, CREATEDATES, COMMENTS);
+                                    ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}')
+                                    ", NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE, PAYKINDS, CREATEDATES, COMMENTS, SUPPLYS);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -464,7 +466,7 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
-        public void UPDATE_PURMODELSNUMS(string ID,string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS, string TOTALNUMS, string ISCLOSE, string PAYKINDS, string CREATEDATES, string COMMENTS)
+        public void UPDATE_PURMODELSNUMS(string ID,string NAMES, string MB001, string MB002, string BACKMONEYS, string TARGETNUMS, string TOTALNUMS, string ISCLOSE, string PAYKINDS, string CREATEDATES, string COMMENTS,string SUPPLYS)
         {
             try
             {
@@ -490,9 +492,9 @@ namespace TKPUR
                 sbSql.AppendFormat(@"  
                                    
                                     UPDATE  [TKPUR].[dbo].[PURMODELSNUMS]
-                                    SET  NAMES='{1}',MB001='{2}',MB002='{3}',BACKMONEYS='{4}',TARGETNUMS='{5}',TOTALNUMS='{6}',ISCLOSE='{7}',PAYKINDS='{8}',CREATEDATES='{9}',COMMENTS='{10}'
+                                    SET  NAMES='{1}',MB001='{2}',MB002='{3}',BACKMONEYS='{4}',TARGETNUMS='{5}',TOTALNUMS='{6}',ISCLOSE='{7}',PAYKINDS='{8}',CREATEDATES='{9}',COMMENTS='{10}',SUPPLYS='{11}'
                                     WHERE [ID]='{0}'
-                                    ", ID,NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE, PAYKINDS, CREATEDATES, COMMENTS);
+                                    ", ID,NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE, PAYKINDS, CREATEDATES, COMMENTS, SUPPLYS);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -521,7 +523,7 @@ namespace TKPUR
                 sqlConn.Close();
             }
         }
-        public void DELETE_PURMODELSNUMS(string NAMES)
+        public void DELETE_PURMODELSNUMS(string ID)
         {
             try
             {
@@ -546,8 +548,8 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  
                                     DELETE  [TKPUR].[dbo].[PURMODELSNUMS]                                    
-                                    WHERE NAMES='{0}'
-                                    ", NAMES);
+                                    WHERE ID='{0}'
+                                    ", ID);
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -844,7 +846,18 @@ namespace TKPUR
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            ADD_PURMODELSNUMS(textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(), comboBox2.Text.ToString(), comboBox4.Text.ToString(), dateTimePicker3.Value.ToString("yyyyMMdd"), textBox10.Text.Trim());
+            string NAMES = textBox3.Text.Trim();
+            string MB001 = textBox4.Text.Trim();
+            string MB002 = textBox5.Text.Trim();
+            string BACKMONEYS = textBox6.Text.Trim();
+            string TARGETNUMS = textBox7.Text.Trim();
+            string TOTALNUMS = textBox8.Text.Trim();
+            string ISCLOSE = comboBox2.Text.ToString();
+            string PAYKINDS = comboBox4.Text.ToString();
+            string CREATEDATES = dateTimePicker3.Value.ToString("yyyyMMdd");
+            string COMMENTS = textBox10.Text.Trim();
+            string SUPPLYS = textBox12.Text.Trim();
+            ADD_PURMODELSNUMS(NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE, PAYKINDS, CREATEDATES, COMMENTS, SUPPLYS);
 
             SEARCH_PURMODELSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
             SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
@@ -852,8 +865,19 @@ namespace TKPUR
         }
         private void button3_Click(object sender, EventArgs e)
         {
-            UPDATE_PURMODELSNUMS(textBoxID.Text,textBox3.Text.Trim(), textBox4.Text.Trim(), textBox5.Text.Trim(), textBox6.Text.Trim(), textBox7.Text.Trim(), textBox8.Text.Trim(), comboBox2.Text.ToString(), comboBox4.Text.ToString(), dateTimePicker3.Value.ToString("yyyyMMdd"), textBox10.Text.Trim());
-
+            string ID = textBoxID.Text;
+            string NAMES = textBox3.Text.Trim();
+            string MB001 = textBox4.Text.Trim();
+            string MB002 = textBox5.Text.Trim();
+            string BACKMONEYS=textBox6.Text.Trim();
+            string TARGETNUMS = textBox7.Text.Trim();
+            string TOTALNUMS=textBox8.Text.Trim();
+            string ISCLOSE = comboBox2.Text.ToString();
+            string PAYKINDS = comboBox4.Text.ToString();
+            string CREATEDATES = dateTimePicker3.Value.ToString("yyyyMMdd"); 
+            string COMMENTS = textBox10.Text.Trim();
+            string SUPPLYS = textBox12.Text.Trim();
+            UPDATE_PURMODELSNUMS(ID, NAMES, MB001, MB002, BACKMONEYS, TARGETNUMS, TOTALNUMS, ISCLOSE, PAYKINDS, CREATEDATES, COMMENTS, SUPPLYS);
             SEARCH_PURMODELSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
             SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
 
@@ -863,7 +887,8 @@ namespace TKPUR
             DialogResult dialogResult = MessageBox.Show("要刪除了?", "要刪除了?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                DELETE_PURMODELSNUMS(textBox3.Text.Trim());
+                string ID = textBoxID.Text;
+                DELETE_PURMODELSNUMS(ID);
 
                 SEARCH_PURMODELSNUMS(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
                 SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim(), comboBox1.Text.ToString(), comboBox3.Text.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), textBox9.Text.Trim(), textBox11.Text.Trim());
