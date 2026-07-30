@@ -1135,7 +1135,7 @@ namespace TKPUR
                                
                                 ", TA001, TA002);
 
-            return FASTSQL;
+            return FASTSQL; 
         }
 
         public void SETFASTREPORT_V2(string statusReports, string MA001, string TA002, string TA014,string ISPRINTED)
