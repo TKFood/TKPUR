@@ -24,6 +24,7 @@ using System.Text.RegularExpressions;
 using FastReport;
 using FastReport.Data;
 using TKITDLL;
+using NPOI.SS.Formula.Functions;
 namespace TKPUR
 {
     public partial class frmREPORTINCOUNTS : Form
@@ -94,7 +95,7 @@ namespace TKPUR
 
 
         }
-        public void SETFASTREPORT(string SDATES, string EDATES, string KINDS)
+        public void SETFASTREPORT(string SDATES, string EDATES, string KINDS,string MB001)
         {
 
             string SQL;
@@ -119,7 +120,7 @@ namespace TKPUR
 
             TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
 
-            SQL = SETFASETSQL(SDATES, EDATES, KINDS);
+            SQL = SETFASETSQL(SDATES, EDATES, KINDS, MB001);
 
             Table.SelectCommand = SQL;
 
@@ -131,11 +132,19 @@ namespace TKPUR
 
         }
 
-        public string SETFASETSQL(string SDATES, string EDATES, string KINDS)
+        public string SETFASETSQL(string SDATES, string EDATES, string KINDS,string MB001)
         {
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
 
+            if(!string.IsNullOrEmpty(MB001))
+            { 
+                STRQUERY.AppendFormat(@" AND (TH004 LIKE '%{0}%' OR TH005 LIKE '%{0}%')", MB001);
+            }
+            else
+            {
+                STRQUERY.AppendFormat(@"");
+            }
             if (KINDS.Equals("依數量"))
             {
                 FASTSQL.AppendFormat(@" 
@@ -147,9 +156,10 @@ namespace TKPUR
                                     AND TH004=MB001
                                     AND TG013 IN ('Y')
                                     AND TG003>='{0}' AND TG003<='{1}'
+                                    {2}
                                     GROUP BY TH004,TH005,MB004
                                     ORDER BY SUM(LA011) DESC
-                                    ", SDATES, EDATES);
+                                    ", SDATES, EDATES, STRQUERY.ToString());
             }
             else if (KINDS.Equals("依金額"))
             {
@@ -162,9 +172,10 @@ namespace TKPUR
                                     AND TH004=MB001
                                     AND TG013 IN ('Y')
                                     AND TG003>='{0}' AND TG003<='{1}'
+                                    {2}    
                                     GROUP BY TH004,TH005,MB004
                                     ORDER BY SUM(TH047) DESC
-                                    ", SDATES, EDATES);
+                                    ", SDATES, EDATES, STRQUERY.ToString());
             }
           
 
@@ -176,7 +187,11 @@ namespace TKPUR
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString());
+            string SDATES = dateTimePicker1.Value.ToString("yyyyMMdd");
+            string EDATES = dateTimePicker2.Value.ToString("yyyyMMdd");
+            string KINDS = comboBox1.Text.ToString();
+            string MB001=textBox1.Text.ToString().Trim();
+            SETFASTREPORT(SDATES, EDATES, KINDS, MB001);
         }
 
         #endregion
