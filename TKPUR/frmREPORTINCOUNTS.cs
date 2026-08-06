@@ -53,6 +53,7 @@ namespace TKPUR
             InitializeComponent();
 
             comboBox1load();
+            comboBox2load();
         }
         #region FUNCTION
         public void comboBox1load()
@@ -95,7 +96,47 @@ namespace TKPUR
 
 
         }
-        public void SETFASTREPORT(string SDATES, string EDATES, string KINDS,string MB001)
+        public void comboBox2load()
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+
+            Sequel.AppendFormat(@"
+
+                               SELECT  [ID]
+                                ,[KIND]
+                                ,[PARAID]
+                                ,[PARANAME]
+                                FROM [TKPUR].[dbo].[TBPARA]
+                                WHERE [KIND]='frmREPORTINCOUNTSKIND'
+                                ORDER BY [ID]
+                                ");
+
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("PARAID", typeof(string));
+            da.Fill(dt);
+            comboBox2.DataSource = dt.DefaultView;
+            comboBox2.ValueMember = "PARAID";
+            comboBox2.DisplayMember = "PARAID";
+            sqlConn.Close();
+
+
+        }
+        public void SETFASTREPORT(string SDATES, string EDATES, string KINDS,string MB001,string QUERYKINDS)
         {
 
             string SQL;
@@ -120,7 +161,7 @@ namespace TKPUR
 
             TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
 
-            SQL = SETFASETSQL(SDATES, EDATES, KINDS, MB001);
+            SQL = SETFASETSQL(SDATES, EDATES, KINDS, MB001, QUERYKINDS);
 
             Table.SelectCommand = SQL;
 
@@ -132,12 +173,13 @@ namespace TKPUR
 
         }
 
-        public string SETFASETSQL(string SDATES, string EDATES, string KINDS,string MB001)
+        public string SETFASETSQL(string SDATES, string EDATES, string KINDS,string MB001,string QUERYKINDS)
         {
             StringBuilder FASTSQL = new StringBuilder();
             StringBuilder STRQUERY = new StringBuilder();
+            StringBuilder STRQUERY2 = new StringBuilder();
 
-            if(!string.IsNullOrEmpty(MB001))
+            if (!string.IsNullOrEmpty(MB001))
             { 
                 STRQUERY.AppendFormat(@" AND (TH004 LIKE '%{0}%' OR TH005 LIKE '%{0}%')", MB001);
             }
@@ -145,6 +187,19 @@ namespace TKPUR
             {
                 STRQUERY.AppendFormat(@"");
             }
+            if(QUERYKINDS.Equals("原料"))
+            {
+                STRQUERY2.AppendFormat(@" AND TH004 LIKE '1%' ");
+            }
+            else if (QUERYKINDS.Equals("物料"))
+            {
+                STRQUERY2.AppendFormat(@" AND TH004 LIKE '2%' ");
+            }
+            else
+            {
+                STRQUERY2.AppendFormat(@"");
+            }
+
             if (KINDS.Equals("依數量"))
             {
                 FASTSQL.AppendFormat(@" 
@@ -157,9 +212,11 @@ namespace TKPUR
                                     AND TG013 IN ('Y')
                                     AND TG003>='{0}' AND TG003<='{1}'
                                     {2}
+                                    {3}
+
                                     GROUP BY TH004,TH005,MB004
                                     ORDER BY SUM(LA011) DESC
-                                    ", SDATES, EDATES, STRQUERY.ToString());
+                                    ", SDATES, EDATES, STRQUERY.ToString(), STRQUERY2.ToString());
             }
             else if (KINDS.Equals("依金額"))
             {
@@ -172,10 +229,11 @@ namespace TKPUR
                                     AND TH004=MB001
                                     AND TG013 IN ('Y')
                                     AND TG003>='{0}' AND TG003<='{1}'
-                                    {2}    
+                                    {2}
+                                    {3}
                                     GROUP BY TH004,TH005,MB004
                                     ORDER BY SUM(TH047) DESC
-                                    ", SDATES, EDATES, STRQUERY.ToString());
+                                    ", SDATES, EDATES, STRQUERY.ToString(), STRQUERY2.ToString());
             }
           
 
@@ -191,7 +249,8 @@ namespace TKPUR
             string EDATES = dateTimePicker2.Value.ToString("yyyyMMdd");
             string KINDS = comboBox1.Text.ToString();
             string MB001=textBox1.Text.ToString().Trim();
-            SETFASTREPORT(SDATES, EDATES, KINDS, MB001);
+            string QUERYKINDS= comboBox2.Text.ToString();
+            SETFASTREPORT(SDATES, EDATES, KINDS, MB001, QUERYKINDS);
         }
 
         #endregion
