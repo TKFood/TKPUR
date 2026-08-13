@@ -35,6 +35,7 @@ namespace TKPUR
         private void Frm_PURTB_PURTD_MODIFY_Load(object sender, EventArgs e)
         {
             SET_comboBox1();
+            SET_comboBox2();    
         }
 
 
@@ -44,6 +45,12 @@ namespace TKPUR
             comboBox1.Items.Clear();
             comboBox1.Items.Add("Y");
             comboBox1.Items.Add("N");
+        }
+        public void SET_comboBox2()
+        {
+            comboBox2.Items.Clear();
+            comboBox2.Items.Add("Y");
+            comboBox2.Items.Add("N");
         }
 
         public void SEARCH_DG1(string SDATES)
@@ -116,6 +123,76 @@ namespace TKPUR
 
         }
 
+        public void SEARCH_DG2(string SDATES)
+        {
+            StringBuilder sbSql = new StringBuilder();
+            StringBuilder sbSqlQuery = new StringBuilder();
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                SqlConnection sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  
+                                   SELECT 
+                                    TC001 AS '單別'
+                                    ,TC002 AS '單號'
+                                    ,TD003 AS '序號'
+                                    ,TD004 AS '品號'
+                                    ,TD005 AS '品名'
+                                    ,TD016  AS '結案碼'
+                                    FROM [TK].dbo.PURTD
+                                    INNER JOIN [TK].dbo.PURTC ON TC001=TD001 AND TC002=TD002
+                                    WHERE TC002 LIKE '%{0}%'
+                                    ORDER BY TC001,TC002,TC003
+
+                                    ", SDATES);
+                SqlDataAdapter da = new SqlDataAdapter(@"" + sbSql, sqlConn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                dataGridView2.DataSource = dt;
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+        private void dataGridView2_SelectionChanged(object sender, EventArgs e)
+        {
+            SET_TEXTBOX_NULL_DG2();
+
+            if (dataGridView2.CurrentRow != null)
+            {
+                string tc001 = dataGridView2.CurrentRow.Cells["單別"].Value.ToString();
+                string tc002 = dataGridView2.CurrentRow.Cells["單號"].Value.ToString();
+                string td003 = dataGridView2.CurrentRow.Cells["序號"].Value.ToString();
+                string td016 = dataGridView2.CurrentRow.Cells["結案碼"].Value.ToString();
+
+                textBox4.Text = tc001;
+                textBox5.Text = tc002;
+                textBox6.Text = td003;
+                comboBox2.Text = td016;
+            }
+        }
+
         public void UPDATE_PURTB(string TA001, string TA002, string TB003, string TB039)
         {
             string sql = @"
@@ -155,6 +232,46 @@ namespace TKPUR
             }
         }
 
+
+        public void UPDATE_PURTD(string TC001, string TC002, string TD003, string TD016)
+        {
+            string sql = @"
+                            UPDATE [TK].dbo.PURTD 
+                            SET TD016 = @TD016 
+                            WHERE TD001 = @TD001     
+                              AND TD002 = @TD002
+                              AND TD003 = @TD003";
+
+            try
+            {
+                Class1 TKID = new Class1();
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                // 使用 using 自動管理 SqlConnection 與 SqlCommand 的開啟與釋放
+                using (SqlConnection sqlConn = new SqlConnection(sqlsb.ConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, sqlConn))
+                    {
+                        // 綁定 SQL 參數 (將傳入的 TA001/TA002 對應至 SQL 的 TB001/TB002)
+                        cmd.Parameters.AddWithValue("@TD001", (object)TC001 ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TD002", (object)TC002 ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TD003", (object)TD003 ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TD016", (object)TD016 ?? DBNull.Value);
+
+                        sqlConn.Open();          // 1. 開啟連線
+                        cmd.ExecuteNonQuery();   // 2. 使用正確的同步執行方法
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("UPDATE_PURTD 執行失敗: " + ex.Message, ex);
+            }
+        }
+
         /// <summary>
         /// 搜尋並恢復 DataGridView 的選取列與捲軸位置
         /// </summary>
@@ -189,12 +306,53 @@ namespace TKPUR
             }
         }
 
+        /// <summary>
+        /// 搜尋並恢復 DataGridView 的選取列與捲軸位置
+        /// </summary>
+        private void RestoreGridPosition_DG2(string tc001, string tc002, string td003, int originalScrollIndex)
+        {
+            if (string.IsNullOrEmpty(tc001) || string.IsNullOrEmpty(tc002)) return;
+
+            bool isFound = false;
+
+            // 逐列搜尋剛剛修改的主鍵資料
+            foreach (DataGridViewRow row in dataGridView2.Rows)
+            {
+                if (row.Cells["單別"].Value?.ToString() == tc001 &&
+                    row.Cells["單號"].Value?.ToString() == tc002 &&
+                    row.Cells["序號"].Value?.ToString() == td003)
+                {
+                    dataGridView2.ClearSelection(); // 清除先前的選取狀態
+
+                    // 設定游標焦點至該列的第一個可見儲存格
+                    dataGridView2.CurrentCell = row.Cells[0];
+                    row.Selected = true;
+
+                    isFound = true;
+                    break;
+                }
+            }
+
+            // 恢復捲軸位置
+            if (isFound && originalScrollIndex >= 0 && originalScrollIndex < dataGridView2.RowCount)
+            {
+                dataGridView2.FirstDisplayedScrollingRowIndex = originalScrollIndex;
+            }
+        }
+
         public void SET_TEXTBOX_NULL()
         {
             textBox1.Text = "";
             textBox2.Text = "";
             textBox3.Text = "";
             
+        }
+        public void SET_TEXTBOX_NULL_DG2()
+        {
+            textBox4.Text = "";
+            textBox5.Text = "";
+            textBox6.Text = "";
+
         }
         #endregion
 
@@ -206,14 +364,12 @@ namespace TKPUR
         }
 
 
-        #endregion
-
         private void button3_Click(object sender, EventArgs e)
         {
             // 1. 檢查目前是否有選取資料列
             if (dataGridView1.CurrentRow == null) return;
 
-            string ta001=textBox1.Text; 
+            string ta001 = textBox1.Text;
             string ta002 = textBox2.Text;
             string tb003 = textBox3.Text;
             string tb039 = comboBox1.Text;
@@ -224,7 +380,33 @@ namespace TKPUR
 
             int scrollIndex = dataGridView1.FirstDisplayedScrollingRowIndex;
             // 5. 將游標與捲軸定位回到剛才那筆資料
-            RestoreGridPosition_DG1((ta001, ta002, tb003, scrollIndex);
+            RestoreGridPosition_DG1(ta001, ta002, tb003, scrollIndex);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string SDATES = dateTimePicker2.Value.ToString("yyyyMMdd");
+            SEARCH_DG2(SDATES);
+        }
+        #endregion
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            // 1. 檢查目前是否有選取資料列
+            if (dataGridView2.CurrentRow == null) return;
+
+            string tc001 = textBox4.Text;
+            string tc002 = textBox5.Text;
+            string tc003 = textBox6.Text;
+            string td016 = comboBox2.Text;
+            UPDATE_PURTD(tc001, tc002, tc003, td016);
+
+            string SDATES = dateTimePicker2.Value.ToString("yyyyMMdd");
+            SEARCH_DG2(SDATES);
+
+            int scrollIndex = dataGridView2.FirstDisplayedScrollingRowIndex;
+            // 5. 將游標與捲軸定位回到剛才那筆資料
+            RestoreGridPosition_DG2(tc001, tc002, tc003, scrollIndex);
         }
     }
 }
