@@ -152,6 +152,9 @@ namespace TKPUR
                                     ,TD004 AS '品號'
                                     ,TD005 AS '品名'
                                     ,TD016  AS '結案碼'
+                                    ,TD026 AS '請購單別'
+                                    ,TD027 AS '請購單號'
+                                    ,TD028 AS '請購序號'
                                     FROM [TK].dbo.PURTD
                                     INNER JOIN [TK].dbo.PURTC ON TC001=TD001 AND TC002=TD002
                                     WHERE TC002 LIKE '%{0}%'
@@ -185,11 +188,19 @@ namespace TKPUR
                 string tc002 = dataGridView2.CurrentRow.Cells["單號"].Value.ToString();
                 string td003 = dataGridView2.CurrentRow.Cells["序號"].Value.ToString();
                 string td016 = dataGridView2.CurrentRow.Cells["結案碼"].Value.ToString();
+                string td026 = dataGridView2.CurrentRow.Cells["請購單別"].Value.ToString();
+                string td027 = dataGridView2.CurrentRow.Cells["請購單號"].Value.ToString();
+                string td028 = dataGridView2.CurrentRow.Cells["請購序號"].Value.ToString();
 
                 textBox4.Text = tc001;
                 textBox5.Text = tc002;
                 textBox6.Text = td003;
                 comboBox2.Text = td016;
+
+                textBox7.Text = td026;
+                textBox8.Text = td027;
+                textBox9.Text = td028;
+
             }
         }
 
@@ -233,11 +244,14 @@ namespace TKPUR
         }
 
 
-        public void UPDATE_PURTD(string TC001, string TC002, string TD003, string TD016)
+        public void UPDATE_PURTD(string TC001, string TC002, string TD003, string TD016, string TD026,string TD027, string TD028)
         {
             string sql = @"
                             UPDATE [TK].dbo.PURTD 
-                            SET TD016 = @TD016 
+                            SET TD016 = @TD016 ,
+                                TD026=@TD026,
+                                TD027 = @TD027,
+                                TD028 = @TD028
                             WHERE TD001 = @TD001     
                               AND TD002 = @TD002
                               AND TD003 = @TD003";
@@ -260,6 +274,9 @@ namespace TKPUR
                         cmd.Parameters.AddWithValue("@TD002", (object)TC002 ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@TD003", (object)TD003 ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@TD016", (object)TD016 ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TD026", (object)TD026 ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TD027", (object)TD027 ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TD028", (object)TD028 ?? DBNull.Value);
 
                         sqlConn.Open();          // 1. 開啟連線
                         cmd.ExecuteNonQuery();   // 2. 使用正確的同步執行方法
@@ -352,6 +369,9 @@ namespace TKPUR
             textBox4.Text = "";
             textBox5.Text = "";
             textBox6.Text = "";
+            textBox7.Text = "";
+            textBox8.Text = "";
+            textBox9.Text = "";
 
         }
         #endregion
@@ -399,7 +419,11 @@ namespace TKPUR
             string tc002 = textBox5.Text;
             string tc003 = textBox6.Text;
             string td016 = comboBox2.Text;
-            UPDATE_PURTD(tc001, tc002, tc003, td016);
+            string td026 = textBox7.Text;
+            string td027 = textBox8.Text;
+            string td028 = textBox9.Text;
+
+            UPDATE_PURTD(tc001, tc002, tc003, td016, td026, td027, td028);
 
             string SDATES = dateTimePicker2.Value.ToString("yyyyMMdd");
             SEARCH_DG2(SDATES);
