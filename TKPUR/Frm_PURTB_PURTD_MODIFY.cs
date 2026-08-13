@@ -116,6 +116,79 @@ namespace TKPUR
 
         }
 
+        public void UPDATE_PURTB(string TA001, string TA002, string TB003, string TB039)
+        {
+            string sql = @"
+                            UPDATE [TK].dbo.PURTB 
+                            SET TB039 = @TB039 
+                            WHERE TB001 = @TB001 
+                              AND TB002 = @TB002 
+                              AND TB003 = @TB003";
+
+            try
+            {
+                Class1 TKID = new Class1();
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                // 使用 using 自動管理 SqlConnection 與 SqlCommand 的開啟與釋放
+                using (SqlConnection sqlConn = new SqlConnection(sqlsb.ConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, sqlConn))
+                    {
+                        // 綁定 SQL 參數 (將傳入的 TA001/TA002 對應至 SQL 的 TB001/TB002)
+                        cmd.Parameters.AddWithValue("@TB001", (object)TA001 ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TB002", (object)TA002 ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TB003", (object)TB003 ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TB039", (object)TB039 ?? DBNull.Value);
+
+                        sqlConn.Open();          // 1. 開啟連線
+                        cmd.ExecuteNonQuery();   // 2. 使用正確的同步執行方法
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("UPDATE_PURTB 執行失敗: " + ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 搜尋並恢復 DataGridView 的選取列與捲軸位置
+        /// </summary>
+        private void RestoreGridPosition_DG1(string ta001, string ta002,string tb003, int originalScrollIndex)
+        {
+            if (string.IsNullOrEmpty(ta001) || string.IsNullOrEmpty(ta002)) return;
+
+            bool isFound = false;
+
+            // 逐列搜尋剛剛修改的主鍵資料
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells["單別"].Value?.ToString() == ta001 &&
+                    row.Cells["單號"].Value?.ToString() == ta002 &&
+                    row.Cells["序號"].Value?.ToString() == tb003)
+                {
+                    dataGridView1.ClearSelection(); // 清除先前的選取狀態
+
+                    // 設定游標焦點至該列的第一個可見儲存格
+                    dataGridView1.CurrentCell = row.Cells[0];
+                    row.Selected = true;
+
+                    isFound = true;
+                    break;
+                }
+            }
+
+            // 恢復捲軸位置
+            if (isFound && originalScrollIndex >= 0 && originalScrollIndex < dataGridView1.RowCount)
+            {
+                dataGridView1.FirstDisplayedScrollingRowIndex = originalScrollIndex;
+            }
+        }
+
         public void SET_TEXTBOX_NULL()
         {
             textBox1.Text = "";
@@ -137,7 +210,21 @@ namespace TKPUR
 
         private void button3_Click(object sender, EventArgs e)
         {
+            // 1. 檢查目前是否有選取資料列
+            if (dataGridView1.CurrentRow == null) return;
 
+            string ta001=textBox1.Text; 
+            string ta002 = textBox2.Text;
+            string tb003 = textBox3.Text;
+            string tb039 = comboBox1.Text;
+            UPDATE_PURTB(ta001, ta002, tb003, tb039);
+
+            string SDATES = dateTimePicker1.Value.ToString("yyyyMMdd");
+            SEARCH_DG1(SDATES);
+
+            int scrollIndex = dataGridView1.FirstDisplayedScrollingRowIndex;
+            // 5. 將游標與捲軸定位回到剛才那筆資料
+            RestoreGridPosition_DG1((ta001, ta002, tb003, scrollIndex);
         }
     }
 }
