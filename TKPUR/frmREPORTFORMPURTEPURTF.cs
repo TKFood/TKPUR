@@ -178,7 +178,7 @@ namespace TKPUR
                                         FROM   [TK].dbo.PURTF WHERE TF001=TE001 AND TF002=TE002 AND TF003=TE003
                                         FOR XML PATH(''), TYPE  
                                         ).value('.','nvarchar(max)')  As '明細'                                     
-                                    ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[DOC_NBR]=PURTE.UDF02 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                    ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[TB_WKF_TASK_PUR_COMMENT] WHERE [TB_WKF_TASK_PUR_COMMENT].[DOC_NBR]=PURTE.UDF02 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
 
                                     FROM[TK].dbo.PURMA, [TK].dbo.PURTE
 									LEFT JOIN [TK].dbo.PURTC ON TC001=TE001 AND TC002=TE002
@@ -316,7 +316,13 @@ namespace TKPUR
             }
 
             FASTSQL.AppendFormat(@"      
-                                SELECT *
+                                SELECT 
+                                PURTF.*
+                                ,PURTE.*
+                                ,CMSMQ.*
+                                ,PURMA.*
+                                ,PURTC.*
+                                ,CMSMB.*
                                 ,CASE WHEN TE018='1' THEN '應稅內含' WHEN TE018='2' THEN '應稅外加' WHEN TE018='3' THEN '零稅率' WHEN TE018='4' THEN '免稅 'WHEN TE018='9' THEN '不計稅' END AS TE018NAME
                                 ,CASE WHEN TE118='1' THEN '應稅內含' WHEN TE118='2' THEN '應稅外加' WHEN TE118='3' THEN '零稅率' WHEN TE118='4' THEN '免稅 'WHEN TE118='9' THEN '不計稅' END AS TE118NAME
                                 ,PURTE.UDF02 AS 'UOF單號'
@@ -326,7 +332,7 @@ namespace TKPUR
                                 ,CONVERT(DECIMAL(16,0),TF012) AS NEWTF012
                                 ,CONVERT(DECIMAL(16,3),TF111) AS NEWTF111
                                 ,CONVERT(DECIMAL(16,0),TF112) AS NEWTF112
-                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[DOC_NBR]=PURTE.UDF02 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[TB_WKF_TASK_PUR_COMMENT] WHERE [TB_WKF_TASK_PUR_COMMENT].[DOC_NBR]=PURTE.UDF02 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
                                 ,[PACKAGE_SPEC] AS '外包裝及驗收標準'
                                 ,[PRODUCT_APPEARANCE] AS '產品外觀'
                                 ,[COLOR] AS '色澤'
