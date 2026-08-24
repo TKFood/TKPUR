@@ -461,7 +461,8 @@ namespace TKPUR
             sqlConn = new SqlConnection(sqlsb.ConnectionString);
 
             report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
-
+            // ★★★ 2. 加長 FastReport 查詢逾時時間（例如 180 秒；設為 0 代表無限制）★★★
+            report1.Dictionary.Connections[0].CommandTimeout = 180;
 
             //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
 

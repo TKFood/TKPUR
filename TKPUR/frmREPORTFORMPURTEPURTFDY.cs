@@ -193,6 +193,8 @@ namespace TKPUR
                 sqlCmdBuilder = new SqlCommandBuilder(adapter);
                 sqlConn.Open();
                 ds.Clear();
+                // 將查詢逾時時間加長至 180 秒
+                adapter.SelectCommand.CommandTimeout = 180;
                 adapter.Fill(ds, "TEMPds1");
                 sqlConn.Close();
 
@@ -282,7 +284,8 @@ namespace TKPUR
             //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
 
             TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
-
+            // ★★★ 2. 加長 FastReport 查詢逾時時間（例如 180 秒；設為 0 代表無限制）★★★
+            report1.Dictionary.Connections[0].CommandTimeout = 180;
             SQL = SETFASETSQL(statusReports, PRINTSPURTCPURTD);
 
             Table.SelectCommand = SQL.ToString(); ;
