@@ -179,21 +179,45 @@ namespace TKPUR
 
                 sbSql.AppendFormat(@"  
                                    SELECT 
-                                    ISNULL((SELECT COUNT(TD004) FROM [DY].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002),0) AS '明細筆數'
-                                    ,TC001 AS '採購單別',TC002 AS '採購單號',TC003 AS '採購日期',TC004 AS '供應廠商',MA002 AS '供應廠',MA011 AS 'EMAIL'
-                                    ,(      SELECT TD004+TD005+TD006+', '
-                                            FROM   [DY].dbo.PURTD WHERE TD001=TC001 AND TD002=TC002
-                                            FOR XML PATH(''), TYPE  
-                                            ).value('.','nvarchar(max)')  As '明細' 
-                                    ,(SELECT TOP 1 [COMMENT] FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] WHERE [View_TB_WKF_TASK_PUR_COMMENT].[TC001]=PURTC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN AND [View_TB_WKF_TASK_PUR_COMMENT].[TC002]=PURTC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN) AS '採購簽核意見'
+                                        ISNULL(TD_Agg.DetailCount, 0) AS [明細筆數],
+                                        TC.TC001 AS [採購單別],
+                                        TC.TC002 AS [採購單號],
+                                        TC.TC003 AS [採購日期],
+                                        TC.TC004 AS [供應廠商],
+                                        MA.MA002 AS [供應廠],
+                                        MA.MA011 AS [EMAIL],
+                                        ISNULL(TD_Agg.Details, '')   AS [明細],
+                                        UOF.[COMMENT]                AS [採購簽核意見]
+                                    FROM [DY].[dbo].[PURTC] TC WITH (NOLOCK)
+                                    INNER JOIN [DY].[dbo].[PURMA] MA WITH (NOLOCK)
+                                        ON TC.TC004 = MA.MA001
 
-                                    FROM [DY].dbo.PURTC,[DY].dbo.PURMA
-                                    WHERE 1=1
-                                    AND TC004=MA001
-                                    AND TC003>='{0}' AND TC003<='{1}'                                  
-                                   
-                                    ORDER BY TC001,TC002
+                                    -- 1. 使用 OUTER APPLY 一次性處理 PURTD（明細筆數 + 字串合併，且去除結尾多餘逗號）
+                                    OUTER APPLY (
+                                        SELECT 
+                                            COUNT(TD.TD004) AS DetailCount,
+                                            STUFF((
+                                                SELECT ', ' + ISNULL(TD004,'') + ISNULL(TD005,'') + ISNULL(TD006,'')
+                                                FROM [DY].[dbo].[PURTD] TD WITH (NOLOCK)
+                                                WHERE TD.TD001 = TC.TC001 
+                                                  AND TD.TD002 = TC.TC002
+                                                FOR XML PATH(''), TYPE
+                                            ).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS Details
+                                        FROM [DY].[dbo].[PURTD] TD WITH (NOLOCK)
+                                        WHERE TD.TD001 = TC.TC001 
+                                          AND TD.TD002 = TC.TC002
+                                    ) AS TD_Agg
 
+                                    -- 2. 外部 Linked Server 採用 OUTER APPLY 取 TOP 1（效能比 SELECT 子查詢好）
+                                    OUTER APPLY (
+                                        SELECT TOP 1 [COMMENT]
+                                        FROM [192.168.1.223].[UOF].[dbo].[View_TB_WKF_TASK_PUR_COMMENT] V
+                                        WHERE V.[TC001] = TC.TC001 COLLATE Chinese_Taiwan_Stroke_BIN
+                                          AND V.[TC002] = TC.TC002 COLLATE Chinese_Taiwan_Stroke_BIN
+                                    ) AS UOF
+
+                                    WHERE TC.TC003 >='{0}' AND TC.TC003<='{1}'
+                                    ORDER BY TC.TC001, TC.TC002;
                                     ", SDAY, EDAY);
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
@@ -201,6 +225,8 @@ namespace TKPUR
                 sqlCmdBuilder = new SqlCommandBuilder(adapter);
                 sqlConn.Open();
                 ds.Clear();
+                // 將查詢逾時時間加長至 180 秒
+                adapter.SelectCommand.CommandTimeout = 180;
                 adapter.Fill(ds, "TEMPds1");
                 sqlConn.Close();
 
@@ -286,10 +312,11 @@ namespace TKPUR
             //report1.Dictionary.Connections[0].ConnectionString = "server=192.168.1.105;database=TKPUR;uid=sa;pwd=dsc";
 
             TableDataSource Table = report1.GetDataSource("Table") as TableDataSource;
-
+            // ★★★ 2. 加長 FastReport 查詢逾時時間（例如 180 秒；設為 0 代表無限制）★★★
+            report1.Dictionary.Connections[0].CommandTimeout = 180;
             SQL = SETFASETSQL(statusReports, PRINTSPURTCPURTD);
-
-            Table.SelectCommand = SQL.ToString(); ;
+       
+            Table.SelectCommand = SQL.ToString(); 
 
             report1.SetParameterValue("P1", COMMENT);
 
