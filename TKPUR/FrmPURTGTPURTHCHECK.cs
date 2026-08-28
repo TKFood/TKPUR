@@ -1948,59 +1948,62 @@ namespace TKPUR
                 }
 
                 sbSql.AppendFormat(@"  
-                                    SELECT 
-                                    TA001 AS	'憑單單別'
-                                    ,TA002 AS	'憑單單號'
-                                    ,TA003 AS	'憑單日期'
-                                    ,TA004 AS	'供應商'
-                                    ,MA002 AS	'供應廠商'
-                                    ,TA006 AS	'統一編號'
-                                    --1.二聯式、2.三聯式、3.二聯式收銀機發票、4.三聯式收銀機發票、5.電子計算機發票、6.免用統一發票、
-                                    --A.農產品收購憑證、G.海關代徵完稅憑證、N.不可抵扣專用發票、S.可抵扣專用發票、T.運輸發票、W.廢舊物資收購憑證、Z.其他   //890623 ADD 'A,B,C' BY 349 FOR 大陸用  //90
-                                    ,(CASE WHEN TA010=1 THEN '二聯式' 
-                                            WHEN TA010=2 THEN '三聯式' 
-                                            WHEN TA010=3 THEN '二聯式收銀機發票' 
-                                            WHEN TA010=4 THEN '三聯式收銀機發票' 
-                                            WHEN TA010=5 THEN '電子計算機發票' 
-		                                    WHEN TA010=6 THEN '免用統一發票' 
-		                                    WHEN TA010='A' THEN '農產品收購憑證' 
-		                                    WHEN TA010='G' THEN '海關代徵完稅憑證' 
-		                                    WHEN TA010='N' THEN '不可抵扣專用發票' 
-		                                    WHEN TA010='S' THEN '可抵扣專用發票' 
-		                                    WHEN TA010='T' THEN '運輸發票' 
-		                                    WHEN TA010='W' THEN '廢舊物資收購憑證' 
-		                                    WHEN TA010='Z' THEN '其他' 
-                                            END)  AS	'發票聯數'
-                                    ,(CASE WHEN TA011=1 THEN '應稅內含' 
-                                            WHEN TA011=2 THEN '應稅外加' 
-                                            WHEN TA011=3 THEN '零稅率' 
-                                            WHEN TA011=4 THEN '免稅' 
-                                            WHEN TA011=9 THEN '不計稅' 
-                                            END)   AS	'課稅別'
-                                    ,TA014 AS	'發票號碼'
-                                    ,TA015 AS	'發票日期'
-                                    ,TA016 AS	'發票貨款'
-                                    ,TA017 AS	'發票稅額'
-
-                                    FROM [TK].dbo.ACPTA,[TK].dbo.PURMA
-                                    WHERE TA004=MA001
-                                    --找出應付明細的進貨單，還未核的
-                                    --應付不可以出現
-                                    AND REPLACE(TA001+TA002,' ','')  NOT IN 
-                                    (
-                                        SELECT 
-                                        REPLACE(TA001+TA002,' ','') 
-                                        FROM [TK].dbo.ACPTA,[TK].dbo.ACPTB
-                                        WHERE TA001=TB001 AND TA002=TB002
-                                        AND ISNULL(TB005,'')<>''
-                                        AND REPLACE(TB005+TB006,' ','') NOT IN 
-                                        (
-                                        SELECT REPLACE([TG001]+[TG002],' ','')
-                                         FROM [TKPUR].[dbo].[TBPURTGCHECKS]
-                                        )
-                                        GROUP BY REPLACE(TA001+TA002,' ','') 
-
+                                    -- 1. 先找出「不可出現（包含未核核對單）」的 ACPTA 單號清單
+                                    WITH CTE_EXCLUDE_AP AS (
+                                        SELECT DISTINCT 
+                                            B.TB001, 
+                                            B.TB002
+                                        FROM [TK].dbo.ACPTB B WITH(NOLOCK)
+                                        LEFT JOIN [TKPUR].[dbo].[TBPURTGCHECKS] CHK WITH(NOLOCK)
+                                            ON CHK.[TG001] = B.TB005 AND CHK.[TG002] = B.TB006
+                                        WHERE ISNULL(B.TB005, '') <> ''
+                                          AND CHK.[TG001] IS NULL  -- 代表進貨單號 (TB005+TB006) 還未被核對
                                     )
+
+                                    -- 2. 主要查詢
+                                    SELECT 
+                                        TA.TA001 AS '憑單單別',
+                                        TA.TA002 AS '憑單單號',
+                                        TA.TA003 AS '憑單日期',
+                                        TA.TA004 AS '供應商',
+                                        MA.MA002 AS '供應廠商',
+                                        TA.TA006 AS '統一編號',
+                                        CASE TA.TA010
+                                            WHEN '1' THEN '二聯式'
+                                            WHEN '2' THEN '三聯式'
+                                            WHEN '3' THEN '二聯式收銀機發票'
+                                            WHEN '4' THEN '三聯式收銀機發票'
+                                            WHEN '5' THEN '電子計算機發票'
+                                            WHEN '6' THEN '免用統一發票'
+                                            WHEN '7' THEN '電子發票'
+                                            WHEN 'A' THEN '農產品收購憑證'
+                                            WHEN 'G' THEN '海關代徵完稅憑證'
+                                            WHEN 'N' THEN '不可抵扣專用發票'
+                                            WHEN 'S' THEN '可抵扣專用發票'
+                                            WHEN 'T' THEN '運輸發票'
+                                            WHEN 'W' THEN '廢舊物資收購憑證'
+                                            WHEN 'Z' THEN '其他'
+                                        END AS '發票聯數',
+                                        CASE TA.TA011
+                                            WHEN 1 THEN '應稅內含'
+                                            WHEN 2 THEN '應稅外加'
+                                            WHEN 3 THEN '零稅率'
+                                            WHEN 4 THEN '免稅'
+                                            WHEN 9 THEN '不計稅'
+                                        END AS '課稅別',
+                                        TA.TA014 AS '發票號碼',
+                                        TA.TA015 AS '發票日期',
+                                        TA.TA016 AS '發票貨款',
+                                        TA.TA017 AS '發票稅額'
+                                    FROM [TK].dbo.ACPTA TA WITH(NOLOCK)
+                                    LEFT JOIN [TK].dbo.PURMA MA WITH(NOLOCK) 
+                                        ON TA.TA004 = MA.MA001
+
+                                    -- 關聯排除清單 (取代原本複雜的 NOT IN 子查詢)
+                                    LEFT JOIN CTE_EXCLUDE_AP EX 
+                                        ON EX.TB001 = TA.TA001 AND EX.TB002 = TA.TA002
+
+                                    WHERE EX.TB001 IS NULL
 
                                     {0}
                                     {1}
