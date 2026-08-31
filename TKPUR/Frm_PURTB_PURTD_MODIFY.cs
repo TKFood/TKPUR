@@ -43,12 +43,15 @@ namespace TKPUR
         public void SET_comboBox1()
         {
             comboBox1.Items.Clear();
+            comboBox1.Items.Add("y");
             comboBox1.Items.Add("Y");
             comboBox1.Items.Add("N");
+          
         }
         public void SET_comboBox2()
         {
             comboBox2.Items.Clear();
+            comboBox2.Items.Add("y");
             comboBox2.Items.Add("Y");
             comboBox2.Items.Add("N");
         }
@@ -379,7 +382,7 @@ namespace TKPUR
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            string SDATES = dateTimePicker1.Value.ToString("yyyyMMdd");            
+            string SDATES = textBox10.Text;
             SEARCH_DG1(SDATES);
         }
 
@@ -395,7 +398,7 @@ namespace TKPUR
             string tb039 = comboBox1.Text;
             UPDATE_PURTB(ta001, ta002, tb003, tb039);
 
-            string SDATES = dateTimePicker1.Value.ToString("yyyyMMdd");
+            string SDATES = textBox10.Text;
             SEARCH_DG1(SDATES);
 
             int scrollIndex = dataGridView1.FirstDisplayedScrollingRowIndex;
@@ -405,7 +408,7 @@ namespace TKPUR
 
         private void button5_Click(object sender, EventArgs e)
         {
-            string SDATES = dateTimePicker2.Value.ToString("yyyyMMdd");
+            string SDATES = textBox11.Text;
             SEARCH_DG2(SDATES);
         }
         #endregion
@@ -425,7 +428,7 @@ namespace TKPUR
 
             UPDATE_PURTD(tc001, tc002, tc003, td016, td026, td027, td028);
 
-            string SDATES = dateTimePicker2.Value.ToString("yyyyMMdd");
+            string SDATES = textBox11.Text;
             SEARCH_DG2(SDATES);
 
             int scrollIndex = dataGridView2.FirstDisplayedScrollingRowIndex;
