@@ -405,7 +405,10 @@ namespace TKPUR
                                     SELECT 年, '{0}月' 月,客戶代,客戶,統編,品號,品名,SUM(數量) 數量,單位
                                     FROM
                                     (
-                                    SELECT  SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG004 AS '客戶代',MA002 AS '客戶',MA010 AS '統編',TH004 ,MB1.MB002 ,SUM(LA011) LA011,MB1.MB004,MC004,MD006,MD007,MD003 AS '品號',MB2.MB002 AS '品名',SUM(CONVERT(DECIMAL(16,0),(LA011/MD006*MD007*MC004)))  AS '數量',MB2.MB004 AS '單位'
+                                    SELECT  SUBSTRING(TG003,1,4) AS '年',SUBSTRING(TG003,5,2)  AS '月',TG004 AS '客戶代',MA002 AS '客戶',MA010 AS '統編',TH004 ,MB1.MB002 ,SUM(LA011) LA011,MB1.MB004,MC004,MD006,MD007,MD003 AS '品號',MB2.MB002 AS '品名'
+                                    -- 關鍵修正：加入 ISNULL 與 NULLIF 避免除以零 (MD006 = 0 時改為 0)
+                                    ,SUM(CONVERT(DECIMAL(16, 0), ISNULL(LA011 / NULLIF(MD006, 0) * MD007 * MC004, 0))) AS [數量]
+                                    ,MB2.MB004 AS '單位'
                                     FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB MB1,[TK].dbo.COPMA,[TK].dbo.BOMMC,[TK].dbo.BOMMD,[TK].dbo.INVMB MB2
                                     WHERE TG001=TH001 AND TG002=TH002
                                     AND LA006=TH001 AND LA007=TH002 AND LA008=TH003
