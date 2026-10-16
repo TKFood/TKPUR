@@ -157,7 +157,7 @@ namespace TKPUR
                                 TC002 AS '採購單號',
                                 TC004 AS '供應廠商',
                                 MA002 AS '廠商',
-                                TD003 AS '序號',
+                                TD003 AS '採購序號',
                                 TD004 AS '品號',
                                 TD005 AS '品名',
                                 TD008 AS '採購數量',
@@ -200,7 +200,7 @@ namespace TKPUR
                 {
                     string tc001 = row.Cells["採購單別"].Value?.ToString() ?? "";
                     string tc002 = row.Cells["採購單號"].Value?.ToString() ?? "";
-                    string td003 = row.Cells["序號"].Value?.ToString() ?? "";
+                    string td003 = row.Cells["採購序號"].Value?.ToString() ?? "";
                     string TD013 = row.Cells["訂單單別"].Value?.ToString() ?? "";
                     string TD021 = row.Cells["訂單單號"].Value?.ToString() ?? "";
                     string TD023 = row.Cells["訂單序號"].Value?.ToString() ?? "";
@@ -213,9 +213,9 @@ namespace TKPUR
             return selectedRows;
         }
         // 2. 將 LIST 中的資料拆解並更新到資料庫中
-        public void UPDATE_TD016(string TD016)
+        public void UPDATE_TD016(string TD016, List<string> selectedRows)
         {
-            List<string> selectedRows = GetSelectedRows();
+            //List<string> selectedRows = GetSelectedRows();
 
             if (selectedRows == null || selectedRows.Count == 0)
             {
@@ -286,7 +286,7 @@ namespace TKPUR
         }
 
         //發送MAIL
-        public void SEND_MAIL()
+        public void SEND_MAIL(List<string> selectedRows,string TD016)
         {
             DataTable DS_EMAIL_TO_EMAIL = new DataTable();
             DataTable DT_DATAS = new DataTable();
@@ -303,54 +303,81 @@ namespace TKPUR
                 BODY.Clear();
 
 
-                SUBJEST.AppendFormat(@"系統通知-請查收-採購-大潁的採購單(含訂單)的結案明細，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                SUBJEST.AppendFormat(@"系統通知-請查收-採購-大潁的採購單(含訂單)的明細，謝謝。 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
                 //BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為老楊食品-採購單" + Environment.NewLine + "請將附件用印回簽" + Environment.NewLine + "謝謝" + Environment.NewLine);
 
                 //ERP 採購相關單別、單號未核準的明細
                 //
                 BODY.AppendFormat("<span style='font-size:12.0pt;font-family:微軟正黑體'> <br>" + "Dear SIR:" + "<br>"
-                    + "<br>" + "系統通知-請查收-採購-大潁的採購單(含訂單)的結案明細，謝謝"
+                    + "<br>" + "系統通知-請查收-採購-大潁的採購單(含訂單)的明細，謝謝"
                     + " <br>"
                     );
 
 
+                if (TD016.Equals("Y"))
+                {
+                    BODY.AppendFormat("<span style='font-size:12.0pt;font-family:微軟正黑體'> <br>"
+                                       + "<br>" + "以下是 結案的 大潁的採購單(含訂單)的明細，謝謝"
+                                       + " <br>"
+                                       );
+                }
+                else 
+                {
+                    BODY.AppendFormat("<span style='font-size:12.0pt;font-family:微軟正黑體'> <br>"
+                                          + "<br>" + "以下是 未結案 的大潁的採購單(含訂單)的明細，謝謝"
+                                          + " <br>"
+                                          );
+                }
 
+                if (selectedRows != null && selectedRows.Count >= 1)
+                {
+                    if (selectedRows.Count > 0)
+                    {
+                        BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體'><br>" + "明細");
 
-                //if (DT_DATAS != null && DT_DATAS.Rows.Count >= 1)
-                //{
-                //    if (DT_DATAS.Rows.Count > 0)
-                //    {
-                //        BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體'><br>" + "明細");
+                        BODY.AppendFormat(@"<table> ");
+                        BODY.AppendFormat(@"<tr >");
+                        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">採購單別</th>");
+                        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">採購單號</th>");
+                        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">採購序號</th>");
+                        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">訂單單別</th>");
+                        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">訂單單號</th>");
+                        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">訂單序號</th>");
 
-                //        BODY.AppendFormat(@"<table> ");
-                //        BODY.AppendFormat(@"<tr >");
-                //        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">表單編號</th>");
-                //        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">品號</th>");
-                //        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">品名</th>");
-                //        BODY.AppendFormat(@"<th style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">未簽核人員</th>");
+                        BODY.AppendFormat(@"</tr> ");
 
-                //        BODY.AppendFormat(@"</tr> ");
+                        foreach (string data in selectedRows)
+                        {
+                            // 依照逗號拆解出 TC001, TC002, TD003
+                            string[] parts = data.Split(',');
+                            if (parts.Length == 6)
+                            {
+                                string TC001 = parts[0];                               
+                                string TC002 = parts[1];
+                                string TD003 = parts[2];
+                                string TD013 = parts[3];
+                                string TD021 = parts[4];
+                                string TD023 = parts[5];
 
-                //        foreach (DataRow DR in DT_DATAS.Rows)
-                //        {
+                                BODY.AppendFormat(@"<tr >");
+                                BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + TC001 + "</td>");
+                                BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + TC002 + "</td>");
+                                BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + TD003 + "</td>");
+                                BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + TD013 + "</td>");
+                                BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + TD021 + "</td>");
+                                BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + TD023 + "</td>");
 
-                //            BODY.AppendFormat(@"<tr >");
-                //            BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["DOC_NBR"].ToString() + "</td>");
-                //            BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["MB001"].ToString() + "</td>");
-                //            BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["MB002"].ToString() + "</td>");
-                //            BODY.AppendFormat(@"<td style=""border: 1px solid #999;font-size:12.0pt;font-family:微軟正黑體' "">" + DR["NAME"].ToString() + "</td>");
+                                BODY.AppendFormat(@"</tr> ");
 
-                //            BODY.AppendFormat(@"</tr> ");
-
-
-                //        }
-                //        BODY.AppendFormat(@"</table> ");
-                //    }
-                //}
-                //else
-                //{
-                //    BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體'><br>" + "無資料");
-                //}
+                            }
+                        }
+                        BODY.AppendFormat(@"</table> ");
+                    }
+                }
+                else
+                {
+                    BODY.AppendFormat("<span style = 'font-size:12.0pt;font-family:微軟正黑體'><br>" + "無資料");
+                }
 
                 try
                 {
@@ -512,21 +539,27 @@ namespace TKPUR
 
         private void button2_Click(object sender, EventArgs e)
         {
+            List<string> selectedRows = GetSelectedRows();
             //修改成結案+發MAIL
-            //UPDATE_TD016("Y");
+            UPDATE_TD016("Y", selectedRows);
+
+            SEND_MAIL(selectedRows,"Y");
 
             string SDATE = dateTimePicker1.Value.ToString("yyyyMMdd");
             string EDATE = dateTimePicker2.Value.ToString("yyyyMMdd");
             string TC002 = textBox1.Text.ToString();
             string TD016 = comboBox1.Text.ToString();
             SearchData(SDATE, EDATE, TC002, TD016);
-            SEND_MAIL();
+
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            List<string> selectedRows = GetSelectedRows();
             //修改成未結案+發MAIL
-            UPDATE_TD016("N");
+            UPDATE_TD016("N", selectedRows);
+
+            SEND_MAIL(selectedRows, "N");
 
             string SDATE = dateTimePicker1.Value.ToString("yyyyMMdd");
             string EDATE = dateTimePicker2.Value.ToString("yyyyMMdd");
