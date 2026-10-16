@@ -152,7 +152,10 @@ namespace TKPUR
                                 TD005 AS '品名',
                                 TD008 AS '採購數量',
                                 TD015 AS '已交數量',
-                                TD016 AS '結案碼'
+                                TD016 AS '結案碼',
+                                TD013 AS '訂單單別',
+                                TD021 AS '訂單單號',
+                                TD023 AS '訂單序號'
 
                                 FROM [DY].dbo.PURTD,[DY].dbo.PURTC
                                 LEFT JOIN [DY].dbo.PURMA ON MA001=TC004
@@ -268,6 +271,12 @@ namespace TKPUR
                     }
                 }
             }
+        }
+
+        //發送MAIL
+        public void SEND_MAIL()
+        {
+
         }
 
         #endregion
