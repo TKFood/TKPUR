@@ -145,6 +145,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmDYPORTCTD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDYPORTCTD.Designer.cs">
+      <DependentUpon>FrmDYPORTCTD.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPURMODELSNUMS.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -411,6 +417,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FrmDYPORTCTD.resx">
+      <DependentUpon>FrmDYPORTCTD.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmPURMODELSNUMS.resx">
       <DependentUpon>frmPURMODELSNUMS.cs</DependentUpon>
     </EmbeddedResource>
