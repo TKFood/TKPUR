@@ -153,6 +153,7 @@ namespace TKPUR
 
                 sb.AppendFormat(@"
                                 SELECT 
+                                TD012 AS '預交日',
                                 TC001 AS '採購單別',
                                 TC002 AS '採購單號',
                                 TC004 AS '供應廠商',
