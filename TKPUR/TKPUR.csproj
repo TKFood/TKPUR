@@ -181,6 +181,12 @@
     <Compile Include="FrmPURTATBUOFCHANGE.Designer.cs">
       <DependentUpon>FrmPURTATBUOFCHANGE.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmPURTC_CALL_DESIGN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPURTC_CALL_DESIGN.Designer.cs">
+      <DependentUpon>FrmPURTC_CALL_DESIGN.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPURTECHANGEDEL.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -434,6 +440,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPURTATBUOFCHANGE.resx">
       <DependentUpon>FrmPURTATBUOFCHANGE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPURTC_CALL_DESIGN.resx">
+      <DependentUpon>FrmPURTC_CALL_DESIGN.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPURTECHANGEDEL.resx">
       <DependentUpon>FrmPURTECHANGEDEL.cs</DependentUpon>
