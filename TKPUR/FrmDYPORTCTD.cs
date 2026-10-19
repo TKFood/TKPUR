@@ -536,7 +536,7 @@ namespace TKPUR
             SearchData(SDATE, EDATE, TC002, TD016);   
         }
 
-        #endregion
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -551,6 +551,8 @@ namespace TKPUR
             string TC002 = textBox1.Text.ToString();
             string TD016 = comboBox1.Text.ToString();
             SearchData(SDATE, EDATE, TC002, TD016);
+
+            MessageBox.Show("完成");
 
         }
 
@@ -567,6 +569,10 @@ namespace TKPUR
             string TC002 = textBox1.Text.ToString();
             string TD016 = comboBox1.Text.ToString();
             SearchData(SDATE, EDATE, TC002, TD016);
+
+            MessageBox.Show("完成");
         }
+
+        #endregion
     }
 }
