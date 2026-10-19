@@ -164,7 +164,8 @@ namespace TKPUR
                                 TD016 AS '結案碼',
                                 TD013 AS '訂單單別',
                                 TD021 AS '訂單單號',
-                                TD023 AS '訂單序號'
+                                TD023 AS '訂單序號',
+                                PURTD.UDF01 AS '通知行企'
 
                                 FROM [TK].dbo.PURTD,[TK].dbo.PURTC
                                 LEFT JOIN [TK].dbo.PURMA ON MA001=TC004
